@@ -1,0 +1,1 @@
+JetpackMarine.kJetpackFuelReplenishDelay = .27 -- 30% deduction of .4
