@@ -137,6 +137,11 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Admin Abuse]",  255, 0, 0, String, Format, ... )
 end
+function Plugin:GiveCyst(Player)
+            local ent = CreateEntity(Cyst.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
+             ent:SetConstructionComplete()
+end
+
 
 function Plugin:CreateCommands()
 
@@ -145,7 +150,18 @@ local function OpenSiegeDoors()
               sandcastle:OpenSiegeDoors(true)
       end 
 end
-
+local function Cyst( Client, Targets )
+     for i = 1, #Targets do
+     local Player = Targets[ i ]:GetControllingPlayer()
+         if Player and Player:GetIsAlive() and Player:isa("Alien") and not Player:isa("Commander") then
+             self:GiveCyst(Player)
+           self:NotifyGeneric( nil, "Gave %s an Cyst", true, Player:GetName())
+          end
+     end
+end
+local CystCommand = self:BindCommand( "sh_cyst", "cyst", Cyst )
+CystCommand:AddParam{ Type = "clients" }
+CystCommand:Help( "<player> Give cyst to player(s)" )
 local function OpenFrontDoors()
            for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
                 sandcastle:OpenFrontDoors(true) 

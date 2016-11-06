@@ -623,7 +623,7 @@ local limit = 3
 
 
 if String == "NutrientMist" then
-CreditCost = 2
+CreditCost = 1
 mapnameof = NutrientMist.kMapName
 reqpathing = false
 elseif String == "Contamination"  then
@@ -766,7 +766,8 @@ local techid = nil
 if Player:GetTeamNumber() == 1 then 
   mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid = TeamOneBuyRules(self, Client, Player, String)
 elseif Player:GetTeamNumber() == 2 then
-  mapnameof, delay, reqground, reqpathing, CreditCost, limit = TeamTwoBuyRules(self, Client, Player, String)
+reqground = false
+  mapnameof, delay, reqpathing, CreditCost, limit  = TeamTwoBuyRules(self, Client, Player, String)
 end // end of team numbers
 
 if mapnameof then

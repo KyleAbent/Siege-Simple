@@ -1,3 +1,60 @@
+kBoneShieldArmorPerSecond = 79
+
+local function GetCheckCommandStationLimit()
+    local num = 0
+
+        
+        for index, commandstation in ientitylist(Shared.GetEntitiesWithClassname("CommandStation")) do
+        
+                num = num + 1
+            
+    end
+    
+    return num < 3
+end
+
+SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheckCommandStationLimit)
+
+SetCachedTechData(kTechId.CommandStation, kStructureAttachClass, false)
+
+
+function GetCheckSentryLimit(techId, origin, normal, commander)
+    local location = GetLocationForPoint(origin)
+    local locationName = location and location:GetName() or nil
+    local numInRoom = 0
+    local validRoom = false
+    
+    if locationName then
+    
+        validRoom = true
+        
+        for index, sentry in ientitylist(Shared.GetEntitiesWithClassname("Sentry")) do
+        
+            if sentry:GetLocationName() == locationName  and not sentry.isacreditstructure then
+                numInRoom = numInRoom + 1
+            end
+            
+        end
+        
+    end
+    
+    return validRoom and numInRoom < 4
+    
+end
+function DeniedBitch()
+return false
+end
+SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
+SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
+SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
+
+
+SetCachedTechData(kTechId.SentryBattery, kTechDataBuildRequiresMethod, DeniedBitch) --or return false?
+SetCachedTechData(kTechId.SentryBattery, kTechDataBuildMethodFailedMessage, "Disabled - not required")
+
+SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
+
+
 kMACSupply = 5
 --Add drifter egg fix
 

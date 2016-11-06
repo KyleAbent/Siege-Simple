@@ -55,6 +55,11 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
         if frontdoor  then who:Kill( )return end
   end
   
+    if who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
+     local frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 3 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
+        if frontdoor  then who:Kill( )return end
+  end
+  
   local location = GetLocationForPoint(who:GetOrigin())
   local locationName = location and location:GetName() or ""
   if string.find(locationName, "siege") or string.find(locationName, "Siege") then

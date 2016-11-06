@@ -1,0 +1,1 @@
+kFlameThrowerEnergyDamage = 2 -- 3 to 2 30% reduction
