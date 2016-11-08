@@ -663,12 +663,12 @@ end
 return mapnameof, delay, reqpathing, CreditCost, limit
 
 end
-local function DeductBuy(self, Client, cost, delayafter)
-   self.CreditUsers[ Client ] = self:GetPlayerCreditsInfo(Client) - cost
-   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(Client) ), Client) 
-self.BuyUsersTimer[Client] = Shared.GetTime() + delayafter
-Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
- self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + cost
+local function DeductBuy(self, who, cost, delayafter)
+   self.CreditUsers[ who ] = self:GetPlayerCreditsInfo(who) - cost
+   self.BuyUsersTimer[who] = Shared.GetTime() + delayafter
+   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(who) ), who) 
+   Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
+   self.PlayerSpentAmount[who] = self.PlayerSpentAmount[who]  + cost
 end
 function Plugin:CreateCommands()
 
@@ -716,9 +716,9 @@ local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 1
 if not Player then return end
- if String == "JetPack" and not Player:isa("Exo") then cost = 10 end 
- if String == "RailGun" then  cost = 30 end 
- if String == "MiniGun" then cost = 35 end
+ if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 10 end 
+ if String == "RailGun" and not Player:isa("Exo") then cost = 40 delayafter = 30  end 
+ if String == "MiniGun" and not Player:isa("Exo") then  cost = 45  delayafter = 30 end
  if String == "Gorge" then cost = 10 end
  if String == "Lerk" then  cost = 15 end
  if String == "Fade" then cost = 25 end
@@ -728,8 +728,8 @@ if not Player then return end
   
          if Player:GetTeamNumber() == 1 then
               if cost == 10 then DeductBuy(self, Client, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 35 then DeductBuy(self, Client, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 30 then DeductBuy(self, Client, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == 45 then DeductBuy(self, Client, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == 40 then DeductBuy(self, Client, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 10 then Player:CreditBuy(Gorge)   Player:SetResources(Player:GetResources() + kGorgeCost ) DeductBuy(self, Client, cost)

@@ -3,6 +3,6 @@ kMaxEntityRadius = 10
 
 
 kDoorMoveUpVect = 6 --although global
-kCreditMultiplier = 2
+kCreditMultiplier = 1
 
-kCreditsPerRoundCap = 420 --200
+kCreditsPerRoundCap = 200

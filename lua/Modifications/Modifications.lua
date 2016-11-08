@@ -1,10 +1,10 @@
-kBoneShieldArmorPerSecond = 79
 
-local function GetCheckCommandStationLimit()
+if Server then
+function GetCheckCommandStationLimit(techId, origin, normal, commander)
     local num = 0
 
         
-        for index, commandstation in ientitylist(Shared.GetEntitiesWithClassname("CommandStation")) do
+       for _, cc in ipairs(GetEntitiesWithinRange("CommandStation", origin, 9999)) do
         
                 num = num + 1
             
@@ -12,10 +12,30 @@ local function GetCheckCommandStationLimit()
     
     return num < 3
 end
+end
+local function GetHiveReq(techId, origin, normal, commander)
+    local num = 0
+
+         for _, cc in ipairs(GetEntitiesWithinRange("CommandStation", origin, 2)) do
+        
+        if cc then return false end     
+            
+    end
+    
+    return true
+end
+
+SetCachedTechData(kTechId.Hive, kTechDataBuildRequiresMethod, GetHiveReq)
+SetCachedTechData(kTechId.Hive, kTechDataBuildMethodFailedMessage, "Techpoint is occupied")
+
+
+SetCachedTechData(kTechId.CommandStation, kTechDataAttachOptional, true)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheckCommandStationLimit)
 
-SetCachedTechData(kTechId.CommandStation, kStructureAttachClass, false)
+SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
+
+
 
 
 function GetCheckSentryLimit(techId, origin, normal, commander)

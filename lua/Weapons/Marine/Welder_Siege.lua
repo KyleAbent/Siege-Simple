@@ -4,7 +4,7 @@ function Welder:GetRepairRate(repairedEntity)
 
     local repairRate = kPlayerWeldRate
     if repairedEntity:isa("BreakableDoor") then
-        repairRate = kStructureWeldRate * 1.3
+        repairRate = kStructureWeldRate * 1.2
     end
     
     return repairRate

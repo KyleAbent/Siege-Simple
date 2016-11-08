@@ -1,13 +1,8 @@
 /*
   TODO: 
-  Points on kill
-  nanoshield on first weld
-  weld speed bonus while nano shielded
-  physics type adjustment
-  back posture damage
-  possible transition into broken model, not sure. I like infinite doors with delays and weld bonus with nano.
-  minimap
 */
+
+local kBrokenMaterial = PrecacheAsset("materials/power/powered_decal.material")
 
 Script.Load("lua/LiveMixin.lua")
 Script.Load("lua/CombatMixin.lua")
@@ -29,7 +24,7 @@ local networkVars =
 {
      open = "boolean",
      team = "integer (0 to 2)",
-     ---add in time last destroyed to delay weldtime
+     timeOfDestruction  = "private time",
 
 }
 AddMixinNetworkVars(BaseModelMixin, networkVars)
@@ -46,7 +41,7 @@ function BreakableDoor:OnCreate()
        InitMixin(self, LiveMixin)
        InitMixin(self, CombatMixin)
        InitMixin(self, TeamMixin)
-       
+        self.timeOfDestruction = 0
 
 
 end
@@ -85,6 +80,7 @@ function BreakableDoor:OnUpdate(deltatime)  --Add in scan for arcs and macs to o
   if Server then
       if self.health == 0 and not self.open then 
        self.open = true
+       self.timeOfDestruction = Shared.GetTime() 
        return true 
      end
   end
@@ -106,11 +102,26 @@ function BreakableDoor:Reset()
    self.open = false
         self.health = 4000
 end
+
+local function GetRecentlyDestroyed(self)
+    return (self.timeOfDestruction + 10) > Shared.GetTime()
+end
+function BreakableDoor:GetCanBeWeldedOverride()
+    return not GetRecentlyDestroyed(self)
+end
+local function DisplayTimeTillWeldable(self)
+          local NowToWeld = 10 - (Shared.GetTime() - self.timeOfDestruction)
+          local WeldLength =  math.ceil( Shared.GetTime() + NowToWeld - Shared.GetTime() )
+          local time = WeldLength
+          return string.format(Locale.ResolveString("%s seconds"), time)
+end
   function BreakableDoor:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
      if not self.open then
          unitName = string.format(Locale.ResolveString("Locked Door"))
      else 
+      if GetRecentlyDestroyed(self) then return DisplayTimeTillWeldable(self) end
+       
     unitName = string.format(Locale.ResolveString("Open Door"))
      end
 return unitName
@@ -176,4 +187,39 @@ end
 function BreakableDoor:GetCanTakeDamageOverride()
     return true
 end
+
+
+if Client then
+
+    function BreakableDoor:OnUpdateRender()
+          local showMaterial = self.open and GetRecentlyDestroyed(self)
+    
+        local model = self:GetRenderModel()
+        if model then
+
+            model:SetMaterialParameter("glowIntensity", 4)
+
+            if showMaterial then
+                
+                if not self.hallucinationMaterial then
+                    self.hallucinationMaterial = AddMaterial(model, kBrokenMaterial)
+                end
+                
+                self:SetOpacity(0.5, "hallucination")
+            
+            else
+            
+                if self.hallucinationMaterial then
+                    RemoveMaterial(model, self.hallucinationMaterial)
+                    self.hallucinationMaterial = nil
+                end//
+                
+                self:SetOpacity(1, "hallucination")
+            
+            end //showma
+            
+        end//omodel
+end //up render
+end -- client
+
 Shared.LinkClassToMap("BreakableDoor", BreakableDoor.kMapName, networkVars)

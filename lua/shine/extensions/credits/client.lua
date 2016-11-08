@@ -45,8 +45,8 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
        local player = Client.GetLocalPlayer()
     if player:GetTeamNumber() == 1 then 
     self:AddSideButton( "JetPack(10)", function() Shared.ConsoleCommand ("sh_buyclass JetPack")  end)
-    self:AddSideButton( "MiniGunExo(32)", function() Shared.ConsoleCommand ("sh_buyclass MiniGun")  end)
-    self:AddSideButton( "RailGunExo(30)", function() Shared.ConsoleCommand ("sh_buyclass RailGun")  end)
+    self:AddSideButton( "MiniGunExo(45)", function() Shared.ConsoleCommand ("sh_buyclass MiniGun")  end)
+    self:AddSideButton( "RailGunExo(40)", function() Shared.ConsoleCommand ("sh_buyclass RailGun")  end)
         elseif player:GetTeamNumber() == 2 then
       self:AddSideButton( "Gorge(10)", function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
       self:AddSideButton( "Lerk(15)", function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
