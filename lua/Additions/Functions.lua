@@ -45,6 +45,7 @@ function GetGameStarted()
 end
 function ExploitCheck(who)
 local gamestarted = false
+--Print("Exploit check")
 if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true end
 
  if not gamestarted then return end 
@@ -60,12 +61,9 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
         if frontdoor  then who:Kill( )return end
   end
   
-  local location = GetLocationForPoint(who:GetOrigin())
-  local locationName = location and location:GetName() or ""
-  if string.find(locationName, "siege") or string.find(locationName, "Siege") then
-  
+  if GetIsInSiege(who)  then
+     -- Print("Player is in siege!")
     if not GetSandCastle():GetIsSiegeOpen() then who:Kill() end
-  
   end
 
 end
@@ -83,6 +81,9 @@ function AddFrontTime(seconds)
                 sandcastle:SendNotification(seconds)
                 sandcastle:AddTime(seconds) 
     end    
+end
+function GetSideDoorOpen()
+   return GetSandCastle():GetIsSideOpen()
 end
 function GetFrontDoorOpen()
    return GetSandCastle():GetIsFrontOpen()

@@ -20,12 +20,15 @@ local networkVars =
 {
    SiegeTimer = "float",
    FrontTimer = "float",
+   SideTimer = "float",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
    if kFrontTimer == nil then kFrontTimer = 330 end
+   if kSideTimer == nil then kSideTimer = 0 end
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
+   self.SideTimer = kSideTimer
 end
 
 function SandCastle:OnReset() 
@@ -66,11 +69,24 @@ end
 function SandCastle:GetFrontLength()
  return self.FrontTimer 
 end
-function SandCastle:OpenSiegeDoors(cleartimer)
-     if cleartimer == true then self.SiegeTimer = 0 end
+function SandCastle:GetSideLength()
+ return self.SideTimer 
+end
+local function OpenEightTimes(who)
+
+if not who then return end
+
+for i = 1, 8 do
+                who:Open(pregame)
+                who.isvisible = false
+end
+
+end
+function SandCastle:OpenSiegeDoors()
+     self.SiegeTimer = 0
      -- Print("OpenSiegeDoors SandCastle")
                for index, siegedoor in ientitylist(Shared.GetEntitiesWithClassname("SiegeDoor")) do
-                 if not siegedoor:isa("FrontDoor") then siegedoor:Open() end
+                 if not siegedoor:isa("FrontDoor") then OpenEightTimes(siegedoor) end
               end 
               
               --  for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
@@ -78,12 +94,24 @@ function SandCastle:OpenSiegeDoors(cleartimer)
             --  end
               
 end
-function SandCastle:OpenFrontDoors(cleartimer, pregame)
+function SandCastle:OpenFrontDoors()
 
-      if cleartimer == true then self.FrontTimer = 0 end
+      self.FrontTimer = 0
                for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
-                frontdoor:Open(pregame)
-                frontdoor.isvisible = false
+                      OpenEightTimes(frontdoor)
+              end 
+
+             -- for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+             -- StartSoundEffectForPlayer(SandCastle.kFrontDoorSound, player)
+             -- end
+
+
+end
+function SandCastle:OpenSideDoors()
+
+      self.FrontTimer = 0
+               for index, sidedoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
+                      OpenEightTimes(sidedoor)
               end 
 
              -- for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
@@ -102,10 +130,20 @@ function SandCastle:GetIsFrontOpen()
            local gameLength = Shared.GetTime() - gamestarttime
            return  gameLength >= self.FrontTimer
 end
+function SandCastle:GetIsSideOpen()
+           local gamestarttime = GetGamerules():GetGameStartTime()
+           local gameLength = Shared.GetTime() - gamestarttime
+           return  gameLength >= self.SideTimer
+end
 function SandCastle:CountSTimer()
-   local boolean = false
        if  self:GetIsSiegeOpen() then
-               self:OpenSiegeDoors(true)
+               self:OpenSiegeDoors()
+       end
+       
+end
+function SandCastle:CountSideTimer()
+       if  self:GetIsSideOpen() then
+               self:OpenSideDoors()
        end
        
 end
@@ -114,8 +152,9 @@ function SandCastle:OnUpdate(deltatime)
     local gamestarted = GetGamerules():GetGameStarted()
   if gamestarted then 
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
-       self:FrontDoorTimer()
-       self:CountSTimer()
+       if self.FrontTimer ~= 0 then self:FrontDoorTimer() end
+      if self. SiegeTimer ~= 0 then self:CountSTimer() end
+      if self. SideTimer ~= 0 then self:CountSideTimer() end
         self.timeLastAutomations = Shared.GetTime()
          end
   
@@ -128,7 +167,7 @@ end
 function SandCastle:FrontDoorTimer()
     if self:GetIsFrontOpen() then
          boolean = true
-         self:OpenFrontDoors(true) -- Ddos!
+         self:OpenFrontDoors() -- Ddos!
        end
 
 end
@@ -139,8 +178,9 @@ function SandCastle:OnPreGame()
    end
    
    for i = 1, 8 do
-   self:OpenSiegeDoors(false, true)
-   self:OpenFrontDoors(false, true)
+   self:OpenSiegeDoors()
+   self:OpenFrontDoors()
+   self:OpenSideDoors()
    end
    
 end

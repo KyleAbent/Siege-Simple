@@ -496,7 +496,7 @@ self.MarineTotalSpent = self.MarineTotalSpent + cost
 elseif whoagain:GetTeamNumber() == 2 then
     self.AlienTotalSpent = self.AlienTotalSpent + cost
  --   if reqpathing then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), 2) end
-    entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
+    entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin()), whoagain:GetTeamNumber()) 
     if not entity then self:NotifyCredits( who, "Invalid Purchase Request of %s.", true, String) return end
     if entity.SetOwner then entity:SetOwner(whoagain) end
       if not GetIsAlienInSiege(whoagain) then
@@ -627,16 +627,16 @@ CreditCost = 1
 mapnameof = NutrientMist.kMapName
 reqpathing = false
 elseif String == "Contamination"  then
-CreditCost = 2
+CreditCost = 1
 mapnameof = Contamination.kMapName    
 elseif String == "EnzymeCloud" then
 CreditCost = 1.5
 reqpathing = false
 mapnameof = EnzymeCloud.kMapName
 elseif String == "Ink" then
-CreditCost = 4
+CreditCost = 2
 reqpathing = false
-delay = 60
+delay = 45
 mapnameof = ShadeInk.kMapName
 elseif String == "Hallucination" then
 CreditCost = 1.75

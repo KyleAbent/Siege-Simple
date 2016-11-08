@@ -2,7 +2,6 @@
   TODO: 
 */
 
-local kBrokenMaterial = PrecacheAsset("materials/power/powered_decal.material")
 
 Script.Load("lua/LiveMixin.lua")
 Script.Load("lua/CombatMixin.lua")
@@ -189,37 +188,5 @@ function BreakableDoor:GetCanTakeDamageOverride()
 end
 
 
-if Client then
-
-    function BreakableDoor:OnUpdateRender()
-          local showMaterial = self.open and GetRecentlyDestroyed(self)
-    
-        local model = self:GetRenderModel()
-        if model then
-
-            model:SetMaterialParameter("glowIntensity", 4)
-
-            if showMaterial then
-                
-                if not self.hallucinationMaterial then
-                    self.hallucinationMaterial = AddMaterial(model, kBrokenMaterial)
-                end
-                
-                self:SetOpacity(0.5, "hallucination")
-            
-            else
-            
-                if self.hallucinationMaterial then
-                    RemoveMaterial(model, self.hallucinationMaterial)
-                    self.hallucinationMaterial = nil
-                end//
-                
-                self:SetOpacity(1, "hallucination")
-            
-            end //showma
-            
-        end//omodel
-end //up render
-end -- client
 
 Shared.LinkClassToMap("BreakableDoor", BreakableDoor.kMapName, networkVars)

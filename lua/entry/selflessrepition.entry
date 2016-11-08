@@ -7,5 +7,5 @@ Server: lua/Siege/Server.lua,
 Predict: lua/Siege/Predict.lua,
 
 	Shared: lua/Siege/Shared.lua, FileHooks: lua/FileHooks.lua, 
-Priority: 3
+Priority: 5
 ]]

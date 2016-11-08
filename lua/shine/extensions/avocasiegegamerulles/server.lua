@@ -70,6 +70,12 @@ local function AddSiegeTimer(who)
     local SiegeLength =  math.ceil( Shared.GetTime() + NowToSiege - Shared.GetTime() )
     Shine.ScreenText.Add( 2, {X = 0.40, Y = 0.95,Text = "Siege Doors open in %s",Duration = SiegeLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
+local function AddSideTimer(who)
+    local Client = who
+    local NowToSide = GetSandCastle():GetSideLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
+    local SideLength =  math.ceil( Shared.GetTime() + NowToSide - Shared.GetTime() )
+    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.65,Text = "Side Doors open in %s",Duration = SideLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+end
 local function GiveTimersToAll()
               local Players = Shine.GetAllPlayers()
               for i = 1, #Players do
@@ -77,6 +83,7 @@ local function GiveTimersToAll()
                   if Player then
                   AddFrontTimer(Player)
                   AddSiegeTimer(Player) --Downside is the 30 min expiration date. Upside is no timer goes beyond 20.
+                  AddSideTimer(Player)
                   end
 end
 end
@@ -110,6 +117,12 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
  if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kSiegeTimer then
          AddSiegeTimer(Client)
    end
+   
+    if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kSideTimer then
+         AddSideTimer(Client)
+   end
+   
+   
 
 
 end
@@ -123,12 +136,13 @@ function Plugin:SetGameState( Gamerules, State, OldState )
   else
  Shine.ScreenText.End(1) 
  Shine.ScreenText.End(2)
+ Shine.ScreenText.End(3)
   end 
   
            if State == kGameState.Countdown then
              GetSandCastle():OnRoundStart()
-       --elseif State == kGameState.NotStarted then
-         --    GetSandCastle():OnPreGame()
+       elseif State == kGameState.NotStarted then
+             GetSandCastle():OnPreGame()
           end
           
     
@@ -164,18 +178,24 @@ CystCommand:AddParam{ Type = "clients" }
 CystCommand:Help( "<player> Give cyst to player(s)" )
 local function OpenFrontDoors()
            for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
-                sandcastle:OpenFrontDoors(true) 
+                sandcastle:OpenFrontDoors() 
                 end
 
 end
+local function OpenSideDoors()
+           for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
+                sandcastle:OpenSideDoors() 
+                end
 
+end
 local function Open( Client, String )
 local Gamerules = GetGamerules()
      if String == "Front" or String == "front" then
        OpenFrontDoors()
         Shine.ScreenText.End(1) 
      elseif String == "Side" or String == "side" then
-      -- Gamerules:OpenSideDoors()
+       OpenSideDoors()
+       Shine.ScreenText.End(3)
      elseif String == "Siege" or String == "siege" then
         OpenSiegeDoors()
          Shine.ScreenText.End(2) 
