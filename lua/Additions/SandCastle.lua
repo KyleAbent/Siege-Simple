@@ -77,7 +77,7 @@ local function OpenEightTimes(who)
 if not who then return end
 
 for i = 1, 8 do
-                who:Open(pregame)
+                who:Open()
                 who.isvisible = false
 end
 
@@ -109,7 +109,7 @@ function SandCastle:OpenFrontDoors()
 end
 function SandCastle:OpenSideDoors()
 
-      self.FrontTimer = 0
+      self.SideTimer = 0
                for index, sidedoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
                       OpenEightTimes(sidedoor)
               end 

@@ -15,6 +15,8 @@ ModLoader.SetupFileHook( "lua/Weapons/Marine/Welder.lua", "lua/Weapons/Marine/We
 ModLoader.SetupFileHook( "lua/Lerk.lua", "lua/Lerk_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Fade.lua", "lua/Fade_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Balance.lua", "lua/Balance_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Whip.lua", "lua/Whip_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Hydra.lua", "lua/Hydra_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/ARC.lua", "lua/ARC_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechTreeConstants.lua", "lua/TechTreeConstants_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechData.lua", "lua/TechData_Siege.lua", "post" )

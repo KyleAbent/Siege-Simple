@@ -496,7 +496,7 @@ self.MarineTotalSpent = self.MarineTotalSpent + cost
 elseif whoagain:GetTeamNumber() == 2 then
     self.AlienTotalSpent = self.AlienTotalSpent + cost
  --   if reqpathing then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), 2) end
-    entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin()), whoagain:GetTeamNumber()) 
+    entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
     if not entity then self:NotifyCredits( who, "Invalid Purchase Request of %s.", true, String) return end
     if entity.SetOwner then entity:SetOwner(whoagain) end
       if not GetIsAlienInSiege(whoagain) then
