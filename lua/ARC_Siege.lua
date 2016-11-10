@@ -1,11 +1,16 @@
+if Server then
 
-local origrules = ARC.GetCanFireAtTargetActual
-function ARC:GetCanFireAtTargetActual(target, targetPoint) 
+
+local origrules = ARC.AcquireTarget
+function ARC:AcquireTarget() 
 
 local canfire = ( kSideTimer ~= 0 and GetSideDoorOpen() )  or  GetFrontDoorOpen() 
- Print("Arc canfire is %s", canfire)
-if origrules == true then return canfire end
+--Print("Arc can fire is %s", canfire)
+if not canfire then return end
+return origrules(self)
 
-return false 
+end
+
+
 
 end
