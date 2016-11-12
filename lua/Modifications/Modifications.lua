@@ -1,4 +1,4 @@
-
+Script.Load("lua/Fade_Siege.lua")
 if Server then
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
     local num = 0
@@ -34,6 +34,8 @@ SetCachedTechData(kTechId.CommandStation, kTechDataAttachOptional, true)
 SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheckCommandStationLimit)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
+
+
 
 
 

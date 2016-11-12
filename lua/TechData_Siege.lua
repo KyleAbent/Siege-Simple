@@ -33,10 +33,7 @@ local kSiege_TechData =
 }   
 
 local kSiege_TechIdToMaterialOffset = {}
-kSiege_TechIdToMaterialOffset[kTechId.MacSpawnOn] = 36
-kSiege_TechIdToMaterialOffset[kTechId.MacSpawnOff] = 36
-kSiege_TechIdToMaterialOffset[kTechId.ArcSpawnOn] = 32
-kSiege_TechIdToMaterialOffset[kTechId.ArcSpawnOff] = 32
+kSiege_TechIdToMaterialOffset[kTechId.MacSpawnOn] = 1
 
 local getmaterialxyoffset = GetMaterialXYOffset
 function GetMaterialXYOffset(techId)

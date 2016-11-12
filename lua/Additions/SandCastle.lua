@@ -8,8 +8,8 @@ SandCastle.kMapName = "sandcastle"
 
 if Server then
 
---SandCastle.kSiegeDoorSound = PrecacheAsset("sound/siegeroom.fev/door/siege")
---SandCastle.kFrontDoorSound = PrecacheAsset("sound/siegeroom.fev/door/frontdoor")
+SandCastle.kSiegeDoorSound = PrecacheAsset("sound/siegeroom.fev/door/siege")
+SandCastle.kFrontDoorSound = PrecacheAsset("sound/siegeroom.fev/door/frontdoor")
 
 
 end
@@ -89,9 +89,9 @@ function SandCastle:OpenSiegeDoors()
                  if not siegedoor:isa("FrontDoor") then OpenEightTimes(siegedoor) end
               end 
               
-              --  for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
-            --  StartSoundEffectForPlayer(SandCastle.kSiegeDoorSound, player)
-            --  end
+                for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+              StartSoundEffectForPlayer(SandCastle.kSiegeDoorSound, player)
+              end
               
 end
 function SandCastle:OpenFrontDoors()
@@ -101,9 +101,9 @@ function SandCastle:OpenFrontDoors()
                       OpenEightTimes(frontdoor)
               end 
 
-             -- for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
-             -- StartSoundEffectForPlayer(SandCastle.kFrontDoorSound, player)
-             -- end
+              for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+              StartSoundEffectForPlayer(SandCastle.kFrontDoorSound, player)
+              end
 
 
 end

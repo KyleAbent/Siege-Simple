@@ -87,6 +87,15 @@ local function GiveTimersToAll()
                   end
 end
 end
+function Plugin:SendMessageToMods(string)
+              local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Shine:GetUserImmunity(Player:GetClient()) >= 10 then --isamod 
+                  self:NotifyMods( Player, "%s", true, string)
+                  end
+               end
+end
 function Plugin:ClientConfirmConnect(Client)
  
  if Client:GetIsVirtual() then return end
@@ -151,6 +160,9 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Admin Abuse]",  255, 0, 0, String, Format, ... )
 end
+function Plugin:NotifyMods( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Moderator Chat]",  255, 0, 0, String, Format, ... )
+end
 function Plugin:GiveCyst(Player)
             local ent = CreateEntity(Cyst.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
              ent:SetConstructionComplete()
@@ -158,6 +170,120 @@ end
 
 
 function Plugin:CreateCommands()
+
+
+local function Slap( Client, Targets, Number )
+//local Giver = Client:GetControllingPlayer()
+for i = 1, #Targets do
+local Player = Targets[ i ]:GetControllingPlayer()
+       if Player and Player:GetIsAlive() and not Player:isa("Commander") then
+           self:NotifyGeneric( nil, "slapping %s for %s seconds", true, Number, Player:GetName())
+            self:CreateTimer( 13, 1, Number, 
+            function () 
+           if not Player:GetIsAlive()  and self:TimerExists(13) then self:DestroyTimer( 13 ) return end
+            Player:SetVelocity(  Player:GetVelocity() + Vector(math.random(-900,900),math.random(-900,900),math.random(-900,900)  ) )
+            end )
+end
+end
+end
+local SlapCommand = self:BindCommand( "sh_slap", "slap", Slap)
+SlapCommand:Help ("sh_slap <player> <time> Slaps the player once per second random strength")
+SlapCommand:AddParam{ Type = "clients" }
+SlapCommand:AddParam{ Type = "number" }
+/*
+
+local function Gravity( Client, Targets, Number )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if not Player:isa("Commander") and Player:isa("Alien") or Player:isa("Marine") or Player:isa("ReadyRoomTeam") then
+              self:NotifyGeneric( nil, "Adjusted %s 's gravity to %s", true, Player:GetName(), Number)
+              Player.gravity = Number
+             end
+//Glitchy way. There's resistance in the first person camera, to this. Perhaps try hooking with shine and changing that way, instead.
+     end
+end
+local GravityCommand = self:BindCommand( "sh_gravity", "playergravity", Gravity )
+GravityCommand:AddParam{ Type = "clients" }
+GravityCommand:AddParam{ Type = "number" }
+GravityCommand:Help( "sh_gravity <player> <number> works differently than ns1. kinda glitchy. respawn to reset." )
+
+*/
+local function Bury( Client, Targets, Number )
+//local Giver = Client:GetControllingPlayer()
+for i = 1, #Targets do
+local Player = Targets[ i ]:GetControllingPlayer()
+       if Player and Player:GetIsAlive() and not Player:isa("Commander") then
+           Player:SetOrigin(Player:GetOrigin() - Vector(0, .5, 0))
+         self:NotifyGeneric( nil, "Burying %s for %s seconds", true, Player:GetName(), Number)
+            self:CreateTimer( 14, Number, 1, 
+            function () 
+           if not Player:GetIsAlive()  and self:TimerExists(14) then self:DestroyTimer( 14 ) return end
+            Player:SetOrigin(Player:GetOrigin() + Vector(0, .5, 0))
+            end )
+end
+end
+end
+
+local BuryCommand = self:BindCommand( "sh_bury", "bury", Bury)
+BuryCommand:Help ("sh_bury <player> <time> Buries the player for the given time")
+BuryCommand:AddParam{ Type = "clients" }
+BuryCommand:AddParam{ Type = "number" }
+/*
+local function ModelSize( Client, Targets, Number, Boolean )
+  if Number > 10 then return end
+    self:NotifyGeneric( nil, "Adjusted %s players size to %s percent. HP/ARMOR bonus boolean set to: %s", true, #Targets, Number * 100)
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if not Player:isa("Commander") and not Player:isa("Spectator") and Player.modelsize and Player:GetIsAlive() then
+             //  if not ( Player:isa("Exo") or Player:isa("Onos") and Number >= 2 ) or Number ~= 1 then Player:SetCameraDistance(Number) end
+                Player.modelsize = Number
+               local defaulthealth = LookupTechData(Player:GetTechId(), kTechDataMaxHealth, 1)
+              if Boolean == true then  Player:AdjustMaxHealth(defaulthealth * Number) end
+               if Boolean == true then Player:AdjustMaxArmor(Player:GetMaxArmor() * Number) end
+             --   self.playersize[Player:GetClient()] = Number
+             end
+     end
+end
+local ModelSizeCommand = self:BindCommand( "sh_modelsize", "modelsize", ModelSize )
+ModelSizeCommand:AddParam{ Type = "clients" }
+ModelSizeCommand:AddParam{ Type = "number" }
+ModelSizeCommand:Help( "sh_modelsize <player> <size> <true/false for health armor bonus>" )
+ModelSizeCommand:AddParam{ Type = "boolean", optional = true }
+*/
+local function Give( Client, Targets, String, Number )
+for i = 1, #Targets do
+local Player = Targets[ i ]:GetControllingPlayer()
+if Player and Player:GetIsAlive() and String ~= "alien" and not (Player:isa("Alien") and String == "armory") and not (Player:isa"ReadyRoomTeam" and String == "CommandStation" or String == "Hive") and not Player:isa("Commander") then
+/*
+Player:GiveItem(String)
+        for index, target in ipairs(GetEntitiesWithMixinWithinRangeAreVisible("Construct", Player:GetOrigin(), 3, true )) do
+              if not target:GetIsBuilt() then target:SetConstructionComplete() end
+          end
+ */
+           
+ local teamnum = Number and Number or Player:GetTeamNumber()
+ local ent = CreateEntity(String, Player:GetOrigin(), teamnum)  
+if HasMixin(ent, "Construct") then  ent:SetConstructionComplete() end
+             Shine:CommandNotify( Client, "gave %s an %s", true,
+			 Player:GetName() or "<unknown>", String )  
+end
+end
+end
+local GiveCommand = self:BindCommand( "sh_give", "give", Give )
+GiveCommand:AddParam{ Type = "clients" }
+GiveCommand:AddParam{ Type = "string" }
+GiveCommand:AddParam{ Type = "number", optional = true }
+GiveCommand:Help( "<player> Give item to player(s)" )
+
+
+local function Chat( Client, String )
+           
+      self:SendMessageToMods(String)
+end
+local ChatCommand = self:BindCommand( "sh_chat", "chat", Chat )
+ChatCommand:AddParam{ Type = "string" }
+ChatCommand:Help( "for mods to talk in private. Only mods can see and use this chat." )
+
 
 local function OpenSiegeDoors()
    for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
