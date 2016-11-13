@@ -29,6 +29,8 @@ local kSiege_TechIds =
     'MacSpawnOff',
     'ArcSpawnOn',
     'ArcSpawnOff',
+    'PrimalScream',
+    'BackupLight',
 }
 
 for i = 1, #kSiege_TechIds do

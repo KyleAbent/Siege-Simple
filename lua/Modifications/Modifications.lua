@@ -1,4 +1,16 @@
-Script.Load("lua/Fade_Siege.lua")
+function PowerConsumerMixin:GetHasSentryBatteryInRadius()
+      local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
+          for index, battery in ipairs(backupbattery) do
+            if GetIsUnitActive(battery) then return true end
+           end      
+ 
+   return false
+end
+
+function PowerConsumerMixin:GetIsPowered() 
+    return self.powered or self.powerSurge or self:GetHasSentryBatteryInRadius()
+end
+
 if Server then
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
     local num = 0
@@ -24,6 +36,16 @@ local function GetHiveReq(techId, origin, normal, commander)
     
     return true
 end
+local function GetCheckExoDropLimit(techId, origin, normal, commander)
+    local num = 0
+                 for index, exosuit in ientitylist(Shared.GetEntitiesWithClassname("ExoSuit")) do
+                num = num + 1
+    end
+    
+    return num < 10
+end
+
+SetCachedTechData(kTechId.DropExosuit, kTechDataBuildMethodFailedMessage, "Trying to crash the server?")
 
 SetCachedTechData(kTechId.Hive, kTechDataBuildRequiresMethod, GetHiveReq)
 SetCachedTechData(kTechId.Hive, kTechDataBuildMethodFailedMessage, "Techpoint is occupied")
@@ -35,6 +57,7 @@ SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheck
 
 SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
 
+SetCachedTechData(kTechId.DropExosuit, kTechDataBuildRequiresMethod, GetCheckExoDropLimit)
 
 
 
@@ -71,8 +94,11 @@ SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
 SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
 
 
-SetCachedTechData(kTechId.SentryBattery, kTechDataBuildRequiresMethod, DeniedBitch) --or return false?
-SetCachedTechData(kTechId.SentryBattery, kTechDataBuildMethodFailedMessage, "Disabled - not required")
+
+SetCachedTechData(kTechId.SentryBattery,kVisualRange, kBatteryPowerRange)
+SetCachedTechData(kTechId.SentryBattery,kTechDataDisplayName, "Backup Battery")
+SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures without power!")
+
 
 SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
 

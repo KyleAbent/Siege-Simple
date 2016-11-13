@@ -1,9 +1,44 @@
+Script.Load("lua/Weapons/Alien/PrimalScream.lua")
+Script.Load("lua/Additions/BackupLight.lua")
 local kSiege_TechData =
 {        
 
  
 
-   
+           { [kTechDataId] = kTechId.BackupLight, 
+           [kTechDataHint] = "Powered by thought!", 
+           [kTechDataGhostModelClass] = "MarineGhostModel",  
+           [kTechDataRequiresPower] = true,      
+           [kTechDataMapName] = BackupLight.kMapName,   
+         [kTechDataDisplayName] = "Backup Light", 
+        [kTechDataSpecifyOrientation] = true,
+        [kTechDataCostKey] = 5,     
+        [kTechDataBuildMethodFailedMessage] = "1 per room",
+        [kStructureBuildNearClass] = "SentryBattery",
+        [kStructureAttachId] = kTechId.SentryBattery,
+        [kTechDataBuildRequiresMethod] = GetCheckLightLimit,
+        [kStructureAttachRange] = 5,
+       [kTechDataModel] = BackupLight.kModelName,   
+         [kTechDataBuildTime] = 6, 
+         [kTechDataMaxHealth] = 1000,  
+        [kTechDataMaxArmor] = 100,  
+      [kTechDataPointValue] = 2, 
+    [kTechDataHotkey] = Move.O, 
+    [kTechDataNotOnInfestation] = false, 
+[kTechDataTooltipInfo] = "This bad boy right here has the potential to blind anyone standing in its way.. or just.. you know.. help brighten the mood wherever it's placed.",
+ [kTechDataObstacleRadius] = 0.25},
+ 
+  
+                  --Thanks dragon ns2c
+       { [kTechDataId] = kTechId.PrimalScream,  
+         [kTechDataCategory] = kTechId.Lerk,
+       [kTechDataDisplayName] = "Primal Scream",
+        [kTechDataMapName] =  Primal.kMapName,
+         --[kTechDataCostKey] = kPrimalScreamCostKey, 
+       -- [kTechDataResearchTimeKey] = kPrimalScreamTimeKey, 
+ [kTechDataTooltipInfo] = "+Energy to teammates, enzyme cloud"},
+ 
+    
         { [kTechDataId] = kTechId.MacSpawnOn,    
           [kTechDataCooldown] = 5,    
           [kTechDataDisplayName] = "Automatically spawn up to 8 macs for you",       
@@ -28,6 +63,8 @@ local kSiege_TechData =
          [kTechDataCostKey] = 0, 
           [kTechDataTooltipInfo] = "For those who prefer micro-micro management"},
           
+          
+
       
   
 }   

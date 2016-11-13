@@ -8,8 +8,8 @@ kCreditsPerRoundCap = 420
 kSideTimer = 0
 
 
-kAcidRocketDamage = 25
-kAcidRocketDamageType = kDamageType.Corrode
-kAcidRocketFireDelay = 0.5
-kAcidRocketEnergyCost = 10
-kAcidRocketRadius = 6
+
+kPrimalScreamEnergyCost = 20
+kPrimalScreamROF = 1
+
+kBatteryPowerRange = 6
