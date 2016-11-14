@@ -3,8 +3,8 @@ kMaxEntityRadius = 10
 
 
 kDoorMoveUpVect = 6 --although global
-kCreditMultiplier = 2
-kCreditsPerRoundCap = 420
+kCreditMultiplier = 1
+kCreditsPerRoundCap = 200
 kSideTimer = 0
 
 
@@ -12,4 +12,4 @@ kSideTimer = 0
 kPrimalScreamEnergyCost = 20
 kPrimalScreamROF = 1
 
-kBatteryPowerRange = 6
+kBatteryPowerRange = 5

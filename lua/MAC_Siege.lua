@@ -1,25 +1,9 @@
-if Server then
-
-
-local origrules = ARC.AcquireTarget
-function ARC:AcquireTarget() 
-
-local canfire = ( kSideTimer ~= 0 and GetSideDoorOpen() )  or  GetFrontDoorOpen() 
---Print("Arc can fire is %s", canfire)
-if not canfire then return end
-return origrules(self)
-
-end
-
-
-
-end
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
 --Kyle 'Avoca' Abent
-class 'ARCSiege' (ARC)
-ARCSiege.kMapName = "arcsiege"
+class 'MACSiege' (MAC)
+MACSiege.kMapName = "macsiege"
 
 local networkVars = 
 
@@ -29,25 +13,25 @@ local networkVars =
 }
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
-function ARCSiege:OnCreate()
-ARC.OnCreate(self)
+function MACSiege:OnCreate()
+MAC.OnCreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
 end
 
-function ARCSiege:OnInitialized()
-ARC.OnInitialized(self)
-self:SetTechId(kTechId.ARC)
+function MACSiege:OnInitialized()
+MAC.OnInitialized(self)
+self:SetTechId(kTechId.MAC)
 end
-        function ARCSiege:GetTechId()
-         return kTechId.ARC
+        function MACSiege:GetTechId()
+         return kTechId.MAC
 end
-function ARCSiege:OnGetMapBlipInfo()
+function MACSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
     local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.ARC
+    blipType = kMinimapBlipType.MAC
      blipTeam = self:GetTeamNumber()
     if blipType ~= 0 then
         success = true
@@ -61,4 +45,4 @@ end
     
     
  
-Shared.LinkClassToMap("ARCSiege", ARCSiege.kMapName, networkVars)
+Shared.LinkClassToMap("MACSiege", MACSiege.kMapName, networkVars)

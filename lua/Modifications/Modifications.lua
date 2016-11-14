@@ -1,4 +1,15 @@
-function PowerConsumerMixin:GetHasSentryBatteryInRadius()
+kHiveInfestationRadius = 14
+
+
+function LeapMixin:GetHasSecondary(player)
+    return GetHasTech(player, kTechId.Leap)
+end
+function StompMixin:GetHasSecondary(player)
+    return  GetHasTech(player, kTechId.Stomp)
+end
+
+
+local function GetHasSentryBatteryInRadius(self)
       local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
           for index, battery in ipairs(backupbattery) do
             if GetIsUnitActive(battery) then return true end
@@ -8,7 +19,7 @@ function PowerConsumerMixin:GetHasSentryBatteryInRadius()
 end
 
 function PowerConsumerMixin:GetIsPowered() 
-    return self.powered or self.powerSurge or self:GetHasSentryBatteryInRadius()
+    return self.powered or self.powerSurge or GetHasSentryBatteryInRadius(self)
 end
 
 if Server then
@@ -59,7 +70,10 @@ SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
 
 SetCachedTechData(kTechId.DropExosuit, kTechDataBuildRequiresMethod, GetCheckExoDropLimit)
 
+SetCachedTechData(kTechId.RoboticsFactory, kTechDataMapName, RoboSiege.kMapName)
 
+SetCachedTechData(kTechId.MAC, kTechDataMapName, MACSiege.kMapName)
+SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 
 

@@ -14,3 +14,7 @@ end
 
 Onos.kMaxSpeed = 8
 Onos.kChargeSpeed = 13.7
+
+function Onos:GetHasMovementSpecial()
+    return GetHasTech(self, kTechId.Charge)
+end

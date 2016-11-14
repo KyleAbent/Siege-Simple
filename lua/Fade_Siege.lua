@@ -5,3 +5,7 @@ function Fade:GetMaxSpeed(possible)
   --return speed * 1.10
   return not self:GetIsOnFire() and speed * 1.27 or speed
 end
+
+function Fade:GetCanMetabolizeHealth()
+    return GetHasTech(self, kTechId.MetabolizeHealth)
+end

@@ -1,3 +1,17 @@
+local orig_Alien_OnCreate = Alien.OnCreate
+function Alien:OnCreate()
+    orig_Alien_OnCreate(self)
+    if Server then
+        local t4 = self.GetTierFourTechId and self:GetTierFourTechId() or nil
+        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4) end, .8) 
+    end
+    
+     if Client then
+       GetGUIManager():CreateGUIScriptSingle("GUIInsight_TopBar")  
+    end
+    
+end
+
 if Server then
 
 function Alien:CreditBuy(Class)
@@ -22,6 +36,10 @@ function Alien:CreditBuy(Class)
         table.insert(upgradetable, class)
         self:ProcessBuyAction(upgradetable, true)
         
+end
+
+function Alien:RefreshTechsManually()
+UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId() )
 end
 
 

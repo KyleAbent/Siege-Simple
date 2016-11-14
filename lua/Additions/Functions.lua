@@ -1,4 +1,9 @@
 --Kyle 'Avoca' Abent
+function UpdateAliensWeaponsManually() ///Seriously this makes more sense than spamming some complicated formula every 0.5 seconds no?
+ for _, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do 
+        alien:RefreshTechsManually() 
+end
+end
 function FindFreeSpace(where, mindistance, maxdistance)    
      if not mindistance then mindistance = .5 end
      if not maxdistance then maxdistance = 24 end
