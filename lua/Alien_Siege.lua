@@ -6,9 +6,6 @@ function Alien:OnCreate()
         self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4) end, .8) 
     end
     
-     if Client then
-       GetGUIManager():CreateGUIScriptSingle("GUIInsight_TopBar")  
-    end
     
 end
 
@@ -39,7 +36,8 @@ function Alien:CreditBuy(Class)
 end
 
 function Alien:RefreshTechsManually()
-UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId() )
+local t4 = self.GetTierFourTechId and self:GetTierFourTechId() or nil
+UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4 )
 end
 
 

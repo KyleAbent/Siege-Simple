@@ -56,7 +56,6 @@ function ARCSiege:OnGetMapBlipInfo()
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
 
----techbuttons im not sure if i have to add recycle manually. Because the mixin does that?
     
     
     

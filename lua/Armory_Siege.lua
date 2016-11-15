@@ -57,8 +57,13 @@ function Armory:ResupplyPlayer(player)
                local fullhealth = player:GetHealth() == player:GetMaxHealth()
            local fullarmor = player:GetArmor() == player:GetMaxArmor()
                if not fullhealth or not fullarmor then
-           if not fullhealth then player:AddHealth(Armory.kHealAmount * 2, false, false, nil, nil, true) end
-           if not fullarmor then local addarmoramount = player:GetMaxArmor() * .10 player:AddArmor(addarmoramount) end 
+               
+               if fullhealth then
+                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .10 player:AddArmor(addarmoramount) end 
+               else 
+               player:AddHealth(Armory.kHealAmount, false, true, nil, nil, true) 
+               end
+
            
         self:TriggerEffects("armory_health", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
         resuppliedPlayer = true

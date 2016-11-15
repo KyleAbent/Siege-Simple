@@ -371,7 +371,7 @@ end
 function Gorge:GetCanWallJump()
 
     local wallWalkNormal = self:GetAverageWallWalkingNormal(kJumpWallRange, kJumpWallFeelerSize)
-    if wallWalkNormal and self:GetHasThreeHives() then
+    if wallWalkNormal then -- and GetHasTech(self, kTechId.BileBomb) then
         return wallWalkNormal.y < 0.5
     end
     

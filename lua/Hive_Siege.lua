@@ -12,13 +12,13 @@ for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
 end
 
 end
-
+/*
 local orig_Hive_OnKill = Hive.OnKill
 function Hive:OnKill(attacker, doer, point, direction)
     orig_Hive_OnKill(self, attacker, doer, point, direction)
 UpdateAliensWeaponsManually()
 end
-
+*/
 local orig_Hive_OnResearchComplete = Hive.OnResearchComplete
 function Hive:OnResearchComplete(researchId)
 --Print("HiveOnResearchComplete")

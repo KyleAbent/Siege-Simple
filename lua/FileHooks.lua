@@ -35,7 +35,7 @@ ModLoader.SetupFileHook( "lua/ARC.lua", "lua/ARC_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechTreeConstants.lua", "lua/TechTreeConstants_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechData.lua", "lua/TechData_Siege.lua", "post" )
 
---ModLoader.SetupFileHook( "lua/Exo.lua", "lua/Exo_Siege.lua", "post" )
+
 
 ModLoader.SetupFileHook( "lua/Skulk.lua", "lua/Skulk_Siege.lua", "post" )
 
