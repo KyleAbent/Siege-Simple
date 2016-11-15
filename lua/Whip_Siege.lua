@@ -11,7 +11,12 @@ if Server then
 end
 
 end
-
+/*
+function Whip:OnTeleportEnd()
+        local contamination = GetEntitiesWithinRange("Contamination", self:GetOrigin(), kInfestationRadius) 
+        if contamination then self:Root() end
+end
+*/
 function Whip:SlapFilter()
 
     local attacker = self

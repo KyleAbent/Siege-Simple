@@ -18,6 +18,8 @@ local URLPath = "config://shine/CreditsLink.json"
 Shine.Hook.SetupClassHook( "ScoringMixin", "AddScore", "OnScore", "PassivePost" )
 Shine.Hook.SetupClassHook( "NS2Gamerules", "ResetGame", "OnReset", "PassivePost" )
 
+Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyMist", "BecauseFuckSpammingCommanders", "Replace" )
+
 
 
 function Plugin:Initialise()
@@ -40,6 +42,25 @@ self.Refunded = false
 self.PlayerSpentAmount = {}
 
 return true
+end
+
+function Plugin:BecauseFuckSpammingCommanders(player)
+if not GetGamerules():GetGameStarted() then return end
+local CreditCost = 1
+ local client = player:GetClient()
+local controlling = client:GetControllingPlayer()
+local Client = controlling:GetClient()
+if self:GetPlayerCreditsInfo(Client) < CreditCost then
+self:NotifyCredits( Client, "%s costs %s credit, you have %s credit. Purchase invalid.", true, String, CreditCost, self:GetPlayerCreditsInfo(Client))
+return
+end
+self.CreditUsers[ Client ] = self:GetPlayerCreditsInfo(Client) - CreditCost
+//self:NotifyCredits( nil, "%s purchased a %s with %s credit(s)", true, Player:GetName(), String, CreditCost)
+player:GiveItem(NutrientMist.kMapName)
+   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(Client) ), Client) 
+   self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
+     self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
+return
 end
 
 function Plugin:GenereateTotalCreditAmount()

@@ -228,6 +228,20 @@ local BuryCommand = self:BindCommand( "sh_bury", "bury", Bury)
 BuryCommand:Help ("sh_bury <player> <time> Buries the player for the given time")
 BuryCommand:AddParam{ Type = "clients" }
 BuryCommand:AddParam{ Type = "number" }
+
+local function Destroy( Client, String  )
+        local player = Client:GetControllingPlayer()
+        for _, entity in ipairs( GetEntitiesWithMixinWithinRange( "Live", player:GetOrigin(), 8 ) ) do
+            if string.find(entity:GetMapName(), String)  then
+                  self:NotifyGeneric( nil, "destroyed %s in %s", true, entity:GetMapName(), entity:GetLocationName())
+                  DestroyEntity(entity)
+             end
+         end
+end
+local DestroyCommand = self:BindCommand( "sh_destroy", "destroy", Destroy )
+DestroyCommand:AddParam{ Type = "string" }
+DestroyCommand:Help( "Destroy <string> Destroys all entities with this name within 8 radius" )
+
 /*
 local function ModelSize( Client, Targets, Number, Boolean )
   if Number > 10 then return end

@@ -1,5 +1,14 @@
-kHiveInfestationRadius = 14
+kHiveInfestationRadius = 8
 
+function Gamerules_GetDamageMultiplier()
+
+    if Server  then
+        return GetGamerules():GetDamageMultiplier()
+    end
+
+    return 1
+    
+end
 
 function LeapMixin:GetHasSecondary(player)
     return GetHasTech(player, kTechId.Leap)

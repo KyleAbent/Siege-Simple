@@ -3,7 +3,9 @@ local function TimeUp(self)
     return false
 end
 
-
+function Contamination:GetInfestationGrowthRate()
+    return 0.625
+end
 
 function Contamination:OnInitialized()
 

@@ -14,6 +14,12 @@ ModLoader.SetupFileHook( "lua/Server.lua", "lua/Server_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/SentryBattery.lua", "lua/SentryBattery_Siege.lua", "post" )
 
+
+ModLoader.SetupFileHook( "lua/Weapons/Marine/Flamethrower.lua", "lua/Weapons/Marine/Flamethrower_Siege.lua", "post" )
+
+
+ModLoader.SetupFileHook( "lua/Player.lua", "lua/Player_Siege.lua", "post" )
+
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Welder.lua", "lua/Weapons/Marine/Welder_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/NS2Utility.lua", "lua/NS2Utility_Siege.lua", "post" )
@@ -41,5 +47,5 @@ ModLoader.SetupFileHook( "lua/Skulk.lua", "lua/Skulk_Siege.lua", "post" )
 
 
 ModLoader.SetupFileHook( "lua/Onos.lua", "lua/Onos_Siege.lua", "post" )
-
+ModLoader.SetupFileHook( "lua/Gamerules.lua", "lua/Gamerules_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/NS2Gamerules.lua", "lua/NS2Gamerules_Siege.lua", "post" )

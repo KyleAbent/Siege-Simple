@@ -62,6 +62,7 @@ function SandCastle:OnRoundStart()
   self:TimerValues()
   -- self:AutoBioMass()
   DoubleCheckLocks(self)
+  GetGamerules():SetDamageMultiplier(0)
 end
 function SandCastle:GetSiegeLength()
  return self.SiegeTimer
@@ -95,7 +96,7 @@ function SandCastle:OpenSiegeDoors()
               
 end
 function SandCastle:OpenFrontDoors()
-
+           GetGamerules():SetDamageMultiplier(1)
       self.FrontTimer = 0
                for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
                       OpenEightTimes(frontdoor)
@@ -108,7 +109,7 @@ function SandCastle:OpenFrontDoors()
 
 end
 function SandCastle:OpenSideDoors()
-
+          GetGamerules():SetDamageMultiplier(1)
       self.SideTimer = 0
                for index, sidedoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
                       OpenEightTimes(sidedoor)
