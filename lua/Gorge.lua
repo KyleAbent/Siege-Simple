@@ -694,7 +694,7 @@ function Gorge:PreUpdateMove(input, runningPrediction)
         // Most of the time, it returns a fraction of 0, which means
         // trace started outside the world (and no normal is returned)           
         local goal = self:GetAverageWallWalkingNormal(kNormalWallWalkRange, kNormalWallWalkFeelerSize)
-        if goal ~= nil and self:GetHasThreeHives() then //and not self:GetEnergy() < kWallWalkEnergyCost then 
+        if goal ~= nil then 
         
             self.wallWalkingNormalGoal = goal
             self.wallWalking = true

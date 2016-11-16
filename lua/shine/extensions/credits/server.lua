@@ -5,10 +5,16 @@ local Shine = Shine
 local Plugin = Plugin
 local HTTPRequest = Shared.SendHTTPRequest
 
+
+Plugin.HasConfig = true
+Plugin.ConfigName = "CreditsConfig.json"
+
+Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditsCapPerRound = 200 }
+
 Shine.CreditData = {}
 Shine.LinkFile = {}
 Shine.BadgeFile = {}
-Plugin.Version = "10.28"
+Plugin.Version = "11.16"
 
 local CreditsPath = "config://shine/plugins/credits.json"
 local URLPath = "config://shine/CreditsLink.json"
@@ -138,7 +144,7 @@ if Points ~= nil and Points ~= 0 and Player then
  local client = Player:GetClient()
  if not client then return end
          
-    local addamount = Points/(10/kCreditMultiplier)      
+    local addamount = Points/(10/self.Config.kCreditMultiplier)      
  local controlling = client:GetControllingPlayer()
  
          if Player:GetTeamNumber() == 1 then
@@ -234,10 +240,10 @@ end
  
  end
  function Plugin:GiveSeedCredits()
- local credits = 10 * kCreditMultiplier
-   if kCreditMultiplier == 1 then
+ local credits = 10 * self.Config.kCreditMultiplier
+   if self.Config.kCreditMultiplier == 1 then
  self:NotifyCredits( nil, "%s Credits", true, credits)
- elseif kCreditMultiplier == 2 then
+ elseif self.Config.kCreditMultiplier == 2 then
   self:NotifyCreditsDC( nil, "%s Credits", true, credits)
  end
  
@@ -253,12 +259,12 @@ end
    end
  end
  local function GetCreditsToSave(self, Client, savedamount)
-            local cap = kCreditsPerRoundCap 
+            local cap = self.Config.kCreditsCapPerRound 
           local creditstosave = self:GetPlayerCreditsInfo(Client)
           local earnedamount = creditstosave - savedamount
           if earnedamount > cap then 
           creditstosave = savedamount + cap
-          self:NotifyCredits( Client, "%s Credit cap per round exceeded. You earned %s credits this round. Only %s are saved. So your new total is %s", true, kCreditsPerRoundCap, earnedamount, kCreditsPerRoundCap, creditstosave )
+          self:NotifyCredits( Client, "%s Credit cap per round exceeded. You earned %s credits this round. Only %s are saved. So your new total is %s", true, self.Config.kCreditsCapPerRound, earnedamount, self.Config.kCreditsCapPerRound, creditstosave )
           Shine.ScreenText.SetText("Credits", string.format( "%s Credits", creditstosave ), Client) 
            end
     return creditstosave

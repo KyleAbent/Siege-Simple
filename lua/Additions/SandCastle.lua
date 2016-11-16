@@ -26,6 +26,7 @@ function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
    if kFrontTimer == nil then kFrontTimer = 330 end
    if kSideTimer == nil then kSideTimer = 0 end
+   if kDoorMoveUpVect == nil then kDoorMoveUpVect = 6 end
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
    self.SideTimer = kSideTimer
@@ -173,7 +174,7 @@ function SandCastle:FrontDoorTimer()
 
 end
 function SandCastle:OnPreGame()
-
+ GetGamerules():SetDamageMultiplier(1)
    for i = 1, 4 do
      Print("SandCastle OnPreGame")
    end

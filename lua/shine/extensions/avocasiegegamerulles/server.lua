@@ -164,7 +164,7 @@ function Plugin:NotifyMods( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Moderator Chat]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:GiveCyst(Player)
-            local ent = CreateEntity(Cyst.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
+            local ent = CreateEntity(CystAvoca.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
              ent:SetConstructionComplete()
 end
 
@@ -177,7 +177,7 @@ local function Slap( Client, Targets, Number )
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
        if Player and Player:GetIsAlive() and not Player:isa("Commander") then
-           self:NotifyGeneric( nil, "slapping %s for %s seconds", true, Number, Player:GetName())
+           self:NotifyGeneric( nil, "slapping %s for %s seconds", true, Player:GetName(), Number)
             self:CreateTimer( 13, 1, Number, 
             function () 
            if not Player:GetIsAlive()  and self:TimerExists(13) then self:DestroyTimer( 13 ) return end

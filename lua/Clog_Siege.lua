@@ -16,11 +16,11 @@ function Clog:GetInfestationRadius()
   local frontdoor = GetEntitiesWithinRange("FrontDoor", self:GetOrigin(), 7)
    if #frontdoor >=1 then return 0
    else
-    return 3.5
+    return ConditionalValue(not GetIsInSiege(self), 3.5, 2)
    end
 end
 function Clog:GetInfestationGrowthRate()
- return 0.5
+ return ConditionalValue(not GetIsInSiege(self), 0.5, 0.15)
 end
 function Clog:GetAttached()
 return false

@@ -14,6 +14,8 @@ ModLoader.SetupFileHook( "lua/Server.lua", "lua/Server_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/SentryBattery.lua", "lua/SentryBattery_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/TunnelEntrance.lua", "lua/TunnelEntrance_Siege.lua", "post" )
+
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Flamethrower.lua", "lua/Weapons/Marine/Flamethrower_Siege.lua", "post" )
 

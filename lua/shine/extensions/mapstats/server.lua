@@ -22,7 +22,7 @@ local MapStatsFile = Shine.LoadJSONFile( MapStatsPath  )
 self.MapStatsData = MapStatsFile
 end
 function Plugin:NotifyMapStats( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[11.15 MapStats]",  255, 0, 0, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[11.15> MapStats]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:CreateCommands()
 
@@ -38,7 +38,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
            Shine.ScreenText.End(1)  
           Shine.ScreenText.End(2)  
           Shine.ScreenText.End(3) 
-         self:NotifyGeneric( nil, "MapStats Are: Marines: %s, Aliens: %s", true, self:GetStatsData(false, true), self:GetStatsData(true, false))                                    
+         self:NotifyGeneric( nil, "Marines: %s, Aliens: %s", true, self:GetStatsData(false, true), self:GetStatsData(true, false))                                    
      elseif State == kGameState.Team1Won  then
      local MapStatsFile = Shine.LoadJSONFile( MapStatsPath  )
      self.MapStatsData = MapStatsFile
@@ -85,7 +85,7 @@ function Plugin:ShowStats()
       Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.55,Text = "Marines:".. Map.marines,Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,} )
 end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[MapStats]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[11.15 MapStats]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
 function Plugin:Cleanup()
 	self:Disable()

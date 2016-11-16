@@ -4,7 +4,7 @@ local function TimeUp(self)
 end
 
 function Contamination:GetInfestationGrowthRate()
-    return 0.625
+    return ConditionalValue(not GetIsInSiege(self), 0.625, 0.5)
 end
 
 function Contamination:OnInitialized()
