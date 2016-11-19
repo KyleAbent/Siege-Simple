@@ -3,7 +3,7 @@ ModLoader.SetupFileHook( "lua/TargetCache.lua", "lua/TargetCache_Siege.lua", "po
 
 ModLoader.SetupFileHook( "lua/CommAbilities/Alien/Contamination.lua", "lua/CommAbilities/Alien/Contamination_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Marine_Siege.lua", "post" )
-ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Clog_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Clog.lua", "lua/Clog_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Alien.lua", "lua/Alien_Siege.lua", "post" ) --includes server
 ModLoader.SetupFileHook( "lua/RoboticsFactory.lua", "lua/RoboticsFactory_Siege.lua", "post" ) 
 ModLoader.SetupFileHook( "lua/Sentry.lua", "lua/Sentry_Siege.lua", "post" )
