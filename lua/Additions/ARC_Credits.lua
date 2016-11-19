@@ -17,7 +17,7 @@ InitMixin(self, ConstructMixin)
 
 end
 
-function ARCCredit:OnConstructionComplete()
+function ARCCredit:OnConstructionComplete(builder)
 self:GiveOrder(kTechId.ARCDeploy, self:GetId(), self:GetOrigin(), nil, false, false)
 CreateEntity(Scan.kMapName, self:GetOrigin(), 1)
  end

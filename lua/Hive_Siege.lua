@@ -1,3 +1,5 @@
+if Server then
+
 function Hive:CheckForDoubleUpG()  --CONSTANT issue of Double hives. Meaning no upgs. Ruining games after time spent seeding server.
  
 --Print("Hive:CheckForDoubleUpG()")
@@ -29,4 +31,6 @@ UpdateAliensWeaponsManually()
      end   
 
   return orig_Hive_OnResearchComplete(self, researchId) 
+end
+
 end

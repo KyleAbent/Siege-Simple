@@ -1,7 +1,7 @@
 SentryBattery.kMarineCircleDecalName = PrecacheAsset("models/misc/circle/circle.material")
 
 function SentryBattery:OnAdjustModelCoords(modelCoords)
-    local scale = 1.3
+    local scale = 1.15
     local coords = modelCoords
     coords.xAxis = coords.xAxis * scale
     coords.yAxis = coords.yAxis * scale
