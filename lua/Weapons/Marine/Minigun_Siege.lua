@@ -103,8 +103,8 @@ local function Shoot(self, leftSide)
 
             local target = targets[i]
             local hitPoint = hitPoints[i]
-            local damage = ConditionalValue(target and not target:isa("Onos"), kMinigunDamage, kMinigunDamage+ 4)
-            Print("minigun damage is %s", damage)
+            local damage = ConditionalValue(self:GetDistance(target) <= 5 and target:isa("Onos"), kMinigunDamage +4 , kMinigunDamage)
+            --Print("minigun damage is %s", damage)
             self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, damage, "", showTracer and i == numTargets)
             
             local client = Server and player:GetClient() or Client
