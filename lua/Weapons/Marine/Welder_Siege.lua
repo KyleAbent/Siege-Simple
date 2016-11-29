@@ -19,7 +19,7 @@ function Welder:PerformWeld(player)
     
     if didHit and target and HasMixin(target, "Live") then
            
-        if player:GetTeamNumber() == target:GetTeamNumber() and HasMixin(target, "Weldable") and  HasMixin(target, "Levels") and target.GetMaxLevel ~= target:GetMaxLevel() then
+        if target:GetIsBuilt() and player:GetTeamNumber() == target:GetTeamNumber() and HasMixin(target, "Weldable") and  HasMixin(target, "Levels") and target.GetMaxLevel ~= target:GetMaxLevel() then
                  local prevlevel = target.level
                 target:AddXP(target:GetAddXPAmount())
                 local success = false
@@ -30,7 +30,6 @@ function Welder:PerformWeld(player)
                    local kLevelScoreAdded = 1
                    player:AddContinuousScore("WeldHealth", addAmount, kAmountLeveledForPoints, kLevelScoreAdded)
                    end     
-                   return true
        end
     end
         return origweld(self, player)

@@ -9,7 +9,7 @@ local HTTPRequest = Shared.SendHTTPRequest
 Plugin.HasConfig = true
 Plugin.ConfigName = "CreditsConfig.json"
 
-Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditsCapPerRound = 200 }
+Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditCapPerRound = 200 }
 
 Shine.CreditData = {}
 Shine.LinkFile = {}
@@ -56,14 +56,14 @@ local CreditCost = 1
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
-if self:GetPlayerCreditsInfo(Client) < CreditCost then
-self:NotifyCredits( Client, "%s costs %s credit, you have %s credit. Purchase invalid.", true, String, CreditCost, self:GetPlayerCreditsInfo(Client))
+if self:GetPlayerSaltInfo(Client) < CreditCost then
+self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, CreditCost, self:GetPlayerSaltInfo(Client))
 return
 end
-self.CreditUsers[ Client ] = self:GetPlayerCreditsInfo(Client) - CreditCost
-//self:NotifyCredits( nil, "%s purchased a %s with %s credit(s)", true, Player:GetName(), String, CreditCost)
+self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
+//self:NotifySalt( nil, "%s purchased a %s with %s credit(s)", true, Player:GetName(), String, CreditCost)
 player:GiveItem(NutrientMist.kMapName)
-   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(Client) ), Client) 
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
    self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
      self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
 return
@@ -76,7 +76,7 @@ for i = 1, table.Count(self.CreditData.Users) do
     local table = self.CreditData.Users.credits
     credits = credits + table
 end
-Print("%s credits",credits)
+Print("%s salt",credits)
 end
 
 
@@ -103,7 +103,7 @@ local entities = {}
             local entity = table.random(entities)
              if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
                 DestroyEntity(entity)
-                 self:NotifyCredits( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
+                 self:NotifySalt( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
             end
      return true
 end
@@ -153,8 +153,8 @@ if Points ~= nil and Points ~= 0 and Player then
          self.aliencredits = self.aliencredits + addamount
          end
          
-self.CreditUsers[ controlling:GetClient() ] = self:GetPlayerCreditsInfo(controlling:GetClient()) + addamount
-Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(controlling:GetClient()) ), controlling:GetClient()) 
+self.CreditUsers[ controlling:GetClient() ] = self:GetPlayerSaltInfo(controlling:GetClient()) + addamount
+Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(controlling:GetClient()) ), controlling:GetClient()) 
 end
 end
 function Plugin:NotifySiege( Player, String, Format, ... )
@@ -166,9 +166,9 @@ end
 
 function Plugin:OnReset()
   if self.GameStarted and not self.Refunded then
-       self:NotifyCredits( nil, "Did you spend any credits only for the round to reset? If so, then no worries! - You have just been refunded!", true )
+       self:NotifySalt( nil, "Did you spend any credits only for the round to reset? If so, then no worries! - You have just been refunded!", true )
        
-              Shine.ScreenText.End("Credits")  
+              Shine.ScreenText.End("Salt")  
               Shine.ScreenText.End(80)
               Shine.ScreenText.End(81)  
               Shine.ScreenText.End(82)  
@@ -190,7 +190,7 @@ function Plugin:OnReset()
               for i = 1, #Players do
               local Player = Players[ i ]
                   if Player then
-                  Shine.ScreenText.Add( "Credits", {X = 0.20, Y = 0.95,Text = string.format( "%s Credits", self:GetPlayerCreditsInfo(Player:GetClient()) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Player:GetClient() )
+                  Shine.ScreenText.Add( "Salt", {X = 0.20, Y = 0.95,Text = string.format( "%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Player:GetClient() )
                   end
               end
     self.Refunded = true
@@ -229,43 +229,43 @@ self.CreditData = CreditsFile
         */
 //end
 
-      --  if not Shine.Timer.Exists("SeedTimer") then
-      --  	Shine.Timer.Create( "SeedTimer", 600, -1, function() self:SeedCredits() end )
-      --end
+        if not Shine.Timer.Exists("CommTimer") then
+        	Shine.Timer.Create( "CommTimer", 300, -1, function() self:CommCredits() end )
+      end
 
 end
- function Plugin:SeedCredits()
+ function Plugin:CommCredits()
              
- self:GiveSeedCredits() 
+ self:GiveCommCredits() 
  
  end
- function Plugin:GiveSeedCredits()
- local credits = 10 * self.Config.kCreditMultiplier
+ function Plugin:GiveCommCredits()
+ local salt = 5 * self.Config.kCreditMultiplier
    if self.Config.kCreditMultiplier == 1 then
- self:NotifyCredits( nil, "%s Credits", true, credits)
+ self:NotifySalt( nil, "%s Salt for each commander", true, salt)
  elseif self.Config.kCreditMultiplier == 2 then
-  self:NotifyCreditsDC( nil, "%s Credits", true, credits)
+  self:NotifySaltDC( nil, "%s Salt for each commander", true, salt)
  end
  
   local Players = Shine.GetAllPlayers()
    for i = 1, #Players do
     local player = Players[ i ]
-     if player then
-      self.CreditUsers[ player:GetClient() ] = self:GetPlayerCreditsInfo(player:GetClient()) + credits
+     if player and player:isa("Commander") then
+      self.CreditUsers[ player:GetClient() ] = self:GetPlayerSaltInfo(player:GetClient()) + salt
           if self.GameStarted then
-          Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(player:GetClient()) ), player:GetClient()) 
+          Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(player:GetClient()) ), player:GetClient()) 
           end
       end
    end
  end
  local function GetCreditsToSave(self, Client, savedamount)
-            local cap = self.Config.kCreditsCapPerRound 
-          local creditstosave = self:GetPlayerCreditsInfo(Client)
+            local cap = self.Config.kCreditCapPerRound 
+          local creditstosave = self:GetPlayerSaltInfo(Client)
           local earnedamount = creditstosave - savedamount
           if earnedamount > cap then 
           creditstosave = savedamount + cap
-          self:NotifyCredits( Client, "%s Credit cap per round exceeded. You earned %s credits this round. Only %s are saved. So your new total is %s", true, self.Config.kCreditsCapPerRound, earnedamount, self.Config.kCreditsCapPerRound, creditstosave )
-          Shine.ScreenText.SetText("Credits", string.format( "%s Credits", creditstosave ), Client) 
+          self:NotifySalt( Client, "%s Salt cap per round exceeded. You earned %s salt this round. Only %s are saved. So your new total is %s", true, self.Config.kCreditCapPerRound, earnedamount, self.Config.kCreditCapPerRound, creditstosave )
+          Shine.ScreenText.SetText("Salt", string.format( "%s Salt", creditstosave ), Client) 
            end
     return creditstosave
  end
@@ -277,14 +277,14 @@ function Plugin:SaveCredits(Client, disconnected)
            end        
        Data.credits = GetCreditsToSave(self, Client, Data.credits)
        else 
-      self.CreditData.Users[Client:GetUserId() ] = {credits = self:GetPlayerCreditsInfo(Client), name = Client:GetControllingPlayer():GetName() }
+      self.CreditData.Users[Client:GetUserId() ] = {credits = self:GetPlayerSaltInfo(Client), name = Client:GetControllingPlayer():GetName() }
        end
      if disconnected == true then Shine.SaveJSONFile( self.CreditData, CreditsPath  ) end
 end
 function Plugin:ClientDisconnect(Client)
 self:SaveCredits(Client, true)
 end
-function Plugin:GetPlayerCreditsInfo(Client)
+function Plugin:GetPlayerSaltInfo(Client)
    local Credits = 0
        if self.CreditUsers[ Client ] then
           Credits = self.CreditUsers[ Client ]
@@ -325,7 +325,7 @@ end
  
  if Client:GetIsVirtual() then return end
  
-  Shine.ScreenText.Add( "Credits", {X = 0.20, Y = 0.85,Text = string.format( "%s Credits", self:GetPlayerCreditsInfo(Client) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+  Shine.ScreenText.Add( "Salt", {X = 0.20, Y = 0.85,Text = string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Client )
     self.PlayerSpentAmount[Client] = 0
     
     
@@ -354,7 +354,7 @@ function Plugin:SaveAllCredits()
                --  end)
                  
                  self:SimpleTimer( 14, function() 
-                 self:NotifyCredits( nil, "http://credits.ns2siege.com - credit ranking updated", true)
+                 self:NotifySalt( nil, "http://credits.ns2siege.com - credit ranking updated", true)
                  end)        
                  
 
@@ -373,7 +373,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
               Shine.ScreenText.End(85)  
               Shine.ScreenText.End(86)
               Shine.ScreenText.End(87)  
-          Shine.ScreenText.End("Credits")    
+          Shine.ScreenText.End("Salt")    
               self.marinecredits = 0
               self.aliencredits = 0
               self.marinebonus = 0
@@ -388,7 +388,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                   if Player then
                   self.PlayerSpentAmount[Player:GetClient()] = 0
                   //Shine.ScreenText.Add( "Credits", {X = 0.20, Y = 0.95,Text = "Loading Credits...",Duration = 1800,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Player )
-                  Shine.ScreenText.Add( "Credits", {X = 0.20, Y = 0.95,Text = string.format( "%s Credits", self:GetPlayerCreditsInfo(Player:GetClient()) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Player:GetClient() )
+                  Shine.ScreenText.Add( "Salt", {X = 0.20, Y = 0.95,Text = string.format( "%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ),Duration = 1800,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 3,FadeIn = 0,}, Player:GetClient() )
                   end
               end
               
@@ -449,11 +449,11 @@ end
 function Plugin:NotifyAlien( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 250, 235, 215,  "[redits Season 3]", 144, 238, 144, String, Format, ... )
 end
-function Plugin:NotifyCredits( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[Credits]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
+function Plugin:NotifySalt( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Salt]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
-function Plugin:NotifyCreditsDC( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[Double Credit Weekend]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
+function Plugin:NotifySaltDC( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Double Salt Weekend]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
 function Plugin:NotifyBuy( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Credits Season 3]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
@@ -473,27 +473,27 @@ local function GetIsAlienInSiege(Player)
 local function PerformBuy(self, who, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid)
    local autobuild = false 
    local success = false
-   if self:GetPlayerCreditsInfo(who) < cost then 
-self:NotifyCredits( who, "%s costs %s credits, you have %s credit(s). Purchase invalid.", true, String, cost, self:GetPlayerCreditsInfo(who))
+   if self:GetPlayerSaltInfo(who) < cost then 
+self:NotifySalt( who, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, cost, self:GetPlayerSaltInfo(who))
 return
 end
 
 if whoagain:isa("Marine") and whoagain:GetHasLayStructure() then 
-self:NotifyCredits(who, "Empty hudslot 5 before buying structure, newb. You're such a newb.", true)
+self:NotifySalt(who, "Empty hudslot 5 before buying structure, newb. You're such a newb.", true)
 return
 end
 
  
 
 if self:HasLimitOf(whoagain, mapname, whoagain:GetTeamNumber(), limitof, who) then 
-self:NotifyCredits(who, "Limit of %s per %s per player ya noob", true, limitof, mapname)
+self:NotifySalt(who, "Limit of %s per %s per player ya noob", true, limitof, mapname)
 return
 end
 
 if reqground then
 
 if not whoagain:GetIsOnGround() then
- self:NotifyCredits( who, "You must be on the ground to purchase %s", true, mapname)
+ self:NotifySalt( who, "You must be on the ground to purchase %s", true, mapname)
  return
  end
  
@@ -501,13 +501,13 @@ if not whoagain:GetIsOnGround() then
  
  if reqpathing then 
  if not GetPathingRequirementsMet(Vector( whoagain:GetOrigin() ),  GetExtents(kTechId.MAC) ) then
-self:NotifyCredits( who, "Pathing does not exist in this placement. Purchase invalid.", true)
+self:NotifySalt( who, "Pathing does not exist in this placement. Purchase invalid.", true)
 return 
 end
  end
  
 
-self.CreditUsers[ who ] = self:GetPlayerCreditsInfo(who) - cost
+self.CreditUsers[ who ] = self:GetPlayerSaltInfo(who) - cost
 
 local entity = nil 
 
@@ -524,13 +524,13 @@ elseif whoagain:GetTeamNumber() == 2 then
     self.AlienTotalSpent = self.AlienTotalSpent + cost
  --   if reqpathing then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), 2) end
     entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
-    if not entity then self:NotifyCredits( who, "Invalid Purchase Request of %s.", true, String) return end
+    if not entity then self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) return end
     if entity.SetOwner then entity:SetOwner(whoagain) end
       if not GetIsAlienInSiege(whoagain) then
       if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
       if entity.SetIsACreditStructure then entity:SetIsACreditStructure(true)  end
        else
-       self:NotifyCredits( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
+       self:NotifySalt( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
         end --
 end --
 
@@ -540,7 +540,7 @@ if entity then
 local supply = LookupTechData(entity:GetTechId(), kTechDataSupply, nil) or 0
 whoagain:GetTeam():RemoveSupplyUsed(supply)
 end
-   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(who) ), who) 
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
 self.BuyUsersTimer[who] = Shared.GetTime() + delayafter
 Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
    self.PlayerSpentAmount[who] = self.PlayerSpentAmount[who]  + cost
@@ -552,36 +552,36 @@ local function FirstCheckRulesHere(self, Client, Player, String, cost)
 local Time = Shared.GetTime()
 local NextUse = self.BuyUsersTimer[Client]
 if NextUse and NextUse > Time and not Shared.GetCheatsEnabled() then
-self:NotifyCredits( Client, "Please wait %s seconds before purchasing %s. Thanks.", true, string.TimeToString( NextUse - Time ), String)
+self:NotifySalt( Client, "Please wait %s seconds before purchasing %s. Thanks.", true, string.TimeToString( NextUse - Time ), String)
 return true
 end
 
 if not GetGamerules():GetGameStarted() then
-self:NotifyCredits( Client, "Buying in pregame is not supported right now. It's a waste of credits unless determined pregame to be free spending later on.", true)
+self:NotifySalt( Client, "Buying in pregame is not supported right now. It's a waste of credits unless determined pregame to be free spending later on.", true)
 return true
 end
 
 /*
 local gameRules = GetGamerules()
 if gameRules:GetGameStarted() and gameRules:GetIsSuddenDeath() then
-self:NotifyCredits( Client, "Buying in suddendeath is not supported right now.", true)
+self:NotifySalt( Client, "Buying in suddendeath is not supported right now.", true)
 return
 end
 */
 if Player:isa("Commander") or not Player:GetIsAlive() then 
-      self:NotifyCredits( Client, "Either you're dead, or a commander... Really no difference between the two.. anyway, no credit spending for you.", true)
+      self:NotifySalt( Client, "Either you're dead, or a commander... Really no difference between the two.. anyway, no credit spending for you.", true)
 return true
 end
 
 /*
 if Player then
- self:NotifyCredits( Client, "Purchases currently disabled. ", true)
+ self:NotifySalt( Client, "Purchases currently disabled. ", true)
  return
 end
 */
 if cost then 
- if self:GetPlayerCreditsInfo(Client) < cost then 
-self:NotifyCredits( Client, "%s costs %s credits, you have %s credit(s). Purchase invalid.", true, String, cost, self:GetPlayerCreditsInfo(Client))
+ if self:GetPlayerSaltInfo(Client) < cost then 
+self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, cost, self:GetPlayerSaltInfo(Client))
 return true
 end
 
@@ -691,9 +691,9 @@ return mapnameof, delay, reqpathing, CreditCost, limit
 
 end
 local function DeductBuy(self, who, cost, delayafter)
-   self.CreditUsers[ who ] = self:GetPlayerCreditsInfo(who) - cost
+   self.CreditUsers[ who ] = self:GetPlayerSaltInfo(who) - cost
    self.BuyUsersTimer[who] = Shared.GetTime() + delayafter
-   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(who) ), who) 
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
    Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
    self.PlayerSpentAmount[who] = self.PlayerSpentAmount[who]  + cost
 end
@@ -720,8 +720,8 @@ if not Player then return end
    end
    
    
-      self.CreditUsers[ Client ] = self:GetPlayerCreditsInfo(Client) - cost
-   Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(Client) ), Client) 
+      self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - cost
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
 self.BuyUsersTimer[Client] = Shared.GetTime() + delayafter
 Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
  self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + cost
@@ -809,30 +809,30 @@ local BuyCommand = self:BindCommand("sh_buy", "buy", Buy, true)
 BuyCommand:Help("sh_buy <item name>")
 BuyCommand:AddParam{ Type = "string" }
 
-local function Credits(Client, Targets)
+local function Salt(Client, Targets)
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
-self:NotifyCredits( Client, "%s has a total of %s credits", true, Player:GetName(), self:GetPlayerCreditsInfo(Player:GetClient()))
+self:NotifySalt( Client, "%s has a total of %s salt", true, Player:GetName(), self:GetPlayerSaltInfo(Player:GetClient()))
 end
 end
 
-local CreditsCommand = self:BindCommand("sh_credits", "credits", Credits, true, false)
-CreditsCommand:Help("sh_credits <name>")
+local CreditsCommand = self:BindCommand("sh_salt", "salt", Salt, true, false)
+CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
 
-local function AddCredits(Client, Targets, Number, Display)
+local function AddSalt(Client, Targets, Number, Display)
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
-self.CreditUsers[ Player:GetClient() ] = self:GetPlayerCreditsInfo(Player:GetClient()) + Number
-Shine.ScreenText.SetText("Credits", string.format( "%s Credits", self:GetPlayerCreditsInfo(Player:GetClient()) ), Player:GetClient()) 
+self.CreditUsers[ Player:GetClient() ] = self:GetPlayerSaltInfo(Player:GetClient()) + Number
+Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ), Player:GetClient()) 
    if Display == true then
-   self:NotifyGeneric( nil, "gave %s credits to %s (who now has a total of %s)", true, Number, Player:GetName(), self:GetPlayerCreditsInfo(Player:GetClient()))
+   self:NotifyGeneric( nil, "gave %s salt to %s (who now has a total of %s)", true, Number, Player:GetName(), self:GetPlayerSaltInfo(Player:GetClient()))
    end
 end
 end
 
-local AddCreditsCommand = self:BindCommand("sh_addcredits", "addcredits", AddCredits)
-AddCreditsCommand:Help("sh_addcredits <player> <number>")
+local AddCreditsCommand = self:BindCommand("sh_addcsalt", "addsalt", AddSalt)
+AddCreditsCommand:Help("sh_addsalt <player> <number>")
 AddCreditsCommand:AddParam{ Type = "clients" }
 AddCreditsCommand:AddParam{ Type = "number" }
 AddCreditsCommand:AddParam{ Type = "boolean", Optional = true, Default = true }

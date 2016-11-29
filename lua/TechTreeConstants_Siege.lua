@@ -32,8 +32,9 @@ local kSiege_TechIds =
     'PrimalScream',
     'BackupLight',
     'AdvancedBeacon',
-    'ExoFlamer',
-    'ExoWelder',
+    'EggBeacon',
+    'StructureBeacon',
+    'CommTunnel',
 }
 
 for i = 1, #kSiege_TechIds do

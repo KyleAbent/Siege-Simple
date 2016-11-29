@@ -38,7 +38,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
            Shine.ScreenText.End(1)  
           Shine.ScreenText.End(2)  
           Shine.ScreenText.End(3) 
-         self:NotifyGeneric( nil, "Marines: %s, Aliens: %s", true, self:GetStatsData(false, true), self:GetStatsData(true, false))                                    
+         self:NotifyGeneric( nil, "%s: Marines: %s, Aliens: %s", true, Shared.GetMapName(), self:GetStatsData(false, true), self:GetStatsData(true, false))                                    
      elseif State == kGameState.Team1Won  then
      local MapStatsFile = Shine.LoadJSONFile( MapStatsPath  )
      self.MapStatsData = MapStatsFile

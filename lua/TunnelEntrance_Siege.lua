@@ -5,3 +5,4 @@ end
 function TunnelEntrance:GetInfestationRadius()
     return ConditionalValue(not GetIsInSiege(self), 7, 3.7) 
 end
+

@@ -95,7 +95,6 @@ SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapNa
 SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
 SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
 SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
-SetCachedTechData(kTechId.ArmsLab, kTechDataMapName,ArmsLabAvoca.kMapName)
 
 
 

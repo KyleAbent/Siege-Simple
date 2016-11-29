@@ -15,6 +15,10 @@ ModLoader.SetupFileHook( "lua/AlienTeam.lua", "lua/AlienTeam_Siege.lua", "post" 
 
 ModLoader.SetupFileHook( "lua/Server.lua", "lua/Server_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Embryo.lua", "lua/Embryo_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/AlienCommander.lua", "lua/AlienCommander_Siege.lua", "post" ) 
+
+
 ModLoader.SetupFileHook( "lua/InfantryPortal.lua", "lua/InfantryPortal_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/CommandStation.lua", "lua/CommandStation_Siege.lua", "post" )

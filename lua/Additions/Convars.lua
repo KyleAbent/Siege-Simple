@@ -1,4 +1,14 @@
+kDoorMoveUpVect = 40
 kAdvancedBeaconCost = 13
+kEggBeaconCost = 10
+kEggBeaconCoolDown = 12
+kStructureBeaconCoolDown = 12
+kStructureBeaconCost = 10
+
+kEggBeaconHealth = 675
+kEggBeaconArmor = 175
+kStructureBeaconHealth = 675
+kStructureBeaconArmor = 175 
 
 kMaxEntitiesInRadius = 30 
 kMaxEntityRadius = 10 
