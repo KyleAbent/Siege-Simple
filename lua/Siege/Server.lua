@@ -1,6 +1,10 @@
 Script.Load("lua/Siege/Shared.lua")
 
 
+
+
+
+
 function LoadPathing(mapName, groupName, values)
 
 

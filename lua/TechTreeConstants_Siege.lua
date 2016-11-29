@@ -31,6 +31,9 @@ local kSiege_TechIds =
     'ArcSpawnOff',
     'PrimalScream',
     'BackupLight',
+    'AdvancedBeacon',
+    'ExoFlamer',
+    'ExoWelder',
 }
 
 for i = 1, #kSiege_TechIds do

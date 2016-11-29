@@ -1,4 +1,6 @@
 --Kyle 'Avoca' Abent
+Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/AvocaMixin.lua")
 class 'RoboSiege' (RoboticsFactory)
 RoboSiege.kMapName = "robosiege"
 
@@ -9,6 +11,8 @@ local networkVars =
     automaticspawningarc = " boolean",
 
 }
+AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(AvocaMixin, networkVars)
 function RoboSiege:OnCreate()
 RoboticsFactory.OnCreate(self)
 self.automaticspawningmac = false
@@ -17,6 +21,8 @@ end
 
 function RoboSiege:OnInitialized()
 RoboticsFactory.OnInitialized(self)
+        InitMixin(self, LevelsMixin)
+        InitMixin(self, AvocaMixin)
 if self:GetTechId() ~= kTechId.ARCRoboticsFactory then self:SetTechId(kTechId.RoboticsFactory) end
 end
 
@@ -124,6 +130,11 @@ end
 end
     
     
-    
+        function RoboSiege:GetMaxLevel()
+    return kDefaultLvl
+    end
+    function RoboSiege:GetAddXPAmount()
+    return kDefaultAddXp
+    end
  
 Shared.LinkClassToMap("RoboSiege", RoboSiege.kMapName, networkVars)

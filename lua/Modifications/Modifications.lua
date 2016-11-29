@@ -85,6 +85,23 @@ SetCachedTechData(kTechId.MAC, kTechDataMapName, MACSiege.kMapName)
 SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 
+---Hacks------------
+
+SetCachedTechData(kTechId.ArmsLab, kTechDataMapName, ArmsLabAvoca.kMapName)
+SetCachedTechData(kTechId.Armory, kTechDataMapName, ArmoryAvoca.kMapName)
+SetCachedTechData(kTechId.PhaseGate, kTechDataMapName, PhaseGateAvoca.kMapName)
+SetCachedTechData(kTechId.PrototypeLab, kTechDataMapName, PrototypeLabAvoca.kMapName)
+SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapName)
+SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
+SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
+SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
+SetCachedTechData(kTechId.ArmsLab, kTechDataMapName,ArmsLabAvoca.kMapName)
+
+
+
+------------------
+
+
 
 function GetCheckSentryLimit(techId, origin, normal, commander)
     local location = GetLocationForPoint(origin)

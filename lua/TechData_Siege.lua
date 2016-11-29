@@ -1,9 +1,27 @@
 Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
+Script.Load("lua/Weapons/Marine/ModularExo_ExoFlamer.lua")
+Script.Load("lua/Weapons/Marine/ModularExo_ExoWelder.lua")
 local kSiege_TechData =
 {        
 
- 
+   { [kTechDataId] = kTechId.AdvancedBeacon,   
+   [kTechDataBuildTime] = 0.1,   
+   [kTechDataCooldown] = kAdvancedBeaconCoolDown,
+    [kTechDataDisplayName] = "Advanced Beacon",   
+   [kTechDataHotkey] = Move.B, 
+    [kTechDataCostKey] = 13, 
+[kTechDataTooltipInfo] = "Revives Dead Players as well."},
+
+      {  [kTechDataId] = kTechId.ExoFlamer,
+		[kTechDataMapName] = ExoFlamer.kMapName,
+		[kTechDataDamageType] = kFlamethrowerDamageType},
+								
+		{ [kTechDataId] = kTechId.ExoWelder,
+		[kTechDataMapName] = ExoWelder.kMapName,
+		[kTechDataDamageType] = kWelderDamageType},
+								
+								
 
            { [kTechDataId] = kTechId.BackupLight, 
            [kTechDataHint] = "Powered by thought!", 

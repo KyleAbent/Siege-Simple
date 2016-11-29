@@ -15,9 +15,23 @@ ModLoader.SetupFileHook( "lua/AlienTeam.lua", "lua/AlienTeam_Siege.lua", "post" 
 
 ModLoader.SetupFileHook( "lua/Server.lua", "lua/Server_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/InfantryPortal.lua", "lua/InfantryPortal_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/CommandStation.lua", "lua/CommandStation_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/ArmsLab.lua", "lua/ArmsLab_Siege.lua", "post" )
+
+
 ModLoader.SetupFileHook( "lua/SentryBattery.lua", "lua/SentryBattery_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/TunnelEntrance.lua", "lua/TunnelEntrance_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/PhaseGate.lua", "lua/PhaseGate_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/PrototypeLab.lua", "lua/PrototypeLab_Siege.lua", "post" )
+
+
+ModLoader.SetupFileHook( "lua/Observatory.lua", "lua/Observatory_Siege.lua", "post" )
 
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Flamethrower.lua", "lua/Weapons/Marine/Flamethrower_Siege.lua", "post" )
