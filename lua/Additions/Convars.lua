@@ -25,7 +25,7 @@ kPrimalScreamROF = 1
 kBatteryPowerRange = 5
 
 kDefaultLvl = 25
-kDefaultAddXp = 0.25
+kDefaultAddXp = 0.15
 kCommSentryPerRoom = 4
 
 

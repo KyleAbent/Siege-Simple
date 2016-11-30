@@ -9,7 +9,7 @@ local HTTPRequest = Shared.SendHTTPRequest
 Plugin.HasConfig = true
 Plugin.ConfigName = "CreditsConfig.json"
 
-Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditCapPerRound = 200 }
+Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditsCapPerRound = 200 }
 
 Shine.CreditData = {}
 Shine.LinkFile = {}
@@ -259,12 +259,12 @@ end
    end
  end
  local function GetCreditsToSave(self, Client, savedamount)
-            local cap = self.Config.kCreditCapPerRound 
+            local cap = self.Config.kCreditsCapPerRound 
           local creditstosave = self:GetPlayerSaltInfo(Client)
           local earnedamount = creditstosave - savedamount
           if earnedamount > cap then 
           creditstosave = savedamount + cap
-          self:NotifySalt( Client, "%s Salt cap per round exceeded. You earned %s salt this round. Only %s are saved. So your new total is %s", true, self.Config.kCreditCapPerRound, earnedamount, self.Config.kCreditCapPerRound, creditstosave )
+          self:NotifySalt( Client, "%s Salt cap per round exceeded. You earned %s salt this round. Only %s are saved. So your new total is %s", true, self.Config.kCreditsCapPerRound, earnedamount, self.Config.kCreditsCapPerRound, creditstosave )
           Shine.ScreenText.SetText("Salt", string.format( "%s Salt", creditstosave ), Client) 
            end
     return creditstosave

@@ -88,7 +88,7 @@ end)
      
      
 Shine.VoteMenu:EditPage( "Main", function( self ) 
-self:AddSideButton( "Credits", function() self:SetPage( "SpendCredits" ) end)
+self:AddSideButton( "Salt", function() self:SetPage( "SpendCredits" ) end)
 end)
 
 

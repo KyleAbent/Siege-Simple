@@ -16,10 +16,10 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
     end
     
      function CommandStationAvoca:GetMaxLevel()
-    return 37
+    return kDefaultLvl
     end
     function CommandStationAvoca:GetAddXPAmount()
-    return 0.15
+    return kDefaultAddXp
     end   
    function CommandStationAvoca:OnGetMapBlipInfo()
     local success = false
