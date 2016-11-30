@@ -8,43 +8,6 @@ Sentry.kBarrelScanRate = 120
 function Sentry:GetFov()
     return 360
 end
-local function GetHasSentryBatteryInRadius(self)
-      local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
-          for index, battery in ipairs(backupbattery) do
-            if GetIsUnitActive(battery) then return true end
-           end      
- 
-   return false
-end
-
-
-local function NewUpdateBatteryState( self )
-        local time = Shared.GetTime()
-        
-        if self.lastBatteryCheckTime == nil or (time > self.lastBatteryCheckTime + 1) then
-        
-           local location = GetLocationForPoint(self:GetOrigin())
-           local powerpoint = location ~= nil and GetPowerPointForLocation(location:GetName())   
-            self.attachedToBattery = false
-           if powerpoint then 
-            self.attachedToBattery = (powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled()) or GetHasSentryBatteryInRadius(self)
-            end
-            self.lastBatteryCheckTime = time
-        end
-end
-if Server then
-local origup = Sentry.OnUpdate
-
- function Sentry:OnUpdate(deltaTime)
-    
-        PROFILE("Sentry:OnUpdate")
-        origup(self, deltaTime)
-       
-    
-end
-
-end
-
 
 
 
