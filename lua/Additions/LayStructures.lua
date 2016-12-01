@@ -347,41 +347,13 @@ function LayStructures:GetPositionForStructure(player)
     
         if trace.entity == nil then
             isPositionValid = true
-      --  elseif HasMixin(trace.entity, "Construct") and trace.entity:GetTeamNumber() == 1  then
-      --      isPositionValid = true
-      --      isonstructure = true
+        elseif HasMixin(trace.entity, "Avoca") and trace.entity:GetTeamNumber() == 1  then
+            isonstructure = ( trace.entity.GetCanStick and trace.entity:GetCanStick() )
+            isPositionValid = isonstructure
         end
         
-        displayOrigin = trace.endPoint
-        
-        // Can not be built on infestation
-     --   if GetIsPointOnInfestation(displayOrigin) then
-        --    isPositionValid = false
-      --  end
-    
-          if not IsPathable(displayOrigin) then
-                    isPositionValid = false or isonstructure
-                end
-          local entsnearby = GetEntitiesWithMixinForTeamWithinRange("Construct", 1, player:GetOrigin(), 12) 
-          
-          if #entsnearby >= 20 then
-           isPositionValid = false
-           end
-           
-           if  self.techId == kTechId.Sentry then
-                 local nearsentrys = GetEntitiesForTeamWithinRange("Sentry", 1, player:GetOrigin(), 24)
-                 if #nearsentrys >= 8 then
-                 isPositionValid = false
-                 end
-           elseif self.techId == kTechId.ARC then
-                 local neararcs = GetEntitiesForTeamWithinRange("ARC", 1, player:GetOrigin(), 48)
-                 if #neararcs >= 4 then
-                 isPositionValid = false
-                 end
-                  -- if string.find(player:GetLocationName(), "siege") or string.find(player:GetLocationName(), "Siege") then
-                 -- isPositionValid = false
-                 -- end
-          end
+        displayOrigin = trace.endPoint 
+
           
         if GetPointBlocksAttachEntities(displayOrigin) then
             isPositionValid = false

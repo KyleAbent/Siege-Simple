@@ -35,6 +35,7 @@ local kSiege_TechIds =
     'EggBeacon',
     'StructureBeacon',
     'CommTunnel',
+    'OnoGrow',
 }
 
 for i = 1, #kSiege_TechIds do

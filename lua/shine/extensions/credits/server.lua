@@ -98,13 +98,16 @@ local entities = {}
     
      //             <
     if entitycount ~= limit then return false end
-
+   local delete = false
+   if( kSideTimer ~= 0 and GetSideDoorOpen() ) or GetFrontDoorOpen()  then delete = true  end
+      if delete then
             if #entities > 0 then
             local entity = table.random(entities)
              if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
                 DestroyEntity(entity)
                  self:NotifySalt( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
             end
+      end
      return true
 end
  /*
@@ -528,7 +531,12 @@ elseif whoagain:GetTeamNumber() == 2 then
     if entity.SetOwner then entity:SetOwner(whoagain) end
       if not GetIsAlienInSiege(whoagain) then
       if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
-      if entity.SetIsACreditStructure then entity:SetIsACreditStructure(true)  end
+      
+         if entity.SetIsACreditStructure then 
+         if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
+          entity:SetIsACreditStructure(true) 
+          end
+          
        else
        self:NotifySalt( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
         end --
@@ -540,8 +548,10 @@ if entity then
 local supply = LookupTechData(entity:GetTechId(), kTechDataSupply, nil) or 0
 whoagain:GetTeam():RemoveSupplyUsed(supply)
 end
+   local delaytoadd = 4
+   if( kSideTimer ~= 0 and GetSideDoorOpen() ) or GetFrontDoorOpen()  then delaytoadd = delayafter  end
    Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
-self.BuyUsersTimer[who] = Shared.GetTime() + delayafter
+self.BuyUsersTimer[who] = Shared.GetTime() + delaytoadd
 Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
    self.PlayerSpentAmount[who] = self.PlayerSpentAmount[who]  + cost
 
@@ -598,9 +608,17 @@ local reqground = false
 local limit = 3
 local techid = nil
 
-if String == "Observatory"  then
-mapnameof = Observatory.kMapName
-techid = kTechId.ObservatoryAvoca
+if String == "Scan" then
+mapnameof = Scan.kMapName
+techid = kTechId.Scan
+delay = 8
+elseif String == "Medpack" then
+mapnameof = MedPack.kMapName
+techid = kTechId.MedPack
+delay = 8
+elseif String == "Observatory"  then
+mapnameof = ObservatoryAvoca.kMapName
+techid = kTechId.Observatory
 CreditCost = 10
 elseif String == "Armory"  then
 CreditCost = 12
@@ -671,16 +689,16 @@ reqpathing = false
  mapnameof = HallucinationCloud.kMapName
 elseif String == "Shade" then
 CreditCost = 10
-mapnameof = Shade.kMapName
+mapnameof = ShadeAvoca.kMapName
 elseif String == "Crag" then
 CreditCost = 10
-mapnameof = Crag.kMapName
+mapnameof = CragAvoca.kMapName
 elseif String == "Whip" then
 CreditCost = 10
-mapnameof = Whip.kMapName
+mapnameof = WhipAvoca.kMapName
 elseif String == "Shift" then
 CreditCost = 10
-mapnameof = Shift.kMapName
+mapnameof = ShiftAvoca.kMapName
 elseif String == "Hydra" then
 CreditCost = 1
 mapnameof = Hydra.kMapName

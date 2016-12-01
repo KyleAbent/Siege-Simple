@@ -48,33 +48,39 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
     self:AddSideButton( "MiniGunExo(45)", function() Shared.ConsoleCommand ("sh_buyclass MiniGun")  end)
     self:AddSideButton( "RailGunExo(40)", function() Shared.ConsoleCommand ("sh_buyclass RailGun")  end)
         elseif player:GetTeamNumber() == 2 then
-      self:AddSideButton( "Gorge(10)", function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
-      self:AddSideButton( "Lerk(15)", function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
-      self:AddSideButton( "Fade(25)", function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
-      self:AddSideButton( "Onos(30)", function() Shared.ConsoleCommand ("sh_buyclass Onos")  end)
+      self:AddSideButton( "Gorge(9)", function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
+      self:AddSideButton( "Lerk(14)", function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
+      self:AddSideButton( "Fade(24)", function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
+      self:AddSideButton( "Onos(29)", function() Shared.ConsoleCommand ("sh_buyclass Onos")  end)
     end
      self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
 Shine.VoteMenu:AddPage ("SpendCommAbilities", function( self )
        local player = Client.GetLocalPlayer()
+           if player:GetTeamNumber() == 1 then 
+                  self:AddSideButton ("Scan(1)", function()Shared.ConsoleCommand ("sh_buy Scan")end)
+                  self:AddSideButton ("Medpack(1)", function()Shared.ConsoleCommand ("sh_buy Medpack")end)
+           else
        self:AddSideButton ("NutrientMist(1)", function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
        self:AddSideButton( "EnzymeCloud(1.5)", function() Shared.ConsoleCommand ("sh_buy EnzymeCloud")  end)
        self:AddSideButton( "Ink(2)", function() Shared.ConsoleCommand ("sh_buy Ink")  end)
        self:AddSideButton( "Hallucination(1.75)", function() Shared.ConsoleCommand ("sh_buy Hallucination")  end)
        self:AddSideButton( "Contamination(1)", function() Shared.ConsoleCommand ("sh_buy Contamination")  end)
+     end
      self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
 
 
 Shine.VoteMenu:AddPage ("SpendCredits", function( self )
        local player = Client.GetLocalPlayer()
+            self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilities" ) end)
     if player:GetTeamNumber() == 1 then 
 
         self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeapons" ) end)
-        
-elseif player:GetTeamNumber() == 2 then
-     self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilities" ) end)
-end    
+      end  
+
+
+    
 
      self:AddSideButton( "Classes", function() self:SetPage( "SpendClasses" ) end) 
      self:AddSideButton( "Structures", function() self:SetPage( "SpendStructures" ) end)

@@ -13,6 +13,8 @@ self.techTree:AddBuildNode(kTechId.EggBeacon, kTechId.CragHive)
 self.techTree:AddBuildNode(kTechId.CommTunnel, kTechId.None)
 self.techTree:AddBuildNode(kTechId.StructureBeacon, kTechId.ShiftHive)
 self.techTree:AddPassive(kTechId.PrimalScream,              kTechId.Spores, kTechId.None, kTechId.AllAliens)
+
+self.techTree:AddPassive(kTechId.OnoGrow,              kTechId.Stomp, kTechId.None, kTechId.AllAliens)
     
     
     self.techTree:SetComplete()

@@ -4,6 +4,7 @@ Script.Load("lua/Additions/StructureBeacon.lua")
 Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
+Script.Load("lua/Additions/OnoGrow.lua")
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
 local tunnelEntrances = 0 
@@ -80,6 +81,15 @@ local kSiege_TechData =
 [kTechDataCostKey] = 4, 
 [kTechDataRequiresInfestation] = false,
 [kTechDataTooltipInfo] =  "GORGE_TUNNEL_TOOLTIP"}, 
+
+   { [kTechDataId] = kTechId.OnoGrow,        
+  [kTechDataCategory] = kTechId.Onos,   
+     [kTechDataMapName] = OnoGrow.kMapName,  
+[kTechDataCostKey] = kStabResearchCost,
+ [kTechDataResearchTimeKey] = kStabResearchTime, 
+ --   [kTechDataDamageType] = kStabDamageType,  
+     [kTechDataDisplayName] = "OnoGrow",
+[kTechDataTooltipInfo] = "wip"},
 
 
 

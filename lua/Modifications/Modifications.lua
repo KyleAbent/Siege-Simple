@@ -1,5 +1,16 @@
 kHiveInfestationRadius = 8
 
+if Server then
+
+local origscore = ScoringMixin.AddScore
+
+function ScoringMixin:AddScore(points, res, wasKill)
+   if points ~= nil and wasKill and self:isa("Alien") then points = points * 1.30 + points end
+   origscore(self, points, res, wasKill)
+end
+
+end
+
 function Gamerules_GetDamageMultiplier()
 
     if Server  then
@@ -32,6 +43,14 @@ function PowerConsumerMixin:GetIsPowered()
 end
 
 if Server then
+
+/*
+ function MaturityMixin:OnMaturityUpdate(deltaTime)
+ PROFILE("MaturityMixin:OnMaturityUpdate")
+   Print("Maturity update")
+ -- return false
+  end
+  */
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
     local num = 0
 
@@ -95,6 +114,11 @@ SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapNa
 SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
 SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
 SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
+
+SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipAvoca.kMapName)
+SetCachedTechData(kTechId.Crag, kTechDataMapName,CragAvoca.kMapName)
+SetCachedTechData(kTechId.Shade, kTechDataMapName,ShadeAvoca.kMapName)
+SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftAvoca.kMapName)
 
 
 

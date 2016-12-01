@@ -1,6 +1,9 @@
 ModLoader.SetupFileHook( "lua/TargetCache.lua", "lua/TargetCache_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Minigun.lua", "lua/Weapons/Marine/Minigun_Siege.lua", "post" )
 
+
+ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
+
 ModLoader.SetupFileHook( "lua/CommAbilities/Alien/Contamination.lua", "lua/CommAbilities/Alien/Contamination_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Marine_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Clog.lua", "lua/Clog_Siege.lua", "post" )
@@ -59,6 +62,8 @@ ModLoader.SetupFileHook( "lua/Lerk.lua", "lua/Lerk_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Fade.lua", "lua/Fade_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Balance.lua", "lua/Balance_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Whip.lua", "lua/Whip_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Shift.lua", "lua/Shift_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Shade.lua", "lua/Shade_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Hydra.lua", "lua/Hydra_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/ARC.lua", "lua/ARC_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechTreeConstants.lua", "lua/TechTreeConstants_Siege.lua", "post" )

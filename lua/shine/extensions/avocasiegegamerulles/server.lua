@@ -4,6 +4,12 @@ local Plugin = Plugin
 
 
 
+local OldConfused
+
+local function NewConfused(self)
+return 
+end
+
 local OldUpdateBatteryState
 
 local function GetHasSentryBatteryInRadius(self)
@@ -31,6 +37,8 @@ local function NewUpdateBatteryState( self )
 end
 
 OldUpdateBatteryState = Shine.Hook.ReplaceLocalFunction( Sentry.OnUpdate, "UpdateBatteryState", NewUpdateBatteryState )
+
+OldConfused = Shine.Hook.ReplaceLocalFunction( Sentry.OnUpdate, "UpdateConfusedState", NewConfused )
 
 
 

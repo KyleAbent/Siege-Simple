@@ -122,17 +122,17 @@ function SandCastle:OpenSideDoors()
 
 end
 function SandCastle:GetIsSiegeOpen()
-           local gamestarttime = GetGamerules():GetGameStartTime()
+           local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
            return  gameLength >= self.SiegeTimer
 end
 function SandCastle:GetIsFrontOpen()
-           local gamestarttime = GetGamerules():GetGameStartTime()
+           local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
            return  gameLength >= self.FrontTimer
 end
 function SandCastle:GetIsSideOpen()
-           local gamestarttime = GetGamerules():GetGameStartTime()
+           local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
            return  gameLength >= self.SideTimer
 end

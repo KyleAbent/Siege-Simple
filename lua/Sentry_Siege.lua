@@ -1,7 +1,7 @@
 Sentry.kFov = 360
 Sentry.kMaxPitch = 360
 Sentry.kMaxYaw = 360
-Sentry.kBarrelScanRate = 120
+Sentry.kBarrelMoveRate = 105 -- default 150
 
 
 

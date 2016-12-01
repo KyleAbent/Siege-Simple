@@ -426,8 +426,12 @@ function Gorge:GetMaxSpeed(possible)
         maxspeed = maxspeed - 1
     end
     
-    if self.movementModiferState then
+    if self.movementModiferState then 
         maxspeed = maxspeed * 0.5
+    end
+    
+    if self:GetIsWallWalking() then
+        maxspeed = maxspeed * 0.9
     end
     
     return maxspeed //* size

@@ -1,3 +1,40 @@
+--Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/AvocaMixin.lua")
+
+class 'WhipAvoca' (Whip)
+WhipAvoca.kMapName = "whipavoca"
+
+local networkVars = {}
+
+--AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(AvocaMixin, networkVars)
+
+    function WhipAvoca:OnInitialized()
+     Whip.OnInitialized(self)
+       --  InitMixin(self, LevelsMixin)
+        InitMixin(self, AvocaMixin)
+        self:SetTechId(kTechId.Whip)
+    end
+    
+        function WhipAvoca:GetTechId()
+         return kTechId.Whip
+    end
+   function WhipAvoca:OnGetMapBlipInfo()
+    local success = false
+    local blipType = kMinimapBlipType.Undefined
+    local blipTeam = -1
+    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
+    blipType = kMinimapBlipType.Whip
+     blipTeam = self:GetTeamNumber()
+    if blipType ~= 0 then
+        success = true
+    end
+    
+    return success, blipType, blipTeam, isAttacked, false --isParasited
+end
+
+Shared.LinkClassToMap("WhipAvoca", WhipAvoca.kMapName, networkVars) 
+
 local originit = Whip.OnInitialized
 function Whip:OnInitialized()
 
@@ -48,3 +85,7 @@ function Whip:GetCanBomb(target, targetPoint)
     return true
     
 end
+
+
+
+    
