@@ -43,7 +43,9 @@ function UpdateAvocaAvailability(forAlien, tierOneTechId, tierTwoTechId, tierThr
              t1 = GetGamerules():GetAllTech() or (tierOneTechId ~= nil and tierOneTechId ~= kTechId.None and GetHasTech(forAlien, tierOneTechId))
             t2 = GetGamerules():GetAllTech() or (tierTwoTechId ~= nil and tierTwoTechId ~= kTechId.None and GetHasTech(forAlien, tierTwoTechId))
             t3 = GetGamerules():GetAllTech() or (tierThreeTechId ~= nil and tierThreeTechId ~= kTechId.None and GetHasTech(forAlien, tierThreeTechId))
-            t4= GetGamerules():GetAllTech() or (tierFourTechId ~= nil and tierFourTechId ~= kTechId.None and GetHasTech(forAlien, tierFourTechId))
+            if t3 then
+            t4 = GetGamerules():GetAllTech() or (tierFourTechId ~= nil and tierFourTechId ~= kTechId.None and GetHasTech(forAlien, tierThreeTechId))
+            end
 
 
             if t1 then      

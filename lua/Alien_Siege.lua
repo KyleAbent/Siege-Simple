@@ -2,13 +2,31 @@ local orig_Alien_OnCreate = Alien.OnCreate
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
     if Server then
-        local t4 = self.GetTierFourTechId and self:GetTierFourTechId() or nil
+        local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
         self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4) end, .8) 
     end
     
     
 end
-
+function Alien:GiveLayStructure(techid, mapname)
+  --  if not self:GetHasLayStructure() then
+           local laystructure = self:GiveItem(LayStructures.kMapName)
+           self:SetActiveWeapon(LayStructures.kMapName)
+           laystructure:SetTechId(techid)
+           laystructure:SetMapName(mapname)
+  -- else
+   --  self:TellMarine(self)
+  -- end
+end
+function Alien:GetHasLayStructure()
+        local weapon = self:GetWeaponInHUDSlot(5)
+        local builder = false
+    if (weapon) then
+            builder = true
+    end
+    
+    return builder
+end
 if Server then
 
 function Alien:CreditBuy(Class)
@@ -36,7 +54,7 @@ function Alien:CreditBuy(Class)
 end
 
 function Alien:RefreshTechsManually()
-local t4 = self.GetTierFourTechId and self:GetTierFourTechId() or nil
+         local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
 UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4 )
 end
 

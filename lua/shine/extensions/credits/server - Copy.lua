@@ -98,14 +98,14 @@ local entities = {}
     
      //             <
     if entitycount ~= limit then return false end
-   local delete = GetSetupConcluded()
+   local delete = false
+   if( kSideTimer ~= 0 and GetSideDoorOpen() ) or GetFrontDoorOpen()  then delete = true  end
       if delete then
             if #entities > 0 then
             local entity = table.random(entities)
              if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
                 DestroyEntity(entity)
                  self:NotifySalt( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
-                 return false
             end
       end
      return true
@@ -446,11 +446,20 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Admin Abuse]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
+function Plugin:NotifyMarine( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 250, 235, 215,  "[redits Season 3]",  40, 248, 255, String, Format, ... )
+end
+function Plugin:NotifyAlien( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 250, 235, 215,  "[redits Season 3]", 144, 238, 144, String, Format, ... )
+end
 function Plugin:NotifySalt( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Salt]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
 function Plugin:NotifySaltDC( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Double Salt Weekend]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
+end
+function Plugin:NotifyBuy( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Credits Season 3]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
 function Plugin:Cleanup()
 	self:Disable()
@@ -464,7 +473,7 @@ local function GetIsAlienInSiege(Player)
     end
     return false
  end
-local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid,laybool)
+local function PerformBuy(self, who, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid)
    local autobuild = false 
    local success = false
    if self:GetPlayerSaltInfo(who) < cost then 
@@ -516,26 +525,21 @@ self.MarineTotalSpent = self.MarineTotalSpent + cost
         end
 elseif whoagain:GetTeamNumber() == 2 then
     self.AlienTotalSpent = self.AlienTotalSpent + cost
-  --  if laybool then
-    --  whoagain:GiveLayStructure(techid, mapname)
-      --else
+ --   if reqpathing then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), 2) end
     entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
-    if not entity then 
-       self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) 
-      return 
-      else
-       if entity.SetIsACreditStructure then 
-        if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
-          entity:SetIsACreditStructure(true) 
-          end
-      end
+    if not entity then self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) return end
     if entity.SetOwner then entity:SetOwner(whoagain) end
       if not GetIsAlienInSiege(whoagain) then
-      if entity.SetConstructionComplete then  entity:SetConstructionComplete() end      
+      if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
+      
+         if entity.SetIsACreditStructure then 
+         if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
+          entity:SetIsACreditStructure(true) 
+          end
+          
        else
        self:NotifySalt( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
         end --
-    --  end-- laybool
 end --
 
 
@@ -544,7 +548,8 @@ if entity then
 local supply = LookupTechData(entity:GetTechId(), kTechDataSupply, nil) or 0
 whoagain:GetTeam():RemoveSupplyUsed(supply)
 end
-   local delaytoadd = not GetSetupConcluded() and 4 or delayafter
+   local delaytoadd = 4
+   if( kSideTimer ~= 0 and GetSideDoorOpen() ) or GetFrontDoorOpen()  then delaytoadd = delayafter  end
    Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
 self.BuyUsersTimer[who] = Shared.GetTime() + delaytoadd
 Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
@@ -657,61 +662,50 @@ local function TeamTwoBuyRules(self, Client, Player, String)
 
 local mapnameof = nil
 local delay = 12
-local reqpathing = false
-local reqground = false
+local reqpathing = true
 local CreditCost = 2
 local limit = 3
-local techid = nil
-local laybool = true
---if laystructure works for aliens then worst case alternative to laybool is a new cmd 
--- for mist, enzme, and hallucinations... such as i have for weapons for weapons/classes.  12.1.16 note
 
-if String == "NutrientMist" then 
+
+if String == "NutrientMist" then
 CreditCost = 1
 mapnameof = NutrientMist.kMapName
-reqground = true
-laybool = false
+reqpathing = false
 elseif String == "Contamination"  then
 CreditCost = 1
 mapnameof = Contamination.kMapName    
-techid = kTechId.Contamination
 elseif String == "EnzymeCloud" then
 CreditCost = 1.5
-laybool = false
+reqpathing = false
 mapnameof = EnzymeCloud.kMapName
 elseif String == "Ink" then
 CreditCost = 2
-laybool = false
+reqpathing = false
 delay = 45
 mapnameof = ShadeInk.kMapName
 elseif String == "Hallucination" then
 CreditCost = 1.75
 reqpathing = false
  mapnameof = HallucinationCloud.kMapName
-  laybool = false
 elseif String == "Shade" then
 CreditCost = 10
 mapnameof = ShadeAvoca.kMapName
-techid = kTechId.Shade
 elseif String == "Crag" then
 CreditCost = 10
 mapnameof = CragAvoca.kMapName
-techid = kTechId.Crag
 elseif String == "Whip" then
 CreditCost = 10
 mapnameof = WhipAvoca.kMapName
-techid = kTechId.Crag
 elseif String == "Shift" then
 CreditCost = 10
 mapnameof = ShiftAvoca.kMapName
-techid = kTechId.Shift
 elseif String == "Hydra" then
 CreditCost = 1
 mapnameof = Hydra.kMapName
-techid = kTechId.Hydea
+reqpathing = false
 end
 
-return mapnameof, delay, reqpathing, CreditCost, limit, reqground, techid, laybool
+return mapnameof, delay, reqpathing, CreditCost, limit
 
 end
 local function DeductBuy(self, who, cost, delayafter)
@@ -809,7 +803,6 @@ local Time = Shared.GetTime()
 local NextUse = self.BuyUsersTimer[Client]
 local reqpathing = true
 local reqground = true
-local laybool = false
 if not Player then return end
  if FirstCheckRulesHere(self, Client, Player, String ) == true then return end
 local CreditCost = 1
@@ -819,11 +812,11 @@ if Player:GetTeamNumber() == 1 then
   mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid = TeamOneBuyRules(self, Client, Player, String)
 elseif Player:GetTeamNumber() == 2 then
 reqground = false
-  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, laybool  = TeamTwoBuyRules(self, Client, Player, String)
+  mapnameof, delay, reqpathing, CreditCost, limit  = TeamTwoBuyRules(self, Client, Player, String)
 end // end of team numbers
 
 if mapnameof then
- PerformBuy(self, Client, String, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String, laybool) 
+ PerformBuy(self, Client, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String) 
 end
 
 end

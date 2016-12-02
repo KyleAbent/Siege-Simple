@@ -1,6 +1,6 @@
 local Shine = Shine
 
-local Plugin = {}
+local Plugin = Plugin
 
 function Plugin:Initialise()
 self.Enabled = true
@@ -8,5 +8,3 @@ return true
 end
 
 
-
-Shine:RegisterExtension( "avocasiegegamerulles", Plugin )

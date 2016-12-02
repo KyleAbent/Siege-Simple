@@ -7,7 +7,6 @@ ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/S
 ModLoader.SetupFileHook( "lua/CommAbilities/Alien/Contamination.lua", "lua/CommAbilities/Alien/Contamination_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Marine_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Clog.lua", "lua/Clog_Siege.lua", "post" )
-ModLoader.SetupFileHook( "lua/Alien.lua", "lua/Alien_Siege.lua", "post" ) --includes server
 ModLoader.SetupFileHook( "lua/RoboticsFactory.lua", "lua/RoboticsFactory_Siege.lua", "post" ) 
 ModLoader.SetupFileHook( "lua/Sentry.lua", "lua/Sentry_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/JetpackMarine.lua", "lua/JetpackMarine_Siege.lua", "post" )
@@ -77,3 +76,4 @@ ModLoader.SetupFileHook( "lua/Skulk.lua", "lua/Skulk_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Onos.lua", "lua/Onos_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Gamerules.lua", "lua/Gamerules_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/NS2Gamerules.lua", "lua/NS2Gamerules_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Alien.lua", "lua/Alien_Siege.lua", "post" ) --includes server

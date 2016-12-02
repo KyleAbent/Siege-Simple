@@ -1,3 +1,7 @@
+
+kAlienDefaultLvl = 25
+kAlienDefaultAddXp = 0.25
+
 kDoorMoveUpVect = 40
 kAdvancedBeaconCost = 13
 kEggBeaconCost = 10
@@ -10,13 +14,8 @@ kEggBeaconArmor = 175
 kStructureBeaconHealth = 675
 kStructureBeaconArmor = 175 
 
-kMaxEntitiesInRadius = 30 
-kMaxEntityRadius = 10 
-
-
-
-kSideTimer = 0
-
+kPrimaryTimer = 0
+kSideTimer = 0 -- b/c maps still use this
 
 
 kPrimalScreamEnergyCost = 20
@@ -27,11 +26,3 @@ kBatteryPowerRange = 5
 kDefaultLvl = 25
 kDefaultAddXp = 0.15
 kCommSentryPerRoom = 4
-
-
-kExoWelderDamagePerSecond = 28
-kExoPlayerWeldRate = 15
-kExoStructureWeldRate = 65
-kExoFlamerDamage = 23
-kExoWelderDamagePerSecond = 28
-kNanoArmorHealPerSecond = 1

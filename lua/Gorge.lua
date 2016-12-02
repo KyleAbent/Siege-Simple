@@ -872,6 +872,12 @@ if Server then
     
     end
 
+
+function Gorge:GetTierFourTechId()
+    return kTechId.None
+end
+
+
 end
 
 

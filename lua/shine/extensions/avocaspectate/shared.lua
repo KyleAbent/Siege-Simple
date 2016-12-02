@@ -9,4 +9,4 @@ end
 
 
 
-Shine:RegisterExtension( "avocasiegegamerulles", Plugin )
+Shine:RegisterExtension( "avocaspectate", Plugin )

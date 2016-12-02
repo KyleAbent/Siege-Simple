@@ -7,11 +7,6 @@ self.Enabled = true
 return true
 end
 
-function Plugin:ShowTimer(who)
- if who then
-GetGUIManager():CreateGUIScriptSingle("GUIInsight_TopBar") 
-end
-end
- 
+
 
 

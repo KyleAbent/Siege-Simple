@@ -1,4 +1,4 @@
---Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 
 class 'ShiftAvoca' (Shift)
@@ -6,12 +6,12 @@ ShiftAvoca.kMapName = "shiftavoca"
 
 local networkVars = {}
 
---AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 
     function ShiftAvoca:OnInitialized()
      Shift.OnInitialized(self)
-       --  InitMixin(self, LevelsMixin)
+         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shift)
     end
@@ -32,5 +32,11 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
+    function ShiftAvoca:GetMaxLevel()
+    return kAlienDefaultLvl
+    end
+    function ShiftAvoca:GetAddXPAmount()
+    return kAlienDefaultAddXp
+    end
 
 Shared.LinkClassToMap("ShiftAvoca", ShiftAvoca.kMapName, networkVars)

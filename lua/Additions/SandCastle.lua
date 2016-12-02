@@ -20,15 +20,15 @@ local networkVars =
 {
    SiegeTimer = "float",
    FrontTimer = "float",
-   SideTimer = "float",
+   PrimaryTimer = "float",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
    if kFrontTimer == nil then kFrontTimer = 330 end
-   if kSideTimer == nil then kSideTimer = 0 end
+   if kPrimaryTimer == nil then kPrimaryTimer = 0 end
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
-   self.SideTimer = kSideTimer
+   self.PrimaryTimer = math.max(kPrimaryTimer, kSideTimer) -- b/c maps still use kSideTimer
 end
 
 function SandCastle:OnReset() 
@@ -49,18 +49,8 @@ local function DoubleCheckLocks(who)
                  door:CloseLock()
               end 
 end
-local function MoveChairToAllowTwo(who)
-               for index, CC in ientitylist(Shared.GetEntitiesWithClassname("CommandStation")) do
-                 CC:SetOrigin(FindFreeSpace(CC:GetOrigin()))
-                 break
-              end 
-end
 function SandCastle:OnRoundStart() 
-
-
---if Server then  MoveChairToAllowTwo() end
   self:TimerValues()
-  -- self:AutoBioMass()
   DoubleCheckLocks(self)
   GetGamerules():SetDamageMultiplier(0)
 end
@@ -70,8 +60,8 @@ end
 function SandCastle:GetFrontLength()
  return self.FrontTimer 
 end
-function SandCastle:GetSideLength()
- return self.SideTimer 
+function SandCastle:GetPrimaryLength()
+ return self.PrimaryTimer 
 end
 local function OpenEightTimes(who)
 
@@ -108,11 +98,11 @@ function SandCastle:OpenFrontDoors()
 
 
 end
-function SandCastle:OpenSideDoors()
+function SandCastle:OpenPrimaryDoors()
           GetGamerules():SetDamageMultiplier(1)
-      self.SideTimer = 0
-               for index, sidedoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
-                      OpenEightTimes(sidedoor)
+      self.PrimaryTimer = 0
+               for index, Primarydoor in ientitylist(Shared.GetEntitiesWithClassname("PrimaryDoor")) do
+                      OpenEightTimes(Primarydoor)
               end 
 
              -- for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
@@ -131,10 +121,10 @@ function SandCastle:GetIsFrontOpen()
            local gameLength = Shared.GetTime() - gamestarttime
            return  gameLength >= self.FrontTimer
 end
-function SandCastle:GetIsSideOpen()
+function SandCastle:GetIsPrimaryOpen()
            local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
-           return  gameLength >= self.SideTimer
+           return  gameLength >= self.PrimaryTimer
 end
 function SandCastle:CountSTimer()
        if  self:GetIsSiegeOpen() then
@@ -142,9 +132,9 @@ function SandCastle:CountSTimer()
        end
        
 end
-function SandCastle:CountSideTimer()
-       if  self:GetIsSideOpen() then
-               self:OpenSideDoors()
+function SandCastle:CountPrimaryTimer()
+       if  self:GetIsPrimaryOpen() then
+               self:OpenPrimaryDoors()
        end
        
 end
@@ -155,15 +145,12 @@ function SandCastle:OnUpdate(deltatime)
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
        if self.FrontTimer ~= 0 then self:FrontDoorTimer() end
       if self. SiegeTimer ~= 0 then self:CountSTimer() end
-      if self. SideTimer ~= 0 then self:CountSideTimer() end
+      if self. PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
         self.timeLastAutomations = Shared.GetTime()
          end
   
   end
   end
-end
-function SandCastle:AddSiegeTime(seconds)
-  if not self:GetIsSiegeOpen() then self.SiegeTimer = self.SiegeTimer + seconds end
 end
 function SandCastle:FrontDoorTimer()
     if self:GetIsFrontOpen() then
@@ -181,7 +168,7 @@ function SandCastle:OnPreGame()
    for i = 1, 8 do
    self:OpenSiegeDoors()
    self:OpenFrontDoors()
-   self:OpenSideDoors()
+   self:OpenPrimaryDoors()
    end
    
 end

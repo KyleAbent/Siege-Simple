@@ -72,23 +72,12 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
   end
 
 end
-function AddSiegeTime(seconds)
-    local entityList = Shared.GetEntitiesWithClassname("SandCastle")
-    if entityList:GetSize() > 0 then
-                 local sandcastle = entityList:GetEntityAtIndex(0) 
-                sandcastle:AddSiegeTime(seconds) 
-    end    
+
+function GetSetupConcluded()
+return ( GetSandCastle():GetPrimaryLength() > 1 and GetPrimaryDoorOpen() ) or GetFrontDoorOpen()
 end
-function AddFrontTime(seconds)
-    local entityList = Shared.GetEntitiesWithClassname("SandCastle")
-    if entityList:GetSize() > 0 then
-                 local sandcastle = entityList:GetEntityAtIndex(0) 
-                sandcastle:SendNotification(seconds)
-                sandcastle:AddTime(seconds) 
-    end    
-end
-function GetSideDoorOpen()
-   return GetSandCastle():GetIsSideOpen()
+function GetPrimaryDoorOpen()
+   return GetSandCastle():GetIsPrimaryOpen()
 end
 function GetFrontDoorOpen()
    return GetSandCastle():GetIsFrontOpen()
@@ -103,34 +92,6 @@ function GetSandCastle() --it washed away
                  return sandcastle
     end    
     return nil
-end
-function GetIsPointInMarineBase(where)    
-    local cclocation = nil
-           for _, cc in ientitylist(Shared.GetEntitiesWithClassname("CommandStation")) do
-        cclocation = GetLocationForPoint(cc:GetOrigin())
-        cclocation = cclocation.name
-             break
-          end
-    
-    local pointlocation = GetLocationForPoint(where)
-          pointlocation = pointlocation and pointlocation.name or nil
-          
-          return pointlocation == cclocation
-    
-end
-function GetIsPointInAlienBase(where)    
-    local cclocation = nil
-           for _, cc in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
-        cclocation = GetLocationForPoint(cc:GetOrigin())
-        cclocation = cclocation.name
-             break
-          end
-    
-    local pointlocation = GetLocationForPoint(where)
-          pointlocation = pointlocation and pointlocation.name or nil
-          
-          return pointlocation == cclocation
-    
 end
 function GetNearestMixin(origin, mixinType, teamNumber, filterFunc)
     assert(type(mixinType) == "string")

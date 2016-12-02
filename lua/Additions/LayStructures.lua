@@ -193,19 +193,23 @@ local function DropStructure(self, player)
             
                 structure:SetOwner(player)
                 if structure.SetConstructionComplete  then
+               if structure:GetTeamNumber() == 1 then
                  if not GetIsPointOnInfestation(structure:GetOrigin()) then
                   structure:SetConstructionComplete()
                    else
                    structure.isGhostStructure = false
                    end
-               -- if structure:isa("ARC") then
-               -- 
-               -- structure:GiveOrder(kTechId.ARCDeploy, structure:GetId(), structure:GetOrigin(), nil, false, false)
-                --elseif structure:isa("MAC") then
-              --  structure:ProcessFollowAndWeldOrder(Shared.GetTime(), player, player:GetOrigin()) 
-                end
+                else --teamnum 2
+                
+                    if not GetIsInSiege(structure) then
+                  if structure.SetConstructionComplete then  structure:SetConstructionComplete() end
+                 if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
+                   end --not siege
+                
+                end--teamnum 
+                end--structure
                 structure:SetOwner(player)
-                if structure.SetIsACreditStructure then structure:SetIsACreditStructure(true) end
+                if HasMixin(structure, "Avoca") then structure:SetIsACreditStructure(true) end
 
                 
                 // Check for space

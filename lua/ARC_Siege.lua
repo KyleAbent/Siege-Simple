@@ -4,7 +4,7 @@ if Server then
 local origrules = ARC.AcquireTarget
 function ARC:AcquireTarget() 
 
-local canfire = ( kSideTimer ~= 0 and GetSideDoorOpen() )  or  GetFrontDoorOpen() 
+local canfire = GetSetupConcluded()
 --Print("Arc can fire is %s", canfire)
 if not canfire then return end
 return origrules(self)
@@ -17,7 +17,6 @@ end
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
---Kyle 'Avoca' Abent
 class 'ARCSiege' (ARC)
 ARCSiege.kMapName = "arcsiege"
 

@@ -63,34 +63,23 @@ local function GetSandCastle() --it washed away
     end    
     return nil
 end
-
-function Plugin:ClientConnect(client)
-     if client:GetUserId() == 22542592 or client:GetUserId() == 8086089 then
-     
-
-     self:SimpleTimer( 4, function() 
-     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )) end
-      end)
-      end
-
-end
 local function AddFrontTimer(who)
     local Client = who
     local NowToFront = GetSandCastle():GetFrontLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
     local FrontLength =  math.ceil( Shared.GetTime() + NowToFront - Shared.GetTime() )
-    Shine.ScreenText.Add( 1, {X = 0.40, Y = 0.75,Text = "Front Doors open in %s",Duration = FrontLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    Shine.ScreenText.Add( 1, {X = 0.40, Y = 0.75,Text = "FrontDoor: %s",Duration = FrontLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
 local function AddSiegeTimer(who)
     local Client = who
     local NowToSiege = GetSandCastle():GetSiegeLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
     local SiegeLength =  math.ceil( Shared.GetTime() + NowToSiege - Shared.GetTime() )
-    Shine.ScreenText.Add( 2, {X = 0.40, Y = 0.95,Text = "Siege Doors open in %s",Duration = SiegeLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    Shine.ScreenText.Add( 2, {X = 0.40, Y = 0.95,Text = "SiegeDoor: %s",Duration = SiegeLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
-local function AddSideTimer(who)
+local function AddPrimaryTimer(who)
     local Client = who
-    local NowToSide = GetSandCastle():GetSideLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
-    local SideLength =  math.ceil( Shared.GetTime() + NowToSide - Shared.GetTime() )
-    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.65,Text = "Side Doors open in %s",Duration = SideLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    local NowToPrimary = GetSandCastle():GetPrimaryLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
+    local PrimaryLength =  math.ceil( Shared.GetTime() + NowToPrimary - Shared.GetTime() )
+    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.65,Text = "PrimaryDoor: %s",Duration = PrimaryLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
 local function GiveTimersToAll()
               local Players = Shine.GetAllPlayers()
@@ -98,8 +87,8 @@ local function GiveTimersToAll()
               local Player = Players[ i ]
                   if Player then
                   AddFrontTimer(Player)
-                  AddSiegeTimer(Player) --Downside is the 30 min expiration date. Upside is no timer goes beyond 20.
-                  AddSideTimer(Player)
+                  AddSiegeTimer(Player) --DownPrimary is the 30 min expiration date. UpPrimary is no timer goes beyond 20.
+                    if kPrimaryTimer ~= 0 then  AddPrimaryTimer(Player) end
                   end
 end
 end
@@ -143,9 +132,12 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
          AddSiegeTimer(Client)
    end
    
-    if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kSideTimer then
-         AddSideTimer(Client)
+
+   
+    if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kPrimaryTimer then
+         AddPrimaryTimer(Client)
    end
+   
    
    
 
@@ -338,9 +330,9 @@ local function OpenFrontDoors()
                 end
 
 end
-local function OpenSideDoors()
+local function OpenPrimaryDoors()
            for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
-                sandcastle:OpenSideDoors() 
+                sandcastle:OpenPrimaryDoors() 
                 end
 
 end
@@ -349,8 +341,8 @@ local Gamerules = GetGamerules()
      if String == "Front" or String == "front" then
        OpenFrontDoors()
         Shine.ScreenText.End(1) 
-     elseif String == "Side" or String == "side" then
-       OpenSideDoors()
+     elseif String == "Primary" or String == "primary" then
+       OpenPrimaryDoors()
        Shine.ScreenText.End(3)
      elseif String == "Siege" or String == "siege" then
         OpenSiegeDoors()
@@ -363,7 +355,7 @@ end
 
 local OpenCommand = self:BindCommand( "sh_open", "open", Open )
 OpenCommand:AddParam{ Type = "string" }
-OpenCommand:Help( "Opens <type> doors (Front/Side/Siege) (not case sensitive) - timer will still display." )
+OpenCommand:Help( "Opens <type> doors (Front/Primary/Siege) (not case sensitive) - timer will still display." )
 
 
 end

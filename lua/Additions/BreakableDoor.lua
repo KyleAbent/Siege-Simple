@@ -1,6 +1,4 @@
-/*
-  TODO: 
-*/
+--Kyle 'Avoca' Abent
 
 
 Script.Load("lua/LiveMixin.lua")
@@ -103,18 +101,19 @@ function BreakableDoor:Reset()
 end
 
 local function GetRecentlyDestroyed(self)
-    return (self.timeOfDestruction + 10) > Shared.GetTime()
+    return (self.timeOfDestruction + 8) > Shared.GetTime()
 end
 function BreakableDoor:GetCanBeWeldedOverride()
     return not GetRecentlyDestroyed(self)
 end
+/*
 local function DisplayTimeTillWeldable(self)
-          local NowToWeld = 10 - (Shared.GetTime() - self.timeOfDestruction)
+          local NowToWeld = 8 - (Shared.GetTime() - self.timeOfDestruction)
           local WeldLength =  math.ceil( Shared.GetTime() + NowToWeld - Shared.GetTime() )
           local time = WeldLength
           return string.format(Locale.ResolveString("%s seconds"), time)
 end
-  function BreakableDoor:GetUnitNameOverride(viewer)
+  function BreakableDoor:GetUnitNameOverride(viewer) --though not working, not big deal
     local unitName = GetDisplayName(self)   
      if not self.open then
          unitName = string.format(Locale.ResolveString("Locked Door"))
@@ -125,6 +124,7 @@ end
      end
 return unitName
 end  
+*/
 function BreakableDoor:OnGetMapBlipInfo()
 
     local success = false

@@ -18,9 +18,9 @@ self.isacreditstructure = boolean
       --Print("AvocaMixin SetIsACreditStructure %s isacreditstructure is %s", self:GetClassName(), self.isacreditstructure)
 end
 function AvocaMixin:GetCanStick()
-       local canstick = true
-   if( kSideTimer ~= 0 and GetSideDoorOpen() ) or GetFrontDoorOpen()  then canstick = false  end
-     return canstick and self.isacreditstructure 
+     local canstick = not GetSetupConcluded()
+     --Print("Canstick = %s", canstick)
+     return canstick and self:GetIsACreditStructure() 
 end
 
 function AvocaMixin:GetIsACreditStructure()

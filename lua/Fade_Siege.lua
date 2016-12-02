@@ -9,3 +9,11 @@ end
 function Fade:GetCanMetabolizeHealth()
     return GetHasTech(self, kTechId.MetabolizeHealth)
 end
+
+if Server then
+
+function Fade:GetTierFourTechId()
+    return kTechId.None
+end
+
+end

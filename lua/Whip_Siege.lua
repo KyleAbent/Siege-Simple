@@ -1,4 +1,4 @@
---Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 
 class 'WhipAvoca' (Whip)
@@ -6,12 +6,12 @@ WhipAvoca.kMapName = "whipavoca"
 
 local networkVars = {}
 
---AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 
     function WhipAvoca:OnInitialized()
      Whip.OnInitialized(self)
-       --  InitMixin(self, LevelsMixin)
+         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Whip)
     end
@@ -32,7 +32,12 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-
+    function WhipAvoca:GetMaxLevel()
+    return kAlienDefaultLvl
+    end
+    function WhipAvoca:GetAddXPAmount()
+    return kAlienDefaultAddXp
+    end
 Shared.LinkClassToMap("WhipAvoca", WhipAvoca.kMapName, networkVars) 
 
 local originit = Whip.OnInitialized

@@ -1,4 +1,10 @@
 kHiveInfestationRadius = 8
+kMaxEntitiesInRadius = 30 
+kMaxEntityRadius = 10 
+kMACSupply = 5
+kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
+kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
+kSentrySupply = 5
 
 if Server then
 
@@ -166,15 +172,7 @@ SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures witho
 SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
 
 
-kMACSupply = 5
---Add drifter egg fix
 
-
-
-
-kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
-kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
-kSentrySupply = 5
 --------------------------------------------------------------------
 /*
 360 degree sentrys, 4 per room, without battery.

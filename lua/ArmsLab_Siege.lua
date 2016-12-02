@@ -11,6 +11,7 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
     function ArmsLabAvoca:OnInitialized()
          ArmsLab.OnInitialized(self)
         InitMixin(self, AvocaMixin)
+        InitMixin(self, LevelsMixin)
         self:SetTechId(kTechId.ArmsLab)
     end
         function ArmsLabAvoca:GetTechId()

@@ -158,8 +158,8 @@ Shared.LinkClassToMap("FrontDoor", FrontDoor.kMapName, networkVars)
 
 
 
-class 'SideDoor' (SiegeDoor)
+class 'PrimaryDoor' (SiegeDoor)
 
-SideDoor.kMapName = "sidedoor"
+PrimaryDoor.kMapName = "Primarydoor"
 
-Shared.LinkClassToMap("SideDoor", SideDoor.kMapName, networkVars)
+Shared.LinkClassToMap("PrimaryDoor", PrimaryDoor.kMapName, networkVars)
