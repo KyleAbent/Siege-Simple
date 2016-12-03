@@ -24,7 +24,7 @@ local choices = {}
 --charging onos
 
                for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
-                 if arc.moving or GetIsInSiege(arc) then table.insert(choices, arc) break end -- just 1
+                 if arc.moving then table.insert(choices, arc) break end -- just 1
               end 
              for index, contam in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
                   table.insert(choices, contam) 
@@ -51,18 +51,22 @@ end
 --Beacons
 -- <=30% hp constructs in combat
 --moving arcs
+--contam
 local choices = {}
-           --  for index, alienbeacon in ientitylist(Shared.GetEntitiesWithClassname("AlienBeacon")) do
-            --      if alienbeacon:GetIsAlive() then table.insert(choices, alienbeacon) break end --built and not disabled should be summed up by if in combat?
-            --  end 
+             for index, alienbeacon in ientitylist(Shared.GetEntitiesWithClassname("AlienBeacon")) do
+                  if alienbeacon:isa("EggBeacon") or alienbeacon:isa("StructureBeacon") and alienbeacon:GetIsAlive() then table.insert(choices, alienbeacon) break end --built and not disabled should be summed up by if in combat?
+              end 
              for index, obs in ientitylist(Shared.GetEntitiesWithClassname("Observatory")) do
                   if obs:GetIsBeaconing() or obs:GetIsAdvancedBeaconing() then table.insert(choices, obs) break end --built and not disabled should be summed up by if in combat?
               end  
       
-
+             for index, contam in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
+                  table.insert(choices, contam) 
+                   break  -- just 1
+              end
         
                    for _, construct in ipairs(GetEntitiesWithMixin("Construct")) do
-                  if construct:GetHealthScalar() <= .7 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
+                  if construct:GetIsBuilt() and construct:GetHealthScalar() <= .7 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
               end     
 
              for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
@@ -74,16 +78,24 @@ local choices = {}
               return random
 
 end
-
+local function GetIsBusy(who)
+local busy = false
+   if who:isa("MAC") then
+    busy = true --order is
+   elseif who:isa("Drifter") then
+   busy = true --order is
+    end
+return busy
+end
 local function GetSetupView()
  --Print("GetSetupView")
 local choices = {}
 --macs, drifters, not built constructs
              for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
-                  table.insert(choices, mac) break --built and not disabled should be summed up by if in combat?
+                  if GetIsBusy(mac) then table.insert(choices, mac) break end --built and not disabled should be summed up by if in combat?
               end     
              for index, drifter in ientitylist(Shared.GetEntitiesWithClassname("Drifter")) do
-                  table.insert(choices, drifter) break --built and not disabled should be summed up by if in combat?
+                  if GetIsBusy(drifter) then table.insert(choices, drifter) break end --built and not disabled should be summed up by if in combat?
               end    
                    for _, construct in ipairs(GetEntitiesWithMixin("Construct")) do
                   if not construct:isa("PowerPoint") and not construct:GetIsBuilt() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
@@ -116,7 +128,11 @@ local function ChangeView(self, client)
         -- Print("vip is %s", vip:GetClassName())
           if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
           --client:SelectEntity(vip:GetId()) 
-             client:SetOrigin( FindFreeSpace(vip:GetOrigin(), 1, 8))
+          local viporigin = vip:GetOrigin()
+             client:SetOrigin( FindFreeSpace(viporigin, 1, 8))
+             local dir = GetNormalizedVector(viporigin - client:GetOrigin())
+             local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
+              client:SetDesiredCamera(8.0, {move = true}, client:GetEyePos(), angles, 0)
               self:NotifyGeneric( client, "VIP is %s", true, vip:GetClassName())
         else
              client:SetSpectatorMode(kSpectatorMode.FirstPerson)
@@ -130,12 +146,17 @@ end
 
 
 function Plugin:ClientConnect(client)
-     if client:GetUserId() == 22542592 or client:GetUserId() == 8086089 then
+     if client:GetUserId() == 8086089 then
      
-
+     self:SimpleTimer( 4, function() 
+     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() ))end
+      end)
+      
+    elseif client:GetUserId() == 22542592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )) local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
       end)
+      
       end
 
 end

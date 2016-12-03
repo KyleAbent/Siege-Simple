@@ -1,4 +1,21 @@
 --Kyle 'Avoca' Abent
+
+function GetIsPointWithinHiveRadius(point)     
+    /*
+    local hivesnearby = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)
+      for i = 1, #hivesnearby do
+           local ent = hivesnearby[i]
+           if ent == GetClosestHiveFromCC(point) then return true end
+              return false   
+     end
+   */
+  
+   local hive = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)
+   if #hive >= 1 then return true end
+
+   return false
+end
+
 function UpdateAliensWeaponsManually() ///Seriously this makes more sense than spamming some complicated formula every 0.5 seconds no?
  for _, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do 
         alien:RefreshTechsManually() 

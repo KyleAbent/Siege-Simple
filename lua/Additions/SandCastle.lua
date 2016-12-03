@@ -101,7 +101,7 @@ end
 function SandCastle:OpenPrimaryDoors()
           GetGamerules():SetDamageMultiplier(1)
       self.PrimaryTimer = 0
-               for index, Primarydoor in ientitylist(Shared.GetEntitiesWithClassname("PrimaryDoor")) do
+               for index, Primarydoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
                       OpenEightTimes(Primarydoor)
               end 
 
