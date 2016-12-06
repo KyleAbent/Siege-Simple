@@ -75,7 +75,8 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
  
   if who:isa("Cyst") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
      local frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
-        if frontdoor  then who:Kill( )return end
+     local sidedoor = GetNearest(who:GetOrigin(), "SideDoor", 0, function(ent) return who:GetDistance(ent) <= 12 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
+        if sidedoor or frontdoor then who:Kill() return end
   end
   
     if who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin

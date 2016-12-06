@@ -180,8 +180,24 @@ end
 function Plugin:CreateCommands()
 
 
+local function Stalemate( Client )
+local Gamerules = GetGamerules()
+if not Gamerules then return end
+Gamerules:DrawGame()
+end 
+
+
+local StalemateCommand = self:BindCommand( "sh_stalemate", "stalemate", Stalemate )
+StalemateCommand:Help( "declares the round a draw." )
+
+
+
+
 local function Slap( Client, Targets, Number )
 //local Giver = Client:GetControllingPlayer()
+
+
+  
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
        if Player and Player:GetIsAlive() and not Player:isa("Commander") then
@@ -198,6 +214,108 @@ local SlapCommand = self:BindCommand( "sh_slap", "slap", Slap)
 SlapCommand:Help ("sh_slap <player> <time> Slaps the player once per second random strength")
 SlapCommand:AddParam{ Type = "clients" }
 SlapCommand:AddParam{ Type = "number" }
+
+
+
+
+local function PHealth( Client, Targets, Number )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if not Player:isa("ReadyRoomTeam")  and Player:isa("Alien") or Player:isa("Marine") then
+            local defaulthealth = LookupTechData(Player:GetTechId(), kTechDataMaxHealth, 1)
+            if Number > defaulthealth then Player:AdjustMaxHealth(Number) end
+              Player:SetHealth(Number)
+              
+           	 Shine:CommandNotify( Client, "set %s's health to %s", true,
+			 Player:GetName() or "<unknown>", Number )  
+             end --
+     end--
+end--
+local PHealthCommand = self:BindCommand( "sh_phealth", "phealth", PHealth)
+PHealthCommand:AddParam{ Type = "clients" }
+PHealthCommand:AddParam{ Type = "number", Min = 1, Max = 8191, Error = "1 min 8191 max" }
+PHealthCommand:Help( "sh_phealth <player> <number> sets player's health to the number desired." )
+
+local function PArmor( Client, Targets, Number )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if not Player:isa("ReadyRoomTeam")  and Player:isa("Alien") or Player:isa("Marine") then
+            local defaultarmor = LookupTechData(Player:GetTechId(), kTechDataMaxArmor, 1)
+            if Number > defaultarmor then Player:AdjustMaxArmor(Number) end
+              Player:SetArmor(Number)
+              
+           	 Shine:CommandNotify( Client, "set %s's armor to %s", true,
+			 Player:GetName() or "<unknown>", Number )  
+             end--
+     end--
+end--
+local PArmorCommand = self:BindCommand( "sh_parmor", "parmor", PArmor)
+PArmorCommand:AddParam{ Type = "clients" }
+PArmorCommand:AddParam{ Type = "number", Min = 1, Max = 2045, Error = "1 min 2045 max" }
+PArmorCommand:Help( "sh_parmor <player> <number> sets player's armor to the number desired." )
+
+
+local function SHealth( Client, String, Number  )
+        local player = Client:GetControllingPlayer()
+        for _, entity in ipairs( GetEntitiesWithMixinWithinRange( "Live", player:GetOrigin(), 8 ) ) do
+            if string.find(entity:GetMapName(), String)  then
+                  local defaulthealth = LookupTechData(entity:GetTechId(), kTechDataMaxHealth, 1)
+                  if Number > defaulthealth then entity:AdjustMaxHealth(Number) end
+                  entity:SetHealth(Number)
+                  self:NotifyGeneric( nil, "set %s health to %s (%s)", true, entity:GetMapName(), Number,entity:GetLocationName())
+             end--
+         end--
+end--
+local SHealthCommand = self:BindCommand( "sh_shealth", "shealth", SHealth )
+SHealthCommand:AddParam{ Type = "string" }
+SHealthCommand:AddParam{ Type = "number", Min = 1, Max = 8191, Error = "1 min 8191 max" }
+SHealthCommand:Help( "shealth <string> <number> within 8 radius sets this classname's health to X" )
+
+local function Sarmor( Client, String, Number  )
+        local player = Client:GetControllingPlayer()
+        for _, entity in ipairs( GetEntitiesWithMixinWithinRange( "Live", player:GetOrigin(), 8 ) ) do
+            if string.find(entity:GetMapName(), String)  then
+                  local defaultarmor = LookupTechData(entity:GetTechId(), kTechDataMaxArmor, 1)
+                  if Number > defaultarmor then entity:AdjustMaxArmor(Number) end
+                  entity:SetArmor(Number)
+                  self:NotifyGeneric( nil, "set %s armor to %s (%s)", true, entity:GetMapName(), Number,entity:GetLocationName())
+             end--
+         end--
+end--
+local SarmorCommand = self:BindCommand( "sh_sarmor", "sarmor", Sarmor )
+SarmorCommand:AddParam{ Type = "string" }
+SarmorCommand:AddParam{ Type = "number", Min = 1, Max = 2045, Error = "1 min 2045 max" }
+SarmorCommand:Help( "sarmor <string> <number> within 8 radius sets this classname's armor to X" )
+
+
+local function Respawn( Client, Targets )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+	        	Shine:CommandNotify( Client, "respawned %s.", true,
+				Player:GetName() or "<unknown>" )  
+         Player:GetTeam():ReplaceRespawnPlayer(Player)
+                 Player:SetCameraDistance(0)
+     end--
+end--
+local RespawnCommand = self:BindCommand( "sh_respawn", "respawn", Respawn )
+RespawnCommand:AddParam{ Type = "clients" }
+RespawnCommand:Help( "<player> respawns said player" )
+
+
+local function RunCMD( Client, Targets, String )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+	        	Player:RunCommand(String)
+     end--
+end--
+local RunCMDCommand = self:BindCommand( "sh_runcmd", "runcmd", RunCMD )
+RunCMDCommand:AddParam{ Type = "clients" }
+RunCMDCommand:AddParam{ Type = "string" }
+RunCMDCommand:Help( "<player> <string> makes the client type something in console of which you choose." )
+
+
+
+
 /*
 
 local function Gravity( Client, Targets, Number )
@@ -336,6 +454,13 @@ local function OpenPrimaryDoors()
                 end
 
 end
+local function OpenBreakableDoors()
+           for index, breakabledoor in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do
+               if breakabledoor.health ~= 0 then breakabledoor.health = 0 end 
+                end
+
+end
+
 local function Open( Client, String )
 local Gamerules = GetGamerules()
      if String == "Front" or String == "front" then
@@ -347,15 +472,18 @@ local Gamerules = GetGamerules()
      elseif String == "Siege" or String == "siege" then
         OpenSiegeDoors()
          Shine.ScreenText.End(2) 
-         return
-    end 
+     elseif String == "Breakable" or String == "breakable" then
+        OpenBreakableDoors()
+    end  --
   self:NotifyGeneric( nil, "Opened the %s doors", true, String)  
   
-end 
+end --
 
 local OpenCommand = self:BindCommand( "sh_open", "open", Open )
 OpenCommand:AddParam{ Type = "string" }
 OpenCommand:Help( "Opens <type> doors (Front/Primary/Siege) (not case sensitive) - timer will still display." )
+
+
 
 
 end

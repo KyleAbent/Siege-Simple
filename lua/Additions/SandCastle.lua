@@ -67,7 +67,7 @@ local function OpenEightTimes(who)
 
 if not who then return end
 
-for i = 1, 8 do
+for i = 1, math.max(kDoorMoveUpVect / 2, 16) do //more than 8
                 who:Open()
                 who.isvisible = false
 end

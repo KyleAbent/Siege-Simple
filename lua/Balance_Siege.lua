@@ -1,3 +1,4 @@
+kShotgunFireRate = 0.75 --default 0.88
 --kXenocideDamage = 220
 --kXenocideDamageType = kDamageType.Structural
 
@@ -32,3 +33,6 @@ kCystMaturationTime = 15 --default 45balancehea
 kHydraMaturationTime = 30 -- default 140
 kEggMaturationTime = 30 -- default 100
 kTunnelEntranceMaturationTime = 30 -- 135
+
+
+kCystBuildTime = 4 --default 5

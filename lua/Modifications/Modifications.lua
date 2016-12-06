@@ -1,3 +1,11 @@
+Script.Load("lua/Modifications/ReallyNow.lua")
+    function ForceEvenTeams_AssignPlayer( player, team )
+      if not player:isa("Spectator") then
+        player:SetCameraDistance(0)
+        GetGamerules():JoinTeam(player, team, true)
+        end
+    end
+
 kHiveInfestationRadius = 8
 kMaxEntitiesInRadius = 30 
 kMaxEntityRadius = 10 

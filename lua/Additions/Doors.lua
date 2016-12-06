@@ -98,7 +98,7 @@ function SiegeDoor:HasOpened()
 return self.opened
 end
 function SiegeDoor:GetIsLocked()    
-return not self:HasOpened()
+return not GetSiegeDoorOpen()
 end
 function SiegeDoor:MakeSurePlayersCanGoThroughWhenMoving()
                 self:UpdateModelCoords()
@@ -152,6 +152,10 @@ Shared.LinkClassToMap("SiegeDoor", SiegeDoor.kMapName, networkVars)
 
 class 'FrontDoor' (SiegeDoor)
 
+function FrontDoor:GetIsLocked()    
+return not GetFrontDoorOpen()
+end
+
 FrontDoor.kMapName = "frontdoor"
 
 Shared.LinkClassToMap("FrontDoor", FrontDoor.kMapName, networkVars)
@@ -159,6 +163,11 @@ Shared.LinkClassToMap("FrontDoor", FrontDoor.kMapName, networkVars)
 
 
 class 'SideDoor' (SiegeDoor)
+
+
+function SideDoor:GetIsLocked()    
+return not GetPrimaryDoorOpen()
+end
 
 SideDoor.kMapName = "sidedoor"
 

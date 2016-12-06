@@ -1,10 +1,3 @@
-Sentry.kFov = 360
-Sentry.kMaxPitch = 360
-Sentry.kMaxYaw = 360
-Sentry.kBarrelMoveRate = 105 -- default 150
-
-
-
 function Sentry:GetFov()
     return 360
 end
@@ -24,12 +17,19 @@ SentryAvoca.kMapName = "sentryavoca"
 
 local networkVars = {}
 
+
+
+
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
     
 
     function SentryAvoca:OnInitialized()
          Sentry.OnInitialized(self)
+         Sentry.kFov = 360
+         Sentry.kMaxPitch = 360
+        Sentry.kMaxYaw = 360
+        Sentry.kBarrelMoveRate = 105 -- default 150
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Sentry)

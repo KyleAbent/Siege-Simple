@@ -1,8 +1,4 @@
 --Kyle 'Avoca' Abent 
-Script.Load("lua/Spur.lua")
-
-
-
 
 class 'StructureBeacon' (AlienBeacon)
 
@@ -21,7 +17,8 @@ local networkVars = { }
 
 local function TimeUp(self)
 
-    self:Kill()
+    --self:Kill()
+    DestroyEntity(self)
     return false
 
 end

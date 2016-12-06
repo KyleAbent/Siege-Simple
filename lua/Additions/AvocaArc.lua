@@ -1,7 +1,7 @@
 --Kyle 'Avoca' Abent
 class 'AvocaArc' (ARC)
 AvocaArc.kMapName = "avocaarc"
-local kNanoshieldMaterial = PrecacheAsset("cinematics/vfx_materials/nanoshield.material")
+local kNanoshieldMaterial = PrecacheAsset("glow/green/green.material")
 local kPhaseSound = PrecacheAsset("sound/NS2.fev/marine/structures/phase_gate_teleport")
 
 local kMoveParam = "move_speed"
@@ -21,16 +21,20 @@ function AvocaArc:OnInitialized()
  end
 
 end
+function AvocaArc:GetPointValue()
+ return kARCPointValue
+end
 
 function AvocaArc:GetMaxHealth()
-    return kARCHealth
+    return 4200
 end
 function AvocaArc:GetMaxArmor()
-    return kARCArmor
+    return 1000
 end
 local function SoTheGameCanEnd(self, who) --Although HiveDefense prolongs it
    local arc = GetEntitiesWithinRange("ARC", who:GetOrigin(), ARC.kFireRange)
-   if #arc >= 1 then CreateEntity(Scan.kMapName, who:GetOrigin(), 1) end
+   local scan = GetEntitiesWithinRange("Scan", who:GetOrigin(), ARC.kFireRange)
+   if #arc >= 1 and not #scan >= 1 then CreateEntity(Scan.kMapName, who:GetOrigin(), 1) end
 end
 local function CheckHivesForScan()
 local hives = {}
@@ -160,10 +164,6 @@ function AvocaArc:Waypoint()
     return true
 end
 
-function AvocaArc:Scan()
-  if not GetIsPointWithinHiveRadius(self:GetOrigin()) then CreateEntity(Scan.kMapName, self:GetOrigin(), 1) end
-    return true
-end
 
 function AvocaArc:Instruct()
    CheckHivesForScan()
