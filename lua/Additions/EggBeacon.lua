@@ -215,6 +215,7 @@ function EggBeacon:OnConstructionComplete()
         self:AddTimedCallback(TimeUp, kLifeSpan)  
         self:DoYourBusiness()
         self:AddTimedCallback(EggBeacon.DoYourBusiness, 1)
+        if Server  then self:AdjustMaxHealth(675) self:AdjustMaxArmor(175) end
         
   end
 function EggBeacon:DoYourBusiness()

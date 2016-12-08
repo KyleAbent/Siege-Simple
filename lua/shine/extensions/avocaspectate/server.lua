@@ -13,7 +13,26 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Spectate]",  255, 0, 0, String, Format, ... )
 end
+
+local function GetPregameView()
+local choices = {}
+ 
+              
+                   for index, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+                  if not player:isa("Spectator") and not player:isa("Commander") and player:GetIsOnGround() then table.insert(choices, player) break end
+              end 
+            
+              local random = table.random(choices)
+              return random
+              
+
+end
+
 local function GetSiegeView()
+
+
+if not GetGamerules():GetGameStarted() then return GetPregameView() end
+
   --Print("GetSiegeView")
 local choices = {}
 --arc if moving or in siege
@@ -125,22 +144,7 @@ local busy = false
    -- end
 return busy
 end
-local function GetPregameView()
-local choices = {}
- 
-              
-                   for index, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
-                  if player ~= self and not player:isa("Commander") and player:GetIsOnGround() then table.insert(choices, player) break end
-              end 
-            
-              local random = table.random(choices)
-              return random
-              
-
-end
 local function GetSetupView()
-
-if not GetGamerules():GetGameStarted() then return GetPregameView() end
  --Print("GetSetupView")
 local choices = {}
 --macs, drifters, not built constructs
@@ -217,9 +221,9 @@ local function ChangeView(self, client)
          end
 
 end
-local function AutoSpectate(self, Client)
+local function AutoSpectate(self, client)
 
-    Shine.Timer.Create( "AutoSpectate", 8, -1, function() if Client and Client:isa("Spectator") then ChangeView(self, Client) else Shine.Timer.Destroy("AutoSpectate") end  end )
+    Shine.Timer.Create( "AutoSpectate", 8, -1, function() if client and client:isa("Spectator") then ChangeView(self, client) else Shine.Timer.Destroy("AutoSpectate") end  end )
 end
 
 
@@ -238,23 +242,3 @@ function Plugin:ClientConnect(client)
       end
 
 end
-
-function Plugin:SetGameState( Gamerules, State, OldState )
-
-
-  if State == kGameState.Team1Won or State == kGameState.Team2Won or State == kGameState.Draw then
- 
-             
-              local Client = Shine:GetClient(388510592)
-                  if Client then
-                       self:SimpleTimer( 12, function()
-                     Shared.ConsoleCommand(string.format("sh_setteam %s 3", Client:GetUserId() )) 
-                     AutoSpectate(self, Client)        
-                        end)           
-             end --
-             
-  
-  end--
-  
-  
-end  --

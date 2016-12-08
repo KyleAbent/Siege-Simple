@@ -48,7 +48,7 @@ end
 
 function Marine:GiveDualRailgunExo(spawnPoint)
 
-    local exo = self:Replace(ExoAvocakMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
     return exo
     
 end

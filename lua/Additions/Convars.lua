@@ -18,8 +18,8 @@ kEggBeaconCoolDown = 12
 kStructureBeaconCoolDown = 12
 kStructureBeaconCost = 10
 
-kEggBeaconHealth = 675
-kEggBeaconArmor = 175
+kEggBeaconHealth = 472
+kEggBeaconArmor = 122
 kStructureBeaconHealth = 675
 kStructureBeaconArmor = 175 
 
