@@ -4,7 +4,7 @@ if Server then
 local origrules = ARC.AcquireTarget
 function ARC:AcquireTarget() 
 
-local canfire = GetSetupConcluded()
+local canfire = GetSetupConcluded() and not self:GetIsVortexed()
 --Print("Arc can fire is %s", canfire)
 if not canfire then return end
 return origrules(self)

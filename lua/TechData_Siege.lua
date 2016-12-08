@@ -5,6 +5,8 @@ Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
 Script.Load("lua/Additions/OnoGrow.lua")
+Script.Load("lua/Additions/CragUmbra.lua")
+Script.Load("lua/Additions/CommVortex.lua")
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
 local tunnelEntrances = 0 
@@ -66,6 +68,25 @@ end
 local kSiege_TechData =
 {        
 
+                 { [kTechDataId] = kTechId.CommVortex, 
+        [kTechDataMapName] = CommVortex.kMapName, 
+       [kTechDataAllowStacking] = true,
+       [kTechDataIgnorePathingMesh] = true, 
+       [kTechDataCollideWithWorldOnly] = true,
+       [kTechDataRequiresInfestation] = true, 
+      [kTechDataDisplayName] = "Etheral Gate", 
+        [kTechDataCostKey] = kCommVortexCost, 
+     [kTechDataCooldown] = kCommVortexCoolDown, 
+      [kTechDataTooltipInfo] =  "Temporarily places marine structures/macs/arcs in another dimension rendering them unable to function correctly. "},
+
+            { [kTechDataId] = kTechId.CragUmbra,
+         [kTechDataDisplayName] = "UMBRA",
+      --[kVisualRange] = Crag.kHealRadius, 
+     [kTechDataCooldown] = kCragUmbraCooldown, 
+     [kTechDataCostKey] = kCragUmbraCost,  
+[kTechDataTooltipInfo] = "CRAG_UMBRA_TOOLTIP"},
+
+
   { [kTechDataId] = kTechId.CommTunnel,  
 --[kTechDataSupply] = kCommTunnelSupply, 
 [kTechDataBuildRequiresMethod] = CheckCommTunnelReq,
@@ -92,6 +113,15 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] = "wip"},
 
 
+--AdvBeacTech
+
+        {
+            [kTechDataId] = kTechId.AdvBeacTech,
+            [kTechDataCostKey] = kAdvBeacTechChost,
+            [kTechDataDisplayName] = "Advanced Beacon Tech",
+            [kTechDataResearchTimeKey] = kAdvBeacTechTime,
+            [kTechDataTooltipInfo] = "Unlocks Advanced Beacon (of which revives dead players and teleports exos)"
+        },
 
    { [kTechDataId] = kTechId.AdvancedBeacon,   
    [kTechDataBuildTime] = 0.1,   

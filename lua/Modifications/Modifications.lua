@@ -14,6 +14,7 @@ kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
 kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
 kSentrySupply = 5
 
+
 if Server then
 
 local origscore = ScoringMixin.AddScore
@@ -128,6 +129,7 @@ SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapNa
 SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
 SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
 SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
+SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoAvoca.kMapName)
 
 SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipAvoca.kMapName)
 SetCachedTechData(kTechId.Crag, kTechDataMapName,CragAvoca.kMapName)

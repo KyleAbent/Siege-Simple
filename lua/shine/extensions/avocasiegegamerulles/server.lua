@@ -260,6 +260,7 @@ local function SHealth( Client, String, Number  )
         for _, entity in ipairs( GetEntitiesWithMixinWithinRange( "Live", player:GetOrigin(), 8 ) ) do
             if string.find(entity:GetMapName(), String)  then
                   local defaulthealth = LookupTechData(entity:GetTechId(), kTechDataMaxHealth, 1)
+                   if entity.SetMature then entity:SetMature() end
                   if Number > defaulthealth then entity:AdjustMaxHealth(Number) end
                   entity:SetHealth(Number)
                   self:NotifyGeneric( nil, "set %s health to %s (%s)", true, entity:GetMapName(), Number,entity:GetLocationName())

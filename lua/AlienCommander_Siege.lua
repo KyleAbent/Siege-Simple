@@ -1,9 +1,11 @@
 --Currently overwritten obv
 
+Script.Load("lua/Additions/CommVortex.lua")
+
 local gAlienMenuButtons =
 {
     [kTechId.BuildMenu] = { kTechId.Cyst, kTechId.Harvester, kTechId.DrifterEgg, kTechId.Hive,
-                            kTechId.EggBeacon, kTechId.StructureBeacon, kTechId.CommTunnel, kTechId.ExpandingMarker },
+                            kTechId.EggBeacon, kTechId.StructureBeacon, kTechId.CommTunnel, kTechId.CommVortex },
                             
     [kTechId.AdvancedMenu] = { kTechId.Crag, kTechId.Shade, kTechId.Shift, kTechId.Whip,
                                kTechId.Shell, kTechId.Veil, kTechId.Spur, kTechId.None },

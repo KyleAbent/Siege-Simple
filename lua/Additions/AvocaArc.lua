@@ -1,7 +1,7 @@
 --Kyle 'Avoca' Abent
 class 'AvocaArc' (ARC)
 AvocaArc.kMapName = "avocaarc"
-local kNanoshieldMaterial = PrecacheAsset("glow/green/green.material")
+local kNanoshieldMaterial = PrecacheAsset("Glow/green/green.material")
 local kPhaseSound = PrecacheAsset("sound/NS2.fev/marine/structures/phase_gate_teleport")
 
 local kMoveParam = "move_speed"
@@ -17,7 +17,7 @@ function AvocaArc:OnInitialized()
    if Server then
  self:AddTimedCallback(AvocaArc.Instruct, 2.5)
  --self:AddTimedCallback(AvocaArc.Waypoint, 16)
-  self:AddTimedCallback(AvocaArc.Scan, 6)
+ -- self:AddTimedCallback(AvocaArc.Scan, 6)
  end
 
 end

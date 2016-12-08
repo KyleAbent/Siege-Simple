@@ -1,41 +1,12 @@
 --'Avoca'
-Shotgun.kStartOffset = 0
+local kViewModels = GenerateMarineViewModelPaths("shotgun")
 local kBulletSize = 0.016
-local kSpreadDistance = 12
+local kNanoshieldMaterial = PrecacheAsset("Glow/green/green.material")
 
-local originit = Shotgun.OnInitialized
-function Shotgun:OnInitialized()
+class 'AvocaShotgun' (Shotgun)
+AvocaShotgun.kMapName = "avocashotgun"
 
-originit(self)
-
-Shotgun.kSecondarySpreadVectors =
-{
-    GetNormalizedVector(Vector(-0.01, 0.01, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-0.32, 0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.32, 0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.32, -0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(-0.32, -0.32, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-1, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(1, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, -1, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, 1, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-0.25, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.25, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, -0.25, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, 0.25, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-0.6, -0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(-0.6, 0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.6, 0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.6, -0.6, kSpreadDistance)),
-    
-}
-
-
-end
+local networkVars = {}
 
 
 
@@ -43,28 +14,30 @@ end
     function Shotgun:OnUpdateAnimationInput(modelMixin)
     origanim(self, modelMixin)
         local activity = "none"
-        if self.secondaryAttacking then
-            activity = "primary"
-           modelMixin:SetAnimationInput("activity", activity)
-         end
+     --   if self.secondaryAttacking then
+       --     activity = "primary"
+        --   modelMixin:SetAnimationInput("activity", activity)
+        -- end
     end
     local origprimary = Shotgun.FirePrimary
-function Shotgun:FirePrimary(player)
+function AvocaShotgun:FirePrimary(player)
               --Jerry rig so i can have secondary fire acting as primary without firing primary. So I don't have to modify animations :)
   if not self.secondaryAttacking  then
     origprimary(self,player)
   end
 
 end
-function Shotgun:GetHasSecondary(player)
+function AvocaShotgun:GetHasSecondary(player)
     return true
 end
-function Shotgun:GetSecondaryCanInterruptReload()
+function AvocaShotgun:GetSecondaryCanInterruptReload()
     return true
 end
-
-function Shotgun:SecondaryHere(player)
-  local viewAngles = player:GetViewAngles()
+function AvocaShotgun:GetViewModelName(sex, variant)
+    return kViewModels[sex][variant]
+end
+function AvocaShotgun:SecondaryHere(player)
+ local viewAngles = player:GetViewAngles()
     viewAngles.roll = NetworkRandom() * math.pi * 2
 
     local shootCoords = viewAngles:GetCoords()
@@ -83,16 +56,16 @@ function Shotgun:SecondaryHere(player)
     self:TriggerEffects("shotgun_attack_sound")
     self:TriggerEffects("shotgun_attack")
     
-    for bullet = 1, math.min(numberBullets, #self.kSecondarySpreadVectors) do
+    for bullet = 1, math.min(numberBullets, #self.kSpreadVectors) do
     
-        if not self.kSecondarySpreadVectors[bullet] then
+        if not self.kSpreadVectors[bullet] then
             break
         end    
     
-        local spreadDirection = shootCoords:TransformVector(self.kSecondarySpreadVectors[bullet])
+        local spreadDirection = shootCoords:TransformVector(self.kSpreadVectors[bullet])
 
         local endPoint = startPoint + spreadDirection * range
-        startPoint = player:GetEyePos() + shootCoords.xAxis * self.kSecondarySpreadVectors[bullet].x * self.kStartOffset + shootCoords.yAxis * self.kSecondarySpreadVectors[bullet].y * self.kStartOffset
+        startPoint = player:GetEyePos() + shootCoords.xAxis * self.kSpreadVectors[bullet].x * self.kStartOffset + shootCoords.yAxis * self.kSpreadVectors[bullet].y * self.kStartOffset
         
         local targets, trace, hitPoints = GetBulletTargets(startPoint, endPoint, spreadDirection, kBulletSize, filter)
         
@@ -121,7 +94,7 @@ function Shotgun:SecondaryHere(player)
             local target = targets[i]
             local hitPoint = hitPoints[i]
 
-            self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, 10, "", showTracer and i == numTargets)
+            self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, kShotgunDamage, "", showTracer and i == numTargets)
             
             local client = Server and player:GetClient() or Client
             if not Shared.GetIsRunningPrediction() and client.hitRegEnabled then
@@ -131,7 +104,6 @@ function Shotgun:SecondaryHere(player)
         end
         
     end
-
 
 end
 local function CancelReload(self)
@@ -148,13 +120,11 @@ local function CancelReload(self)
     end
     
 end
-function Shotgun:OnSecondaryAttack(player)
-    local sprintedRecently = (Shared.GetTime() - self.lastTimeSprinted) < kMaxTimeToSprintAfterAttack
-    local attackAllowed = not sprintedRecently and (not self:GetIsReloading() or self:GetSecondaryCanInterruptReload()) and (not self:GetSecondaryAttackRequiresPress() or not player:GetSecondaryAttackLastFrame())
-    local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.88
+function AvocaShotgun:OnSecondaryAttack(player)
+    local attackAllowed = (not self:GetIsReloading() or self:GetSecondaryCanInterruptReload()) and (not self:GetSecondaryAttackRequiresPress() or not player:GetSecondaryAttackLastFrame())
     
     
-    if self.clip >= 1 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then
+    if self:GetIsDeployed() and attackAllowed and not self.primaryAttacking  then
     
         self.secondaryAttacking = true
         self.attackLastRequested = Shared.GetTime()
@@ -168,3 +138,37 @@ function Shotgun:OnSecondaryAttack(player)
     end
   
 end
+
+if Client then
+
+    function AvocaShotgun:OnUpdateRender()
+          local showMaterial = true --not self:GetInAttackMode()
+    
+        local model = self:GetRenderModel()
+        if model then
+
+            model:SetMaterialParameter("glowIntensity", 4)
+
+            if showMaterial then
+                
+                if not self.hallucinationMaterial then
+                    self.hallucinationMaterial = AddMaterial(model, kNanoshieldMaterial)
+                end
+                
+                self:SetOpacity(0.5, "hallucination")
+            
+            else
+            
+                if self.hallucinationMaterial then
+                    RemoveMaterial(model, self.hallucinationMaterial)
+                    self.hallucinationMaterial = nil
+                end//
+                
+                self:SetOpacity(1, "hallucination")
+            
+            end //showma
+            
+        end//omodel
+end //up render
+end -- client
+Shared.LinkClassToMap("AvocaShotgun", AvocaShotgun.kMapName, networkVars)

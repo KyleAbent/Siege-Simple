@@ -632,6 +632,7 @@ techid = kTechId.PhaseGate
 elseif String == "InfantryPortal" then
 mapnameof = InfantryPortalAvoca.kMapName
 techid = kTechId.InfantryPortal
+CreditCost = 15
 elseif  String == "RoboticsFactory" then
 mapnameof = RoboSiege.kMapName
 techid = kTechId.RoboticsFactory
@@ -856,7 +857,7 @@ Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInf
 end
 end
 
-local AddCreditsCommand = self:BindCommand("sh_addcsalt", "addsalt", AddSalt)
+local AddCreditsCommand = self:BindCommand("sh_addsalt", "addsalt", AddSalt)
 AddCreditsCommand:Help("sh_addsalt <player> <number>")
 AddCreditsCommand:AddParam{ Type = "clients" }
 AddCreditsCommand:AddParam{ Type = "number" }

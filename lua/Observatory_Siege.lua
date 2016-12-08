@@ -1,12 +1,20 @@
 function Observatory:GetMinRangeAC()
 return ObsAutoCCMR   
 end
+
+
+function Observatory:GetTechButtons(techId)
+
 --Right now pure overwrites because lazy
 local kObservatoryTechButtons = { kTechId.Scan, kTechId.DistressBeacon, kTechId.Detector, kTechId.None,
 kTechId.PhaseTech, kTechId.AdvancedBeacon, kTechId.None, kTechId.None }
 
-function Observatory:GetTechButtons(techId)
 
+    if not GetHasTech(self, kTechId.AdvBeacTech) then
+        kObservatoryTechButtons[6] = kTechId.AdvBeacTech
+    end
+    
+    
     if techId == kTechId.RootMenu then
         return kObservatoryTechButtons
     end

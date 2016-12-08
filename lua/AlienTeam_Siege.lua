@@ -8,7 +8,9 @@ function AlienTeam:InitTechTree()
     orig_AlienTeam_InitTechTree(self)
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
- 
+ self.techTree:AddBuildNode(kTechId.CommVortex, kTechId.ShadeHive)
+ self.techTree:AddActivation(kTechId.CragUmbra, kTechId.CragHive, kTechId.None) 
+   
 self.techTree:AddBuildNode(kTechId.EggBeacon, kTechId.CragHive)
 self.techTree:AddBuildNode(kTechId.CommTunnel, kTechId.None)
 self.techTree:AddBuildNode(kTechId.StructureBeacon, kTechId.ShiftHive)

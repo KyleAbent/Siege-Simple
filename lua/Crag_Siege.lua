@@ -1,5 +1,6 @@
 --Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/CommAbilities/Alien/CragUmbra.lua")
 
 class 'CragAvoca' (Crag)
 CragAvoca.kMapName = "cragavoca"
@@ -33,14 +34,11 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
 
-Shared.LinkClassToMap("CragAvoca", CragAvoca.kMapName, networkVars)
-
-
-function Crag:GetCragsInRange()
+function CragAvoca:GetCragsInRange()
       local crag = GetEntitiesWithinRange("Crag", self:GetOrigin(), Crag.kHealRadius)
            return Clamp(#crag, 0, 3)
 end
-function Crag:GetBonusAmt()
+function CragAvoca:GetBonusAmt()
 return (self:GetCragsInRange()/10)
 end
 function Crag:GetUnitNameOverride(viewer)
@@ -48,7 +46,43 @@ function Crag:GetUnitNameOverride(viewer)
     unitName = string.format(Locale.ResolveString("Crag (%sS %sB)"), self:GetCragsInRange(), self:GetBonusAmt() )
 return unitName
 end
-function Crag:TryHeal(target)
+local origbuttons = Crag.GetTechButtons
+function CragAvoca:GetTechButtons(techId)
+local table = {}
+
+table = origbuttons(self, techId)
+
+ table[3] = kTechId.CragUmbra
+ 
+ return table
+
+end
+local origact = Crag.PerformActivation
+function CragAvoca:PerformActivation(techId, position, normal, commander)
+origact(self, techId, position, normal, commander)
+
+local success  = false
+   if  techId == kTechId.CragUmbra then
+    success = self:TriggerUmbra()
+end
+
+return success, true
+
+end
+
+
+
+function CragAvoca:TriggerUmbra()
+
+    local umbra = CreateEntity(CragUmbra.kMapName,  self:GetOrigin() + Vector(0, 0.2, 0), self:GetTeamNumber())
+    umbra:SetTravelDestination(self:GetOrigin() + Vector(0, 2, 0) )
+    self:TriggerEffects("crag_trigger_umbra")
+    return true
+end
+
+
+
+function CragAvoca:TryHeal(target)
 
     local unclampedHeal = target:GetMaxHealth() * Crag.kHealPercentage
     local heal = Clamp(unclampedHeal, Crag.kMinHeal, Crag.kMaxHeal) 
@@ -76,3 +110,8 @@ function Crag:TryHeal(target)
     end
    
 end
+
+Shared.LinkClassToMap("CragAvoca", CragAvoca.kMapName, networkVars)
+
+
+

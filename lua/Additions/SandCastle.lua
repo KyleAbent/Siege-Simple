@@ -80,8 +80,12 @@ function SandCastle:OpenSiegeDoors()
                  if not siegedoor:isa("FrontDoor") then OpenEightTimes(siegedoor) end
               end 
               
+              if GetGameStarted() then
+              
                 for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
               StartSoundEffectForPlayer(SandCastle.kSiegeDoorSound, player)
+              end
+              
               end
               
 end
@@ -91,12 +95,14 @@ function SandCastle:OpenFrontDoors()
                for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
                       OpenEightTimes(frontdoor)
               end 
+              
+               if GetGameStarted() then 
 
               for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
               StartSoundEffectForPlayer(SandCastle.kFrontDoorSound, player)
               end
 
-
+               end
 end
 function SandCastle:OpenPrimaryDoors()
           GetGamerules():SetDamageMultiplier(1)

@@ -2,11 +2,23 @@ local function TimeUp(self)
     self:Kill()
     return false
 end
-
+local function GetLifeSpan(self)
+local default = kContaminationLifeSpan
+return ConditionalValue(not GetIsInSiege(self), default * math.random(.10, .30) + default, default)
+end
 function Contamination:GetInfestationGrowthRate()
     return ConditionalValue(not GetIsInSiege(self), 0.625, 0.5)
 end
+function Contamination:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
+    if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
+    
+        damageTable.damage = damageTable.damage * 0.9
+        --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
+        
+    end
+
+end
 function Contamination:OnInitialized()
 
     ScriptActor.OnInitialized(self)
@@ -27,7 +39,7 @@ function Contamination:OnInitialized()
         InitMixin( self, StaticTargetMixin )
         self:SetCoords( coords )
         
-        self:AddTimedCallback( TimeUp, kContaminationLifeSpan )
+        self:AddTimedCallback( TimeUp, GetLifeSpan(self) )
         
     elseif Client then
     

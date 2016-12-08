@@ -25,6 +25,35 @@ function Marine:GiveLayStructure(techid, mapname)
 end
 
 
+function Marine:GiveExo(spawnPoint)
+
+    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawMinigun" })
+    return exo
+    
+end
+
+function Marine:GiveDualExo(spawnPoint)
+
+    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
+    return exo
+    
+end
+
+function Marine:GiveClawRailgunExo(spawnPoint)
+
+    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
+    return exo
+    
+end
+
+function Marine:GiveDualRailgunExo(spawnPoint)
+
+    local exo = self:Replace(ExoAvocakMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+    return exo
+    
+end
+
+
 
 elseif Client then
 

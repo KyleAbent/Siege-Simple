@@ -37,7 +37,7 @@ end
 
 if Client then
     function SentryBattery:AddPowerVisual()
-          local radius = 5 --kBatteryPowerRange
+          local radius = 4 --kBatteryPowerRange
             self.ghostGuides = Client.CreateRenderDecal()
             self.ghostGuides.material = Client.CreateRenderMaterial()
           local materialName = SentryBattery.kMarineCircleDecalName

@@ -8,8 +8,8 @@ function MarineTeam:InitTechTree()
     orig_MarineTeam_InitTechTree(self)
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
-    
-     self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.Observatory) 
+     self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
+     self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.AdvBeacTech) 
     self.techTree:AddActivation(kTechId.MacSpawnOn,                kTechId.RoboticsFactory,          kTechId.None)
     self.techTree:AddActivation(kTechId.MacSpawnOff,                kTechId.RoboticsFactory,          kTechId.None)
     self.techTree:AddActivation(kTechId.ArcSpawnOn,                kTechId.ARCRoboticsFactory,          kTechId.None)

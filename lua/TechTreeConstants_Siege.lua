@@ -31,11 +31,13 @@ local kSiege_TechIds =
     'ArcSpawnOff',
     'PrimalScream',
     'BackupLight',
+    'AdvBeacTech',
     'AdvancedBeacon',
     'EggBeacon',
     'StructureBeacon',
     'CommTunnel',
     'OnoGrow',
+    'CommVortex',
 }
 
 for i = 1, #kSiege_TechIds do

@@ -1,3 +1,12 @@
+kAdvBeacTechChost = 15
+kAdvBeacTechTime = 30 
+
+kCommVortexCoolDown = 20
+kCommVortexCost = 8 
+
+kCragUmbraCooldown = 10
+kCragUmbraCost = 5
+kCragUmbraRadius = 12
 
 kAlienDefaultLvl = 25
 kAlienDefaultAddXp = 0.25
@@ -21,7 +30,7 @@ kSideTimer = 0 -- b/c maps still use this
 kPrimalScreamEnergyCost = 20
 kPrimalScreamROF = 1
 
-kBatteryPowerRange = 5
+kBatteryPowerRange = 4
 
 kDefaultLvl = 25
 kDefaultAddXp = 0.15
