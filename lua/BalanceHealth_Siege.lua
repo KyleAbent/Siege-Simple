@@ -1,6 +1,8 @@
 kFadeArmor = 104 --30% increase from 80
 kFadeArmorFullyUpgradedAmount = 156 --30% increase from 120
 
+kMarineRegenerationHeal = 10 -- was 25 hp per second but is reduced for balance since marines can purchase directly
+
 kSentryBatteryHealth = 780 --30% increase from 600
 kSentryBatteryArmor = 230 --30% increase from 200
 
