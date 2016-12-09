@@ -11,6 +11,11 @@ LEFT_MENU = 1
 RIGHT_MENU = 2
 kMaxRequestsPerSide = 6
 
+local ammoNumClips = 5
+local healthCost = 1
+local ammoCost = 1
+local medpackHealthSound = PrecacheAsset("sound/NS2.fev/marine/common/health")
+
 kVoiceId = enum ({
 
     'None', 'VoteEject', 'VoteConcede', 'Ping',
@@ -70,6 +75,70 @@ local function BuyMist(player)
     end  
     
 end
+
+local function BuyMedpack(player)
+    if player then
+        if not player.timeLastMedpack or player.timeLastMedpack + kMedpackPickupDelay <= Shared.GetTime() then
+            if player:GetHealth() < player:GetMaxHealth() and player.resources > healthCost then
+         
+                player.resources = player.resources - healthCost
+                player:AddHealth(kMedpackHeal, false, true)
+                player:AddRegeneration()
+                player.timeLastMedpack = Shared.GetTime()
+                StartSoundEffectAtOrigin(medpackHealthSound, player:GetOrigin())
+            
+            end
+        end
+    end    
+    
+end
+local function BuyAmmo(player)
+
+    if player and player.resources > ammoCost then
+    
+        local needsAmmo = false
+        for i = 0, player:GetNumChildren() - 1 do
+        
+            local child = player:GetChildAtIndex(i)
+            if child:isa("ClipWeapon") and child:GetNeedsAmmo(false) then
+            
+                needsAmmo = true
+                break
+                
+            end
+            
+        end 
+        if needsAmmo then
+              
+            local weapon = player:GetActiveWeapon()
+            
+            local consumedPack = false
+            
+            for i = 0, player:GetNumChildren() - 1 do
+            
+                local child = player:GetChildAtIndex(i)
+                if child:isa("ClipWeapon") then
+                
+                    if child:GiveAmmo(ammoNumClips, false) then
+                        consumedPack = true
+                    end
+                    
+                end
+                
+            end  
+            
+            if consumedPack then
+            
+                player.resources = player.resources - ammoCost
+                StartSoundEffectAtOrigin(AmmoPack.kPickupSound, player:GetOrigin())
+                
+            end
+            
+        end
+        
+    end
+    
+end
 local function PingInViewDirection(player)
 
     if player and (not player.lastTimePinged or player.lastTimePinged + 60 < Shared.GetTime()) then
@@ -117,8 +186,8 @@ local kSoundData =
 
     -- marine vote menu
     [kVoiceId.RequestWeld] = { Sound = "sound/NS2.fev/marine/voiceovers/weld", Function = GiveWeldOrder, Description = "REQUEST_MARINE_WELD", KeyBind = "RequestWeld", AlertTechId = kTechId.None },
-    [kVoiceId.MarineRequestMedpack] = { Sound = "sound/NS2.fev/marine/voiceovers/medpack", Description = "REQUEST_MARINE_MEDPACK", KeyBind = "RequestHealth", AlertTechId = kTechId.MarineAlertNeedMedpack },
-    [kVoiceId.MarineRequestAmmo] = { Sound = "sound/NS2.fev/marine/voiceovers/ammo", Description = "REQUEST_MARINE_AMMO", KeyBind = "RequestAmmo", AlertTechId = kTechId.MarineAlertNeedAmmo },
+    [kVoiceId.MarineRequestMedpack] = {Function = BuyMedpack, Sound = "sound/NS2.fev/marine/voiceovers/medpack", Description = "Buy Medpack", KeyBind = "RequestHealth", AlertTechId = kTechId.MarineAlertNeedMedpack },
+    [kVoiceId.MarineRequestAmmo] = {Function = BuyAmmo, Sound = "sound/NS2.fev/marine/voiceovers/ammo", Description = "Buy Ammo", KeyBind = "RequestAmmo", AlertTechId = kTechId.MarineAlertNeedAmmo },
     [kVoiceId.MarineRequestOrder] = { Sound = "sound/NS2.fev/marine/voiceovers/need_orders", Description = "REQUEST_MARINE_ORDER",  KeyBind = "RequestOrder", AlertTechId = kTechId.MarineAlertNeedOrder },
     
     [kVoiceId.MarineTaunt] = { Sound = "sound/NS2.fev/marine/voiceovers/taunt", Description = "REQUEST_MARINE_TAUNT", KeyBind = "Taunt", AlertTechId = kTechId.None },
