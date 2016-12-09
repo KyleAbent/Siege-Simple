@@ -27,7 +27,32 @@ local choices = {}
               
 
 end
+local function GetLocationWithMostMixedPlayers()
 
+local team1avgorigin = Vector(0, 0, 0)
+local marines = 1
+local team2avgorigin = Vector(0, 0, 0)
+local aliens = 1
+local neutralavgorigin = Vector(0, 0, 0)
+
+            for _, marine in ientitylist(Shared.GetEntitiesWithClassname("Marine")) do
+            if marine:GetIsAlive() and not marine:isa("Commander") then marines = marines + 1 team1avgorigin = team1avgorigin + marine:GetOrigin() end
+             end
+             
+           for _, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do
+            if alien:GetIsAlive() and not alien:isa("Commander") then aliens = aliens + 1 team2avgorigin = team2avgorigin + alien:GetOrigin() end 
+             end
+             --v1.23 added check to make sure room isnt empty
+         neutralavgorigin =  team1avgorigin + team2avgorigin
+         neutralavgorigin =  neutralavgorigin / (marines+aliens) --better as a table i know
+     //    Print("neutralavgorigin is %s", neutralavgorigin)
+     local nearest = GetNearestMixin(neutralavgorigin, "Combat", nil, function(ent)  return ent:isa("Player") and ent:GetIsInCombat() end)
+    if nearest then
+   // Print("nearest is %s", nearest.name)
+        return nearest
+    end
+
+end
 local function GetSiegeView()
 
 
@@ -40,12 +65,9 @@ local choices = {}
 --commandstructure if in combat
 --alive power node in combat
 --egg or structure beacon
-             for index, marine in ientitylist(Shared.GetEntitiesWithClassname("Marine")) do
-                  if marine:GetIsAlive() and marine:GetIsOnGround() and marine:GetHealthScalar() <= .3 and marine:GetIsInCombat() and not marine:isa("Commander")  then table.insert(choices, marine) break end --built and not disabled should be summed up by if in combat?
-              end 
-             for index, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do
-                  if alien:GetIsAlive() and ( GetIsInSiege(alien) or alien:GetHealthScalar() <= .3 ) and alien:GetIsInCombat() and not alien:isa("Commander")  then table.insert(choices, alien) break end --built and not disabled should be summed up by if in combat?
-              end  
+local interesting = GetLocationWithMostMixedPlayers()
+if interesting ~= nil then table.insert(choices,interesting) end
+               
                for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
                     local order = arc:GetCurrentOrder()
                       if order then
@@ -74,30 +96,12 @@ local choices = {}
               return random
 end
  local function GetMiddleView()
-  --Print("GetMiddleView")
---Beacons
--- <=30% hp constructs in combat
---moving arcs
---contam
+
 local choices = {}
-            -- for index, siegedoor in ientitylist(Shared.GetEntitiesWithClassname("SiegeDoor")) do
-            --    if siegedoor then
-            --       local player =  GetNearest(siegedoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") end)
-            --         if player then
-            --         table.insert(choices, player) 
-            --         break  -- just 1
-            --         end
-             --      end
-             -- end 
-           --  for index, alienbeacon in ientitylist(Shared.GetEntitiesWithClassname("AlienBeacon")) do
-            --      if alienbeacon:isa("EggBeacon") or alienbeacon:isa("StructureBeacon") and alienbeacon:GetIsAlive() then table.insert(choices, alienbeacon) break end --built and not disabled should be summed up by if in combat?
-            --  end 
-             for index, marine in ientitylist(Shared.GetEntitiesWithClassname("Marine")) do
-                  if marine:GetIsAlive() and marine:GetIsOnGround() and marine:GetHealthScalar() <= .7 and marine:GetIsInCombat() and not marine:isa("Commander")  then table.insert(choices, marine) break end --built and not disabled should be summed up by if in combat?
-              end 
-             for index, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do
-                  if alien:GetIsAlive() and alien:GetHealthScalar() <= .7 and alien:GetIsInCombat() and  not alien:isa("Commander")  then table.insert(choices, alien) break end --built and not disabled should be summed up by if in combat?
-              end  
+local interesting = GetLocationWithMostMixedPlayers()
+if interesting ~= nil then table.insert(choices,interesting) end
+             
+ 
              for index, obs in ientitylist(Shared.GetEntitiesWithClassname("Observatory")) do
                   if obs:GetIsBeaconing() or obs:GetIsAdvancedBeaconing() then table.insert(choices, obs) break end --built and not disabled should be summed up by if in combat?
               end  
@@ -118,7 +122,7 @@ local choices = {}
               end
         
                    for _, construct in ipairs(GetEntitiesWithMixin("Construct")) do
-                  if construct:GetIsBuilt() and construct:GetHealthScalar() <= .7 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
+                  if construct:GetIsBuilt() and construct:GetHealthScalar() <= .3 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
               end     
 
              for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
@@ -186,6 +190,26 @@ local function FindEntNear(where)
             end
             return where
 end
+
+
+local function GetTween()
+local random = {}
+table.insert(random, kTweeningFunctions.easein)
+table.insert(random, kTweeningFunctions.linear)
+table.insert(random, kTweeningFunctions.easein)
+table.insert(random, kTweeningFunctions.easein3)
+table.insert(random, kTweeningFunctions.easeout3)
+table.insert(random, kTweeningFunctions.easein5)
+table.insert(random, kTweeningFunctions.easeout5)
+table.insert(random, kTweeningFunctions.easein7)
+table.insert(random, kTweeningFunctions.easeout7)
+table.insert(random, kTweeningFunctions.easeout)
+
+ random = table.random(random)
+return random
+
+end
+
 local function ChangeView(self, client)
  -- Print("ChangeView")
       -- client.SendNetworkMessage("SwitchFromFirstPersonSpectate", { mode = kSpectatorMode.Following })
@@ -205,16 +229,28 @@ local function ChangeView(self, client)
         end
        
         if vip ~= nil then 
+          client:SetDesiredCameraDistance(0)
         -- Print("vip is %s", vip:GetClassName())
           if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
           local viporigin = vip:GetOrigin()
           local findfreespace = FindFreeSpace(viporigin, 1, 8)
-          if findfreespace == viporigin then findfreespace = FindEntNear(findfreespace) end
+          if findfreespace == viporigin then client:SetDesiredCameraDistance(3) end
              client:SetOrigin(findfreespace)
              local dir = GetNormalizedVector(viporigin - client:GetOrigin())
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
-              client:SetDesiredCamera(8.0, {move = true}, client:GetEyePos(), angles, 0)
-              self:NotifyGeneric( client, "VIP is %s, location is %s", true, vip:GetClassName(), GetLocationName(client) )
+             local tween = nil
+             local random = math.random (1,10)
+             local static = false
+             local wall = GetWallBetween(client:GetOrigin(), viporigin, vip)
+               if random >= 5 then
+               tween = GetTween()
+              client:SetDesiredCamera(8.0, {move = true, tweening = tween }, client:GetEyePos(), angles, 0)
+              else
+              client:SetOffsetAngles(angles)
+              static = true
+              end
+              
+              self:NotifyGeneric( client, "VIP is %s, location is %s, static camera is %s (%s), , wall between is %s", true, vip:GetClassName(), GetLocationName(client), static, tween, wall )
         else
              client:SetSpectatorMode(kSpectatorMode.FirstPerson)
               --client:SelectEntity(GetEligableTopScorer()) 
@@ -223,20 +259,20 @@ local function ChangeView(self, client)
 end
 local function AutoSpectate(self, client)
 
-    Shine.Timer.Create( "AutoSpectate", 8, -1, function() if client and client:isa("Spectator") then ChangeView(self, client) else Shine.Timer.Destroy("AutoSpectate") end  end )
+    Shine.Timer.Create( "AutoSpectate", 8, -1, function() if client and client:isa("AvocaSpectator") then ChangeView(self, client) else Shine.Timer.Destroy("AutoSpectate") end  end )
 end
 
 
 function Plugin:ClientConnect(client)
      if client:GetUserId() == 8086089 or client:GetUserId() == 2962389 or client:GetUserId() == 22542592 then 
      self:SimpleTimer( 4, function() 
-     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() ))end
+     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )  )end
       end)
       end
       
-    if client:GetUserId() == 388510592 then 
+    if client:GetUserId() == 22542592 then --388510592 then 
      self:SimpleTimer( 4, function() 
-     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )) local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
+     if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) client:GetControllingPlayer():Replace(AvocaSpectator.kMapName)  local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
       end)
       
       end

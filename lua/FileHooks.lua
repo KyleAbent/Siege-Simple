@@ -13,6 +13,8 @@ ModLoader.SetupFileHook( "lua/Clog.lua", "lua/Clog_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Exo.lua", "lua/Exo_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Spectator.lua", "lua/Spectator_Siege.lua", "post" )
+
 ModLoader.SetupFileHook( "lua/RoboticsFactory.lua", "lua/RoboticsFactory_Siege.lua", "post" ) 
 ModLoader.SetupFileHook( "lua/Sentry.lua", "lua/Sentry_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/JetpackMarine.lua", "lua/JetpackMarine_Siege.lua", "post" )
