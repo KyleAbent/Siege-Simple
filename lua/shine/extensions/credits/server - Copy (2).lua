@@ -25,8 +25,6 @@ Shine.Hook.SetupClassHook( "ScoringMixin", "AddScore", "OnScore", "PassivePost" 
 Shine.Hook.SetupClassHook( "NS2Gamerules", "ResetGame", "OnReset", "PassivePost" )
 
 Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyMist", "BecauseFuckSpammingCommanders", "Replace" )
-Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyMed", "SeriouslyFuckIt", "Replace" )
-Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyAmmo", "InTheButt", "Replace" )
 
 
 
@@ -52,7 +50,6 @@ self.PlayerSpentAmount = {}
 return true
 end
 
-
 function Plugin:BecauseFuckSpammingCommanders(player)
 if not GetGamerules():GetGameStarted() then return end
 local CreditCost = 1
@@ -71,35 +68,6 @@ player:GiveItem(NutrientMist.kMapName)
      self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
 return
 end
-function Plugin:SeriouslyFuckIt(player)
-if not GetGamerules():GetGameStarted() then return end
- self:SimpleTimer(4, function() self:SpawnIt(player, MedPack.kMapName)  end)
-
-end
- function Plugin:SpawnIt(player, entity)
- if not player or not player:GetIsAlive() then return end
- local CreditCost = 1
- local client = player:GetClient()
-local controlling = client:GetControllingPlayer()
-local Client = controlling:GetClient()
-if self:GetPlayerSaltInfo(Client) < CreditCost then
-self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, CreditCost, self:GetPlayerSaltInfo(Client))
-return
-end
-self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
-   self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
-     self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
-return
-    CreateEntity( entity, FindFreeSpace(player:GetOrigin(), 1, 4), 1) 
-end
-function Plugin:InTheButt(player)
-if not player or not player:GetIsAlive() then return end
-if not GetGamerules():GetGameStarted() then return end
- self:SimpleTimer(4, function() self:SpawnIt(player, AmmoPack.kMapName)    end)
-end
- 
-
 
 function Plugin:GenereateTotalCreditAmount()
 local credits = 0
@@ -557,7 +525,7 @@ elseif whoagain:GetTeamNumber() == 2 then
       return 
       else
        if entity.SetIsACreditStructure then 
-        --if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
+        if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
           entity:SetIsACreditStructure(true) 
           end
       end
@@ -715,7 +683,7 @@ mapnameof = EnzymeCloud.kMapName
 elseif String == "Ink" then
 CreditCost = 2
 laybool = false
-delay = 30
+delay = 45
 mapnameof = ShadeInk.kMapName
 elseif String == "Hallucination" then
 CreditCost = 1.75
@@ -800,26 +768,26 @@ local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 1
 if not Player then return end
- if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 8 end 
- if String == "RailGun" and not Player:isa("Exo") then cost = 29 delayafter = 25  end 
- if String == "MiniGun" and not Player:isa("Exo") then  cost = 30  delayafter = 25 end
- if String == "Gorge" then cost = 9 end
- if String == "Lerk" then  cost = 12 end
- if String == "Fade" then cost = 20 end
- if String == "Onos" then cost = 25 end
+ if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 10 end 
+ if String == "RailGun" and not Player:isa("Exo") then cost = 40 delayafter = 30  end 
+ if String == "MiniGun" and not Player:isa("Exo") then  cost = 45  delayafter = 30 end
+ if String == "Gorge" then cost = 10 end
+ if String == "Lerk" then  cost = 15 end
+ if String == "Fade" then cost = 25 end
+ if String == "Onos" then cost = 30 end
  if FirstCheckRulesHere(self, Client, Player, String, cost ) == true then return end
  
   
          if Player:GetTeamNumber() == 1 then
-              if cost == 8 then DeductBuy(self, Client, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 30 then DeductBuy(self, Client, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 29 then DeductBuy(self, Client, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+              if cost == 10 then DeductBuy(self, Client, cost, delayafter)   Player:GiveJetpack()
+             elseif cost == 45 then DeductBuy(self, Client, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == 40 then DeductBuy(self, Client, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 9 then Player:CreditBuy(Gorge)   Player:SetResources(Player:GetResources() + kGorgeCost ) DeductBuy(self, Client, cost)
-              elseif cost == 12  then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kLerkCost ) Player:CreditBuy(Lerk)
-              elseif cost == 20 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kFadeCost ) Player:CreditBuy(Fade)
-              elseif cost == 25 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kOnosCost ) Player:CreditBuy(Onos)
+              if cost == 10 then Player:CreditBuy(Gorge)   Player:SetResources(Player:GetResources() + kGorgeCost ) DeductBuy(self, Client, cost)
+              elseif cost == 15  then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kLerkCost ) Player:CreditBuy(Lerk)
+              elseif cost == 25 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kFadeCost ) Player:CreditBuy(Fade)
+              elseif cost == 30 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kOnosCost ) Player:CreditBuy(Onos)
               end
          end
    

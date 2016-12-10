@@ -1,6 +1,7 @@
 --Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/CommAbilities/Alien/CragUmbra.lua")
+Script.Load("lua/InfestationMixin.lua")
 
 class 'CragAvoca' (Crag)
 CragAvoca.kMapName = "cragavoca"
@@ -9,10 +10,15 @@ local networkVars = {}
 
 --AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
+function CragAvoca:GetInfestationRadius()
+    if self.isacreditstructure then return 1 else return 0 end
+end
 
     function CragAvoca:OnInitialized()
      Crag.OnInitialized(self)
        --  InitMixin(self, LevelsMixin)
+         InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Crag)
     end
@@ -110,7 +116,16 @@ function CragAvoca:TryHeal(target)
     end
    
 end
+function CragAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
+    if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
+    
+        damageTable.damage = damageTable.damage * 0.9
+        --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
+        
+    end
+
+end
 Shared.LinkClassToMap("CragAvoca", CragAvoca.kMapName, networkVars)
 
 

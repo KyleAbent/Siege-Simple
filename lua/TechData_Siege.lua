@@ -7,6 +7,7 @@ Script.Load("lua/Additions/CommTunnel.lua")
 Script.Load("lua/Additions/OnoGrow.lua")
 Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
+Script.Load("lua/Weapons/Alien/AcidRocket.lua")
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
 local tunnelEntrances = 0 
@@ -67,6 +68,15 @@ end
 
 local kSiege_TechData =
 {        
+
+ { [kTechDataId] = kTechId.AcidRocket,        
+  [kTechDataCategory] = kTechId.Fade,   
+     [kTechDataMapName] = AcidRocket.kMapName,  
+[kTechDataCostKey] = kStabResearchCost,
+ [kTechDataResearchTimeKey] = kStabResearchTime, 
+    [kTechDataDamageType] = kDamageType.Corrode,  
+     [kTechDataDisplayName] = "AcidRocket",
+ [kTechDataTooltipInfo] = "Ranged Projectile dealing damage only to armor and structures"},
 
                  { [kTechDataId] = kTechId.CommVortex, 
         [kTechDataMapName] = CommVortex.kMapName, 

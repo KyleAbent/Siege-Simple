@@ -1,5 +1,6 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
 
 class 'ShadeAvoca' (Shade)
 ShadeAvoca.kMapName = "shadeavoca"
@@ -8,9 +9,14 @@ local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
+function ShadeAvoca:GetInfestationRadius()
+    return 1
+end
 
     function ShadeAvoca:OnInitialized()
      Shade.OnInitialized(self)
+       InitMixin(self, InfestationMixin)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shade)

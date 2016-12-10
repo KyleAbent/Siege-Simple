@@ -1,10 +1,18 @@
 Script.Load("lua/StunMixin.lua")
+Script.Load("lua/PhaseGateUserMixin.lua")
 
 class 'ExoAvoca' (Exo)
 ExoAvoca.kMapName = "exoavoca"
 
 local networkVars = {}
 AddMixinNetworkVars(StunMixin, networkVars)
+AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
+
+function ExoAvoca:OnCreate()
+    Exo.OnCreate(self)
+    InitMixin(self, PhaseGateUserMixin)
+
+end
 
 
 local oninit = Exo.OnInitialized
@@ -45,6 +53,16 @@ function ExoAvoca:OnStun()
                 local stunwall = CreateEntity(StunWall.kMapName, self:GetOrigin(), 2)    
                 StartSoundEffectForPlayer(AlienCommander.kBoneWallSpawnSound, self)
         end
+end
+function ExoAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
+
+    if hitPoint ~= nil and doer ~= nil and doer:isa("Rocket") then
+    
+        damageTable.damage = damageTable.damage * 0.7
+        --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
+        
+    end
+
 end
 
 Shared.LinkClassToMap("ExoAvoca", ExoAvoca.kMapName, networkVars)

@@ -181,6 +181,10 @@ SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures witho
 
 SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
 
+SetCachedTechData(kTechId.Fade, kTechDataMapName,FadeAvoca.kMapName)
+SetCachedTechData(kTechId.Fade, kTechDataGestateName, FadeAvoca.kMapName)
+
+
 
 
 --------------------------------------------------------------------

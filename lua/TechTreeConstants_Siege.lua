@@ -38,6 +38,7 @@ local kSiege_TechIds =
     'CommTunnel',
     'OnoGrow',
     'CommVortex',
+    'AcidRocket',
 }
 
 for i = 1, #kSiege_TechIds do

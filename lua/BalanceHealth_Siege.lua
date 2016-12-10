@@ -8,3 +8,8 @@ kMinMatureCystHealth = 250 --default 200
 kCystHealth = 150 --default 30
 kMatureCystArmor = 30 --default 0
 kMatureCystHealth = 500 --default 450
+
+
+
+
+

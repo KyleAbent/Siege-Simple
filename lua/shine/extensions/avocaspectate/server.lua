@@ -13,7 +13,9 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Spectate]",  255, 0, 0, String, Format, ... )
 end
-
+function Plugin:NotifySalt( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[+0.1 Salt][Director]",  255, 0, 0, String, Format, ... )
+end
 local function GetPregameView()
 local choices = {}
  
@@ -84,9 +86,7 @@ if interesting ~= nil then table.insert(choices,interesting) end
                    for _, construct in ipairs(GetEntitiesWithMixin("Construct")) do
                   if not construct:isa("Hydra") and construct:GetIsAlive() and construct:GetHealthScalar() <= .5 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
               end  
-                      for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
-                  if ( powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() ) and powerpoint:GetHealthScalar() <= .65 and powerpoint:GetIsInCombat() then table.insert(choices, powerpoint) break end --built and not disabled should be summed up by if in combat?
-              end 
+
               
           --   for index, alienbeacon in ientitylist(Shared.GetEntitiesWithClassname("AlienBeacon")) do
            --       if alienbeacon:GetIsAlive() then table.insert(choices, alienbeacon) break end --built and not disabled should be summed up by if in combat?
@@ -209,7 +209,21 @@ table.insert(random, kTweeningFunctions.easeout)
 return random
 
 end
+local function SaltNearby(self, client)
 
+if not GetGamerules():GetGameStarted()  then return end
+
+   for _, player in ipairs(GetEntitiesWithinRange("Player", client:GetOrigin(), 4)) do
+    local  userid = player:GetClient():GetUserId()
+        if player ~= client and userid ~= nil then
+         Shared.ConsoleCommand(string.format("sh_addsalt %s 0.1 false", userid ) )
+         self:NotifySalt( player, "You have been visited!!!!", true ) 
+        self:NotifySalt( client, "Added Salt to %s", true, player:GetName() ) 
+         end
+  
+   end
+  
+end
 local function ChangeView(self, client)
  -- Print("ChangeView")
       -- client.SendNetworkMessage("SwitchFromFirstPersonSpectate", { mode = kSpectatorMode.Following })
@@ -242,15 +256,11 @@ local function ChangeView(self, client)
              local random = math.random (1,10)
              local static = false
              local wall = GetWallBetween(client:GetOrigin(), viporigin, vip)
-               if random >= 5 then
                tween = GetTween()
               client:SetDesiredCamera(8.0, {move = true, tweening = tween }, client:GetEyePos(), angles, 0)
-              else
-              client:SetOffsetAngles(angles)
-              static = true
-              end
+            --  SaltNearby(self, client)
+              self:NotifyGeneric( client, "VIP is %s, location is %s, tween is (%s),  wall between is %s", true, vip:GetClassName(), GetLocationName(client), tween, wall )
               
-              self:NotifyGeneric( client, "VIP is %s, location is %s, static camera is %s (%s), , wall between is %s", true, vip:GetClassName(), GetLocationName(client), static, tween, wall )
         else
              client:SetSpectatorMode(kSpectatorMode.FirstPerson)
               --client:SelectEntity(GetEligableTopScorer()) 
@@ -270,7 +280,7 @@ function Plugin:ClientConnect(client)
       end)
       end
       
-    if client:GetUserId() == 22542592 then --388510592 then 
+    if client:GetUserId() == 388510592 then --388510592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) client:GetControllingPlayer():Replace(AvocaSpectator.kMapName)  local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
       end)
@@ -278,3 +288,18 @@ function Plugin:ClientConnect(client)
       end
 
 end
+function Plugin:SetGameState( Gamerules, State, OldState )
+
+     if State == kGameState.Team1Won or State == kGameState.Team2Won or State == kGameState.Draw then
+          -- Shine:GetClient(388510592)
+            self:SimpleTimer( 12, function() 
+            local client =  Shine:GetClient(388510592) 
+                  if client then 
+                    Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) 
+                    client:GetControllingPlayer():Replace(AvocaSpectator.kMapName) 
+                    local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) 
+                  end 
+            end)
+        end 
+end
+     

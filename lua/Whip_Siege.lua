@@ -1,5 +1,6 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
 
 class 'WhipAvoca' (Whip)
 WhipAvoca.kMapName = "whipavoca"
@@ -8,10 +9,15 @@ local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
+function WhipAvoca:GetInfestationRadius()
+    return 1
+end
 
     function WhipAvoca:OnInitialized()
      Whip.OnInitialized(self)
          InitMixin(self, LevelsMixin)
+           InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Whip)
     end
@@ -90,7 +96,16 @@ function Whip:GetCanBomb(target, targetPoint)
     return true
     
 end
+function Whip:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
+    if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
+    
+        damageTable.damage = damageTable.damage * 0.9
+        --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
+        
+    end
+
+end
 
 
     

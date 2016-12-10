@@ -2,7 +2,12 @@ function Player:HookWithShineToBuyMist(player)
        self:Kill() //What a horrible Joke.. Oh Hey! Purchase Mist! ... *Dies
                    --11.15 well except for that this is replaced via shine to do the dirty work, ya dig. I digg.
 end
-
+function Player:HookWithShineToBuyMed(player)
+       self:Kill() 
+       end
+function Player:HookWithShineToBuyAmmo(player)
+       self:Kill() 
+end
 function Player:RunCommand(string)
  self:GetClient():RunIt(string)
 end

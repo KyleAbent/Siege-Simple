@@ -1,3 +1,9 @@
+kAcidRocketDamage = 25
+kAcidRocketDamageType = kDamageType.Corrode
+kAcidRocketFireDelay = 0.5
+kAcidRocketEnergyCost = 10
+kAcidRocketRadius = 6
+
 kAdvBeacTechChost = 15
 kAdvBeacTechTime = 30 
 

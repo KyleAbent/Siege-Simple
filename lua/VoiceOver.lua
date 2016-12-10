@@ -70,6 +70,20 @@ local function BuyMist(player)
     end  
     
 end
+local function BuyMedPack(player)
+
+    if player then
+        player:HookWithShineToBuyMed(player)
+    end  
+    
+end
+local function BuyAmmoPack(player)
+
+    if player then
+        player:HookWithShineToBuyAmmo(player)
+    end  
+    
+end
 local function PingInViewDirection(player)
 
     if player and (not player.lastTimePinged or player.lastTimePinged + 60 < Shared.GetTime()) then
@@ -117,8 +131,8 @@ local kSoundData =
 
     -- marine vote menu
     [kVoiceId.RequestWeld] = { Sound = "sound/NS2.fev/marine/voiceovers/weld", Function = GiveWeldOrder, Description = "REQUEST_MARINE_WELD", KeyBind = "RequestWeld", AlertTechId = kTechId.None },
-    [kVoiceId.MarineRequestMedpack] = { Sound = "sound/NS2.fev/marine/voiceovers/medpack", Description = "REQUEST_MARINE_MEDPACK", KeyBind = "RequestHealth", AlertTechId = kTechId.MarineAlertNeedMedpack },
-    [kVoiceId.MarineRequestAmmo] = { Sound = "sound/NS2.fev/marine/voiceovers/ammo", Description = "REQUEST_MARINE_AMMO", KeyBind = "RequestAmmo", AlertTechId = kTechId.MarineAlertNeedAmmo },
+    [kVoiceId.MarineRequestMedpack] =  {  Sound = "sound/NS2.fev/marine/voiceovers/medpack", Function = BuyMedPack, Description = "Purchase Medpack(1)", KeyBind = "RequestHealth"},
+    [kVoiceId.MarineRequestAmmo] = {   Sound = "sound/NS2.fev/marine/voiceovers/ammo", Function = BuyAmmoPack, Description = "Purchase Ammopack(1)", KeyBind = "RequestAmmo"},
     [kVoiceId.MarineRequestOrder] = { Sound = "sound/NS2.fev/marine/voiceovers/need_orders", Description = "REQUEST_MARINE_ORDER",  KeyBind = "RequestOrder", AlertTechId = kTechId.MarineAlertNeedOrder },
     
     [kVoiceId.MarineTaunt] = { Sound = "sound/NS2.fev/marine/voiceovers/taunt", Description = "REQUEST_MARINE_TAUNT", KeyBind = "Taunt", AlertTechId = kTechId.None },
@@ -131,7 +145,7 @@ local kSoundData =
     
     -- alien vote menu
     [kVoiceId.AlienRequestHarvester] = { Sound = "sound/NS2.fev/alien/voiceovers/follow_me", Description = "REQUEST_ALIEN_HARVESTER", KeyBind = "RequestOrder", AlertTechId = kTechId.AlienAlertNeedHarvester },
-    [kVoiceId.AlienRequestMist] = { Function = BuyMist, Description = "Purchase Mist", KeyBind = "RequestHealth", AlertTechId = kTechId.None },
+    [kVoiceId.AlienRequestMist] = { Function = BuyMist, Description = "Purchase Mist(1)", KeyBind = "RequestHealth", AlertTechId = kTechId.None },
     [kVoiceId.AlienRequestDrifter] = { Sound = "sound/NS2.fev/alien/voiceovers/follow_me", Description = "REQUEST_ALIEN_DRIFTER", KeyBind = "RequestAmmo", AlertTechId = kTechId.AlienAlertNeedDrifter },
     [kVoiceId.AlienRequestHealing] = { Function = BuyMist, Description = "Purchase Mist", KeyBind = "RequestHealth", AlertTechId = kTechId.None },
     [kVoiceId.AlienTaunt] = { Sound = "", Function = GetLifeFormSound, Description = "REQUEST_ALIEN_TAUNT", KeyBind = "Taunt", AlertTechId = kTechId.None },

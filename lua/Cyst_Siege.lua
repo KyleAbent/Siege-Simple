@@ -2,7 +2,7 @@ function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
     
-        damageTable.damage = damageTable.damage * 0.9
+        damageTable.damage = damageTable.damage * 0.7
         --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
         
     end
