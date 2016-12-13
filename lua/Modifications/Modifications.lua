@@ -6,13 +6,7 @@ Script.Load("lua/Modifications/ReallyNow.lua")
         end
     end
 
-kHiveInfestationRadius = 8
-kMaxEntitiesInRadius = 30 
-kMaxEntityRadius = 10 
-kMACSupply = 5
-kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
-kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
-kSentrySupply = 5
+
 
 
 if Server then
@@ -131,10 +125,14 @@ SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.k
 SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
 SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoAvoca.kMapName)
 
+
 SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipAvoca.kMapName)
 SetCachedTechData(kTechId.Crag, kTechDataMapName,CragAvoca.kMapName)
 SetCachedTechData(kTechId.Shade, kTechDataMapName,ShadeAvoca.kMapName)
 SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftAvoca.kMapName)
+SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraAvoca.kMapName)
+
+
 
 
 

@@ -351,9 +351,9 @@ function LayStructures:GetPositionForStructure(player)
     
         if trace.entity == nil then
             isPositionValid = true
-        elseif HasMixin(trace.entity, "Avoca") and trace.entity:GetTeamNumber() == 1  then
-            isonstructure = ( trace.entity.GetCanStick and trace.entity:GetCanStick() )
-            isPositionValid = isonstructure
+       -- elseif HasMixin(trace.entity, "Avoca") and trace.entity:GetTeamNumber() == 1  then
+       --     isonstructure = false --( trace.entity.GetCanStick and trace.entity:GetCanStick() )
+       --     isPositionValid = isonstructure
         end
         
         displayOrigin = trace.endPoint 

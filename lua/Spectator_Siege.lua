@@ -18,12 +18,12 @@ function AvocaSpectator:OnCreate()
  --self:SetPropagate(Propagate_PlayerOwner)
 end
 
-
+/*
 function AvocaSpectator:OnGetIsVisible(visibleTable)
 
     visibleTable.Visible = not self:GetIsFirstPerson()
 end
-
+*/
 function AvocaSpectator:OnAdjustModelCoords(modelCoords)
     local scale = 2
     local coords = modelCoords

@@ -5,12 +5,11 @@ LevelsMixin.type = "Levels"
 
 LevelsMixin.networkVars =
 {
-    level = "float (0 to " .. 50 .. " by .1)",
+    level = "private float (0 to " .. 50 .. " by .1)",
 }
 
 LevelsMixin.expectedMixins =
 {
-    Construct = "Derp",
 }
 
 LevelsMixin.expectedCallbacks = 
@@ -42,6 +41,7 @@ function LevelsMixin:OnHealSpray(gorge)
 end
 function LevelsMixin:AddXP(amount)
     --Print("add xp triggered")
+     if self.OnAddXp then self:OnAddXp(amount) end
     local xpReward = 0
         xpReward = math.min(amount, self:GetMaxLevel() - self.level)
         self.level = self.level + xpReward

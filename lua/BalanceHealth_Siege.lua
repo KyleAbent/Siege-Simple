@@ -9,6 +9,8 @@ kCystHealth = 150 --default 30
 kMatureCystArmor = 30 --default 0
 kMatureCystHealth = 500 --default 450
 
+kBabblerHealth = 100 --default 10
+
 
 
 

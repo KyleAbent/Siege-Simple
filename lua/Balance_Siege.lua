@@ -1,10 +1,15 @@
+kExosuitDropCost = 35 -- default 50
+kOnosCost = 57 --default 62
+kSentryBuildTime = 4 --default 3
+kPlayerHallucinationNumFraction = 0.38 --default 0.34
+
 kShotgunFireRate = 0.75 --default 0.88
 --kXenocideDamage = 220
 --kXenocideDamageType = kDamageType.Structural
 
 
-kDualRailgunExosuitCost = 30 --default 45
-kDualExosuitCost = 30 -- default 45
+kDualRailgunExosuitCost = 35 --default 45
+kDualExosuitCost = 35 -- default 45
 
 
 kMarineRespawnTime = 8 --default 9
@@ -21,7 +26,7 @@ kAlienEggsPerHive = 5 --default 3
 kAlienSpawnTime = 8 --default 10
 
 
-kEnzymeCloudDuration = 4 --default 3
+--kEnzymeCloudDuration = 4 --default 3
 
 kGorgeGestateTime = 5 -- default 7
 kLerkGestateTime = 10 -- default 15
@@ -34,15 +39,15 @@ kShotgunClipSize = 8 --default 6
 kBioMassOneTime = 18
 kBioMassTwoTime = 28
 
-kHiveMaturationTime = 4 -- default 220
-kHarvesterMaturationTime = 4 --default 150
-kWhipMaturationTime = 4 -- default 120
+kHiveMaturationTime = 32 -- default 220
+kHarvesterMaturationTime = 16 --default 150
+kWhipMaturationTime = 8 -- default 120
 kCragMaturationTime = 4 -- default 120
-kShiftMaturationTime = 4 -- default 90
+kShiftMaturationTime = 8 -- default 90
 kShadeMaturationTime = 4 -- default 120
 kCystMaturationTime = 4 --default 45balancehea
-kHydraMaturationTime = 4 -- default 140
-kEggMaturationTime = 4 -- default 100
+kHydraMaturationTime = 8 -- default 140
+kEggMaturationTime = 8 -- default 100
 kTunnelEntranceMaturationTime = 4 -- 135
 kCystBuildTime = 4 --default 5
 

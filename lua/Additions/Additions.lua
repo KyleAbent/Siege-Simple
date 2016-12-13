@@ -18,6 +18,7 @@ Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/EggBeacon.lua")
 Script.Load("lua/Additions/StructureBeacon.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
+Script.Load("lua/Additions/ForceField.lua")
 
 --Avoca arc pregame 
 

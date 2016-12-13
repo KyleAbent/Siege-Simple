@@ -21,7 +21,9 @@ end
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shade)
     end
-    
+    function ShadeAvoca:OnOrderGiven()
+   if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
+end
         function ShadeAvoca:GetTechId()
          return kTechId.Shade
     end

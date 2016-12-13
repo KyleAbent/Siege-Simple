@@ -9,6 +9,7 @@ Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
 
+
 function CheckCommTunnelReq(techId, origin, normal, commander)
 local tunnelEntrances = 0 
 for index, tunnelEntrance in ientitylist(Shared.GetEntitiesWithClassname("CommTunnel")) do 
@@ -68,6 +69,17 @@ end
 
 local kSiege_TechData =
 {        
+
+ 
+
+
+/*
+             { [kTechDataId] = kTechId.JumpPack,
+        [kTechDataCostKey] = kJumpPackCost,
+        [kTechDataDisplayName] = "Jump Pack", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Mimics the NS1/HL1 JumpPack (With Attempted Balance Modifications WIP) - Press DUCK + Jump @ the same time to mindfuck the alien team."},
+*/
 
  { [kTechDataId] = kTechId.AcidRocket,        
   [kTechDataCategory] = kTechId.Fade,   

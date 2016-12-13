@@ -20,7 +20,9 @@ end
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shift)
     end
-    
+    function ShiftAvoca:OnOrderGiven()
+   if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
+end
         function ShiftAvoca:GetTechId()
          return kTechId.Shift
     end

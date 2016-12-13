@@ -37,4 +37,18 @@ function PrototypeLabAvoca:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
+
+local origbuttons = PrototypeLab.GetTechButtons
+function PrototypeLabAvoca:GetTechButtons(techId)
+local table = {}
+
+table = origbuttons(self, techId)
+
+ table[2] = kTechId.DropExosuit
+ 
+ return table
+
+end
+
+
 Shared.LinkClassToMap("PrototypeLabAvoca", PrototypeLabAvoca.kMapName, networkVars)

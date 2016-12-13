@@ -1,3 +1,18 @@
+local orighive = Hive.GetTechAllowed
+function Hive:GetTechAllowed(techId, techNode, player)
+
+    local allowed, canAfford = CommandStructure.GetTechAllowed(self, techId, techNode, player) 
+    if techId == kTechId.ResearchBioMassThree then
+           allowed = allowed and self.bioMassLevel == 3
+           return allowed, canAfford
+    end
+    return orighive(self, techId, techNode, player)
+    
+end
+
+
+
+
 if Server then
 
 function Hive:CheckForDoubleUpG()  --CONSTANT issue of Double hives. Meaning no upgs. Ruining games after time spent seeding server.

@@ -12,7 +12,7 @@ local networkVars = {}
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
 function CragAvoca:GetInfestationRadius()
-    if self.isacreditstructure then return 1 else return 0 end
+    if self:GetIsACreditStructure() then return 1 else return 0 end
 end
 
     function CragAvoca:OnInitialized()
@@ -125,6 +125,10 @@ function CragAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hi
         
     end
 
+end
+
+function CragAvoca:OnOrderGiven()
+   if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
 Shared.LinkClassToMap("CragAvoca", CragAvoca.kMapName, networkVars)
 

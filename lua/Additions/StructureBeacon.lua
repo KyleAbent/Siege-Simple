@@ -64,7 +64,7 @@ if Server then
       for i = 1, #entity do
          local structure = entity[i]
          local distance = self:GetDistance(structure)
-           local restrictions = distance >= 8 and not structure:isa("Shell") and not structureisa("Veil") and not structure:isa("Spur") and not structure:isa("Drifter") and not structure:isa("DrifterEgg") and not  ( structure.GetIsMoving and structure:GetIsMoving() )  and not GetIsACreditStructure(structure)  and structure:GetIsBuilt() and not GetIsStructureSiegeWall(self, structure)
+           local restrictions = distance >= 8 and not structure:isa("Shell") and not structure:isa("Veil") and not structure:isa("Spur") and not structure:isa("Drifter") and not structure:isa("DrifterEgg") and not  ( structure.GetIsMoving and structure:GetIsMoving() )  and not GetIsACreditStructure(structure)  and structure:GetIsBuilt() and not GetIsStructureSiegeWall(self, structure)
             if restrictions and self:GetIsAlive() then
             
                    local success = false 

@@ -715,7 +715,7 @@ mapnameof = EnzymeCloud.kMapName
 elseif String == "Ink" then
 CreditCost = 2
 laybool = false
-delay = 30
+delay = 45
 mapnameof = ShadeInk.kMapName
 elseif String == "Hallucination" then
 CreditCost = 1.75
@@ -740,7 +740,7 @@ mapnameof = ShiftAvoca.kMapName
 techid = kTechId.Shift
 elseif String == "Hydra" then
 CreditCost = 1
-mapnameof = Hydra.kMapName
+mapnameof = HydraAvoca.kMapName
 techid = kTechId.Hydra
 end
 

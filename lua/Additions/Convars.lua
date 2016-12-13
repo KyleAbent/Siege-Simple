@@ -1,5 +1,7 @@
+kJumpPackCost = 7
+
 kAcidRocketDamage = 25
-kAcidRocketDamageType = kDamageType.Corrode
+kAcidRocketDamageType = kDamageType.Normal
 kAcidRocketFireDelay = 0.5
 kAcidRocketEnergyCost = 10
 kAcidRocketRadius = 6

@@ -2,8 +2,12 @@ ModLoader.SetupFileHook( "lua/TargetCache.lua", "lua/TargetCache_Siege.lua", "po
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Minigun.lua", "lua/Weapons/Marine/Minigun_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Weapons/Alien/HydraAbility.lua", "lua/Weapons/Alien/HydraAbility_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/TeamJoin.lua", "lua/TeamJoin_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/BalanceMisc.lua", "lua/BalanceMisc_Siege.lua", "post" )
+
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Additions/AvocaShotgun.lua", "post" )
@@ -13,6 +17,7 @@ ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Marine_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Clog.lua", "lua/Clog_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Exo.lua", "lua/Exo_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/ExoSuit.lua", "lua/ExoSuit_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Spectator.lua", "lua/Spectator_Siege.lua", "post" )
 

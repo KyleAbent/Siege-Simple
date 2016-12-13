@@ -73,7 +73,8 @@ local function AddSiegeTimer(who)
     local Client = who
     local NowToSiege = GetSandCastle():GetSiegeLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
     local SiegeLength =  math.ceil( Shared.GetTime() + NowToSiege - Shared.GetTime() )
-    Shine.ScreenText.Add( 2, {X = 0.40, Y = 0.95,Text = "SiegeDoor: %s",Duration = SiegeLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    local ycoord = ConditionalValue(who:isa("Spectator"), 0.85, 0.95)
+    Shine.ScreenText.Add( 2, {X = 0.40, Y = ycoord,Text = "SiegeDoor: %s",Duration = SiegeLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
 local function AddPrimaryTimer(who)
     local Client = who

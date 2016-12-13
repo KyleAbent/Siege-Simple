@@ -39,6 +39,7 @@ local kSiege_TechIds =
     'OnoGrow',
     'CommVortex',
     'AcidRocket',
+    --'JumpPack',
 }
 
 for i = 1, #kSiege_TechIds do

@@ -73,7 +73,7 @@ function Rocket:GetDamageType()
     return kAcidRocketDamageType
 end
 function Rocket:OnAdjustModelCoords(modelCoords)
-    local scale = 1.30
+    local scale = 1.50
     local coords = modelCoords
     coords.xAxis = coords.xAxis * scale
     coords.yAxis = coords.yAxis * scale

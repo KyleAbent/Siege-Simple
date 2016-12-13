@@ -1,3 +1,48 @@
+Script.Load("lua/Additions/LevelsMixin.lua")
+
+class 'HydraAvoca' (Hydra)
+HydraAvoca.kMapName = "hydraavoca"
+
+local networkVars = {}
+
+function HydraAvoca:OnInitialized()
+ Hydra.OnInitialized(self)
+   InitMixin(self, LevelsMixin)
+   self:SetTechId(kTechId.Hydra) --Set Parent???
+end
+
+
+        function HydraAvoca:GetTechId()
+         return kTechId.Hydra
+    end
+   function HydraAvoca:OnGetMapBlipInfo()
+    local success = false
+    local blipType = kMinimapBlipType.Undefined
+    local blipTeam = -1
+    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
+    blipType = kMinimapBlipType.Hydra
+     blipTeam = self:GetTeamNumber()
+    if blipType ~= 0 then
+        success = true
+    end
+    
+    return success, blipType, blipTeam, isAttacked, false --isParasited
+end
+    function HydraAvoca:GetMaxLevel()
+    return kAlienDefaultLvl
+    end
+    function HydraAvoca:GetAddXPAmount()
+    return kAlienDefaultAddXp
+    end
+    /*
+    function HydraAvoca:OnAddXp(amount)
+       Hydra.kDamage = Hydra.kDamage * (self.level/100) + Hydra.kDamage
+    end
+    */
+Shared.LinkClassToMap("HydraAvoca", HydraAvoca.kMapName, networkVars) 
+
+
+
 local originit = Hydra.OnInitialized
 function Hydra:OnInitialized()
 

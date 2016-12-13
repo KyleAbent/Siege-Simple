@@ -38,6 +38,7 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
          return kTechId.Sentry
     end
 
+
 if Server then
 
 end

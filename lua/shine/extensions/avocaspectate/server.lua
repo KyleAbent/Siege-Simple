@@ -224,6 +224,14 @@ if not GetGamerules():GetGameStarted()  then return end
    end
   
 end
+local function SwitchToOverHead(client, self, where)
+        local height = math.random(4,16)
+        self:NotifyGeneric( client, "Overhead mode nearby otherwise inside entity origin. Height is %s", true, height)
+        if client:GetSpectatorMode() ~= kSpectatorMode.Overhead then client:SetSpectatorMode(kSpectatorMode.Overhead)  end
+        client:SetOrigin(where)
+        client.overheadModeHeight =  height
+
+end
 local function ChangeView(self, client)
  -- Print("ChangeView")
       -- client.SendNetworkMessage("SwitchFromFirstPersonSpectate", { mode = kSpectatorMode.Following })
@@ -248,7 +256,7 @@ local function ChangeView(self, client)
           if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
           local viporigin = vip:GetOrigin()
           local findfreespace = FindFreeSpace(viporigin, 1, 8)
-          if findfreespace == viporigin then client:SetDesiredCameraDistance(3) end
+          if findfreespace == viporigin then SwitchToOverHead(client, self, viporigin) return end
              client:SetOrigin(findfreespace)
              local dir = GetNormalizedVector(viporigin - client:GetOrigin())
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
@@ -258,6 +266,7 @@ local function ChangeView(self, client)
              local wall = GetWallBetween(client:GetOrigin(), viporigin, vip)
                tween = GetTween()
               client:SetDesiredCamera(8.0, {move = true, tweening = tween }, client:GetEyePos(), angles, 0)
+              client:SetIsVisible(true)
             --  SaltNearby(self, client)
               self:NotifyGeneric( client, "VIP is %s, location is %s, tween is (%s),  wall between is %s", true, vip:GetClassName(), GetLocationName(client), tween, wall )
               
@@ -274,13 +283,13 @@ end
 
 
 function Plugin:ClientConnect(client)
-     if client:GetUserId() == 8086089 or client:GetUserId() == 2962389 or client:GetUserId() == 22542592 then 
+     if client:GetUserId() == 8086089 or client:GetUserId() == 2962389 then --or client:GetUserId() == 22542592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )  )end
       end)
       end
       
-    if client:GetUserId() == 388510592 then --388510592 then 
+    if client:GetUserId() == 388510592 or client:GetUserId() == 22542592 then --388510592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) client:GetControllingPlayer():Replace(AvocaSpectator.kMapName)  local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
       end)

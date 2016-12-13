@@ -1,3 +1,11 @@
+ /*
+local orig_MarineTeam_Initialize = MarineTeam.Initialize
+function MarineTeam:Initialize(teamName, teamNumber)
+orig_MarineTeam_Initialize(self, teamName, teamNumber)
+   self.respawnEntity = MarineAvoca.kMapName
+end
+*/
+
 local orig_MarineTeam_InitTechTree = MarineTeam.InitTechTree
 function MarineTeam:InitTechTree()
     local orig_PlayingTeam_InitTechTree = PlayingTeam.InitTechTree
@@ -8,6 +16,8 @@ function MarineTeam:InitTechTree()
     orig_MarineTeam_InitTechTree(self)
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
+    self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
+    -- self.techTree:AddTargetedBuyNode(kTechId.JumpPack,            kTechId.JetpackTech,         kTechId.None)
      self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
      self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.AdvBeacTech) 
     self.techTree:AddActivation(kTechId.MacSpawnOn,                kTechId.RoboticsFactory,          kTechId.None)
