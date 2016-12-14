@@ -1,4 +1,6 @@
+kBabblerDamage = 16 --default 8 
 kExosuitDropCost = 35 -- default 50
+kHeavyMachineGunDropCost = 25 --default = 40
 kOnosCost = 57 --default 62
 kSentryBuildTime = 4 --default 3
 kPlayerHallucinationNumFraction = 0.38 --default 0.34

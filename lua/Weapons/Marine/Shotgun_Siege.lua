@@ -154,7 +154,7 @@ function Shotgun:OnSecondaryAttack(player)
     local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.88
     
     
-    if self.clip >= 1 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then
+    if self.clip >= 2 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then
     
         self.secondaryAttacking = true
         self.attackLastRequested = Shared.GetTime()
@@ -162,7 +162,7 @@ function Shotgun:OnSecondaryAttack(player)
           
           self:SecondaryHere(player)     
           
-          --self.clip = self.clip - 1
+          self.clip = self.clip - 1
     else
         self:OnSecondaryAttackEnd(player)
     end

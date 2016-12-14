@@ -210,6 +210,12 @@ if Server then
     function EggBeacon:OnDestroy()
         ScriptActor.OnDestroy(self)
     end
+    function EggBeacon:GetTotalConstructionTime()
+    local value =  ConditionalValue(GetIsInSiege(self), kEggBeaconBuildTime * 2, kEggBeaconBuildTime)
+    return value
+    end
+
+
 function EggBeacon:OnConstructionComplete()
         if GetIsInSiege(self) then kLifeSpan = 4 end
         self:AddTimedCallback(TimeUp, kLifeSpan)  
@@ -228,7 +234,7 @@ function EggBeacon:DoYourBusiness()
        local distance = self:GetDistance(actualegg)
        if distance >=8 then
            if HasMixin(actualegg, "Obstacle") then  actualegg:RemoveFromMesh()end
-           actualegg:SetOrigin(FindFreeSpace(self:GetOrigin(), .5, 7))
+           actualegg:SetOrigin(FindFreeSpace(self:GetOrigin(), 1, 8))
            actualegg:SetHive(self)
               if HasMixin(actualegg, "Obstacle") then
                  if actualegg.obstacleId == -1 then actualegg:AddToMesh() end

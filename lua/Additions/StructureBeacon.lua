@@ -28,6 +28,10 @@ local boolean = HasMixin(who, "Avoca") and who:GetIsACreditStructure()  or false
 return boolean
 
 end
+    function StructureBeacon:GetTotalConstructionTime()
+    local value =  ConditionalValue(GetIsInSiege(self), kStructureBeaconBuildTime * 2, kStructureBeaconBuildTime)
+    return value
+    end
 function StructureBeacon:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined

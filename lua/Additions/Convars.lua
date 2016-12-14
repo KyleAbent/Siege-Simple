@@ -1,4 +1,6 @@
-kJumpPackCost = 7
+kEggBeaconBuildTime = 8
+kStructureBeaconBuildTime = 8
+--kJumpPackCost = 7
 
 kAcidRocketDamage = 25
 kAcidRocketDamageType = kDamageType.Normal

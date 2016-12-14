@@ -10,10 +10,10 @@ local networkVars = {}
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-function CragAvoca:GetInfestationRadius()
+function WhipAvoca:GetInfestationRadius()
     return 1
 end
-function CragAvoca:OnOrderGiven()
+function WhipAvoca:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
     function WhipAvoca:OnInitialized()
