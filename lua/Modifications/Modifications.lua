@@ -8,13 +8,18 @@ Script.Load("lua/Modifications/ReallyNow.lua")
 
 
 
+function PowerConsumerMixin:GetIsPowered() --Why is this missing in default ? :o
+    local override = ConditionalValue(self.GetIsPoweredOverride, self:GetIsPoweredOverride(), true)
+    return (self.powered or self.powerSurge) and override
+end
+
 
 if Server then
 
 local origscore = ScoringMixin.AddScore
 
 function ScoringMixin:AddScore(points, res, wasKill)
-   if points ~= nil and wasKill and self:isa("Alien") then points = points * 1.30 + points end
+   if points ~= nil and wasKill and self:isa("Alien") then points = math.round(points * 1.30 + points, 2) end
    origscore(self, points, res, wasKill)
 end
 

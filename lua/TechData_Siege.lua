@@ -136,7 +136,7 @@ local kSiege_TechData =
 
 
 --AdvBeacTech
-
+/*
         {
             [kTechDataId] = kTechId.AdvBeacTech,
             [kTechDataCostKey] = kAdvBeacTechChost,
@@ -144,14 +144,14 @@ local kSiege_TechData =
             [kTechDataResearchTimeKey] = kAdvBeacTechTime,
             [kTechDataTooltipInfo] = "Unlocks Advanced Beacon (of which revives dead players and teleports exos)"
         },
-
+*/
    { [kTechDataId] = kTechId.AdvancedBeacon,   
    [kTechDataBuildTime] = 0.1,   
    [kTechDataCooldown] = kAdvancedBeaconCoolDown,
     [kTechDataDisplayName] = "Advanced Beacon",   
    [kTechDataHotkey] = Move.B, 
     [kTechDataCostKey] = kAdvancedBeaconCost, 
-[kTechDataTooltipInfo] = "Revives Dead Players as well."},
+[kTechDataTooltipInfo] = "Revives Dead Players as well. Powers off Observatory for a short duration after beaconing."},
 								
 								
 								

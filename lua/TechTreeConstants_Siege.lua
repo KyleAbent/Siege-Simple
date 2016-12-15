@@ -31,7 +31,7 @@ local kSiege_TechIds =
     'ArcSpawnOff',
     'PrimalScream',
     'BackupLight',
-    'AdvBeacTech',
+   -- 'AdvBeacTech',
     'AdvancedBeacon',
     'EggBeacon',
     'StructureBeacon',

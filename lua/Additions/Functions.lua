@@ -80,7 +80,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
   end
   
     if who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
-     local frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 3 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
+     local frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
         if frontdoor  then who:Kill( )return end
   end
   
@@ -102,6 +102,22 @@ function GetFrontDoorOpen()
 end
 function GetSiegeDoorOpen()
    return GetSandCastle():GetIsSiegeOpen()
+end
+function GetRoundLengthToSiege()
+    
+local level = 1
+ local gameRules = GetGamerules()
+ if not gameRules:GetGameStarted() then 
+   return 0 
+ end
+  if GetSiegeDoorOpen() then
+   return 1
+  end 
+      local roundlength =   Shared.GetTime()   - ( gameRules:GetGameStartTime() + kFrontTimer )
+                            --Don't count the setup duration 
+      level = math.round(roundlength/  kSiegeTimer, 2)
+     -- Print("GetRoundLengthToSiege = %s", level)
+       return level 
 end
 function GetSandCastle() --it washed away
     local entityList = Shared.GetEntitiesWithClassname("SandCastle")

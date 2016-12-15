@@ -1,3 +1,4 @@
+kObsAdvBeaconPowerOff = 8
 kEggBeaconBuildTime = 8
 kStructureBeaconBuildTime = 8
 --kJumpPackCost = 7

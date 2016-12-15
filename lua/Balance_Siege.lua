@@ -14,7 +14,7 @@ kDualRailgunExosuitCost = 35 --default 45
 kDualExosuitCost = 35 -- default 45
 
 
-kMarineRespawnTime = 8 --default 9
+--kMarineRespawnTime = 8 --default 9
 
 kFlameThrowerEnergyDamage = 0 -- 1 if speed adjust doesn't work
 kBlinkEnergyCost = 29 -- default 32
@@ -23,9 +23,9 @@ kBoneShieldArmorPerSecond = 95 --default 112
 kMucousShieldPercent = 0.20 --default 0.15
 
 
-kEggGenerationRate = 8 --default 13
-kAlienEggsPerHive = 5 --default 3
-kAlienSpawnTime = 8 --default 10
+kEggGenerationRate = 9 --default 13
+kAlienEggsPerHive = 4 --default 3
+--kAlienSpawnTime = 9 --default 10
 
 
 --kEnzymeCloudDuration = 4 --default 3
@@ -38,8 +38,8 @@ kOnosGestateTime = 20 -- default 30
 
 kShotgunClipSize = 8 --default 6
 
-kBioMassOneTime = 18
-kBioMassTwoTime = 28
+kBioMassOneTime = 20 --default 25
+kBioMassTwoTime = 35 --default 40
 
 kHiveMaturationTime = 32 -- default 220
 kHarvesterMaturationTime = 16 --default 150
@@ -54,14 +54,14 @@ kTunnelEntranceMaturationTime = 4 -- 135
 kCystBuildTime = 4 --default 5
 
 
-kChargeResearchTime = 28 --default 40
-kLeapResearchTime = 28 --default 40
-kBileBombResearchTime = 28 --default 40
-kUmbraResearchTime = 28 --default 45
-kBoneShieldResearchTime = 28 --default 40
+kChargeResearchTime = 35 --default 40
+kLeapResearchTime = 35 --default 40
+kBileBombResearchTime = 35 --default 40
+kUmbraResearchTime = 38 --default 45
+kBoneShieldResearchTime = 35 --default 40
 kSporesResearchTime = 28 --default 60
-kStompResearchTime = 28 --default 60
-kStabResearchTime = 28 --default 60
-kMetabolizeEnergyResearchTime = 28 --default 40
-kMetabolizeHealthResearchTime = 28 --default 45
-kXenocideResearchTime = 28 --default 60
+kStompResearchTime = 45 --default 60
+kStabResearchTime = 35 --default 60
+kMetabolizeEnergyResearchTime = 35 --default 40
+kMetabolizeHealthResearchTime = 35 --default 45
+kXenocideResearchTime = 35 --default 60

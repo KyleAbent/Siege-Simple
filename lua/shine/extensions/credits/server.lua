@@ -275,7 +275,7 @@ end
  
  end
  function Plugin:GiveCommCredits()
- local salt = 5 * self.Config.kCreditMultiplier
+ local salt = 10 * self.Config.kCreditMultiplier
    if self.Config.kCreditMultiplier == 1 then
  self:NotifySalt( nil, "%s Salt for each commander", true, salt)
  elseif self.Config.kCreditMultiplier == 2 then
@@ -441,8 +441,8 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                   if Player then
                  // self:SaveCredits(Player:GetClient())
                      if Player:GetTeamNumber() == 1 or Player:GetTeamNumber() == 2 then
-                    Shine.ScreenText.Add( 80, {X = 0.40, Y = 0.15,Text = "Total Credits Earned:".. math.round((Player:GetScore() / 10 + ConditionalValue(Player:GetTeamNumber() == 1, self.marinebonus, self.alienbonus)), 2), Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
-                    Shine.ScreenText.Add( 81, {X = 0.40, Y = 0.20,Text = "Total Credits Spent:".. self.PlayerSpentAmount[Player:GetClient()], Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
+                    Shine.ScreenText.Add( 80, {X = 0.40, Y = 0.15,Text = "Total Salt Mined:".. math.round((Player:GetScore() / 10 + ConditionalValue(Player:GetTeamNumber() == 1, self.marinebonus, self.alienbonus)), 2), Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
+                    Shine.ScreenText.Add( 81, {X = 0.40, Y = 0.20,Text = "Total Salt Spent:".. self.PlayerSpentAmount[Player:GetClient()], Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
                      end
                   end
              end

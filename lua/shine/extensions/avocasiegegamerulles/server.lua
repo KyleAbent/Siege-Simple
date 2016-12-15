@@ -42,6 +42,38 @@ OldConfused = Shine.Hook.ReplaceLocalFunction( Sentry.OnUpdate, "UpdateConfusedS
 
 
 
+local OldUpdateWaveTime
+
+
+local function DynamicWaveTime( self )
+    if self:GetIsDestroyed() then
+        return false
+    end
+    
+    if self.queuePosition <= self:GetTeam():GetEggCount() then
+        local entryTime = self:GetRespawnQueueEntryTime() or 0
+        local waveSpawnTime = Clamp( ( kAlienSpawnTime - ( ( GetRoundLengthToSiege() / 2 ) /1) * kAlienSpawnTime), 4, kAlienSpawnTime)
+        --Print("Alien Spawn time is %s", waveSpawnTime)
+        self.timeWaveSpawnEnd = entryTime + waveSpawnTime
+    else
+        self.timeWaveSpawnEnd = 0
+    end
+    
+    Server.SendNetworkMessage(Server.GetOwner(self), "SetTimeWaveSpawnEnds", { time = self.timeWaveSpawnEnd }, true)
+    
+    if not self.sentRespawnMessage then
+    
+        Server.SendNetworkMessage(Server.GetOwner(self), "SetIsRespawning", { isRespawning = true }, true)
+        self.sentRespawnMessage = true
+        
+    end
+    
+    return true
+end
+
+OldUpdateWaveTime = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateWaveTime", DynamicWaveTime )
+
+
 Plugin.Version = "1.0"
 
 function Plugin:Initialise()

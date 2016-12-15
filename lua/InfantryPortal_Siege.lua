@@ -1,3 +1,18 @@
+local origcreate = InfantryPortal.OnInitialized
+function InfantryPortal:OnInitialized()
+
+ origcreate(self)
+ if not self:isa("InfantryPortalAvoca") then
+     
+      if Server then
+     
+      local ip = CreateEntity(InfantryPortalAvoca.kMapName, self:GetOrigin(), 1)
+      ip:SetConstructionComplete()
+      end
+      DestroyEntity(self)
+     
+ end
+end
 function InfantryPortal:CheckSpaceAboveForSpawn()
 
     local startPoint = self:GetOrigin() 
@@ -6,6 +21,8 @@ function InfantryPortal:CheckSpaceAboveForSpawn()
     return GetWallBetween(startPoint, endPoint, self)
     
 end
+
+
 local function StopSpinning(self)
 
     self:TriggerEffects("infantry_portal_stop_spin")
@@ -98,7 +115,14 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     function InfantryPortalAvoca:GetAddXPAmount()
     return kDefaultAddXp
     end
-    
+
+    function InfantryPortalAvoca:GetSpawnTime()
+    local levelbonus = ( kMarineRespawnTime - (self.level/100) * kMarineRespawnTime)
+    local roundbonus = ( levelbonus - ( ( GetRoundLengthToSiege() / 2 ) /1) * levelbonus)
+    local total = roundbonus
+   -- Print("InfantryPortalAvoca GetSpawnTime Is: (level bonus is %s, roundbonus is %s)", levelbonus, roundbonus)
+    return Clamp(total, 4, kMarineRespawnTime)
+end
 
 function InfantryPortalAvoca:OnGetMapBlipInfo()
     local success = false

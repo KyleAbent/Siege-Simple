@@ -10,9 +10,7 @@ local kObservatoryTechButtons = { kTechId.Scan, kTechId.DistressBeacon, kTechId.
 kTechId.PhaseTech, kTechId.AdvancedBeacon, kTechId.None, kTechId.None }
 
 
-    if not GetHasTech(self, kTechId.AdvBeacTech) then
-        kObservatoryTechButtons[6] = kTechId.AdvBeacTech
-    end
+
     
     
     if techId == kTechId.RootMenu then
@@ -22,6 +20,7 @@ kTechId.PhaseTech, kTechId.AdvancedBeacon, kTechId.None, kTechId.None }
     return nil
     
 end
+
 local function TriggerMarineBeaconEffects(self)
 
     for index, player in ipairs(GetEntitiesForTeam("Player", self:GetTeamNumber())) do
@@ -288,7 +287,7 @@ Script.Load("lua/Additions/AvocaMixin.lua")
 class 'ObservatoryAvoca' (Observatory)--may not nee dto do ongetmapblipinfo because the way i redone the setcachedtechdata to simply change the mapname to this :)
 ObservatoryAvoca.kMapName = "observatoryavoca"
 
-local networkVars = {}
+local networkVars = { lastbeacon = "private time" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
@@ -309,6 +308,18 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     function ObservatoryAvoca:GetAddXPAmount()
     return kDefaultAddXp
     end
+    local function GetRecentlyAdvBeaconed(self)
+    return (self.lastbeacon + kObsAdvBeaconPowerOff) > Shared.GetTime()
+end
+    function ObservatoryAvoca:PerformAdvancedBeacon()
+       Observatory.PerformAdvancedBeacon(self)
+       self.lastbeacon = Shared.GetTime()
+    end
+    function ObservatoryAvoca:GetIsPowered()
+        local override = ConditionalValue(GetRecentlyAdvBeaconed(self), false, true)
+    return (self.powered or self.powerSurge) and override
+end
+
 function ObservatoryAvoca:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
