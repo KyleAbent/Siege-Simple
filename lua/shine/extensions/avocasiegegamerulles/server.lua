@@ -74,6 +74,35 @@ end
 OldUpdateWaveTime = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateWaveTime", DynamicWaveTime )
 
 
+local OldUpdateHealing 
+
+OldUpdateHealing = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateHealing", UpdateCertainHealing )
+
+local function UpdateCertainHealing(self)
+
+    if GetIsUnitActive(self) and not self:GetGameEffectMask(kGameEffect.OnFire) then
+    
+        if self.timeOfLastHeal == nil or Shared.GetTime() > (self.timeOfLastHeal + Hive.kHealthUpdateTime) then
+            
+            local players = GetEntitiesForTeam("Player", self:GetTeamNumber())
+            
+            for index, player in ipairs(players) do
+            
+                if player:GetIsAlive() and not GetIsInSiege(player) and ((player:GetOrigin() - self:GetOrigin()):GetLength() < Hive.kHealRadius) then   
+                    -- min healing, affects skulk only
+                    player:AddHealth(math.max(10, player:GetMaxHealth() * Hive.kHealthPercentage), true )                
+                end
+                
+            end
+            
+            self.timeOfLastHeal = Shared.GetTime()
+            
+        end
+        
+    end
+    
+end
+
 Plugin.Version = "1.0"
 
 function Plugin:Initialise()
