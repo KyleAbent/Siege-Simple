@@ -1,13 +1,16 @@
 Script.Load("lua/Egg.lua")
+Script.Load("lua/InfestationMixin.lua")
 
 class 'PoopEgg' (Egg)
 
 PoopEgg.kMapName = "poopegg"
 
 local networkVars = { }
+AddMixinNetworkVars(InfestationMixin, networkVars)
 
     function PoopEgg:OnInitialized()
          Egg.OnInitialized(self)
+          InitMixin(self, InfestationMixin)
         self:SetTechId(kTechId.Egg)
     end
             function PoopEgg:GetTechId()
@@ -30,6 +33,9 @@ end
     end
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
+end
+function PoopEgg:GetInfestationRadius()
+    return 1
 end
 
 Shared.LinkClassToMap("PoopEgg", PoopEgg.kMapName, networkVars)

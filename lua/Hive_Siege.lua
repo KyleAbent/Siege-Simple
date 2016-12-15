@@ -39,7 +39,7 @@ end
 local orig_Hive_OnResearchComplete = Hive.OnResearchComplete
 function Hive:OnResearchComplete(researchId)
 --Print("HiveOnResearchComplete")
-UpdateAliensWeaponsManually()
+ self:AddTimedCallback(function() UpdateAliensWeaponsManually()  end, .8) 
     if researchId == kTechId.UpgradeToCragHive or researchId == kTechId.UpgradeToShadeHive or researchId ==  kTechId.UpgradeToShiftHive then
         self:AddTimedCallback(Hive.CheckForDoubleUpG, 4) 
       --  Print("Started Callback Hive CheckForDoubleUpG")

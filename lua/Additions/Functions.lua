@@ -1,5 +1,10 @@
 --Kyle 'Avoca' Abent
-
+function GetIsRoomPowerDown(who)
+ local location = GetLocationForPoint(who:GetOrigin())
+ local powernode = GetPowerPointForLocation(location.name)
+ if powernode and powernode:GetIsDisabled()  then return true end
+ return false
+end
 function GetIsPointWithinHiveRadius(point)     
     /*
     local hivesnearby = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)

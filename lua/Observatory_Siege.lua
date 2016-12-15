@@ -1,6 +1,4 @@
-function Observatory:GetMinRangeAC()
-return ObsAutoCCMR   
-end
+
 
 
 function Observatory:GetTechButtons(techId)
@@ -309,7 +307,8 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     return kDefaultAddXp
     end
     local function GetRecentlyAdvBeaconed(self)
-    return (self.lastbeacon + kObsAdvBeaconPowerOff) > Shared.GetTime()
+    local duration =  ( kObsAdvBeaconPowerOff - (self.level/100) * kObsAdvBeaconPowerOff)
+    return (self.lastbeacon + duration) > Shared.GetTime()
 end
     function ObservatoryAvoca:PerformAdvancedBeacon()
        Observatory.PerformAdvancedBeacon(self)

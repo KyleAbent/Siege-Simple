@@ -15,23 +15,6 @@ end
 
 function AvocaSpectator:OnCreate()
  Spectator.OnCreate(self)
- --self:SetPropagate(Propagate_PlayerOwner)
 end
 
-/*
-function AvocaSpectator:OnGetIsVisible(visibleTable)
-
-    visibleTable.Visible = not self:GetIsFirstPerson()
-end
-*/
-function AvocaSpectator:OnAdjustModelCoords(modelCoords)
-    local scale = 2
-    local coords = modelCoords
-    coords.xAxis = coords.xAxis * scale
-    coords.yAxis = coords.yAxis * scale
-    coords.zAxis = coords.zAxis * scale
-      
-    return coords
-    
-end
 Shared.LinkClassToMap("AvocaSpectator", AvocaSpectator.kMapName, networkVars)

@@ -109,9 +109,11 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
         function InfantryPortalAvoca:GetTechId()
          return kTechId.InfantryPortal
     end
-        function InfantryPortalAvoca:GetMaxLevel()
-    return kDefaultLvl
+    
+    function InfantryPortalAvoca:GetMaxLevel()
+    return kInfantryPortalMaxLevel
     end
+    
     function InfantryPortalAvoca:GetAddXPAmount()
     return kDefaultAddXp
     end

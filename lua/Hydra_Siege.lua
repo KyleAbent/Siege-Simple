@@ -32,7 +32,7 @@ end
     return kAlienDefaultLvl
     end
     function HydraAvoca:GetAddXPAmount()
-    return kAlienDefaultAddXp
+    return self:GetMaxLevel() / math.random(8,16) 
     end
     /*
     function HydraAvoca:OnAddXp(amount)

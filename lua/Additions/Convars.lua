@@ -1,4 +1,4 @@
-kObsAdvBeaconPowerOff = 8
+kObsAdvBeaconPowerOff = 16 --12 w/ lvl 25
 kEggBeaconBuildTime = 8
 kStructureBeaconBuildTime = 8
 --kJumpPackCost = 7
@@ -9,8 +9,8 @@ kAcidRocketFireDelay = 0.5
 kAcidRocketEnergyCost = 10
 kAcidRocketRadius = 6
 
-kAdvBeacTechChost = 15
-kAdvBeacTechTime = 30 
+--kAdvBeacTechChost = 15
+--kAdvBeacTechTime = 30 
 
 kCommVortexCoolDown = 20
 kCommVortexCost = 8 
@@ -43,6 +43,8 @@ kPrimalScreamROF = 1
 
 kBatteryPowerRange = 4
 
+kInfantryPortalMaxLevel = 30
 kDefaultLvl = 25
 kDefaultAddXp = 0.15
 kCommSentryPerRoom = 4
+kMacMaxLevel = 50

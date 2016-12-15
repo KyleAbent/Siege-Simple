@@ -1,7 +1,7 @@
 if Server then
 
 function Gamerules:GetDamageMultiplier()
-    return self.damageMultiplier
+    return ConditionalValue(not self:GetGameStarted(), 1,self.damageMultiplier)
 end
 
 --This seems like the least expensive method. Rather than computing damage checks every instance, for example. 

@@ -1,17 +1,12 @@
 Script.Load("lua/Modifications/ReallyNow.lua")
+
+          ---DirectorBot
     function ForceEvenTeams_AssignPlayer( player, team )
-      if not player:isa("Spectator") then
+      if not player:isa("AvocaSpectator") then
         player:SetCameraDistance(0)
         GetGamerules():JoinTeam(player, team, true)
         end
     end
-
-
-
-function PowerConsumerMixin:GetIsPowered() --Why is this missing in default ? :o
-    local override = ConditionalValue(self.GetIsPoweredOverride, self:GetIsPoweredOverride(), true)
-    return (self.powered or self.powerSurge) and override
-end
 
 
 if Server then
@@ -190,6 +185,7 @@ SetCachedTechData(kTechId.Fade, kTechDataGestateName, FadeAvoca.kMapName)
 
 
 
+
 --------------------------------------------------------------------
 /*
 360 degree sentrys, 4 per room, without battery.
@@ -328,3 +324,61 @@ function MarineOutlineMixin:OnUpdate(deltaTime)
 
 end
 
+
+---Corrode hp dmg on unpowered struct
+
+
+local function CorrodeOnInfestation(self)
+
+    if self:GetMaxArmor() == 0 then
+        return false
+    end
+
+    if self.updateInitialInfestationCorrodeState and GetIsPointOnInfestation(self:GetOrigin()) then
+    
+        self:SetGameEffectMask(kGameEffect.OnInfestation, true)
+        self.updateInitialInfestationCorrodeState = false
+        
+    end
+
+    if self:GetGameEffectMask(kGameEffect.OnInfestation) and self:GetCanTakeDamage() and (not HasMixin(self, "GhostStructure") or not self:GetIsGhostStructure()) then
+        
+        self:SetCorroded()
+        
+        if self:isa("PowerPoint") and self:GetArmor() == 0 then
+            self:DoDamageLighting()
+        end
+        
+        if not self:isa("PowerPoint") or self:GetArmor() > 0 then 
+            -- stop damaging power nodes when armor reaches 0... gets annoying otherwise.
+            self:DeductHealth(kInfestationCorrodeDamagePerSecond, nil, nil, false, true, true)
+        end
+        
+        if not self:isa("PowerPoint") and self:GetArmor() == 0 and not self:isa("ARC")  and GetIsRoomPowerDown(self) then
+           local damage = kInfestationCorrodeDamagePerSecond * 4
+                    self:DeductHealth(damage, nil, nil, true, false, true)
+        end
+        
+    end
+
+    return true
+
+end
+
+function CorrodeMixin:__initmixin()
+
+    if Server then
+        
+        self.isCorroded = false
+        self.timeCorrodeStarted = 0
+        
+        if not self:isa("Player") and not self:isa("MAC") and not self:isa("Exosuit") and kCorrodeMarineStructureArmorOnInfestation then
+        
+            self:AddTimedCallback(CorrodeOnInfestation, 1)
+            self.updateInitialInfestationCorrodeState = true
+            
+        end
+        
+    end
+    
+end

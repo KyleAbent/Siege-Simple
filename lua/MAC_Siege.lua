@@ -30,7 +30,7 @@ end
          return kTechId.MAC
 end
     function MACSiege:GetMaxLevel()
-    return kDefaultLvl
+    return kMacMaxLevel
     end
     function MACSiege:GetAddXPAmount()
     return 0.05 * 0.05

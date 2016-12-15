@@ -139,7 +139,7 @@ function OnoGrow:OnProcessMove(input)
                            local egg = GetEntitiesForTeam( "PoopEgg", 2 )
                           local count = table.count(egg) or 0
                 if Server and count < 8 then 
-                    if not parent:GetGameEffectMask(kGameEffect.OnInfestation) then local clog = CreateEntity(Clog.kMapName, parent:GetOrigin() + Vector(0, .5, -2), parent:GetTeamNumber()) end--clog
+                  --  if not parent:GetGameEffectMask(kGameEffect.OnInfestation) then local clog = CreateEntity(Clog.kMapName, parent:GetOrigin() + Vector(0, .5, -2), parent:GetTeamNumber()) end--clog
                 local egg CreateEntity(PoopEgg.kMapName, parent:GetOrigin() + Vector(0, .5, 0), parent:GetTeamNumber())
                 end--server
             end --shared.

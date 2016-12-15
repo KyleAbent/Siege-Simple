@@ -42,6 +42,7 @@ end
 function LevelsMixin:AddXP(amount)
     --Print("add xp triggered")
      if self.OnAddXp then self:OnAddXp(amount) end
+     if not self:GetIsBuilt() then return end
     local xpReward = 0
         xpReward = math.min(amount, self:GetMaxLevel() - self.level)
         self.level = self.level + xpReward

@@ -166,7 +166,6 @@ function SandCastle:FrontDoorTimer()
 
 end
 function SandCastle:OnPreGame()
-  GetGamerules():SetDamageMultiplier(1)
    for i = 1, 4 do
      Print("SandCastle OnPreGame")
    end
