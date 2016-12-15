@@ -73,6 +73,14 @@ end
 
 OldUpdateWaveTime = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateWaveTime", DynamicWaveTime )
 
+local OldGetIsWeldedByOtherMAC
+
+OldGetIsWeldedByOtherMAC = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "GetIsWeldedByOtherMAC", NotGetIsWeldedByOtherMAC )
+
+
+local function NotGetIsWeldedByOtherMAC(self)
+ return false
+end
 
 local OldUpdateHealing 
 

@@ -39,6 +39,7 @@ local kSiege_TechIds =
     'OnoGrow',
     'CommVortex',
     'AcidRocket',
+    'DropMAC'
     --'JumpPack',
 }
 

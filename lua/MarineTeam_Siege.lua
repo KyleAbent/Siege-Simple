@@ -16,6 +16,7 @@ function MarineTeam:InitTechTree()
     orig_MarineTeam_InitTechTree(self)
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
+    self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
     self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
     -- self.techTree:AddTargetedBuyNode(kTechId.JumpPack,            kTechId.JetpackTech,         kTechId.None)
     -- self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 

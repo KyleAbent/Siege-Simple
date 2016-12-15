@@ -8,6 +8,7 @@ Script.Load("lua/Additions/OnoGrow.lua")
 Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
+Script.Load("lua/MAC_Siege.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -80,6 +81,19 @@ local kSiege_TechData =
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Mimics the NS1/HL1 JumpPack (With Attempted Balance Modifications WIP) - Press DUCK + Jump @ the same time to mindfuck the alien team."},
 */
+
+ { [kTechDataId] = kTechId.DropMAC,  
+ [kTechDataMapName] = MACSiege.kMapName, 
+[kTechDataDisplayName] = "MAC", 
+[kTechIDShowEnables] = false, 
+[kTechDataTooltipInfo] =  "Now Constructable!", 
+[kTechDataModel] = MAC.kModelName, 
+            [kTechDataBuildTime] = 1,
+[kTechDataCostKey] = kMACCost, 
+[kTechDataSupply] = kMACSupply,
+[kStructureAttachId] = kTechId.RoboticsFactory, 
+[kStructureAttachRange] = kArmoryWeaponAttachRange, 
+[kStructureAttachRequiresPower] = true },
 
  { [kTechDataId] = kTechId.AcidRocket,        
   [kTechDataCategory] = kTechId.Fade,   

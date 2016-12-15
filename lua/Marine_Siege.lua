@@ -26,9 +26,15 @@ end
 
 
 function Marine:GiveExo(spawnPoint)
-
-    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawMinigun" })
+    local random = math.random(1,2)
+    if random == 1 then 
+        local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
     return exo
+    else
+        local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+    return exo
+    end
+
     
 end
 

@@ -7,7 +7,6 @@ RoboSiege.kMapName = "robosiege"
 local networkVars = 
 
 {
-    automaticspawningmac = " boolean",
     automaticspawningarc = " boolean",
 
 }
@@ -15,7 +14,6 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 function RoboSiege:OnCreate()
 RoboticsFactory.OnCreate(self)
-self.automaticspawningmac = false
 self.automaticspawningarc = false
 end
 
@@ -42,7 +40,7 @@ end
 
 function RoboSiege:GetTechButtons(techId)
 
-    local techButtons = {  kTechId.None, kTechId.MAC, kTechId.None, kTechId.None, 
+    local techButtons = {  kTechId.None, kTechId.DropMAC, kTechId.None, kTechId.None, 
                kTechId.None, kTechId.None, kTechId.None, kTechId.None }
                
     if self:GetTechId() ~= kTechId.ARCRoboticsFactory then
@@ -55,14 +53,9 @@ function RoboSiege:GetTechButtons(techId)
        
     end           
 
-   if not self.automaticspawningmac and not self.automaticspawningarc then 
-      techButtons[6] = kTechId.MacSpawnOn
-   elseif self.automaticspawningmac then
-      techButtons[6] = kTechId.MacSpawnOff
-    end
    
     
-       if not self.automaticspawningmac and not self.automaticspawningarc then 
+       if not  self.automaticspawningarc then 
       techButtons[7] = kTechId.ArcSpawnOn
    elseif self.automaticspawningarc then
       techButtons[7] = kTechId.ArcSpawnOff
@@ -71,13 +64,7 @@ function RoboSiege:GetTechButtons(techId)
     return techButtons
     
 end
-function RoboSiege:GetMacsAmount()
-    local macs = 0
-        for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
-                if not mac:isa("MACCredit") then macs = macs + 1 end
-         end
-    return  macs
-end
+
 function RoboSiege:GetArcsAmount()
     local arcs = 0
         for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
@@ -86,16 +73,6 @@ function RoboSiege:GetArcsAmount()
     return  arcs
 end
 if Server then
-function RoboSiege:MacSpawnFormula()
-
-      if self.automaticspawningmac == true and self:GetTeam():GetTeamResources() >= kMACCost and ( kMaxSupply - GetSupplyUsedByTeam(1) >= LookupTechData(kTechId.MAC, kTechDataSupply, 0)) and self.deployed and GetIsUnitActive(self) and self:GetResearchProgress() == 0 and not self.open and self:GetMacsAmount() <= 8 then
-            self:OverrideCreateManufactureEntity(kTechId.MAC)
-            self:GetTeam():SetTeamResources(self:GetTeam():GetTeamResources() - kMACCost )
-        end
-        
-        return self.automaticspawningmac == true
-
-end
 
 
 function RoboSiege:ArcSpawnFormula()
@@ -112,13 +89,6 @@ end
  function RoboSiege:PerformActivation(techId, position, normal, commander)
  
      local success = false
-    if techId == kTechId.MacSpawnOn then
-     self:MacSpawnFormula()
-            self.automaticspawningmac = true
-    self:AddTimedCallback(RoboSiege.MacSpawnFormula, 10)
-    elseif techId == kTechId.MacSpawnOff then
-       self.automaticspawningmac = false
-    end
     if techId == kTechId.ArcSpawnOn then
           self.automaticspawningarc = true
           self:ArcSpawnFormula()
