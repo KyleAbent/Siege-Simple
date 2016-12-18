@@ -44,8 +44,9 @@ kPrimalScreamROF = 1
 
 kBatteryPowerRange = 4
 
-kInfantryPortalMaxLevel = 30
+kInfantryPortalMaxLevel = 10
 kDefaultLvl = 25
 kDefaultAddXp = 0.15
+kInfantryPortalXPGain = 0.05
 kCommSentryPerRoom = 4
 kMacMaxLevel = 50

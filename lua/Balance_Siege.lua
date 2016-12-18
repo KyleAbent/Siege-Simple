@@ -1,3 +1,4 @@
+kOnosEggCost = 90 --default 100
 kBabblerDamage = 9 --default 8 
 kExosuitDropCost = 35 -- default 50
 kHeavyMachineGunDropCost = 25 --default = 40

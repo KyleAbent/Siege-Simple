@@ -115,7 +115,7 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     end
     
     function InfantryPortalAvoca:GetAddXPAmount()
-    return kDefaultAddXp
+    return kInfantryPortalXPGain
     end
 
     function InfantryPortalAvoca:GetSpawnTime()

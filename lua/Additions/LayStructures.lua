@@ -356,6 +356,10 @@ function LayStructures:GetPositionForStructure(player)
        --     isPositionValid = isonstructure
         end
         
+             if not IsPathable(displayOrigin) then
+                    isPositionValid = false
+                end
+                
         displayOrigin = trace.endPoint 
 
           

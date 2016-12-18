@@ -1,4 +1,4 @@
-kHallucinationHealthFraction =- 0.25 --default 0.20
+kHallucinationHealthFraction = 0.25 --default 0.20
 kHallucinationArmorFraction = 0.10 -- default 0
 kHallucinationMaxHealth = 725 -- default 700
 kHeavyMachineGunWeight = 0.20 -- default 0.26
