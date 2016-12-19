@@ -1,6 +1,7 @@
 --Kyle 'Avoca' Abent
 function GetIsRoomPowerDown(who)
  local location = GetLocationForPoint(who:GetOrigin())
+  if not location then return false end
  local powernode = GetPowerPointForLocation(location.name)
  if powernode and powernode:GetIsDisabled()  then return true end
  return false

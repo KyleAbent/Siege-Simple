@@ -227,7 +227,7 @@ end
 local function SwitchToOverHead(client, self, where)
         local height = math.random(4,16)
         self:NotifyGeneric( client, "Overhead mode nearby otherwise inside entity origin. Height is %s", true, height)
-        if client:GetSpectatorMode() ~= kSpectatorMode.Overhead then client:SetSpectatorMode(kSpectatorMode.Overhead)  end
+        if client.specMode ~= kSpectatorMode.Overhead  then client:SetSpectatorMode(kSpectatorMode.Overhead)  end
         client:SetOrigin(where)
         client.overheadModeHeight =  height
 
@@ -256,7 +256,7 @@ local function ChangeView(self, client)
           if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
           local viporigin = vip:GetOrigin()
           local findfreespace = FindFreeSpace(viporigin, 1, 8)
-          if findfreespace == viporigin then SwitchToOverHead(client, self, viporigin) return end
+          if findfreespace ==  viporigin then SwitchToOverHead(client, self, viporigin) return end
              client:SetOrigin(findfreespace)
              local dir = GetNormalizedVector(viporigin - client:GetOrigin())
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)

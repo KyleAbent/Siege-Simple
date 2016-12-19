@@ -1,36 +1,27 @@
 --'Avoca'
 Shotgun.kStartOffset = 0
 local kBulletSize = 0.016
-local kSpreadDistance = 12
+local kSpreadDistance = 16
 
 local originit = Shotgun.OnInitialized
 function Shotgun:OnInitialized()
 
 originit(self)
 
-Shotgun.kSecondarySpreadVectors =
+Shotgun.kSecondarySpreadVectors =  --Sven-Coop !
 {
-    GetNormalizedVector(Vector(-0.01, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(-0.25, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(-0.5, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(-1, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(0.5, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(1, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(-1.25, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(-1.5, 0.02, kSpreadDistance)),
+    GetNormalizedVector(Vector(-2, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(1.5, 0.01, kSpreadDistance)),
+    GetNormalizedVector(Vector(2, 0.01, kSpreadDistance)),
     
-    GetNormalizedVector(Vector(-0.32, 0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.32, 0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.32, -0.32, kSpreadDistance)),
-    GetNormalizedVector(Vector(-0.32, -0.32, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-1, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(1, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, -1, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, 1, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-0.25, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.25, 0, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, -0.25, kSpreadDistance)),
-    GetNormalizedVector(Vector(0, 0.25, kSpreadDistance)),
-    
-    GetNormalizedVector(Vector(-0.6, -0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(-0.6, 0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.6, 0.6, kSpreadDistance)),
-    GetNormalizedVector(Vector(0.6, -0.6, kSpreadDistance)),
+
     
 }
 
@@ -65,7 +56,6 @@ end
 
 function Shotgun:SecondaryHere(player)
   local viewAngles = player:GetViewAngles()
-    viewAngles.roll = NetworkRandom() * math.pi * 2
 
     local shootCoords = viewAngles:GetCoords()
 
@@ -77,7 +67,7 @@ function Shotgun:SecondaryHere(player)
         range = 5
     end
     
-    local numberBullets = self:GetBulletsPerShot()
+    local numberBullets = 10
     local startPoint = player:GetEyePos()
     
     self:TriggerEffects("shotgun_attack_sound")
@@ -121,7 +111,7 @@ function Shotgun:SecondaryHere(player)
             local target = targets[i]
             local hitPoint = hitPoints[i]
 
-            self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, 10, "", showTracer and i == numTargets)
+            self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, 17, "", showTracer and i == numTargets)
             
             local client = Server and player:GetClient() or Client
             if not Shared.GetIsRunningPrediction() and client.hitRegEnabled then
@@ -151,10 +141,10 @@ end
 function Shotgun:OnSecondaryAttack(player)
     local sprintedRecently = (Shared.GetTime() - self.lastTimeSprinted) < kMaxTimeToSprintAfterAttack
     local attackAllowed = not sprintedRecently and (not self:GetIsReloading() or self:GetSecondaryCanInterruptReload()) and (not self:GetSecondaryAttackRequiresPress() or not player:GetSecondaryAttackLastFrame())
-    local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.88
+    local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.68
     
     
-    if self.clip >= 2 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then
+    if self.clip >= 1 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then
     
         self.secondaryAttacking = true
         self.attackLastRequested = Shared.GetTime()
@@ -162,7 +152,7 @@ function Shotgun:OnSecondaryAttack(player)
           
           self:SecondaryHere(player)     
           
-          self.clip = self.clip - 1
+         -- self.clip = self.clip - 1
     else
         self:OnSecondaryAttackEnd(player)
     end

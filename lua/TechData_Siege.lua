@@ -90,9 +90,9 @@ local kSiege_TechData =
 [kTechDataModel] = MAC.kModelName, 
             [kTechDataBuildTime] = 1,
 [kTechDataCostKey] = kMACCost, 
+[kStructureAttachRange] = 8,
 [kTechDataSupply] = kMACSupply,
-[kStructureAttachId] = kTechId.RoboticsFactory, 
-[kStructureAttachRange] = kArmoryWeaponAttachRange, 
+[kStructureAttachId] = { kTechId.RoboticsFactory, kTechId.ARCRoboticsFactory },
 [kStructureAttachRequiresPower] = true },
 
  { [kTechDataId] = kTechId.AcidRocket,        
