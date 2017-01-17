@@ -8,7 +8,7 @@ ModLoader.SetupFileHook( "lua/TeamJoin.lua", "lua/TeamJoin_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/BalanceMisc.lua", "lua/BalanceMisc_Siege.lua", "post" )
 
-
+ModLoader.SetupFileHook( "lua/Weapons/Alien/Shockwave.lua", "lua/Weapons/Alien/Shockwave_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Additions/AvocaShotgun.lua", "post" )
 
@@ -52,6 +52,7 @@ ModLoader.SetupFileHook( "lua/PhaseGate.lua", "lua/PhaseGate_Siege.lua", "post" 
 
 ModLoader.SetupFileHook( "lua/PrototypeLab.lua", "lua/PrototypeLab_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Alien_Upgrade.lua", "lua/Alien_Upgrade_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Observatory.lua", "lua/Observatory_Siege.lua", "post" )
 
@@ -85,7 +86,7 @@ ModLoader.SetupFileHook( "lua/ARC.lua", "lua/ARC_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechTreeConstants.lua", "lua/TechTreeConstants_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/TechData.lua", "lua/TechData_Siege.lua", "post" )
 
-
+ModLoader.SetupFileHook( "lua/TechTreeButtons.lua", "lua/TechTreeButtons_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Skulk.lua", "lua/Skulk_Siege.lua", "post" )
 

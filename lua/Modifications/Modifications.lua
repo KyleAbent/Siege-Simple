@@ -1,5 +1,18 @@
 Script.Load("lua/Modifications/ReallyNow.lua")
 
+local origkill = LiveMixin.Kill
+function LiveMixin:Kill(attacker, doer, point, direction)
+  if self:GetIsAlive() and self:GetCanDie() then
+         if self:isa("Alien") then
+               if GetHasRebirthUpgrade(self) and self:GetEligableForRebirth() then
+                self:TriggerRebirth()
+                return
+                end
+            end
+            
+   end     
+return origkill(self, attacker, doer, point, direction)
+end
           ---DirectorBot
     function ForceEvenTeams_AssignPlayer( player, team )
       if not player:isa("AvocaSpectator") then

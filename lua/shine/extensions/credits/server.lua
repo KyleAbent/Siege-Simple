@@ -502,7 +502,7 @@ local function GetIsAlienInSiege(Player)
     end
     return false
  end
-local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid,laybool)
+local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid)
    local autobuild = false 
    local success = false
    if self:GetPlayerSaltInfo(who) < cost then 
@@ -554,9 +554,6 @@ self.MarineTotalSpent = self.MarineTotalSpent + cost
         end
 elseif whoagain:GetTeamNumber() == 2 then
     self.AlienTotalSpent = self.AlienTotalSpent + cost
-  --  if laybool then
-    --  whoagain:GiveLayStructure(techid, mapname)
-      --else
     entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
     if not entity then 
        self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) 
@@ -573,7 +570,6 @@ elseif whoagain:GetTeamNumber() == 2 then
        else
        self:NotifySalt( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
         end --
-    --  end-- laybool
 end --
 
 
@@ -701,33 +697,28 @@ local reqground = false
 local CreditCost = 2
 local limit = 3
 local techid = nil
-local laybool = true
---if laystructure works for aliens then worst case alternative to laybool is a new cmd 
--- for mist, enzme, and hallucinations... such as i have for weapons for weapons/classes.  12.1.16 note
+
 
 if String == "NutrientMist" then 
 CreditCost = 1
 mapnameof = NutrientMist.kMapName
 reqground = true
-laybool = false
 elseif String == "Contamination"  then
 CreditCost = 1
 mapnameof = Contamination.kMapName    
 techid = kTechId.Contamination
 elseif String == "EnzymeCloud" then
 CreditCost = 1.5
-laybool = false
 mapnameof = EnzymeCloud.kMapName
 elseif String == "Ink" then
 CreditCost = 2
-laybool = false
 delay = 45
 mapnameof = ShadeInk.kMapName
 elseif String == "Hallucination" then
 CreditCost = 1.75
 reqpathing = false
  mapnameof = HallucinationCloud.kMapName
-  laybool = false
+
 elseif String == "Shade" then
 CreditCost = 10
 mapnameof = ShadeAvoca.kMapName
@@ -749,8 +740,8 @@ CreditCost = 1
 mapnameof = HydraAvoca.kMapName
 techid = kTechId.Hydra
 end
-
-return mapnameof, delay, reqpathing, CreditCost, limit, reqground, techid, laybool
+       
+return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid
 
 end
 local function DeductBuy(self, who, cost, delayafter)
@@ -848,7 +839,6 @@ local Time = Shared.GetTime()
 local NextUse = self.BuyUsersTimer[Client]
 local reqpathing = true
 local reqground = true
-local laybool = false
 if not Player then return end
  if FirstCheckRulesHere(self, Client, Player, String ) == true then return end
 local CreditCost = 1
@@ -858,11 +848,11 @@ if Player:GetTeamNumber() == 1 then
   mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid = TeamOneBuyRules(self, Client, Player, String)
 elseif Player:GetTeamNumber() == 2 then
 reqground = false
-  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, laybool  = TeamTwoBuyRules(self, Client, Player, String)
+  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid  = TeamTwoBuyRules(self, Client, Player, String)
 end // end of team numbers
 
 if mapnameof then
- PerformBuy(self, Client, String, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String, laybool) 
+ PerformBuy(self, Client, String, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String) 
 end
 
 end

@@ -14,14 +14,12 @@ local networkVars =
 
 
 }
-AddMixinNetworkVars(ConstructMixin, networkVars)
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
 function MACSiege:OnCreate()
 MAC.OnCreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
-    InitMixin(self, ConstructMixin)
 end
 
 function MACSiege:OnInitialized()
@@ -55,30 +53,84 @@ function MACSiege:OnGetMapBlipInfo()
 end
 
 
-function MACSiege:GetCurrentOrder()
+
+
+ 
+Shared.LinkClassToMap("MACSiege", MACSiege.kMapName, networkVars)
+class 'DropMAC' (MAC)
+DropMAC.kMapName = "dropmac"
+
+local networkVars = 
+
+{
+
+
+}
+AddMixinNetworkVars(ConstructMixin, networkVars)
+AddMixinNetworkVars(ResearchMixin, networkVars)
+AddMixinNetworkVars(RecycleMixin, networkVars)
+function DropMAC:OnCreate()
+MAC.OnCreate(self)
+    InitMixin(self, ResearchMixin)
+    InitMixin(self, RecycleMixin)
+    InitMixin(self, ConstructMixin)
+end
+
+function DropMAC:OnInitialized()
+MAC.OnInitialized(self)
+self:SetTechId(kTechId.MAC)
+InitMixin(self, LevelsMixin)
+if Server then ExploitCheck(self) end
+end
+        function DropMAC:GetTechId()
+         return kTechId.MAC
+end
+    function DropMAC:GetMaxLevel()
+    return kMacMaxLevel
+    end
+    function DropMAC:GetAddXPAmount()
+    return 0.05 * 0.05
+    end
+
+function DropMAC:OnGetMapBlipInfo()
+    local success = false
+    local blipType = kMinimapBlipType.Undefined
+    local blipTeam = -1
+    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
+    blipType = kMinimapBlipType.MAC
+     blipTeam = self:GetTeamNumber()
+    if blipType ~= 0 then
+        success = true
+    end
+    
+    return success, blipType, blipTeam, isAttacked, false --isParasited
+end
+
+
+function DropMAC:GetCurrentOrder()
  if not self:GetIsBuilt() then return end --Print ("Not Built") return end
 return OrdersMixin.GetCurrentOrder(self)
 end
 
 
 
-function MACSiege:OnUpdate(deltaTime)
+function DropMAC:OnUpdate(deltaTime)
 MAC.OnUpdate(self, deltaTime)
 
 if self.welding or self.constructing then self:AddXP(self:GetAddXPAmount()) end
 
 end
 
-    function MACSiege:GetTotalConstructionTime()
+    function DropMAC:GetTotalConstructionTime()
     local value =  ConditionalValue(GetIsInSiege(self), 1, 2)
     return value
     end
     --Because I want to get rid of it not welding while under attack. I know there's better ways to do this :P
-    function MACSiege:GetTimeLastDamageTaken()
+    function DropMAC:GetTimeLastDamageTaken()
     return 0
 end
 
-function MACSiege:OnUpdateAnimationInput(modelMixin)
+function DropMAC:OnUpdateAnimationInput(modelMixin)
  if not self:GetIsBuilt() then return end
  MAC.OnUpdateAnimationInput(self, modelMixin)
 
@@ -89,4 +141,4 @@ end
     
     
  
-Shared.LinkClassToMap("MACSiege", MACSiege.kMapName, networkVars)
+Shared.LinkClassToMap("DropMAC", DropMAC.kMapName, networkVars)

@@ -5,7 +5,7 @@ LevelsMixin.type = "Levels"
 
 LevelsMixin.networkVars =
 {
-    level = "private float (0 to " .. 50 .. " by .1)",
+    level = "float (0 to " .. 50 .. " by .1)",
 }
 
 LevelsMixin.expectedMixins =
@@ -42,7 +42,7 @@ end
 function LevelsMixin:AddXP(amount)
     --Print("add xp triggered")
      if self.OnAddXp then self:OnAddXp(amount) end
-     if not self:GetIsBuilt() then return end
+     if self.GetIsBuilt and not self:GetIsBuilt() then return end
     local xpReward = 0
         xpReward = math.min(amount, self:GetMaxLevel() - self.level)
         self.level = self.level + xpReward

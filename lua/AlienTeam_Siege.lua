@@ -19,6 +19,10 @@ self.techTree:AddPassive(kTechId.PrimalScream,              kTechId.None, kTechI
 self.techTree:AddPassive(kTechId.OnoGrow,              kTechId.None, kTechId.None, kTechId.AllAliens)
 
 self.techTree:AddPassive(kTechId.AcidRocket, kTechId.Stab, kTechId.None, kTechId.AllAliens) -- though linking 
+
+
+ self.techTree:AddBuyNode(kTechId.Rebirth, kTechId.CragHive, kTechId.None, kTechId.AllAliens)
+   self.techTree:AddBuyNode(kTechId.Redemption, kTechId.CragHive, kTechId.None, kTechId.AllAliens)
     
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree

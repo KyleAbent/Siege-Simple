@@ -1,3 +1,4 @@
+local kUpdateGestationTime = 0.1
 function Embryo:OnAdjustModelCoords(coords)
 
     coords.origin = coords.origin - Embryo.kSkinOffset
@@ -10,3 +11,4 @@ function Embryo:OnAdjustModelCoords(coords)
     return coords
     
 end
+

@@ -283,13 +283,13 @@ end
 
 
 function Plugin:ClientConnect(client)
-     if client:GetUserId() == 8086089 or client:GetUserId() == 2962389 then --or client:GetUserId() == 22542592 then 
+     if client:GetUserId() == 8086089 or client:GetUserId() == 2962389 or client:GetUserId() == 22542592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId() )  )end
       end)
       end
       
-    if client:GetUserId() == 388510592 or client:GetUserId() == 22542592 then --388510592 then 
+    if client:GetUserId() == 388510592 then --or client:GetUserId() == 22542592 then --388510592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) client:GetControllingPlayer():Replace(AvocaSpectator.kMapName)  local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) AutoSpectate(self, Client) end
       end)

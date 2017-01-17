@@ -19,7 +19,7 @@ function Welder:PerformWeld(player)
     
     if didHit and target and HasMixin(target, "Live") then
            
-        if ( target.GetIsBuilt and target:GetIsBuilt() ) and player:GetTeamNumber() == target:GetTeamNumber() and HasMixin(target, "Weldable") and  HasMixin(target, "Levels") and target.GetMaxLevel ~= target:GetMaxLevel() then
+        if ( target.GetIsBuilt and target:GetIsBuilt() ) and player:GetTeamNumber() == target:GetTeamNumber() and HasMixin(target, "Weldable") and  HasMixin(target, "Levels") and target:GetLevel() ~= target:GetMaxLevel() then
                  local prevlevel = target.level
                 target:AddXP(target:GetAddXPAmount())
                 local success = false

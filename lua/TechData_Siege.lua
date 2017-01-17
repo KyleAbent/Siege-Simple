@@ -82,8 +82,23 @@ local kSiege_TechData =
       [kTechDataTooltipInfo] = "Mimics the NS1/HL1 JumpPack (With Attempted Balance Modifications WIP) - Press DUCK + Jump @ the same time to mindfuck the alien team."},
 */
 
+            { [kTechDataId] = kTechId.Rebirth, 
+       [kTechDataCategory] = kTechId.CragHive,  
+        [kTechDataDisplayName] = "Rebirth", 
+      [kTechDataSponitorCode] = "A",  
+      [kTechDataCostKey] = kRebirthCost, 
+     [kTechDataTooltipInfo] = "You've tried Redemption, now try its alternative. Upon death, turns you back into a gestating egg (Back into the class you just died as).", },
+
+      // Lifeform purchases
+        { [kTechDataId] = kTechId.Redemption, 
+       [kTechDataCategory] = kTechId.CragHive,  
+        [kTechDataDisplayName] = "Redemption", 
+      [kTechDataSponitorCode] = "B",  
+      [kTechDataCostKey] = kRedemptionCost, 
+     [kTechDataTooltipInfo] = "Will return you to a random hive egg spawn when 35% hp or lower", },
+
  { [kTechDataId] = kTechId.DropMAC,  
- [kTechDataMapName] = MACSiege.kMapName, 
+ [kTechDataMapName] = DropMAC.kMapName, 
 [kTechDataDisplayName] = "MAC", 
 [kTechIDShowEnables] = false, 
 [kTechDataTooltipInfo] =  "Now Constructable!", 
@@ -239,7 +254,7 @@ local kSiege_TechData =
           [kTechDataCooldown] = 5,    
           [kTechDataDisplayName] = "Automatically spawn up to 8 macs for you",       
          [kTechDataCostKey] = 0, 
-         [kTechDataTooltipInfo] = "8 is currently the max amount to automatically spawn this way. Turning this on will automatically spawn up to this many for you"},
+         [kTechDataTooltipInfo] = "12 is currently the max amount to automatically spawn this way. Turning this on will automatically spawn up to this many for you"},
          
           { [kTechDataId] = kTechId.MacSpawnOff,    
           [kTechDataCooldown] = 5,    
@@ -265,37 +280,7 @@ local kSiege_TechData =
   
 }   
 
-local kSiege_TechIdToMaterialOffset = {}
-kSiege_TechIdToMaterialOffset[kTechId.MacSpawnOn] = 1
 
-local getmaterialxyoffset = GetMaterialXYOffset
-function GetMaterialXYOffset(techId)
-
-    local index
-    index = kSiege_TechIdToMaterialOffset[techId]
-    
-    if not index then
-        return getmaterialxyoffset(techId)
-    end
-    
-    local columns = 12
-    index = kSiege_TechIdToMaterialOffset[techId]
-    
-    if index == nil then
-        Print("Warning: %s did not define kTechIdToMaterialOffset ", EnumToString(kTechId, techId) )
-    end
-
-    if(index ~= nil) then
-    
-        local x = index % columns
-        local y = math.floor(index / columns)
-        return x, y
-        
-    end
-    
-    return nil, nil
-    
-end
 
 local buildTechData = BuildTechData
 function BuildTechData()
@@ -320,4 +305,5 @@ function BuildTechData()
     return moddedTechData
 
 end
+
 
