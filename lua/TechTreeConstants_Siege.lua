@@ -43,6 +43,13 @@ local kSiege_TechIds =
     --'JumpPack',
     'Redemption',
     'Rebirth',
+    'CragHiveTwo',
+    'ThickenedSkin',
+    'Hunger',
+    'ShiftHiveTwo',
+
+
+    
 }
 
 for i = 1, #kSiege_TechIds do

@@ -199,6 +199,12 @@ if Client then
     
 end
 
+function Gorge:GetRebirthLength()
+return 3
+end
+function Gorge:GetRedemptionCoolDown()
+return 30
+end
 function Gorge:GetBaseArmor()
     return kGorgeArmor
 end

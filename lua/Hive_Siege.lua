@@ -36,6 +36,17 @@ function Hive:OnKill(attacker, doer, point, direction)
 UpdateAliensWeaponsManually()
 end
 */
+local function IfBioMassThenAdjustHp(self)
+
+
+    local shellLevel = GetShellLevel(self:GetTeamNumber())  
+    for index, alien in ipairs(GetEntitiesForTeam("Alien", self:GetTeamNumber())) do
+        alien:UpdateArmorAmountManual(shellLevel)
+        alien:UpdateHealthAmountManual(math.min(12, self.bioMassLevel), self.maxBioMassLevel)
+    end
+
+end
+
 local orig_Hive_OnResearchComplete = Hive.OnResearchComplete
 function Hive:OnResearchComplete(researchId)
 --Print("HiveOnResearchComplete")
@@ -44,7 +55,8 @@ function Hive:OnResearchComplete(researchId)
         self:AddTimedCallback(Hive.CheckForDoubleUpG, 4) 
       --  Print("Started Callback Hive CheckForDoubleUpG")
      end   
-
+   --for now just updtate alien hp on all research completes b/c i dont feel like filtering the biomass -.-
+       IfBioMassThenAdjustHp(self)
   return orig_Hive_OnResearchComplete(self, researchId) 
 end
 

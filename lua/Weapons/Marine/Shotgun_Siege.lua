@@ -141,7 +141,7 @@ end
 function Shotgun:OnSecondaryAttack(player)
     local sprintedRecently = (Shared.GetTime() - self.lastTimeSprinted) < kMaxTimeToSprintAfterAttack
     local attackAllowed = not sprintedRecently and (not self:GetIsReloading() or self:GetSecondaryCanInterruptReload()) and (not self:GetSecondaryAttackRequiresPress() or not player:GetSecondaryAttackLastFrame())
-    local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.68
+    local attackedRecently = (Shared.GetTime() - self.attackLastRequested) < 0.88
     
     
     if self.clip >= 1 and not player:GetIsSprinting() and self:GetIsDeployed() and attackAllowed and not self.primaryAttacking and not attackedRecently then

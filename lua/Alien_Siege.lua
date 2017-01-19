@@ -5,11 +5,60 @@ function Alien:OnCreate()
         local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
         self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4) end, .8) 
     end
-     self.lastredeemorrebirthtime = Shared.GetTime()
+     self.lastredeemorrebirthtime = 0
      self.canredeemorrebirth = true
     
 end
+function Alien:GetRebirthLength()
+return 0
+end
+function Alien:GetRedemptionCoolDown()
+return 0
+end
+function Alien:UpdateArmorAmountManual(carapaceLevel)
+ --default, just manual. Outdated if modified... 
+    local level = GetHasCarapaceUpgrade(self) and carapaceLevel or 0
+    local newMaxArmor = (level / 3) * (self:GetArmorFullyUpgradedAmount() - self:GetBaseArmor()) + self:GetBaseArmor()
 
+    if newMaxArmor ~= self.maxArmor then
+
+        local armorPercent = self.maxArmor > 0 and self.armor/self.maxArmor or 0
+        self.maxArmor = newMaxArmor
+        self:SetArmor(self.maxArmor * armorPercent)
+    
+    end
+
+end
+
+function Alien:UpdateHealthAmountManual(bioMassLevel, maxLevel)
+ ---default w/ mod of thick skin. I know this is not perfect because the orig can be modified and make this one outdated. But im not worried. 
+    local level = math.max(0, bioMassLevel - 1)
+    local newMaxHealth = self:GetBaseHealth() + level * self:GetHealthPerBioMass()
+    newMaxHealth = ConditionalValue(GetHasThickenedSkinUpgrade(newPlayer), newPlayer:AdjustMaxHealth(LookupTechData(newPlayer:GetTechId(), kTechDataMaxHealth)), newMaxHealth)
+
+    if newMaxHealth ~= self.maxHealth  then
+
+        local healthPercent = self.maxHealth > 0 and self.health/self.maxHealth or 0
+        self:SetMaxHealth(newMaxHealth)
+        self:SetHealth(self.maxHealth * healthPercent)
+    
+    end
+
+end
+
+function Alien:UpdateArmorAmount(carapaceLevel)
+
+return
+--why onupdate? 
+
+end
+
+function Alien:UpdateHealthAmount(bioMassLevel, maxLevel)
+
+return
+--why onupdate?
+
+end
 if Server then
 
 function Alien:CreditBuy(Class)
@@ -158,7 +207,7 @@ function Alien:TriggerRebirth()
                 
                newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
                newPlayer:SetGestationData(upgradeManager:GetUpgrades(), newLifeFormTechId, 10, 10) //Skulk to X 
-               newPlayer.gestationTime = 6
+               newPlayer.gestationTime = self:GetRebirthLength()
                
                //Spawn protective boneshield    
                 success = true
@@ -166,7 +215,7 @@ function Alien:TriggerRebirth()
                 
             else
 
-               self:Kill()
+               self:TeleportToHive()
 
             end    
             
@@ -175,11 +224,35 @@ function Alien:TriggerRebirth()
     
 end
 function Alien:GetEligableForRebirth()
-return Shared.GetTime() > self.lastredeemorrebirthtime  + kRedemptionCooldown 
+return Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown() 
+end
+local function SingleHallucination(self, player)
+  --Why a cloud ?
+                local alien = player
+                local newAlienExtents = LookupTechData(alien:GetTechId(), kTechDataMaxExtents)
+                local capsuleHeight, capsuleRadius = GetTraceCapsuleFromExtents(newAlienExtents) 
+                
+                local spawnPoint = GetRandomSpawnForCapsule(newAlienExtents.y, capsuleRadius, alien:GetModelOrigin(), 0.5, 5)
+                
+                if spawnPoint then
+
+                    local hallucinatedPlayer = CreateEntity(alien:GetMapName(), spawnPoint, self:GetTeamNumber())
+                    hallucinatedPlayer.isHallucination = true
+                    InitMixin(hallucinatedPlayer, PlayerHallucinationMixin)                
+                    InitMixin(hallucinatedPlayer, SoftTargetMixin)                
+                    InitMixin(hallucinatedPlayer, OrdersMixin, { kMoveOrderCompleteDistance = kPlayerMoveOrderCompleteDistance }) 
+
+                    hallucinatedPlayer:SetName(alien:GetName())
+                    hallucinatedPlayer:SetHallucinatedClientIndex(alien:GetClientIndex())
+                end
+                    
+
+
 end
 function Alien:OnRedeem(player)
 
-self:GiveItem(HallucinationCloud.kMapName)
+   --self:GiveItem(HallucinationCloud.kMapName)
+   SingleHallucination(self, player)
 self:AddScore(1, 0, false)
    self:TriggerRedeemCountDown(player)
 end

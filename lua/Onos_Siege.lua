@@ -1,3 +1,12 @@
+
+
+function Onos:GetRebirthLength()
+return 6
+end
+function Onos:GetRedemptionCoolDown()
+return 45
+end
+
 function Onos:PreUpdateMove(input, runningPrediction)
 
     if self.charging then

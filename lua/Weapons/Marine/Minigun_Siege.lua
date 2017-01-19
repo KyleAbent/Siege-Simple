@@ -103,7 +103,8 @@ local function Shoot(self, leftSide)
 
             local target = targets[i]
             local hitPoint = hitPoints[i]
-            local damage = kMinigunDamage
+            local dist = self:GetDistance(target)
+            local damage = ConditionalValue(target:isa("Player") and dist >= 12, kMinigunDamage -1, kMinigunDamage)
             --Print("minigun damage is %s", damage)
             self:ApplyBulletGameplayEffects(player, target, hitPoint - hitOffset, direction, damage, "", showTracer and i == numTargets)
             

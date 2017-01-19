@@ -73,6 +73,22 @@ local kSiege_TechData =
 
  
 
+                { [kTechDataId] = kTechId.ThickenedSkin, 
+       [kTechDataCategory] = kTechId.CragHiveTwo,  
+        [kTechDataDisplayName] = "Thickened Skin", 
+      [kTechDataSponitorCode] = "A",  
+      [kTechDataCostKey] = 2, 
+     [kTechDataTooltipInfo] = "+10% max hp (why 10? because i dont know if 15, 20, 25 or 30 is OP!!!!)", },
+     
+                     { [kTechDataId] = kTechId.Hunger, 
+       [kTechDataCategory] = kTechId.ShiftHiveTwo,  
+        [kTechDataDisplayName] = "Hunger", 
+      [kTechDataSponitorCode] = "B",  
+      [kTechDataCostKey] = 2, 
+     [kTechDataTooltipInfo] = "10% health / energy gain, and effects of Enzyme on player kill (if gorge then structures not players) ", },
+   
+
+
 
 /*
              { [kTechDataId] = kTechId.JumpPack,
@@ -83,19 +99,19 @@ local kSiege_TechData =
 */
 
             { [kTechDataId] = kTechId.Rebirth, 
-       [kTechDataCategory] = kTechId.CragHive,  
+       [kTechDataCategory] = kTechId.CragHiveTwo,  
         [kTechDataDisplayName] = "Rebirth", 
       [kTechDataSponitorCode] = "A",  
       [kTechDataCostKey] = kRebirthCost, 
-     [kTechDataTooltipInfo] = "You've tried Redemption, now try its alternative. Upon death, turns you back into a gestating egg (Back into the class you just died as).", },
+     [kTechDataTooltipInfo] = "Replaces death with gestation if cooldown is reached", },
 
       // Lifeform purchases
         { [kTechDataId] = kTechId.Redemption, 
-       [kTechDataCategory] = kTechId.CragHive,  
+       [kTechDataCategory] = kTechId.CragHiveTwo,  
         [kTechDataDisplayName] = "Redemption", 
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
-     [kTechDataTooltipInfo] = "Will return you to a random hive egg spawn when 35% hp or lower", },
+     [kTechDataTooltipInfo] = "Will return you to a random (hive or beacon) egg spawn when 35% hp or lower (and cooldown reached)", },
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 

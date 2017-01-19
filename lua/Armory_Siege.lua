@@ -59,7 +59,7 @@ function Armory:ResupplyPlayer(player)
                if not fullhealth or not fullarmor then
                
                if fullhealth then
-                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .10 player:AddArmor(addarmoramount) end 
+                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .15 player:AddArmor(addarmoramount) end 
                else 
                player:AddHealth(Armory.kHealAmount, false, true, nil, nil, true) 
                end

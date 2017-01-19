@@ -1,7 +1,7 @@
 --Kyle 'Avoca' Abent
 Script.Load("lua/Weapons/Alien/Ability.lua")
 Script.Load("lua/Weapons/Alien/StompMixin.lua")
-
+Script.Load("lua/Additions/PoopEgg.lua")
 Script.Load("lua/Weapons/Alien/StompMixin.lua")
 
 class 'OnoGrow' (Ability)

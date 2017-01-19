@@ -1,3 +1,10 @@
+kPrimalScreamEnergyCost = 25
+kPrimalScreamRange = 10
+kPrimalScreamDamageModifier = 1.3
+kPrimalScreamDuration = 4
+kPrimalScreamEnergyGain = 60
+kPrimalScreamROF = 3
+
 kRedemptionCost = 2
 kRebirthCost = 2
 kRedemptionCooldown = 45

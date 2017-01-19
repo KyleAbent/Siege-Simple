@@ -209,16 +209,17 @@ end
 function GUIAlienBuyMenu:_InitializeSlots()
 
     self.slots = {}
-    
+    CreateSlot(self, kTechId.ShiftHiveTwo)
+    CreateSlot(self, kTechId.CragHiveTwo)
     CreateSlot(self, kTechId.CragHive)
     CreateSlot(self, kTechId.ShadeHive)
     CreateSlot(self, kTechId.ShiftHive)
     
-    local anglePerSlot = (math.pi * 0.6) / (#self.slots-1)
+    local anglePerSlot = (math.pi * 0.8) / (#self.slots-1)
     
     for i = 1, #self.slots do
     
-        local angle = (i-1) * anglePerSlot + math.pi * 0.2
+        local angle = (i-1) * anglePerSlot + math.pi * 0.15 //herp
         local distance = GUIAlienBuyMenu.kSlotDistance
         
         self.slots[i].Graphic:SetPosition( Vector( math.cos(angle) * distance - GUIAlienBuyMenu.kSlotSize * .5, math.sin(angle) * distance - GUIAlienBuyMenu.kSlotSize * .5, 0) )
@@ -615,7 +616,7 @@ function GUIAlienBuyMenu:_InitializeUpgradeButtons()
     
         local upgrades = AlienUI_GetUpgradesForCategory(self.slots[i].Category)
         local offsetAngle = self.slots[i].Angle
-        local anglePerUpgrade = math.pi * 0.20 / 4
+        local anglePerUpgrade = math.pi * 0.24 / 4 //derp
         local category = self.slots[i].Category
         
         for upgradeIndex = 1, #upgrades do

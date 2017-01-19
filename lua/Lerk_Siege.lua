@@ -17,6 +17,13 @@ function Lerk:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
+
+function Lerk:GetRebirthLength()
+return 4
+end
+function Lerk:GetRedemptionCoolDown()
+return 25
+end
 local origspeed = Lerk.GetMaxSpeed
 
 function Lerk:GetMaxSpeed(possible)

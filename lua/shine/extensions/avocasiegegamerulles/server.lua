@@ -84,6 +84,10 @@ local function NewHpdateGestation(self)
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
            end
           
+           if GetHasThickenedSkinUpgrade(newPlayer) then
+                newPlayer:AdjustMaxHealth(LookupTechData(self.gestationTypeTechId, kTechDataMaxHealth) * 1.10)
+           end
+           
                      if GetHasRebirthUpgrade(newPlayer) then
           newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
@@ -381,10 +385,14 @@ function Plugin:GiveCyst(Player)
 end
 
   function Plugin:OnRedemedHook(player) 
-            Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "Redemption Cooldown: %s",Duration = kRedemptionCooldown,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
+            local herp = player:GetClient()
+            local derp = herp:GetControllingPlayer()
+            Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "Redemption Cooldown: %s",Duration = derp:GetRedemptionCoolDown() or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
  end
 function Plugin:TriggerRebirthCountDown(player)
- Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "Rebirth Cooldown: %s",Duration = kRedemptionCooldown,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
+            local herp = player:GetClient()
+            local derp = herp:GetControllingPlayer()
+            Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "Rebirth Cooldown: %s",Duration = derp:GetRedemptionCoolDown() or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
 end
 
 

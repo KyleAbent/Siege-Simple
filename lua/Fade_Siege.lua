@@ -25,6 +25,13 @@ InitMixin(self, PredictedProjectileShooterMixin)
 InitMixin(self, PhaseGateUserMixin)
 
 end
+
+function FadeAvoca:GetRebirthLength()
+return 5
+end
+function FadeAvoca:GetRedemptionCoolDown()
+return 35
+end
 function FadeAvoca:GetMaxSpeed(possible)
      local speed = origspeed(self)
   --return speed * 1.10

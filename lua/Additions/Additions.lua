@@ -21,6 +21,13 @@ Script.Load("lua/Additions/CommTunnel.lua")
 Script.Load("lua/Additions/ForceField.lua")
 Script.Load("lua/Additions/PoopEgg.lua")
 
+Script.Load("lua/Additions/ConcGrenadeThrower.lua")
+Script.Load("lua/Additions/ConcGrenade.lua")
+
+--Script.Load("lua/ExtraEntitiesMod/LogicBreakable.lua")
+--Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
+
+
 --Avoca arc pregame 
 
 
