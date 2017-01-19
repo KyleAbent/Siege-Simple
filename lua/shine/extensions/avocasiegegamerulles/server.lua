@@ -77,22 +77,18 @@ local function NewHpdateGestation(self)
            if  newPlayer.OnGestationComplete then newPlayer:OnGestationComplete() end
             newPlayer:SetHatched()
             newPlayer:TriggerEffects("egg_death")
-            newPlayer:SetHealth(self:GetHealth() * 0.7 )
+           
             
            if GetHasRebirthUpgrade(newPlayer) then
           newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
+          -- newPlayer:SetHealth(self:GetHealth() * 0.7 )
            end
           
            if GetHasThickenedSkinUpgrade(newPlayer) then
                 newPlayer:AdjustMaxHealth(LookupTechData(self.gestationTypeTechId, kTechDataMaxHealth) * 1.10)
            end
-           
-                     if GetHasRebirthUpgrade(newPlayer) then
-          newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
-          newPlayer.lastredeemorrebirthtime = Shared.GetTime()
-           end
-           
+
         if GetHasRedemptionUpgrade(newPlayer) then
           newPlayer:TriggerRedeemCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()

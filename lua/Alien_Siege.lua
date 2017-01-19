@@ -7,9 +7,19 @@ function Alien:OnCreate()
     end
      self.lastredeemorrebirthtime = 0
      self.canredeemorrebirth = true
-    
-     self:UpdateHealthAmountManual()
-     self:UpdateArmorAmountManual()
+
+end
+local orig_Alien_OnInitialized = Alien.OnInitialized
+function Alien:OnInitialized()
+    orig_Alien_OnInitialized(self)
+     if not self:isa("Embryo") then
+    local teamInfo = GetTeamInfoEntity(2)
+      if teamInfo then
+     local bioMassLevel = teamInfo:GetBioMassLevel()
+     self:UpdateHealthAmountManual(bioMassLevel)
+     self:UpdateArmorAmountManual(bioMassLevel)
+     end
+   end
 end
 function Alien:GetRebirthLength()
 return 0
@@ -36,8 +46,11 @@ function Alien:UpdateHealthAmountManual(bioMassLevel, maxLevel)
  ---default w/ mod of thick skin. I know this is not perfect because the orig can be modified and make this one outdated. But im not worried. 
     local level = math.max(0, bioMassLevel - 1)
     local newMaxHealth = self:GetBaseHealth() + level * self:GetHealthPerBioMass()
-    newMaxHealth = ConditionalValue(GetHasThickenedSkinUpgrade(newPlayer), newPlayer:AdjustMaxHealth(LookupTechData(newPlayer:GetTechId(), kTechDataMaxHealth)), newMaxHealth)
-
+    newMaxHealth =  newMaxHealth--ConditionalValue(GetHasThickenedSkinUpgrade(self), newMaxHealth * 1.10, newMaxHealth)
+    --Print(" newMaxHealth is %s", newMaxHealth)
+   if GetHasThickenedSkinUpgrade(self) then
+     newMaxHealth = newMaxHealth * 1.10
+     end
     if newMaxHealth ~= self.maxHealth  then
 
         local healthPercent = self.maxHealth > 0 and self.health/self.maxHealth or 0

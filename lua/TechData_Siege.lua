@@ -74,14 +74,14 @@ local kSiege_TechData =
  
 
                 { [kTechDataId] = kTechId.ThickenedSkin, 
-       [kTechDataCategory] = kTechId.CragHiveTwo,  
+       [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 
       [kTechDataSponitorCode] = "A",  
-      [kTechDataCostKey] = 2, 
-     [kTechDataTooltipInfo] = "+10% max hp (why 10? because i dont know if 15, 20, 25 or 30 is OP!!!!)", },
+      [kTechDataCostKey] = 10,
+     [kTechDataTooltipInfo] = "+10% max hp", },
      
                      { [kTechDataId] = kTechId.Hunger, 
-       [kTechDataCategory] = kTechId.ShiftHiveTwo,  
+       [kTechDataCategory] = kTechId.CragHiveTwo,   
         [kTechDataDisplayName] = "Hunger", 
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = 2, 

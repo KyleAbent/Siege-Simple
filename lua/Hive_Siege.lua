@@ -42,7 +42,7 @@ local function IfBioMassThenAdjustHp(self)
     local shellLevel = GetShellLevel(self:GetTeamNumber())  
     for index, alien in ipairs(GetEntitiesForTeam("Alien", self:GetTeamNumber())) do
         alien:UpdateArmorAmountManual(shellLevel)
-        alien:UpdateHealthAmountManual(math.min(12, self.bioMassLevel), self.maxBioMassLevel)
+        alien:UpdateHealthAmountManual(self.bioMassLevel)
     end
 
 end
