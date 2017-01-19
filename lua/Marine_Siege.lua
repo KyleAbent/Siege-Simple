@@ -15,7 +15,7 @@ function Marine:GetCanBeVortexed()
 end
 
 if Server then
-/*
+
 local origcweapons = Marine.InitWeapons
 
 
@@ -24,13 +24,12 @@ function Marine:InitWeapons()
 origcweapons(self)
 
  if not GetGameStarted() then
-     Print("Giving item")
-     self:GiveItem(ConcGrenadeThrower.kMapName, true)
+    -- Print("Giving item")
+     self:GiveItem(ClusterGrenadeThrower.kMapName, true)
  end
 
 end
 
-*/
 function Marine:GiveLayStructure(techid, mapname)
   --  if not self:GetHasLayStructure() then
            local laystructure = self:GiveItem(LayStructures.kMapName)

@@ -27,7 +27,7 @@ local networkVars =
     concActivated = "boolean"
 }
 
-local kDelay = 4
+local kDelay = 3
 
 AddMixinNetworkVars(BaseModelMixin, networkVars)
 AddMixinNetworkVars(ModelMixin, networkVars)

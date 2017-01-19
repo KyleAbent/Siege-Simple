@@ -8,6 +8,8 @@ function Alien:OnCreate()
      self.lastredeemorrebirthtime = 0
      self.canredeemorrebirth = true
     
+     self:UpdateHealthAmountManual()
+     self:UpdateArmorAmountManual()
 end
 function Alien:GetRebirthLength()
 return 0
