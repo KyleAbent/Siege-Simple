@@ -27,7 +27,7 @@ local networkVars =
     concActivated = "boolean"
 }
 
-local kDelay = 3
+local kDelay = .25
 
 AddMixinNetworkVars(BaseModelMixin, networkVars)
 AddMixinNetworkVars(ModelMixin, networkVars)
@@ -79,19 +79,21 @@ if Server then
           GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
     
     for _, player in ipairs(GetEntitiesWithinRange("Player", self:GetOrigin(), 8)) do
+     if player.DisableGroundMove then player:DisableGroundMove(0.3) end
+      if player:isa("Lerk") then player.glideAllowed = false end
       -- if Server and target.GetIsKnockbackAllowed and target:GetIsKnockbackAllowed() then
             local toPlayer = player:GetEyePos() - self:GetOrigin()
-            local strength = Clamp( 8 - self:GetDistance(player), 1, 8)
+            local strength = Clamp( 16 - self:GetDistance(player), 1, 8)
             local velocity = GetNormalizedVector(toPlayer) * strength
             
                     // Take target mass into account.
         local direction = player:GetOrigin() - self:GetOrigin()
         direction:Normalize()
-         local targetVelocity = direction * (300 / player:GetMass()) * strength
-          if player:GetIsOnGround() then targetVelocity.y = targetVelocity.y + strength end --?
+         local targetVelocity = direction * (200) * strength
+           targetVelocity.y = targetVelocity.y + strength
          player:SetVelocity(targetVelocity)
          GetEffectManager():TriggerEffects("arc_hit_secondary", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
-         
+          if player:isa("Lerk") then player.glideAllowed = true end
     end
    end
 

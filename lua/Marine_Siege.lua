@@ -23,7 +23,7 @@ function Marine:InitWeapons()
 
 origcweapons(self)
 
- if not GetGameStarted() then
+ if not GetGameStarted() or self:GetDarwinMode() then
     -- Print("Giving item")
      self:GiveItem(ClusterGrenadeThrower.kMapName, true)
  end

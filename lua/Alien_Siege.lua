@@ -13,12 +13,8 @@ local orig_Alien_OnInitialized = Alien.OnInitialized
 function Alien:OnInitialized()
     orig_Alien_OnInitialized(self)
      if not self:isa("Embryo") then
-    local teamInfo = GetTeamInfoEntity(2)
-      if teamInfo then
-     local bioMassLevel = teamInfo:GetBioMassLevel()
-     self:UpdateHealthAmountManual(bioMassLevel)
-     self:UpdateArmorAmountManual(bioMassLevel)
-     end
+      self:AddTimedCallback(Alien.UpdateHealthAmountManual, .5) 
+      self:AddTimedCallback(Alien.UpdateArmorAmountManual, .5) 
    end
 end
 function Alien:GetRebirthLength()
@@ -28,6 +24,9 @@ function Alien:GetRedemptionCoolDown()
 return 0
 end
 function Alien:UpdateArmorAmountManual(carapaceLevel)
+    local teamInfo = GetTeamInfoEntity(2)
+          if teamInfo then
+      local bioMassLevel = teamInfo:GetBioMassLevel()
  --default, just manual. Outdated if modified... 
     local level = GetHasCarapaceUpgrade(self) and carapaceLevel or 0
     local newMaxArmor = (level / 3) * (self:GetArmorFullyUpgradedAmount() - self:GetBaseArmor()) + self:GetBaseArmor()
@@ -39,26 +38,23 @@ function Alien:UpdateArmorAmountManual(carapaceLevel)
         self:SetArmor(self.maxArmor * armorPercent)
     
     end
-
+    end
+  return false
 end
 
 function Alien:UpdateHealthAmountManual(bioMassLevel, maxLevel)
+    local teamInfo = GetTeamInfoEntity(2)
+          if teamInfo then
+      local bioMassLevel = teamInfo:GetBioMassLevel()
  ---default w/ mod of thick skin. I know this is not perfect because the orig can be modified and make this one outdated. But im not worried. 
     local level = math.max(0, bioMassLevel - 1)
     local newMaxHealth = self:GetBaseHealth() + level * self:GetHealthPerBioMass()
-    newMaxHealth =  newMaxHealth--ConditionalValue(GetHasThickenedSkinUpgrade(self), newMaxHealth * 1.10, newMaxHealth)
-    --Print(" newMaxHealth is %s", newMaxHealth)
-   if GetHasThickenedSkinUpgrade(self) then
-     newMaxHealth = newMaxHealth * 1.10
-     end
-    if newMaxHealth ~= self.maxHealth  then
-
-        local healthPercent = self.maxHealth > 0 and self.health/self.maxHealth or 0
+    newMaxHealth =  ConditionalValue(self:GetHasUpgrade(kTechId.ThickenedSkin), newMaxHealth * 1.10, newMaxHealth)
+   -- Print(" newMaxHealth is %s", newMaxHealth)
+        self:AdjustMaxHealth(newMaxHealth)
         self:SetMaxHealth(newMaxHealth)
-        self:SetHealth(self.maxHealth * healthPercent)
-    
     end
-
+   return false
 end
 
 function Alien:UpdateArmorAmount(carapaceLevel)

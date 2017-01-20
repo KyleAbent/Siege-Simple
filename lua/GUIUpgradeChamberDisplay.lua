@@ -36,8 +36,9 @@ local kUpgradeLevelFunc =
 -- first entry is tech id to use if the player has none of the upgrades in the list
 local kIndexToUpgrades =
 {
-    { kTechId.Shell, kTechId.Crush, kTechId.Carapace, kTechId.Regeneration },
-    { kTechId.None, kTechId.Redemption, kTechId.Rebirth, kTechId.Hunger, kTechId.ThickenedSkin},
+    {kTechId.CragHiveTwo,  kTechId.Redemption, kTechId.Rebirth, kTechId.Hunger},
+    {kTechId.ShiftHiveTwo,  kTechId.ThickenedSkin},
+    { kTechId.Shell, kTechId.Crush, kTechId.Carapace, kTechId.Regeneration, },
     { kTechId.Spur, kTechId.Silence, kTechId.Celerity, kTechId.Adrenaline },
     { kTechId.Veil, kTechId.Vampirism, kTechId.Aura, kTechId.Focus },
 }

@@ -180,7 +180,7 @@ local function AddOneScore(Player,Points,Res, WasKill)
 
 end
 function Plugin:OnScore( Player, Points, Res, WasKill )
-if Points ~= nil and Points ~= 0 and Player then
+if Points ~= nil and Points ~= 0 and Player and not Shared.GetCheatsEnabled() then
    if not self.GameStarted then Points = 1  AddOneScore(Player,Points,Res, WasKill) end
  local client = Player:GetClient()
  if not client then return end
