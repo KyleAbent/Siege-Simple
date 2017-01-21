@@ -126,6 +126,31 @@ local function GetPathingRequirementsMet(position, extents)
     
 end
 
+function Plugin:HasLimitOfCragInHive(Player, mapname, teamnumbber, limit, Client)
+--3 crag outside of hive and 5 inside hive
+local entitycount = 0
+local entities = {}
+if limitMod == true then limit = 8 end
+        for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", teamnumbber)) do
+        if entity:GetMapName() == mapname and entity:GetOwner() == Player and GetIsOriginInHiveRoom( entity:GetOrigin() ) then entitycount = entitycount + 1 table.insert(entities, entity) end 
+    end
+    
+     //             <
+    if entitycount ~= limit then return false end
+     return true
+end
+function Plugin:HasLimitOfCragOutHive(Player, mapname, teamnumbber, limit, Client)
+local entitycount = 0
+local entities = {}
+if limitMod == true then limit = 8 end
+        for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", teamnumbber)) do
+        if entity:GetMapName() == mapname and entity:GetOwner() == Player and not GetIsOriginInHiveRoom( entity:GetOrigin() )  then entitycount = entitycount + 1 table.insert(entities, entity) end 
+    end
+    
+     //             <
+    if entitycount ~= limit then return false end
+     return true
+end
 
 function Plugin:HasLimitOf(Player, mapname, teamnumbber, limit, Client)
 local entitycount = 0
@@ -516,10 +541,30 @@ return
 end
 
  
+if whoagain:isa("Alien") and mapname == CragAvoca.kMapName then 
+
+
+   if  GetIsOriginInHiveRoom( whoagain:GetOrigin() ) then
+     limitof = 5 
+if self:HasLimitOfCragInHive(whoagain, mapname, whoagain:GetTeamNumber(), limitof, who) then 
+self:NotifySalt(who, "Limit of %s %s inside hive room.", true, limitof, mapname)
+return
+end
+    end
+limitof = 8
+
+if self:HasLimitOfCragOutHive(whoagain, mapname, whoagain:GetTeamNumber(), limitof, who) then 
+self:NotifySalt(who, "Limit of %s %s outside hive room.", true, limitof, mapname)
+return
+end
+
+else
 
 if self:HasLimitOf(whoagain, mapname, whoagain:GetTeamNumber(), limitof, who) then 
 self:NotifySalt(who, "Limit of %s per %s per player ya noob", true, limitof, mapname)
 return
+end
+
 end
 
 if reqground then

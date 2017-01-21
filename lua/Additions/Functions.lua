@@ -6,6 +6,24 @@ function GetIsRoomPowerDown(who)
  if powernode and powernode:GetIsDisabled()  then return true end
  return false
 end
+function GetIsOriginInHiveRoom(point)  
+   --Perhaps could be written better   
+ local location = GetLocationForPoint(point)
+ local hivelocation = nil
+     local hives = GetEntitiesWithinRange("Hive", point, 999)
+     if not hives then return false end
+     
+     for i = 1, #hives do  --better way to do this i know
+     local hive = hives[i]
+     hivelocation = GetLocationForPoint(hive:GetOrigin())
+     break
+     end
+     
+     if location == hivelocation then return true end
+     
+     return false
+     
+end
 function GetIsPointWithinHiveRadius(point)     
     /*
     local hivesnearby = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)
