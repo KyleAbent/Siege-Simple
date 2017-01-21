@@ -7,7 +7,7 @@ local networkVars =
 
 class 'ConcGrenadeThrower' (GrenadeThrower)
 
-ConcGrenadeThrower.kMapName = "concgrenade"
+ConcGrenadeThrower.kMapName = "concgrenadethrower"
 
 local kModelName = PrecacheAsset("models/marine/grenades/gr_nerve.model")
 local kViewModels = GenerateMarineGrenadeViewModelPaths("gr_nerve")

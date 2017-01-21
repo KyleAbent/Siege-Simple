@@ -9,6 +9,7 @@ Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
 Script.Load("lua/MAC_Siege.lua")
+Script.Load("lua/Additions/LayStructures.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -71,7 +72,13 @@ end
 local kSiege_TechData =
 {        
 
- 
+  { [kTechDataId] = kTechId.LayStructures,   
+  [kTechDataMaxHealth] = kMarineWeaponHealth,  
+[kTechDataMapName] = LayStructures.kMapName,         
+           [kTechDataDisplayName] = "LayStructures",  
+    [kTechDataModel] = LayStructures.kModelName,
+ --[kTechDataDamageType] = kWelderDamageType,
+ [kTechDataCostKey] = kWelderCost  },
 
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  

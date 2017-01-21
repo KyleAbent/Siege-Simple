@@ -1,6 +1,6 @@
 Script.Load("lua/Weapons/Weapon.lua")
 Script.Load("lua/PickupableWeaponMixin.lua")
-
+Script.Load("lua/MarineVariantMixin.lua")
 class 'LayStructures' (Weapon)
 
 LayStructures.kMapName = "lay_structures"
@@ -8,7 +8,11 @@ LayStructures.kMapName = "lay_structures"
 local kDropModelName = PrecacheAsset("models/marine/welder/builder.model")
 local kHeldModelName = PrecacheAsset("models/marine/welder/builder.model")
 
+LayStructures.ModelName = PrecacheAsset("models/marine/welder/welder.model")
+
 local kViewModels = GenerateMarineViewModelPaths("welder")
+
+
 local kAnimationGraph = PrecacheAsset("models/marine/welder/laystructure_view.animation_graph")
 
 local kPlacementDistance = 4

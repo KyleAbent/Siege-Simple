@@ -47,6 +47,7 @@ local kSiege_TechIds =
     'ThickenedSkin',
     'Hunger',
     'ShiftHiveTwo',
+    'LayStructures',
 
 
     
