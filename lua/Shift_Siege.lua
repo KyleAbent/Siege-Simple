@@ -14,11 +14,11 @@ function ShiftAvoca:GetInfestationRadius()
     return 1
 end
     function ShiftAvoca:OnInitialized()
-     Shift.OnInitialized(self)
        InitMixin(self, InfestationMixin)
          InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shift)
+         Shift.OnInitialized(self)
     end
     function ShiftAvoca:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end

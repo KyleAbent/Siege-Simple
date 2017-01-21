@@ -60,7 +60,7 @@ function CommVortex:GetUpdateTime()
 end
 
 function CommVortex:GetLifeSpan()
-    return 12 ///  6 is too short - It Basically dissapears a few seconds after finding a target!
+    return kVortexLifeSpan 
 end
 
 Shared.LinkClassToMap("CommVortex", CommVortex.kMapName, netWorkVars)

@@ -55,11 +55,10 @@ function SiegeUnstickPlayer(self, Player, Pos)
 	
 	local SpawnPoint
 	local ResourceNear
-        local OtherSideOfObstacle
 	local i = 1
 
         -- Grab any nearby doors so we can make sure that the player isn't unstucking through them
-        local NearbyDoors = GetEntitiesWithinRange( "FrontDoor", Pos, 10 ) > 0 
+        local nearbyDoors = #GetEntitiesWithinRange( "FrontDoor", Pos, 10 ) > 0 and not GetFrontDoorOpen()
         local Naughty = false
 
 	repeat
@@ -77,25 +76,13 @@ function SiegeUnstickPlayer(self, Player, Pos)
 
                     if NearbyDoors then
 
-                        for _, Door in ipairs(NearbyDoors) do
-
-                            -- Only check doors if they are welded shut (ie. locked)
-                            if SwappedSides(Door, Player:GetOrigin(), SpawnPoint) then
-
-                                Naughty = true
-                                OtherSideOfObstacle = true
-                                break
-
-                            end
-
-                        end
-
+                                 Naughty = true
                     end
 
                 end
 
 		i = i + 1
-	until ((not ResourceNear) and (not OtherSideOfObstacle)) or i > 100
+	until not ResourceNear or i > 100
 
         if Naughty then
 

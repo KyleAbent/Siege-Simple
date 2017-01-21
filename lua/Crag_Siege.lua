@@ -16,11 +16,11 @@ function CragAvoca:GetInfestationRadius()
 end
 
     function CragAvoca:OnInitialized()
-     Crag.OnInitialized(self)
        --  InitMixin(self, LevelsMixin)
          InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Crag)
+           Crag.OnInitialized(self)
     end
     
         function CragAvoca:GetTechId()

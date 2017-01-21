@@ -15,11 +15,11 @@ function ShadeAvoca:GetInfestationRadius()
 end
 
     function ShadeAvoca:OnInitialized()
-     Shade.OnInitialized(self)
        InitMixin(self, InfestationMixin)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shade)
+       Shade.OnInitialized(self)
     end
     function ShadeAvoca:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end

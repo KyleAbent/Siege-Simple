@@ -25,7 +25,6 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     
 
     function SentryAvoca:OnInitialized()
-         Sentry.OnInitialized(self)
          Sentry.kFov = 360
          Sentry.kMaxPitch = 360
         Sentry.kMaxYaw = 360
@@ -33,6 +32,7 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Sentry)
+        Sentry.OnInitialized(self)
     end
         function SentryAvoca:GetTechId()
          return kTechId.Sentry

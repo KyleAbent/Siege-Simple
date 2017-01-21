@@ -10,7 +10,7 @@ local function createTechIdEnum(table)
     return enum(table)
 
 end
-
+ 
 function StringToTechId(string)
     return gTechIdToString[string] or kTechId.None
 end

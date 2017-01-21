@@ -20,10 +20,10 @@ self.automaticspawningmac = false
 end
 
 function RoboSiege:OnInitialized()
-RoboticsFactory.OnInitialized(self)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
 if self:GetTechId() ~= kTechId.ARCRoboticsFactory then self:SetTechId(kTechId.RoboticsFactory) end
+RoboticsFactory.OnInitialized(self)
 end
 
 function RoboSiege:OnGetMapBlipInfo()

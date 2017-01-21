@@ -53,11 +53,19 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
       self:AddSideButton( "Fade(20)", function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
       self:AddSideButton( "Onos(25)", function() Shared.ConsoleCommand ("sh_buyclass Onos")  end)
     end
-     self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
+        self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
 Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
-        self:AddSideButton( "ConcGrenade(100)", function() Shared.ConsoleCommand ("sh_buywp ConcGrenade")  end)
+        self:AddSideButton( "OffensiveConcGrenade(100) (WIP)", function() Shared.ConsoleCommand ("sh_buywp OffensiveConcGrenade")  end)
+             self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
+
 end)
+Shine.VoteMenu:AddPage ("SpendFun", function( self )
+        self:AddSideButton( "JediConcGrenade(5) (WIP)", function() Shared.ConsoleCommand ("sh_buywp JediConcGrenade")  end)
+             self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
+
+end)
+
 Shine.VoteMenu:AddPage ("SpendCommAbilities", function( self )
        local player = Client.GetLocalPlayer()
            if player:GetTeamNumber() == 1 then 
@@ -66,7 +74,7 @@ Shine.VoteMenu:AddPage ("SpendCommAbilities", function( self )
            else
        self:AddSideButton ("NutrientMist(1)", function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
        self:AddSideButton( "EnzymeCloud(1.5)", function() Shared.ConsoleCommand ("sh_buy EnzymeCloud")  end)
-       self:AddSideButton( "Ink(2)", function() Shared.ConsoleCommand ("sh_buy Ink")  end)
+       self:AddSideButton( "Ink(2)", function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
        self:AddSideButton( "Hallucination(1.75)", function() Shared.ConsoleCommand ("sh_buy Hallucination")  end)
        self:AddSideButton( "Contamination(1)", function() Shared.ConsoleCommand ("sh_buy Contamination")  end)
      end
@@ -79,7 +87,8 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
             self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilities" ) end)
     if player:GetTeamNumber() == 1 then 
         self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeapons" ) end)
-     self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
+     --self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
+          self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
       end  
 
 

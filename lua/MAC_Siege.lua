@@ -23,10 +23,10 @@ MAC.OnCreate(self)
 end
 
 function MACSiege:OnInitialized()
-MAC.OnInitialized(self)
 self:SetTechId(kTechId.MAC)
 InitMixin(self, LevelsMixin)
 if Server then ExploitCheck(self) end
+MAC.OnInitialized(self)
 end
         function MACSiege:GetTechId()
          return kTechId.MAC

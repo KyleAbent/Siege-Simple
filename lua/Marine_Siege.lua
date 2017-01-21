@@ -1,5 +1,7 @@
 Script.Load("lua/Additions/ConcGrenadeThrower.lua")
 Script.Load("lua/Additions/ConcGrenade.lua")
+Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
+Script.Load("lua/Additions/JediConcGrenade.lua")
 
 function Marine:GetHasLayStructure()
         local weapon = self:GetWeaponInHUDSlot(5)
@@ -25,7 +27,7 @@ origcweapons(self)
 
  if not GetGameStarted() or self:GetDarwinMode() then
     -- Print("Giving item")
-     self:GiveItem(ConcGrenadeThrower.kMapName, true)
+     self:GiveItem(JediConcGrenadeThrower.kMapName, true)
  end
 
 end

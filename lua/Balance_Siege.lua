@@ -1,3 +1,5 @@
+kVortexLifeSpan = 8
+kCommVortexCoolDown = 18
 kPrimalScreamEnergyCost = 25
 kPrimalScreamRange = 10
 kPrimalScreamDamageModifier = 1.3

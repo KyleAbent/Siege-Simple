@@ -32,6 +32,7 @@ ModLoader.SetupFileHook( "lua/Sentry.lua", "lua/Sentry_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/JetpackMarine.lua", "lua/JetpackMarine_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Crag.lua", "lua/Crag_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/PlayingTeam.lua", "lua/PlayingTeam_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/MarineTeam.lua", "lua/MarineTeam_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/AlienTeam.lua", "lua/AlienTeam_Siege.lua", "post" )
 

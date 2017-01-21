@@ -30,3 +30,5 @@ function ConcGrenadeThrower:GetGrenadeClassName()
 end
 
 Shared.LinkClassToMap("ConcGrenadeThrower", ConcGrenadeThrower.kMapName, networkVars)
+
+

@@ -116,7 +116,9 @@ function OnoGrow:OnHolster(player)
     self:OnPrimaryAttackEnd(player)
     
 end
+function OnoGrow:OnEggFilled(player)
 
+end
 function OnoGrow:OnProcessMove(input)
    local parent = self:GetParent()
     if self.primaryAttacking then
@@ -136,12 +138,15 @@ function OnoGrow:OnProcessMove(input)
             self.primaryAttacking = false
             self.durationofholdingdownmouse = 0
                if Shared.GetTime() > self.durationofholdingdownmouse + 6 then
-                           local egg = GetEntitiesForTeam( "PoopEgg", 2 )
-                          local count = table.count(egg) or 0
-                if Server and count < 8 then 
-                  --  if not parent:GetGameEffectMask(kGameEffect.OnInfestation) then local clog = CreateEntity(Clog.kMapName, parent:GetOrigin() + Vector(0, .5, -2), parent:GetTeamNumber()) end--clog
-                local egg = CreateEntity(PoopEgg.kMapName, parent:GetOrigin() + Vector(0, .5, 0), parent:GetTeamNumber())
-                end--server
+                     if Server then
+                      local egg = GetEntitiesForTeam( "PoopEgg", 2 )
+                      local count = table.count(egg) or 0
+                      if count < 8  then
+                      local egg = CreateEntity(PoopEgg.kMapName, parent:GetOrigin() + Vector(0, .5, 0), parent:GetTeamNumber())
+                      else
+                        self:OnEggFilled(parent)
+                    end --count
+                     end --server
             end --shared.
         end -- orig
         

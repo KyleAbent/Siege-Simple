@@ -35,8 +35,8 @@ ARC.OnCreate(self)
 end
 
 function ARCSiege:OnInitialized()
-ARC.OnInitialized(self)
 self:SetTechId(kTechId.ARC)
+ARC.OnInitialized(self)
 end
         function ARCSiege:GetTechId()
          return kTechId.ARC

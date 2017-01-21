@@ -17,11 +17,11 @@ function WhipAvoca:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
     function WhipAvoca:OnInitialized()
-     Whip.OnInitialized(self)
          InitMixin(self, LevelsMixin)
            InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Whip)
+          Whip.OnInitialized(self)
     end
     
         function WhipAvoca:GetTechId()

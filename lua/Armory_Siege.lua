@@ -59,7 +59,7 @@ function Armory:ResupplyPlayer(player)
                if not fullhealth or not fullarmor then
                
                if fullhealth then
-                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .15 player:AddArmor(addarmoramount) end 
+                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .20 player:AddArmor(addarmoramount) end 
                else 
                player:AddHealth(Armory.kHealAmount, false, true, nil, nil, true) 
                end
@@ -144,15 +144,15 @@ function ArmoryAvoca:OnGetMapBlipInfo()
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
 function ArmoryAvoca:OnInitialized()
-Armory.OnInitialized(self)
 InitMixin(self, LevelsMixin)
 if self:GetTechId() ~= kTechId.AdvancedArmory  then self:SetTechId(kTechId.Armory) end
+Armory.OnInitialized(self)
 end
     function ArmoryAvoca:GetMaxLevel()
-    return kDefaultLvl
+    return kArmoryLvl
     end
     function ArmoryAvoca:GetAddXPAmount()
-    return kDefaultAddXp
+    return kArmoryAddXp
     end
     
     
