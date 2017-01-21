@@ -816,6 +816,7 @@ if not Player then return end
     elseif String  == "Shotgun" then cost = 2 mapname = Shotgun.kMapName 
    elseif String == "FlameThrower" then mapname = Flamethrower.kMapName cost = 3
    elseif String == "GrenadeLauncher" then mapname =  GrenadeLauncher.kMapName cost = 3 
+   elseif String == "ConcGrenade" then cost = 25 mapname = ConcGrenadeThrower.kMapName
    end
    
    

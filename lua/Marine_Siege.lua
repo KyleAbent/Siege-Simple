@@ -25,7 +25,7 @@ origcweapons(self)
 
  if not GetGameStarted() or self:GetDarwinMode() then
     -- Print("Giving item")
-     self:GiveItem(ClusterGrenadeThrower.kMapName, true)
+     self:GiveItem(ConcGrenadeThrower.kMapName, true)
  end
 
 end

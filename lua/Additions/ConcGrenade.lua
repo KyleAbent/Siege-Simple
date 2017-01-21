@@ -7,6 +7,7 @@ Script.Load("lua/Weapons/Projectile.lua")
 Script.Load("lua/Mixins/ModelMixin.lua")
 Script.Load("lua/TeamMixin.lua")
 Script.Load("lua/Weapons/PredictedProjectile.lua")
+Script.Load("lua/OwnerMixin.lua")
 
 class 'ConcGrenade' (PredictedProjectile)
 
@@ -27,15 +28,12 @@ local networkVars =
     concActivated = "boolean"
 }
 
-local kDelay = .25
+local kDelay = 1.25
 
 AddMixinNetworkVars(BaseModelMixin, networkVars)
 AddMixinNetworkVars(ModelMixin, networkVars)
 AddMixinNetworkVars(TeamMixin, networkVars)
 
-local function TimeUp(self)
-    DestroyEntity(self)
-end
 
 function ConcGrenade:OnCreate()
 
@@ -47,7 +45,6 @@ function ConcGrenade:OnCreate()
     InitMixin(self, DamageMixin)
 
     if Server then    
-        self:AddTimedCallback(TimeUp, kDelay + .5)
         self:AddTimedCallback(ConcGrenade.BlowMinds, kDelay)
     end
 end
@@ -77,15 +74,17 @@ if Server then
     function ConcGrenade:BlowMinds()  
         --self:TriggerEffects("release_firegas", { effethostcoords = Coords.GetTranslation(self:GetOrigin())} )  
           GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
-    
+          
+        local owner = self:GetOwner() --Print("owner is %s", owner)
+        
     for _, player in ipairs(GetEntitiesWithinRange("Player", self:GetOrigin(), 8)) do
+          if  player == owner  or player:GetTeamNumber() == 2 then --Print("Eligable")
      if player.DisableGroundMove then player:DisableGroundMove(0.3) end
       if player:isa("Lerk") then player.glideAllowed = false end
       -- if Server and target.GetIsKnockbackAllowed and target:GetIsKnockbackAllowed() then
             local toPlayer = player:GetEyePos() - self:GetOrigin()
             local strength = Clamp( 16 - self:GetDistance(player), 1, 8)
             local velocity = GetNormalizedVector(toPlayer) * strength
-            
                     // Take target mass into account.
         local direction = player:GetOrigin() - self:GetOrigin()
         direction:Normalize()
@@ -94,9 +93,10 @@ if Server then
          player:SetVelocity(targetVelocity)
          GetEffectManager():TriggerEffects("arc_hit_secondary", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
           if player:isa("Lerk") then player.glideAllowed = true end
+          end
     end
+          DestroyEntity(self)
    end
-
 end
 
 Shared.LinkClassToMap("ConcGrenade", ConcGrenade.kMapName, networkVars)

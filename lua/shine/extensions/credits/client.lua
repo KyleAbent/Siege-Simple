@@ -55,6 +55,9 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
     end
      self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
+Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
+        self:AddSideButton( "ConcGrenade(25)", function() Shared.ConsoleCommand ("sh_buywp ConcGrenade")  end)
+end)
 Shine.VoteMenu:AddPage ("SpendCommAbilities", function( self )
        local player = Client.GetLocalPlayer()
            if player:GetTeamNumber() == 1 then 
@@ -75,8 +78,8 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
        local player = Client.GetLocalPlayer()
             self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilities" ) end)
     if player:GetTeamNumber() == 1 then 
-
         self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeapons" ) end)
+     self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
       end  
 
 
