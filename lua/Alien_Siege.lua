@@ -20,6 +20,16 @@ function Alien:OnInitialized()
       self:AddTimedCallback(Alien.UpdateHealthAmountManual, .5) 
       self:AddTimedCallback(Alien.UpdateArmorAmountManual, .5) 
    end
+     self:AddTimedCallback(Alien.CheckRedemptionTimer, .5) 
+
+end
+function Alien:CheckRedemptionTimer()
+    if  GetHasRedemptionUpgrade(self) then 
+        if Server then
+        self:AddTimedCallback(Alien.RedemptionTimer, 3) 
+        end
+       end
+       return false
 end
 function Alien:GetRebirthLength()
 return 0
@@ -110,27 +120,19 @@ end
 
 if Server then
 
-local origmove = Alien.OnProcessMove
-
-function Alien:OnProcessMove(input)
-
-origmove(self, input)
-
-           self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + kRedemptionCooldown 
-            
-        if  GetHasRedemptionUpgrade(self) then 
-           local threshold =  ( math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax) ) / 100
-            --  Print("threshold is %s", threshold)
+function Alien:RedemptionTimer()
+           local threshold =   math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax)  / 100
+              --Print("threshold is %s", threshold)
               local scalar = self:GetHealthScalar()
                if scalar <= threshold  then
-                -- Print("scalar is %s threshold is %s", scalar, threshold)
+                 self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown()
+                 --Print("scalar is %s threshold is %s", scalar, threshold)
                  if self.canredeemorrebirth then
                  self.canredeemorrebirth = false
-                 self:AddTimedCallback(Alien.RedemAlienToHive, math.random(1,8) ) 
-                 end   
-         end     
+                 self:AddTimedCallback(Alien.RedemAlienToHive, math.random(1,4) ) 
+                 end      
         end
-
+          return true
 end
 local function GetRelocationHive(usedhive, origin, teamnumber)
     local hives = GetEntitiesForTeam("Hive", teamnumber)

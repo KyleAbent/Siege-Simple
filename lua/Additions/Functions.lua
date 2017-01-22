@@ -129,15 +129,21 @@ function GetSiegeDoorOpen()
 end
 function GetRoundLengthToSiege()
     
+    local gameRules = nil
+        local entityList = Shared.GetEntitiesWithClassname("GameInfo")
+    if entityList:GetSize() > 0 then
+                 gameRules = entityList:GetEntityAtIndex(0) 
+    end    
+    
 local level = 1
- local gameRules = GetGamerules()
+  if not gameRules then return 0.1 end
  if not gameRules:GetGameStarted() then 
-   return 0 
+   return 0.1 
  end
   if GetSiegeDoorOpen() then
    return 1
   end 
-      local roundlength =   Shared.GetTime()   - ( gameRules:GetGameStartTime() + kFrontTimer )
+      local roundlength =   Shared.GetTime()   - ( gameRules:GetStartTime() + kFrontTimer )
                             --Don't count the setup duration 
       level = math.round(roundlength/  kSiegeTimer, 2)
      -- Print("GetRoundLengthToSiege = %s", level)

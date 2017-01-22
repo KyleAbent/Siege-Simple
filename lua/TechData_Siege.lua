@@ -118,7 +118,7 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Redemption", 
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
-     [kTechDataTooltipInfo] = "Will return you to a random (hive or beacon) egg spawn when 10-20% hp or lower (and cooldown reached). With random 1-8 second delay.", },
+     [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value or less than or equal to a value between 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 
