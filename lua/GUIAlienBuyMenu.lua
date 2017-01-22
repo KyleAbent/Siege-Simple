@@ -1003,12 +1003,23 @@ local function GetUpgradeCostForLifeForm(player, alienType, upgradeId)
     
         local alienTechNode = GetAlienTechNode(alienType, true)
         if alienTechNode then
-
+         local cost = LookupTechData(alienTechNode:GetTechId(), kTechDataUpgradeCost, 0)
+         
+             if upgradeId == kTechId.Rebirth then
+              cost = cost + 8
+             elseif upgradeId == kTechId.Redemption then
+               cost = cost + 8
+             elseif upgradeId == kTechId.Rebirth then
+              cost = cost + 8
+             elseif upgradeId == kTechId.ThickenedSkin then
+               cost = cost + 10
+             end
+             
             if player:GetTechId() == alienTechNode:GetTechId() and player:GetHasUpgrade(upgradeId) then
-                return 0
+                cost = 0
             end    
         
-            return LookupTechData(alienTechNode:GetTechId(), kTechDataUpgradeCost, 0)
+            return cost
             
         end
     

@@ -117,12 +117,18 @@ function Alien:OnProcessMove(input)
 origmove(self, input)
 
            self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + kRedemptionCooldown 
- 
-        if  (GetHasRedemptionUpgrade(self) and self:GetHealthScalar() <= kRedemptionEHPThreshold ) then
+            
+        if  GetHasRedemptionUpgrade(self) then 
+           local threshold =  ( math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax) ) / 100
+            --  Print("threshold is %s", threshold)
+              local scalar = self:GetHealthScalar()
+               if scalar <= threshold  then
+                -- Print("scalar is %s threshold is %s", scalar, threshold)
                  if self.canredeemorrebirth then
                  self.canredeemorrebirth = false
-                 self:AddTimedCallback(Alien.RedemAlienToHive, math.random(4,8) ) 
-                 end         
+                 self:AddTimedCallback(Alien.RedemAlienToHive, math.random(1,8) ) 
+                 end   
+         end     
         end
 
 end
@@ -278,9 +284,11 @@ function Alien:TriggerRebirthCountDown(player)
 
 end
 function Alien:RedemAlienToHive()
+     if self:GetEligableForRebirth() then
         self:TeleportToHive()
          self:OnRedeem(self:GetClient():GetControllingPlayer())
         self.lastredeemorrebirthtime = Shared:GetTime()
+     end
         return false
 end
 local origderp = Alien.CopyPlayerDataFrom

@@ -11,7 +11,8 @@ kRedemptionCost = 2
 kRebirthCost = 2
 kRedemptionCooldown = 45
 kRedemptionCooldown = 45
-kRedemptionEHPThreshold = 0.30
+kRedemptionEHPThresholdMin = 10
+kRedemptionEHPThresholdMax = 20
 
 kOnosEggCost = 90 --default 100
 kBabblerDamage = 9 --default 8 

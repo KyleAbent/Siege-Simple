@@ -314,9 +314,18 @@ end
        Observatory.PerformAdvancedBeacon(self)
        self.lastbeacon = Shared.GetTime()
     end
+    local function GetHasSentryBatteryInRadius(self)
+      local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
+          for index, battery in ipairs(backupbattery) do
+            if GetIsUnitActive(battery) then return true end
+           end      
+ 
+   return false
+end
+
     function ObservatoryAvoca:GetIsPowered()
         local override = ConditionalValue(GetRecentlyAdvBeaconed(self), false, true)
-    return (self.powered or self.powerSurge) and override
+    return (self.powered or self.powerSurge or GetHasSentryBatteryInRadius(self) ) and override 
 end
 
 function ObservatoryAvoca:OnGetMapBlipInfo()

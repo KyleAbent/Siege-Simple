@@ -118,7 +118,7 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Redemption", 
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
-     [kTechDataTooltipInfo] = "Will return you to a random (hive or beacon) egg spawn when 30% hp or lower (and cooldown reached)", },
+     [kTechDataTooltipInfo] = "Will return you to a random (hive or beacon) egg spawn when 10-20% hp or lower (and cooldown reached). With random 1-8 second delay.", },
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 
