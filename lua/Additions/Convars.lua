@@ -50,5 +50,5 @@ kDefaultAddXp = 0.15
 kArmoryAddXp = 0.45
 kArmoryLvl = 75
 kInfantryPortalXPGain = 0.05
-kCommSentryPerRoom = 4
+kCommSentryPerRoom = 6
 kMacMaxLevel = 50

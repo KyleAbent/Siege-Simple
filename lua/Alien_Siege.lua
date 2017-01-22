@@ -1,6 +1,8 @@
 local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",} 
 local orig_Alien_OnCreate = Alien.OnCreate
-    
+    function Alien:SlapPlayer()
+     self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
+    end
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
     if Server then
@@ -119,7 +121,7 @@ origmove(self, input)
         if  (GetHasRedemptionUpgrade(self) and self:GetHealthScalar() <= kRedemptionEHPThreshold ) then
                  if self.canredeemorrebirth then
                  self.canredeemorrebirth = false
-                 self:RedemAlienToHive()
+                 self:AddTimedCallback(Alien.RedemAlienToHive, math.random(4,8) ) 
                  end         
         end
 
@@ -279,6 +281,7 @@ function Alien:RedemAlienToHive()
         self:TeleportToHive()
          self:OnRedeem(self:GetClient():GetControllingPlayer())
         self.lastredeemorrebirthtime = Shared:GetTime()
+        return false
 end
 local origderp = Alien.CopyPlayerDataFrom
 

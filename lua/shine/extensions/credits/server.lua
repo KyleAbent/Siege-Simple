@@ -439,12 +439,12 @@ function Plugin:SaveAllCredits()
 
 end
 function Plugin:DeductSaltIfNotPregame(self, who, amount, delayafter)
-
+        Print("DeductSaltIfNotPregame, amount is %s", amount)
  if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown() )  then
-    self.CreditUsers[ who ] = self:GetPlayerSaltInfo(who) - amount
+    self.CreditUsers[ who:GetClient() ] = self:GetPlayerSaltInfo(who:GetClient()) - amount
      self.PlayerSpentAmount[who:GetClient()] = self.PlayerSpentAmount[who:GetClient()]  + amount
-   self.BuyUsersTimer[who] = Shared.GetTime() + delayafter
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
+   self.BuyUsersTimer[who:GetClient()] = Shared.GetTime() + delayafter
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who:GetClient()) ), who) 
  else
  self:NotifySalt(who, "Pregame purchase free of charge", true) 
  end
@@ -721,17 +721,17 @@ techid = kTechId.Observatory
 CreditCost = 10
 elseif String == "Armory"  then
 CreditCost = 12
-mapnameof = ArmoryAvoca.kMapName
+mapnameof = Armory.kMapName
 techid = kTechId.Armory
 elseif String == "Sentry"  then
-mapnameof = SentryAvoca.kMapName
+mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
 limit = 1
 CreditCost = 8
 elseif String == "PhaseGate" then
 CreditCost = 15
 limit = 2
-mapnameof = PhaseGateAvoca.kMapName
+mapnameof = PhaseGate.kMapName
 techid = kTechId.PhaseGate
 elseif String == "InfantryPortal" then
 mapnameof = InfantryPortalAvoca.kMapName
@@ -787,7 +787,7 @@ reqpathing = false
 
 elseif String == "Shade" then
 CreditCost = 10
-mapnameof = ShadeAvoca.kMapName
+mapnameof = Shade.kMapName
 techid = kTechId.Shade
 elseif String == "Crag" then
 CreditCost = 10
@@ -811,7 +811,7 @@ return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid
 
 end
 local function DeductBuy(self, who, cost, delayafter)
-
+  return self:DeductSaltIfNotPregame(self, who, cost, delayafter)
 end
 function Plugin:CreateCommands()
 
@@ -909,15 +909,15 @@ if not Player then return end
  
   
          if Player:GetTeamNumber() == 1 then
-              if cost == 8 then DeductBuy(self, Client, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 30 then DeductBuy(self, Client, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 29 then DeductBuy(self, Client, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+              if cost == 8 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
+             elseif cost == 30 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 9 then Player:CreditBuy(Gorge)   Player:SetResources(Player:GetResources() + kGorgeCost ) DeductBuy(self, Client, cost)
-              elseif cost == 12  then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kLerkCost ) Player:CreditBuy(Lerk)
-              elseif cost == 20 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kFadeCost ) Player:CreditBuy(Fade)
-              elseif cost == 25 then DeductBuy(self, Client, cost, delayafter)  Player:SetResources(Player:GetResources() + kOnosCost ) Player:CreditBuy(Onos)
+              elseif cost == 12  then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kLerkCost ) Player:CreditBuy(Lerk)
+              elseif cost == 20 then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kFadeCost ) Player:CreditBuy(Fade)
+              elseif cost == 25 then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kOnosCost ) Player:CreditBuy(Onos)
               end
          end
    

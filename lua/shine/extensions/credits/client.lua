@@ -87,7 +87,7 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
             self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilities" ) end)
     if player:GetTeamNumber() == 1 then 
         self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeapons" ) end)
-     --self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
+    -- self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
           self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
       end  
 

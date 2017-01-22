@@ -1,45 +1,29 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-
-class 'PrototypeLabAvoca' (PrototypeLab)--may not nee dto do ongetmapblipinfo because the way i redone the setcachedtechdata to simply change the mapname to this :)
-PrototypeLabAvoca.kMapName = "prototypelabavoca"
+Script.Load("lua/Additions/AvocaMixin.lua")
 
 local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
     
-
-    function PrototypeLabAvoca:OnInitialized()
+local originit = PrototypeLab.OnInitialized
+    function PrototypeLab:OnInitialized()
+             originit(self)
          InitMixin(self, LevelsMixin)
-         PrototypeLab.OnInitialized(self)
         InitMixin(self, AvocaMixin)
-        self:SetTechId(kTechId.PrototypeLab)
     end
-        function PrototypeLabAvoca:GetTechId()
+        function PrototypeLab:GetTechId()
          return kTechId.PrototypeLab
     end
-        function PrototypeLabAvoca:GetMaxLevel()
+        function PrototypeLab:GetMaxLevel()
     return kDefaultLvl
     end
-    function PrototypeLabAvoca:GetAddXPAmount()
+    function PrototypeLab:GetAddXPAmount()
     return kDefaultAddXp
     end
-function PrototypeLabAvoca:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.PrototypeLab
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
 
 local origbuttons = PrototypeLab.GetTechButtons
-function PrototypeLabAvoca:GetTechButtons(techId)
+function PrototypeLab:GetTechButtons(techId)
 local table = {}
 
 table = origbuttons(self, techId)
@@ -51,4 +35,4 @@ table = origbuttons(self, techId)
 end
 
 
-Shared.LinkClassToMap("PrototypeLabAvoca", PrototypeLabAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("PrototypeLab", PrototypeLab.kMapName, networkVars)

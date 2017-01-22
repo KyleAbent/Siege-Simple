@@ -1,5 +1,9 @@
 Script.Load("lua/Modifications/ReallyNow.lua")
 
+function GetValidTargetInWarmUp(target)
+    return not target:isa("CommandStructure")
+end
+
 local origkill = LiveMixin.Kill
 function LiveMixin:Kill(attacker, doer, point, direction)
   if self:GetIsAlive() and self:GetCanDie() then
@@ -151,20 +155,14 @@ SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 ---Hacks------------
 
-SetCachedTechData(kTechId.ArmsLab, kTechDataMapName, ArmsLabAvoca.kMapName)
-SetCachedTechData(kTechId.Armory, kTechDataMapName, ArmoryAvoca.kMapName)
-SetCachedTechData(kTechId.PhaseGate, kTechDataMapName, PhaseGateAvoca.kMapName)
-SetCachedTechData(kTechId.PrototypeLab, kTechDataMapName, PrototypeLabAvoca.kMapName)
 SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapName)
 SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
 SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
-SetCachedTechData(kTechId.Sentry, kTechDataMapName,SentryAvoca.kMapName)
 SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoAvoca.kMapName)
 
 
 SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipAvoca.kMapName)
 SetCachedTechData(kTechId.Crag, kTechDataMapName,CragAvoca.kMapName)
-SetCachedTechData(kTechId.Shade, kTechDataMapName,ShadeAvoca.kMapName)
 SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftAvoca.kMapName)
 SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraAvoca.kMapName)
 
@@ -204,7 +202,6 @@ return false
 end
 SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
 SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
-SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
 
 
 
@@ -215,8 +212,6 @@ SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures witho
 
 SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
 
-SetCachedTechData(kTechId.Fade, kTechDataMapName,FadeAvoca.kMapName)
-SetCachedTechData(kTechId.Fade, kTechDataGestateName, FadeAvoca.kMapName)
 
 
 

@@ -117,48 +117,24 @@ end
 
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
-class 'ArmoryAvoca' (Armory)
-ArmoryAvoca.kMapName = "armoryavoca"
 
 local networkVars = {}
 
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars)
-
-    function ArmoryAvoca:OnCreate()
-         Armory.OnCreate(self)
+    local origcreate = Armory.OnCreate
+    function Armory:OnCreate()
+        origcreate(self)
         InitMixin(self, AvocaMixin)
     end
 
-function ArmoryAvoca:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.Armory
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
-function ArmoryAvoca:OnInitialized()
-InitMixin(self, LevelsMixin)
-if self:GetTechId() ~= kTechId.AdvancedArmory  then self:SetTechId(kTechId.Armory) end
-Armory.OnInitialized(self)
-end
-    function ArmoryAvoca:GetMaxLevel()
+    function Armory:GetMaxLevel()
     return kArmoryLvl
     end
-    function ArmoryAvoca:GetAddXPAmount()
+    function Armory:GetAddXPAmount()
     return kArmoryAddXp
     end
     
     
-    
-    
-    
-    
-    
-Shared.LinkClassToMap("ArmoryAvoca", ArmoryAvoca.kMapName, networkVars)
+ 
+Shared.LinkClassToMap("Armory", Armory.kMapName, networkVars)

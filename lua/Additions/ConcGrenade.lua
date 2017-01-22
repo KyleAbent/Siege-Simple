@@ -61,11 +61,11 @@ function ConcGrenade:ProcessNearMiss( targetHit, endPoint )
     end
 end 
     function ConcGrenade:ProcessHit(targetHit, surface, normal, endPoint )
-
+      if Server then
        //if self:GetVelocity():GetLength() > 2 then
            self:BlowMinds()
       //  end
-        
+         end
     end
 
 if Server then
@@ -81,17 +81,7 @@ if Server then
           if  player:GetTeamNumber() == 2 then 
              player:SetElectrified(4)
      if player.DisableGroundMove then player:DisableGroundMove(0.3) end
-            local toPlayer = player:GetEyePos() - self:GetOrigin()
-            local strength = Clamp( 16 - self:GetDistance(player), 1, 16)
-            local velocity = GetNormalizedVector(toPlayer) * strength --- * strength?
-        local direction = player:GetOrigin() - self:GetOrigin()
-        direction:Normalize()
-         local targetVelocity = direction * (12) * strength
-           targetVelocity.y = targetVelocity.y + strength -- + strength or * strength or none?
-           --I don't want to calculate mass. Though perhaps a little less on oni?
-           targetVelocity = ConditionalValue(player:isa("Onos"), targetVelocity * .7, targetVelocity)
-         player:SetVelocity(targetVelocity)
-         GetEffectManager():TriggerEffects("arc_hit_secondary", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
+                  if player.SlapPlayer then player:SlapPlayer() end
           end
     end
           DestroyEntity(self)

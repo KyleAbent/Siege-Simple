@@ -15,4 +15,4 @@ kMaxEntityRadius = 10
 kMACSupply = 5
 kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
 kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
-kSentrySupply = 5
+kSentrySupply = 2
