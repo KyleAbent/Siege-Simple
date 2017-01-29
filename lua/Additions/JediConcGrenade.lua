@@ -54,30 +54,26 @@ end
     end
 
 if Server then
-        
+      
     function JediConcGrenade:BlowMinds()  
-        --self:TriggerEffects("release_firegas", { effethostcoords = Coords.GetTranslation(self:GetOrigin())} )  
-          GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
-          
-        local owner = self:GetOwner() --Print("owner is %s", owner)
-       -- Print("Derp5")
-    for _, player in ipairs(GetEntitiesWithinRange("Player", self:GetOrigin(), 8)) do
-          --Stop fade blink / stop lerk glide?
-          if  owner == player then 
-     if player.DisableGroundMove then player:DisableGroundMove(0.3) end
-            local toPlayer = player:GetEyePos() - self:GetOrigin()
+            GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})    
+            local player = self:GetOwner()
+            if self:GetDistance(player) > 8 then return end
+            player:DisableGroundMove(0.5)
+            local selforigin = self:GetOrigin()
+                  selforigin.y = selforigin.y - 1
+            local toPlayer = player:GetEyePos() - selforigin
             local strength = Clamp( 16 - self:GetDistance(player) - 1, 1, 16)
             local velocity = GetNormalizedVector(toPlayer) * strength
-        local direction = player:GetOrigin() - self:GetOrigin()
-        direction:Normalize()
-         local targetVelocity = direction  * strength
-           targetVelocity.y = targetVelocity.y * strength
-         player:SetVelocity(targetVelocity)
-         GetEffectManager():TriggerEffects("arc_hit_secondary", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
-          end
-    end
-          DestroyEntity(self)
+            local direction = player:GetOrigin() - selforigin
+            direction:Normalize()
+            local targetVelocity = direction  * strength
+            targetVelocity.y = targetVelocity.y * strength
+            player:SetVelocity(targetVelocity)
+            GetEffectManager():TriggerEffects("arc_hit_secondary", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
+            DestroyEntity(self)
    end
+   
 end
 
 Shared.LinkClassToMap("JediConcGrenade", JediConcGrenade.kMapName, networkVars)

@@ -1,3 +1,9 @@
+kHungerhCost = 8
+kRedemptionCost = 8
+kRebirthCost = 8 
+kThickenedSkinCost = 10
+
+
 kVortexLifeSpan = 8
 kCommVortexCoolDown = 18
 kPrimalScreamEnergyCost = 25

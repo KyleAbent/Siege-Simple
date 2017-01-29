@@ -392,6 +392,44 @@ end
 
 function Plugin:CreateCommands()
 
+
+local function Pres( Client, Targets, Number )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if not Player:isa("ReadyRoomTeam")  and Player:isa("Alien") or Player:isa("Marine") then
+            Player:SetResources(Number)
+           	 Shine:CommandNotify( Client, "set %s's resources to %s", true,
+			 Player:GetName() or "<unknown>", Number )  
+             end
+     end
+end
+
+local PresCommand = self:BindCommand( "sh_pres", "pres", Pres)
+PresCommand:AddParam{ Type = "clients" }
+PresCommand:AddParam{ Type = "number" }
+PresCommand:Help( "sh_pres <player> <number> sets player's pres to the number desired." )
+
+
+local function  AddScore( Client, Targets, Number )
+    for i = 1, #Targets do
+    local Player = Targets[ i ]:GetControllingPlayer()
+            if HasMixin(Player, "Scoring") then
+            Player:AddScore(Number, 0, false)
+           	 Shine:CommandNotify( Client, "%s's score increased by %s", true,
+			 Player:GetName() or "<unknown>", Number )  
+             end
+     end
+end
+
+local AddScoreCommand = self:BindCommand( "sh_addscore", "addscore", AddScore)
+AddScoreCommand:AddParam{ Type = "clients" }
+AddScoreCommand:AddParam{ Type = "number" }
+AddScoreCommand:Help( "sh_addscore <player> <number> adds number to players score" )
+
+
+
+
+
 local function RandomRR( Client )
         local rrPlayers = GetGamerules():GetTeam(kTeamReadyRoom):GetPlayers()
         for p = #rrPlayers, 1, -1 do

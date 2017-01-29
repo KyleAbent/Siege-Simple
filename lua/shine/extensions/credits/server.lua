@@ -974,9 +974,10 @@ local CreditsCommand = self:BindCommand("sh_salt", "salt", Salt, true, false)
 CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
 
-local function AddSalt(Client, Targets, Number, Display)
+local function AddSalt(Client, Targets, Number, Display, Double)
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
+if Double == true then Number = Number * self.Config.kCreditMultiplier end
 self.CreditUsers[ Player:GetClient() ] = self:GetPlayerSaltInfo(Player:GetClient()) + Number
 Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ), Player:GetClient()) 
    if Display == true then
@@ -986,10 +987,11 @@ end
 end
 
 local AddCreditsCommand = self:BindCommand("sh_addsalt", "addsalt", AddSalt)
-AddCreditsCommand:Help("sh_addsalt <player> <number>")
+AddCreditsCommand:Help("sh_addsalt <player> <number> <display> <double> Choose not to display, or to double the amt if dbl crd is act.")
 AddCreditsCommand:AddParam{ Type = "clients" }
 AddCreditsCommand:AddParam{ Type = "number" }
 AddCreditsCommand:AddParam{ Type = "boolean", Optional = true, Default = true }
+AddCreditsCommand:AddParam{ Type = "boolean", Optional = true, Default = false }
 
 
 

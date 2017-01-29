@@ -116,6 +116,7 @@ function CragAvoca:TryHeal(target)
     end
    
 end
+-------- Hmmm?? does this even do anything? a 10% dmg discount from minigun? I have no idea.
 function CragAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then

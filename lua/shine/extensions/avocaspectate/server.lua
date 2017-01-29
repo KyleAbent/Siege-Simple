@@ -11,10 +11,10 @@ self.Enabled = true
 return true
 end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[Spectate]",  255, 0, 0, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Director]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:NotifySalt( Player, String, Format, ... )
-Shine:NotifyDualColour( Player, 255, 165, 0,  "[+0.1 Salt][Director]",  255, 0, 0, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Director]",  255, 0, 0, String, Format, ... )
 end
 local function GetPregameView()
 local choices = {}
@@ -108,7 +108,7 @@ if interesting ~= nil then table.insert(choices,interesting) end
               
              for index, breakabledoor in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do
               if breakabledoor:GetHealthScalar() <= .7 and not breakabledoor:GetHealth() == 0 and  breakabledoor:GetIsInCombat() then
-                     local player =  GetNearest(breakabledoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") end)
+                     local player =  GetNearest(breakabledoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and ent ~= self end)
                      if player then
                      table.insert(choices, player) 
                      break  -- just 1
@@ -154,7 +154,7 @@ local choices = {}
 --macs, drifters, not built constructs
 --front door
              for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
-                     local player =  GetNearest(frontdoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") end)
+                     local player =  GetNearest(frontdoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and ent ~= self end)
                      if player then
                      table.insert(choices, player) 
                      break  -- just 1
@@ -216,12 +216,24 @@ if not GetGamerules():GetGameStarted()  then return end
    for _, player in ipairs(GetEntitiesWithinRange("Player", client:GetOrigin(), 4)) do
     local  userid = player:GetClient():GetUserId()
         if player ~= client and userid ~= nil then
-         Shared.ConsoleCommand(string.format("sh_addsalt %s 0.1 false", userid ) )
+         Shared.ConsoleCommand(string.format("sh_addsalt %s 0.1 false true", userid ) )
          self:NotifySalt( player, "You have been visited!!!!", true ) 
-        self:NotifySalt( client, "Added Salt to %s", true, player:GetName() ) 
          end
   
    end
+  
+end
+local function SaltChosen(self, client, rank)
+
+if not GetGamerules():GetGameStarted()  then return end
+
+    local userid = client.GetUserId and client:GetUserId()
+        if userid ~= nil then
+         local addamt = rank / 10
+         Shared.ConsoleCommand(string.format("sh_addsalt %s %s false true", userid, addamt ) )
+         self:NotifySalt( client:GetControllingPlayer(), "Your rank of score is currently # %s (+ %s Salt)", rank, addamt, true )  
+         end
+  
   
 end
 local function SwitchToOverHead(client, self, where)
@@ -231,6 +243,46 @@ local function SwitchToOverHead(client, self, where)
         client:SetOrigin(where)
         client.overheadModeHeight =  height
 
+end
+local function overHeadandTween(self, client, vip)
+          client:SetDesiredCameraDistance(0)
+        -- Print("vip is %s", vip:GetClassName())
+          if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
+          local viporigin = vip:GetOrigin()
+          local findfreespace = FindFreeSpace(viporigin, 1, 8)
+          if ( GetGamerules():GetGameStarted() and findfreespace ==  viporigin ) then SwitchToOverHead(client, self, viporigin) return end
+             client:SetOrigin(findfreespace)
+             local dir = GetNormalizedVector(viporigin - client:GetOrigin())
+             local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
+             local tween = nil
+             local random = math.random (1,10)
+             local static = false
+             local wall = GetWallBetween(client:GetOrigin(), viporigin, vip)
+               tween = GetTween()
+              client:SetDesiredCamera(8.0, {move = true, tweening = tween }, client:GetEyePos(), angles, 0)
+              client:SetIsVisible(true)
+            --  SaltNearby(self, client)
+              self:NotifyGeneric( client, "VIP is %s, location is %s, tween is (%s),  wall between is %s", true, vip:GetClassName(), GetLocationName(client), tween, wall )
+end
+local function firstPersonScoreBased(self, client)
+
+
+    function sortByScore(ent1, ent2)
+        return ent1:GetScore() > ent2:GetScore()
+    end
+    
+    local tableof = {}
+                for _, scorer in ipairs(GetEntitiesWithMixin("Scoring")) do
+                 if not scorer:isa("Commander") and scorer:GetIsAlive() then table.insert(tableof, scorer) end
+              end  
+    if table.count(tableof) == 0 then return end
+    table.sort(tableof, sortByScore)
+    local entrant = math.random(1,4)
+    local topscorer = tableof[entrant]
+    if client:GetSpectatorMode() ~= kSpectatorMode.FirstPerson then client:SetSpectatorMode(kSpectatorMode.FirstPerson)  end
+    Server.GetOwner(client):SetSpectatingPlayer(topscorer)
+    SaltChosen(self, client, entrant)
+    self:NotifyGeneric( client, "(First person) VIP is %s, # rank in score is %s", true, topscorer:GetName(), entrant )
 end
 local function ChangeView(self, client)
  -- Print("ChangeView")
@@ -251,28 +303,14 @@ local function ChangeView(self, client)
         end
        
         if vip ~= nil then 
-          client:SetDesiredCameraDistance(0)
-        -- Print("vip is %s", vip:GetClassName())
-          if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
-          local viporigin = vip:GetOrigin()
-          local findfreespace = FindFreeSpace(viporigin, 1, 8)
-          if findfreespace ==  viporigin then SwitchToOverHead(client, self, viporigin) return end
-             client:SetOrigin(findfreespace)
-             local dir = GetNormalizedVector(viporigin - client:GetOrigin())
-             local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
-             local tween = nil
-             local random = math.random (1,10)
-             local static = false
-             local wall = GetWallBetween(client:GetOrigin(), viporigin, vip)
-               tween = GetTween()
-              client:SetDesiredCamera(8.0, {move = true, tweening = tween }, client:GetEyePos(), angles, 0)
-              client:SetIsVisible(true)
-            --  SaltNearby(self, client)
-              self:NotifyGeneric( client, "VIP is %s, location is %s, tween is (%s),  wall between is %s", true, vip:GetClassName(), GetLocationName(client), tween, wall )
-              
+              local roll = math.random(1,2)
+              if roll == 1 then
+              overHeadandTween(self, client, vip)
+              elseif roll == 2 then
+              firstPersonScoreBased(self, client)
+              end
         else
-             client:SetSpectatorMode(kSpectatorMode.FirstPerson)
-              --client:SelectEntity(GetEligableTopScorer()) 
+        firstPersonScoreBased(self, client)
          end
 
 end
