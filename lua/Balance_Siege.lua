@@ -1,4 +1,4 @@
-kHungerhCost = 8
+kHungerCost = 8
 kRedemptionCost = 8
 kRebirthCost = 8 
 kThickenedSkinCost = 10
