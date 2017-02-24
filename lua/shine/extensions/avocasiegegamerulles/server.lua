@@ -3,6 +3,57 @@ local Shine = Shine
 local Plugin = Plugin
 
 
+
+local OldBurnSporesAndUmbra
+
+local function NewBurnSporesAndUmbra(self, startPoint, endPoint)
+  local toTarget = endPoint - startPoint
+    local distanceToTarget = toTarget:GetLength()
+    toTarget:Normalize()
+    
+    local stepLength = 2
+
+    for i = 1, 5 do
+    
+        // stop when target has reached, any spores would be behind
+        if distanceToTarget < i * stepLength then
+            break
+        end
+    
+        local checkAtPoint = startPoint + toTarget * i * stepLength   
+        local spores = GetEntitiesWithinRange("SporeCloud", checkAtPoint, kSporesDustCloudRadius)
+        table.copy(GetEntitiesWithinRange("SporeMeleeCloud", checkAtPoint, kMeleeSporesDustCloudRadius), spores, true)
+        
+
+        local umbras = GetEntitiesWithinRange("CragUmbra", checkAtPoint, CragUmbra.kRadius)
+        table.copy(GetEntitiesWithinRange("StormCloud", checkAtPoint, StormCloud.kRadius), umbras, true)
+        table.copy(GetEntitiesWithinRange("MucousMembrane", checkAtPoint, MucousMembrane.kRadius), umbras, true)
+        table.copy(GetEntitiesWithinRange("EnzymeCloud", checkAtPoint, EnzymeCloud.kRadius), umbras, true)
+        
+        local bombs = GetEntitiesWithinRange("Bomb", checkAtPoint, 1.6)
+        table.copy(GetEntitiesWithinRange("WhipBomb", checkAtPoint, 1.6), bombs, true)
+        table.copy(GetEntitiesWithinRange("Rocket", checkAtPoint, 1.6), bombs, true)
+        
+        for index, bomb in ipairs(bombs) do
+            bomb:TriggerEffects("burn_bomb", { effecthostcoords = Coords.GetTranslation(bomb:GetOrigin()) } )
+            DestroyEntity(bomb)
+        end
+        
+        for index, spore in ipairs(spores) do
+            self:TriggerEffects("burn_spore", { effecthostcoords = Coords.GetTranslation(spore:GetOrigin()) } )
+            DestroyEntity(spore)
+        end
+        
+        for index, umbra in ipairs(umbras) do
+            self:TriggerEffects("burn_umbra", { effecthostcoords = Coords.GetTranslation(umbra:GetOrigin()) } )
+            DestroyEntity(umbra)
+        end
+    
+end
+end
+
+OldBurnSporesAndUmbra = Shine.Hook.ReplaceLocalFunction( Flamethrower.FirePrimary, "BurnSporesAndUmbra", NewBurnSporesAndUmbra )
+
 local OldUpdGestation
 
 local function NewHpdateGestation(self)
@@ -79,10 +130,10 @@ local function NewHpdateGestation(self)
             newPlayer:TriggerEffects("egg_death")
            
             
-           if newPlayer:GetHasUpgrade(kTechId.Rebirth) then
+           if  GetHasRebirthUpgrade(newPlayer) then
           newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
-           newPlayer:SetHealth(self:GetHealth() * 0.7 )
+           newPlayer:SetHealth(self:GetMaxHealth() * 0.7 )
            end
           
 

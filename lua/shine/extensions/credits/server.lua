@@ -914,10 +914,10 @@ if not Player then return end
              elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 9 then Player:CreditBuy(Gorge)   Player:SetResources(Player:GetResources() + kGorgeCost ) DeductBuy(self, Client, cost)
-              elseif cost == 12  then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kLerkCost ) Player:CreditBuy(Lerk)
-              elseif cost == 20 then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kFadeCost ) Player:CreditBuy(Fade)
-              elseif cost == 25 then DeductBuy(self, Player, cost, delayafter)  Player:SetResources(Player:GetResources() + kOnosCost ) Player:CreditBuy(Onos)
+              if cost == 9 then Player:CreditBuy(Gorge)   DeductBuy(self, Client, cost)
+              elseif cost == 12  then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Lerk)
+              elseif cost == 20 then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Fade)
+              elseif cost == 25 then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Onos)
               end
          end
    

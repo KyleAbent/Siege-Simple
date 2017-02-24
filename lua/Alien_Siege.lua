@@ -1,4 +1,4 @@
-local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",} 
+local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",} 
 local orig_Alien_OnCreate = Alien.OnCreate
     function Alien:SlapPlayer()
      self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
@@ -11,6 +11,7 @@ function Alien:OnCreate()
     end
      self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
      self.canredeemorrebirth = true
+      self.primaled = false
 
 end
 local orig_Alien_OnInitialized = Alien.OnInitialized
@@ -22,6 +23,51 @@ function Alien:OnInitialized()
    end
      self:AddTimedCallback(Alien.CheckRedemptionTimer, .5) 
 
+end
+local function CheckPrimalScream(self)
+	self.primaled = self.primalGiveTime - Shared.GetTime() > 0
+	return self.primaled
+end
+if Server then
+
+    function Alien:PrimalScream(duration)
+        if not self.primaled then
+			self:AddTimedCallback(CheckPrimalScream, duration)
+		end
+        self.primaled = true
+        self.primalGiveTime = Shared.GetTime() + duration
+    end
+
+end
+function Alien:GetHasPrimalScream()
+    return self.primaled
+end
+function Alien:CancelPrimal()
+
+    if self.primalGiveTime > Shared.GetTime() or self:GetIsOnFire() then 
+        self.primalGiveTime = Shared.GetTime()
+        self.primaledID = Entity.invalidI
+    end
+    
+end
+--Hmm? Overwrite? My palms are open, not clenched.. Idk about my asshole, though.
+function Alien:OnUpdateAnimationInput(modelMixin)
+
+    Player.OnUpdateAnimationInput(self, modelMixin)
+    
+    local attackSpeed = self:GetIsEnzymed() and kEnzymeAttackSpeed or 1
+    attackSpeed = attackSpeed * ( self.electrified and kElectrifiedAttackSpeed or 1 )
+    attackSpeed = attackSpeed + ( self:GetHasPrimalScream() and kPrimalScreamROFIncrease or 0)
+    if self.ModifyAttackSpeed then
+    
+        local attackSpeedTable = { attackSpeed = attackSpeed }
+        self:ModifyAttackSpeed(attackSpeedTable)
+        attackSpeed = attackSpeedTable.attackSpeed
+        
+    end
+    
+    modelMixin:SetAnimationInput("attack_speed", attackSpeed)
+    
 end
 function Alien:CheckRedemptionTimer()
     if  GetHasRedemptionUpgrade(self) then 

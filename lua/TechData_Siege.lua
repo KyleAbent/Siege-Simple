@@ -84,14 +84,14 @@ local kSiege_TechData =
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 
       [kTechDataSponitorCode] = "A",  
-      [kTechDataCostKey] = 10,
+      [kTechDataCostKey] = kThickenedSkinCost,
      [kTechDataTooltipInfo] = "+10% max hp", },
      
                      { [kTechDataId] = kTechId.Hunger, 
        [kTechDataCategory] = kTechId.CragHiveTwo,   
         [kTechDataDisplayName] = "Hunger", 
       [kTechDataSponitorCode] = "B",  
-      [kTechDataCostKey] = 2, 
+      [kTechDataCostKey] = kHungerCost, 
      [kTechDataTooltipInfo] = "10% health / energy gain, and effects of Enzyme on player kill (if gorge then structures not players) ", },
    
 
@@ -118,7 +118,7 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Redemption", 
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
-     [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value or less than or equal to a value between 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
+     [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value less than or equal to 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 

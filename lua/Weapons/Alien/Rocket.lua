@@ -83,11 +83,9 @@ function Rocket:OnAdjustModelCoords(modelCoords)
     
 end
 function Rocket:ProcessHit(targetHit, surface, normal, endPoint)
-
-    if Server then
-        self:Detonate(targetHit, surface) 
-    end      
-    
+    if Server and targetHit then
+        self:Detonate(targetHit, surface)  
+    end
     
 end
 
@@ -96,6 +94,7 @@ if Server then
     function Rocket:Detonate(targetHit, surface)
 
         if not self:GetIsDestroyed() then
+             self.stopSimulation = true
             local hitEntities = GetEntitiesWithMixinForTeamWithinRange("Live", 1, self:GetOrigin(), kAcidRocketRadius)
             // full damage on direct impact
             if targetHit then

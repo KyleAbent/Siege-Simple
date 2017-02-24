@@ -21,7 +21,6 @@ InitMixin(self, PredictedProjectileShooterMixin)
 InitMixin(self, PhaseGateUserMixin)
 
 end
-
 function Fade:GetRebirthLength()
 return 5
 end

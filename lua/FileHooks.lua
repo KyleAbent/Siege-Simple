@@ -15,7 +15,7 @@ ModLoader.SetupFileHook( "lua/Weapons/Marine/Rifle.lua", "lua/Weapons/Marine/Rif
 
 
 
-
+ModLoader.SetupFileHook( "lua/Location.lua", "lua/Location_Siege.lua", "post" )
 
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Additions/AvocaShotgun.lua", "post" )
@@ -85,7 +85,7 @@ ModLoader.SetupFileHook( "lua/BalanceHealth.lua", "lua/BalanceHealth_Siege.lua",
 
 ModLoader.SetupFileHook( "lua/Lerk.lua", "lua/Lerk_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Fade.lua", "lua/Fade_Siege.lua", "post" )
---ModLoader.SetupFileHook( "lua/Gorge.lua", "lua/Gorge_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Gorge.lua", "lua/Gorge_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Balance.lua", "lua/Balance_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Whip.lua", "lua/Whip_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Shift.lua", "lua/Shift_Siege.lua", "post" )

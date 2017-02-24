@@ -54,15 +54,19 @@ end
 
 local function TriggerPrimal(self, lerk)
 
-     --  if lerk:GetIsOnFire() then
-     --  return  PBAOEEnergize(self, lerk, true) 
-     --  end
-      
-
-      GetEffectManager():AddEffectData("AlienWeaponEffects", GetWeaponEffects()) --Ghetto alienweaponeffects.lua   
-      lerk:TriggerEffects("primal")
-     if Server then CreateEntity(EnzymeCloud.kMapName, lerk:GetOrigin(), 2)  end
-      
+    local players = GetEntitiesForTeam("Alien", lerk:GetTeamNumber())
+    for index, player in ipairs(players) do
+        if player:GetIsAlive() and ((player:GetOrigin() - lerk:GetOrigin()):GetLength() < kPrimalScreamRange) then //and not player:GetIsOnFire() then
+            if player ~= lerk then
+                player:AddEnergy(kPrimalScreamEnergyGain)
+                player.primaledID = self:GetParent():GetId()
+            end
+            if player.PrimalScream  then
+                player:PrimalScream(kPrimalScreamDuration)
+                player:TriggerEffects("primal")
+            end            
+        end
+end
 
     
 end

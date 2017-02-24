@@ -86,9 +86,10 @@ function SandCastle:OpenSiegeDoors()
               StartSoundEffectForPlayer(SandCastle.kSiegeDoorSound, player)
               end
               
-              end
+              end  
               
 end
+
 function SandCastle:OpenFrontDoors()
            GetGamerules():SetDamageMultiplier(1)
       self.FrontTimer = 0
@@ -144,13 +145,39 @@ function SandCastle:CountPrimaryTimer()
        end
        
 end
+function SandCastle:ForAllSiegeLocationsAct()
+  local siegelocations = {}
+  --Print("Finding all siege locations")
+               for index, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
+                     if string.find(location.name, "siege") or string.find(location.name, "Siege") then
+                       table.insert(siegelocations, location)
+                       end
+              end 
+              
+              for i = 1, #siegelocations do
+                local loc = siegelocations[i]
+                  loc:BuffFadesInSiegeRoom()
+                   -- Print("Buffing fades in siege room")
+              end
+
+  return ConditionalValue(self.SiegeTimer == 0, true, false)
+end
 function SandCastle:OnUpdate(deltatime)
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
   if gamestarted then 
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
+       
+       
        if self.FrontTimer ~= 0 then self:FrontDoorTimer() end
-      if self. SiegeTimer ~= 0 then self:CountSTimer() end
+       
+           if self. SiegeTimer ~= 0 then
+           self:CountSTimer() 
+           else
+           self:ForAllSiegeLocationsAct()
+          end
+          
+          
       if self. PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
         self.timeLastAutomations = Shared.GetTime()
          end

@@ -40,7 +40,7 @@ oninit(self)
 
     InitMixin(self, StunMixin)
    self:SetTechId(kTechId.Exo)
- self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+   self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
 end
         function ExoAvoca:GetTechId()
          return kTechId.Exo

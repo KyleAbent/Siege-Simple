@@ -281,7 +281,7 @@ local function firstPersonScoreBased(self, client)
     local topscorer = tableof[entrant]
     if client:GetSpectatorMode() ~= kSpectatorMode.FirstPerson then client:SetSpectatorMode(kSpectatorMode.FirstPerson)  end
     Server.GetOwner(client):SetSpectatingPlayer(topscorer)
-    SaltChosen(self, client, entrant)
+    SaltChosen(self, topscorer, entrant)
     self:NotifyGeneric( client, "(First person) VIP is %s, # rank in score is %s", true, topscorer:GetName(), entrant )
 end
 local function ChangeView(self, client)
