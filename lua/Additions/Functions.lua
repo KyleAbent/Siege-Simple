@@ -7,7 +7,6 @@ function GetIsRoomPowerDown(who)
  return false
 end
 function GetIsOriginInHiveRoom(point)  
-   --Perhaps could be written better   
  local location = GetLocationForPoint(point)
  local hivelocation = nil
      local hives = GetEntitiesWithinRange("Hive", point, 999)
@@ -25,15 +24,7 @@ function GetIsOriginInHiveRoom(point)
      
 end
 function GetIsPointWithinHiveRadius(point)     
-    /*
-    local hivesnearby = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)
-      for i = 1, #hivesnearby do
-           local ent = hivesnearby[i]
-           if ent == GetClosestHiveFromCC(point) then return true end
-              return false   
-     end
-   */
-  
+
    local hive = GetEntitiesWithinRange("Hive", point, ARC.kFireRange)
    if #hive >= 1 then return true end
 

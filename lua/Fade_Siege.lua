@@ -21,6 +21,10 @@ InitMixin(self, PredictedProjectileShooterMixin)
 InitMixin(self, PhaseGateUserMixin)
 
 end
+/*
+   if Fade is in Siege during Siege....
+
+*/
 function Fade:GetRebirthLength()
 return 5
 end

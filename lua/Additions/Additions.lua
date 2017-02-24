@@ -28,6 +28,8 @@ Script.Load("lua/Additions/PoopEgg.lua")
 --Script.Load("lua/Additions/JediConcGrenade.lua")
 --Script.Load("lua/ExtraEntitiesMod/LogicBreakable.lua")
 --Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
+Script.Load("lua/Additions/GorgeTunnelSalt.lua")
+
 
 
 --Avoca arc pregame 

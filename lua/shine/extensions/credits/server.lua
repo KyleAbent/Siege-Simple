@@ -21,6 +21,7 @@ local URLPath = "config://shine/CreditsLink.json"
 --local BadgeURLPath = "config://shine/BadgesLink.json"
 --local BadgesPath = "config://shine/UserConfig.json"
 
+
 Shine.Hook.SetupClassHook( "ScoringMixin", "AddScore", "OnScore", "PassivePost" )
 
 Shine.Hook.SetupClassHook( "OnoGrow", "OnoEggFilled", "OnOnEggFilled", "PassivePost" )
@@ -172,7 +173,7 @@ local entities = {}
              if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
                 DestroyEntity(entity)
                  self:NotifySalt( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
-                 return false
+                 return false  
             end
       end
      return true
@@ -217,9 +218,16 @@ local function AddOneScore(Player,Points,Res, WasKill)
             Player.scoreGainedCurrentLife = Player.scoreGainedCurrentLife + points   
 
 end
+function Plugin:PrimalScreamPointBonus(who, Points)
+  local lerk = Shared.GetEntity( who.primaledID ) 
+  if lerk ~= nil then
+    lerk:AddScore(Points * 0.7)
+  end
+end
 function Plugin:OnScore( Player, Points, Res, WasKill )
 if Points ~= nil and Points ~= 0 and Player and not Shared.GetCheatsEnabled() then
    if not self.GameStarted then Points = 1  AddOneScore(Player,Points,Res, WasKill) end
+  if WasKill and Player:Isa("Alien") then self:PrimalScreamPointBonus(Player) end
  local client = Player:GetClient()
  if not client then return end
          
@@ -540,6 +548,9 @@ end
 function Plugin:NotifySaltDC( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Double Salt Weekend]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
+ function Plugin:TunnelExistsNearHiveFor(who)
+  self:NotifySalt( who:GetClient(), "You already have a tunnelentrance at hive, you derp! YOU MADE ME TYPE THIS STATEMENT 4 U!", true)
+end
 function Plugin:Cleanup()
 	self:Disable()
 	self.BaseClass.Cleanup( self )    
@@ -614,12 +625,12 @@ if whoagain:GetTeamNumber() == 1 then
          if not whoagain:isa("Exo") then 
           whoagain:GiveLayStructure(techid, mapname)
         else
-      entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
+      entity = CreateEntity(mapname, FindFreeSpace(player:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
         if entity.SetOwner then entity:SetOwner(whoagain) end
               if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
         end
 elseif whoagain:GetTeamNumber() == 2 then
-    entity = CreateEntity(mapname, whoagain:GetOrigin(), whoagain:GetTeamNumber()) 
+    entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(),1,4), whoagain:GetTeamNumber()) 
     if not entity then 
        self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) 
       return 
@@ -891,6 +902,28 @@ local BuyWPCommand = self:BindCommand("sh_buywp", "buywp", BuyWP, true)
 BuyWPCommand:Help("sh_buywp <weapon name>")
 BuyWPCommand:AddParam{ Type = "string" }
 
+local function BuyCustom(Client, String)
+local Player = Client:GetControllingPlayer()
+local cost = 4
+local delayafter = 8
+ if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
+      local exit, nearhive, count = FindPlayerTunnels(Player)
+              if not exit then
+              --  Print("No Exit Found!")
+             elseif nearhive or ( nearhive and count == 2) then
+            -- Print("Tunnel nearhive already exists.")
+               self:TunnelExistsNearHiveFor(Player)
+             return
+             end
+     if String == "TunnelEntrance" and Player:isa("Gorge") then
+       GorgeWantsEasyEntrance(Player, exit, nearhive)
+       DeductBuy(self, Player, cost, delayafter)
+     end
+end
+
+local BuyCustomCommand = self:BindCommand("sh_buycustom", "buycustom", BuyCustom, true)
+BuyCustomCommand:Help("sh_buycustom <custom function> because I want these fine tuned accordingly")
+BuyCustomCommand:AddParam{ Type = "string" }
 
 local function BuyClass(Client, String)
 
@@ -914,7 +947,7 @@ if not Player then return end
              elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 9 then Player:CreditBuy(Gorge)   DeductBuy(self, Client, cost)
+              if cost == 9 then Player:CreditBuy(Gorge)  DeductBuy(self, Client, cost)
               elseif cost == 12  then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Lerk)
               elseif cost == 20 then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Fade)
               elseif cost == 25 then DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(Onos)

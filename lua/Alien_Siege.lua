@@ -1,4 +1,4 @@
-local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",} 
+local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",  primaledID = "entityid",} 
 local orig_Alien_OnCreate = Alien.OnCreate
     function Alien:SlapPlayer()
      self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
@@ -12,6 +12,7 @@ function Alien:OnCreate()
      self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
      self.canredeemorrebirth = true
       self.primaled = false
+      self.primaledID = Entity.invalidI 
 
 end
 local orig_Alien_OnInitialized = Alien.OnInitialized
@@ -351,5 +352,82 @@ end
 
 
 end //server
+
+if Client then
+Alien.kPrimaledViewMaterialName = "cinematics/vfx_materials/primal_view.material"
+Alien.kPrimaledThirdpersonMaterialName = "cinematics/vfx_materials/primal.material"
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal_view.surface_shader")
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
+
+local kEnzymeEffectInterval = 0.2
+
+
+function Alien:UpdatePrimalEffect(isLocal)
+    if self.primaledClient ~= self.primaled then
+
+        if isLocal then
+        
+            local viewModel= nil        
+            if self:GetViewModelEntity() then
+                viewModel = self:GetViewModelEntity():GetRenderModel()  
+            end
+                
+            if viewModel then
+   
+                if self.primaled then
+                    self.primaledViewMaterial = AddMaterial(viewModel, Alien.kPrimaledViewMaterialName)
+                else
+                
+                    if RemoveMaterial(viewModel, self.primaledViewMaterial) then
+                        self.primaledViewMaterial = nil
+                    end
+  
+                end
+            
+            end
+        
+        end
+        
+        local thirdpersonModel = self:GetRenderModel()
+        if thirdpersonModel then
+        
+            if self.primaled then
+                self.primaledMaterial = AddMaterial(thirdpersonModel, Alien.kPrimaledThirdpersonMaterialName)
+            else
+            
+                if RemoveMaterial(thirdpersonModel, self.primaledMaterial) then
+                    self.primaledMaterial = nil
+                end
+
+            end
+        
+        end
+        
+        self.primaledClient = self.primaled
+        
+    end
+
+    // update cinemtics
+    if self.primaled then
+
+        if not self.lastprimaledEffect or self.lastprimaledEffect + kEnzymeEffectInterval < Shared.GetTime() then
+        
+            self:TriggerEffects("enzymed")
+            self.lastprimaledEffect = Shared.GetTime()
+        
+        end
+
+    end 
+
+end
+
+local origcupdate = Alien.UpdateClientEffects
+function Alien:UpdateClientEffects(deltaTime, isLocal)
+     self:UpdatePrimalEffect(isLocal)
+     origcupdate(self, deltaTime,isLocal)
+end
+
+end//client
+
 Shared.LinkClassToMap("Alien", Alien.kMapName, networkVars)
 

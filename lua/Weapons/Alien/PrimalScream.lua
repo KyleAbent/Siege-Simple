@@ -64,8 +64,10 @@ local function TriggerPrimal(self, lerk)
             if player.PrimalScream  then
                 player:PrimalScream(kPrimalScreamDuration)
                 player:TriggerEffects("primal")
+                player:TriggerEffects("taunt")
             end            
         end
+         self:TriggerEffects("taunt")
 end
 
     

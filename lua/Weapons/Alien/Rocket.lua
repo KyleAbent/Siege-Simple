@@ -83,7 +83,7 @@ function Rocket:OnAdjustModelCoords(modelCoords)
     
 end
 function Rocket:ProcessHit(targetHit, surface, normal, endPoint)
-    if Server and targetHit then
+    if Server then
         self:Detonate(targetHit, surface)  
     end
     

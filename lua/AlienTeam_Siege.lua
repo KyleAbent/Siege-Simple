@@ -1,3 +1,14 @@
+function AlienTeam:GetHive()
+    for _, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
+        if hive:GetIsBuilt() then
+        
+           return hive
+        end
+
+    end
+    return nil
+end
+
 local orig_AlienTeam_InitTechTree = AlienTeam.InitTechTree
 function AlienTeam:InitTechTree()
     local orig_PlayingTeam_InitTechTree = PlayingTeam.InitTechTree
