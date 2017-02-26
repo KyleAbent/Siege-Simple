@@ -1,4 +1,37 @@
 --Kyle 'Avoca' Abent
+function GetIsTimeUp(timeof, timelimitof)
+ local time = Shared.GetTime()
+ local boolean = (timeof + timelimitof) <= time
+ --Print("timeof is %s, timelimitof is %s, time is %s", timeof, timelimitof, time)
+ -- if boolean == true then Print("GetTimeIsUp boolean is %s, timelimitof is %s", boolean, timelimitof) end
+ return boolean
+end
+function GetLocationWithMostMixedPlayers()
+
+local team1avgorigin = Vector(0, 0, 0)
+local marines = 1
+local team2avgorigin = Vector(0, 0, 0)
+local aliens = 1
+local neutralavgorigin = Vector(0, 0, 0)
+
+            for _, marine in ientitylist(Shared.GetEntitiesWithClassname("Marine")) do
+            if marine:GetIsAlive() and not marine:isa("Commander") then marines = marines + 1 team1avgorigin = team1avgorigin + marine:GetOrigin() end
+             end
+             
+           for _, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do
+            if alien:GetIsAlive() and not alien:isa("Commander") then aliens = aliens + 1 team2avgorigin = team2avgorigin + alien:GetOrigin() end 
+             end
+             --v1.23 added check to make sure room isnt empty
+         neutralavgorigin =  team1avgorigin + team2avgorigin
+         neutralavgorigin =  neutralavgorigin / (marines+aliens) --better as a table i know
+     //    Print("neutralavgorigin is %s", neutralavgorigin)
+     local nearest = GetNearestMixin(neutralavgorigin, "Combat", nil, function(ent)  return ent:isa("Player") and ent:GetIsInCombat() end)
+    if nearest then
+   // Print("nearest is %s", nearest.name)
+        return nearest
+    end
+
+end
 function GetIsRoomPowerDown(who)
  local location = GetLocationForPoint(who:GetOrigin())
   if not location then return false end

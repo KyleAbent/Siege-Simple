@@ -158,16 +158,16 @@ SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 ---Hacks------------
 
-SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatoryAvoca.kMapName)
-SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationAvoca.kMapName)
-SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalAvoca.kMapName)
-SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoAvoca.kMapName)
+SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatorySiege.kMapName)
+SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationSiege.kMapName)
+SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalSiege.kMapName)
+SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoSiege.kMapName)
 
 
-SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipAvoca.kMapName)
-SetCachedTechData(kTechId.Crag, kTechDataMapName,CragAvoca.kMapName)
-SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftAvoca.kMapName)
-SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraAvoca.kMapName)
+SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipSiege.kMapName)
+SetCachedTechData(kTechId.Crag, kTechDataMapName,CragSiege.kMapName)
+SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftSiege.kMapName)
+SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
 
 
 

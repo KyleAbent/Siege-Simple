@@ -133,28 +133,18 @@ return
 end
 if Server then
 
-function Alien:CreditBuy(Class)
-
+function Alien:CreditBuy(techId)
+        local cost = LookupTechData(techId, kTechDataCostKey, 0)
+         self:AddResources(cost)
         local upgradetable = {}
         local upgrades = Player.lastUpgradeList
         if upgrades and #upgrades > 0 then
             table.insert(upgradetable, upgrades)
         end
-        local class = nil
         
-        if Class == Gorge then
-        class = kTechId.Gorge
-        elseif Class == Lerk then
-        class = kTechId.Lerk
-        elseif Class == Fade then
-        class = kTechId.Fade
-        elseif Class == Onos then
-        class = kTechId.Onos
-        end
-        
-        table.insert(upgradetable, class)
+        table.insert(upgradetable, techId)
         self:ProcessBuyAction(upgradetable, true)
-        
+        self:AddResources(cost)
 end
 
 function Alien:RefreshTechsManually()
@@ -171,7 +161,7 @@ function Alien:RedemptionTimer()
            local threshold =   math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax)  / 100
               --Print("threshold is %s", threshold)
               local scalar = self:GetHealthScalar()
-               if scalar <= threshold  then
+               if self:GetHasUpgrade(kTechId.Redemption) and scalar <= threshold  then
                  self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown()
                  --Print("scalar is %s threshold is %s", scalar, threshold)
                  if self.canredeemorrebirth then

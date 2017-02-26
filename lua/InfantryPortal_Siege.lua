@@ -2,11 +2,11 @@ local origcreate = InfantryPortal.OnInitialized
 function InfantryPortal:OnInitialized()
 
  origcreate(self)
- if not self:isa("InfantryPortalAvoca") then
+ if not self:isa("InfantryPortalSiege") then
      
       if Server then
      
-      local ip = CreateEntity(InfantryPortalAvoca.kMapName, self:GetOrigin(), 1)
+      local ip = CreateEntity(InfantryPortalSiege.kMapName, self:GetOrigin(), 1)
       ip:SetConstructionComplete()
       end
       DestroyEntity(self)
@@ -91,8 +91,8 @@ end
 
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
-class 'InfantryPortalAvoca' (InfantryPortal)
-InfantryPortalAvoca.kMapName = "infantryportalavoca"
+class 'InfantryPortalSiege' (InfantryPortal)
+InfantryPortalSiege.kMapName = "infantryportalsiege"
 
 local networkVars = {}
 
@@ -100,25 +100,25 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
     
 
-    function InfantryPortalAvoca:OnInitialized()
+    function InfantryPortalSiege:OnInitialized()
          InfantryPortal.OnInitialized(self)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.InfantryPortal)
     end
-        function InfantryPortalAvoca:GetTechId()
+        function InfantryPortalSiege:GetTechId()
          return kTechId.InfantryPortal
     end
     
-    function InfantryPortalAvoca:GetMaxLevel()
+    function InfantryPortalSiege:GetMaxLevel()
     return kInfantryPortalMaxLevel
     end
     
-    function InfantryPortalAvoca:GetAddXPAmount()
+    function InfantryPortalSiege:GetAddXPAmount()
     return kInfantryPortalXPGain
     end
 
-    function InfantryPortalAvoca:GetSpawnTime()
+    function InfantryPortalSiege:GetSpawnTime()
     local levelbonus = ( kMarineRespawnTime - (self.level/100) * kMarineRespawnTime)
     local roundbonus = ( levelbonus - ( ( GetRoundLengthToSiege() / 2 ) /1) * levelbonus)
     local total = roundbonus
@@ -126,7 +126,7 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
     return Clamp(total, 4, kMarineRespawnTime)
 end
 
-function InfantryPortalAvoca:OnGetMapBlipInfo()
+function InfantryPortalSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -142,4 +142,4 @@ end
 
 
 
-Shared.LinkClassToMap("InfantryPortalAvoca", InfantryPortalAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("InfantryPortalSiege", InfantryPortalSiege.kMapName, networkVars)

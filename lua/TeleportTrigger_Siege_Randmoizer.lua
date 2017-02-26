@@ -1,35 +1,22 @@
--- ======= Copyright (c) 2003-2013, Unknown Worlds Entertainment, Inc. All rights reserved. =======
---
--- lua\TeleportTrigger.lua
---
---    Created by:   Andreas Urwalek (andi@unknownworlds.com)
---
--- Teleport entity to destination.
---
--- ========= For more information, visit us at http://www.unknownworlds.com =====================
-
-
---Murhyp's Law y u do dis
-
-
-class 'TeleportTrigger' (Trigger)
-
-TeleportTrigger.kMapName = "teleport_trigger"
-
-local networkVars =
-{
-}
-
 local function GetTeleportDestinationCoords(self)
 
     local destinationEntities = {}
-
+    local randomize = self:isa("Teleport_Trigger_Siege_Randomizer")
+  
+  if not randomize then
     for _, entity in ientitylist(Shared.GetEntitiesWithClassname("TeleportDestination")) do
     
-        if entity.teleportDestinationId == self.teleportDestinationId then     
+        if  entity.teleportDestinationId == self.teleportDestinationId  then     
             table.insert(destinationEntities, entity)  
         end
     
+    end
+    else
+        for _, entity in ientitylist(Shared.GetEntitiesWithClassname("TeleportDestination_Siege_Randomized")) do
+    
+            table.insert(destinationEntities, entity)  
+         end
+
     end
     
     if #destinationEntities > 0 then
@@ -37,28 +24,8 @@ local function GetTeleportDestinationCoords(self)
     end
 
 end
-
-function TeleportTrigger:OnCreate()
-
-    Trigger.OnCreate(self)
-    
-    self:SetPropagate(Entity.Propagate_Never)
-
-end
-
-function TeleportTrigger:OnInitialized()
-
-    Trigger.OnInitialized(self)    
-    self:SetTriggerCollisionEnabled(true)
-    
-end
-
-function TeleportTrigger:GetIsMapEntity()
-    return true
-end 
-
-
 function TeleportTrigger:OnTriggerEntered(enterEnt, triggerEnt)
+
 
     local className = enterEnt:GetClassName()
 
@@ -87,4 +54,7 @@ function TeleportTrigger:OnTriggerEntered(enterEnt, triggerEnt)
     
 end
 
-Shared.LinkClassToMap("TeleportTrigger", TeleportTrigger.kMapName, networkVars)
+class 'Teleport_Trigger_Siege_Randomizer' (TeleportTrigger)
+Teleport_Trigger_Siege_Randomizer.kMapName = "teleport_trigger_siege_randomizer"
+
+Shared.LinkClassToMap("Teleport_Trigger_Siege_Randomizer", Teleport_Trigger_Siege_Randomizer.kMapName, networkVars)

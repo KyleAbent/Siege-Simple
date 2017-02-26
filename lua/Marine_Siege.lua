@@ -47,10 +47,10 @@ end
 function Marine:GiveExo(spawnPoint)
     local random = math.random(1,2)
     if random == 1 then 
-        local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
+        local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
     return exo
     else
-        local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+        local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
     return exo
     end
 
@@ -59,21 +59,21 @@ end
 
 function Marine:GiveDualExo(spawnPoint)
 
-    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
+    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
     return exo
     
 end
 
 function Marine:GiveClawRailgunExo(spawnPoint)
 
-    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
+    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
     return exo
     
 end
 
 function Marine:GiveDualRailgunExo(spawnPoint)
 
-    local exo = self:Replace(ExoAvoca.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
     return exo
     
 end

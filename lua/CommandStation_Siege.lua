@@ -1,7 +1,7 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 
-class 'CommandStationAvoca' (CommandStation)
-CommandStationAvoca.kMapName = "commandstationavoca"
+class 'CommandStationSiege' (CommandStation)
+CommandStationSiege.kMapName = "commandstationsiege"
 
 local networkVars = {}
 
@@ -9,19 +9,19 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 
 
 
-    function CommandStationAvoca:OnInitialized()
+    function CommandStationSiege:OnInitialized()
          CommandStation.OnInitialized(self)
         InitMixin(self, LevelsMixin)
         self:SetTechId(kTechId.CommandStation)
     end
     
-     function CommandStationAvoca:GetMaxLevel()
+     function CommandStationSiege:GetMaxLevel()
     return kDefaultLvl
     end
-    function CommandStationAvoca:GetAddXPAmount()
+    function CommandStationSiege:GetAddXPAmount()
     return kDefaultAddXp
     end   
-   function CommandStationAvoca:OnGetMapBlipInfo()
+   function CommandStationSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -35,5 +35,5 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end 
 
-Shared.LinkClassToMap("CommandStationAvoca", CommandStationAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("CommandStationSiege", CommandStationSiege.kMapName, networkVars)
 

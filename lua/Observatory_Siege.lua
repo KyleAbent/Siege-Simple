@@ -282,8 +282,8 @@ if Server then
 end
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
-class 'ObservatoryAvoca' (Observatory)--may not nee dto do ongetmapblipinfo because the way i redone the setcachedtechdata to simply change the mapname to this :)
-ObservatoryAvoca.kMapName = "observatoryavoca"
+class 'ObservatorySiege' (Observatory)--may not nee dto do ongetmapblipinfo because the way i redone the setcachedtechdata to simply change the mapname to this :)
+ObservatorySiege.kMapName = "observatorysiege"
 
 local networkVars = { lastbeacon = "private time" }
 
@@ -291,26 +291,26 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
     
 
-    function ObservatoryAvoca:OnInitialized()
+    function ObservatorySiege:OnInitialized()
          Observatory.OnInitialized(self)
         InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Observatory)
     end
-        function ObservatoryAvoca:GetTechId()
+        function ObservatorySiege:GetTechId()
          return kTechId.Observatory
     end
-    function ObservatoryAvoca:GetMaxLevel()
+    function ObservatorySiege:GetMaxLevel()
     return kDefaultLvl
     end
-    function ObservatoryAvoca:GetAddXPAmount()
+    function ObservatorySiege:GetAddXPAmount()
     return kDefaultAddXp
     end
     local function GetRecentlyAdvBeaconed(self)
     local duration =  ( kObsAdvBeaconPowerOff - (self.level/100) * kObsAdvBeaconPowerOff)
     return (self.lastbeacon + duration) > Shared.GetTime()
 end
-    function ObservatoryAvoca:PerformAdvancedBeacon()
+    function ObservatorySiege:PerformAdvancedBeacon()
        Observatory.PerformAdvancedBeacon(self)
        self.lastbeacon = Shared.GetTime()
     end
@@ -323,12 +323,12 @@ end
    return false
 end
 
-    function ObservatoryAvoca:GetIsPowered()
+    function ObservatorySiege:GetIsPowered()
         local override = ConditionalValue(GetRecentlyAdvBeaconed(self), false, true)
     return (self.powered or self.powerSurge or GetHasSentryBatteryInRadius(self) ) and override 
 end
 
-function ObservatoryAvoca:OnGetMapBlipInfo()
+function ObservatorySiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -341,4 +341,4 @@ function ObservatoryAvoca:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-Shared.LinkClassToMap("ObservatoryAvoca", ObservatoryAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("ObservatorySiege", ObservatorySiege.kMapName, networkVars)

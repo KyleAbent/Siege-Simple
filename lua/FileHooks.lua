@@ -104,3 +104,8 @@ ModLoader.SetupFileHook( "lua/Onos.lua", "lua/Onos_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Gamerules.lua", "lua/Gamerules_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/NS2Gamerules.lua", "lua/NS2Gamerules_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Alien.lua", "lua/Alien_Siege.lua", "post" ) --includes server
+
+
+ModLoader.SetupFileHook( "lua/TeleportTrigger.lua", "lua/TeleportTrigger_Siege_Randmoizer.lua", "post" )
+ModLoader.SetupFileHook( "lua/TeleportDestination.lua", "lua/TeleportDestination_Siege_Randmoizer.lua", "post" )
+

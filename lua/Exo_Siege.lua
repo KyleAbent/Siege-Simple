@@ -1,18 +1,21 @@
 Script.Load("lua/StunMixin.lua")
 Script.Load("lua/PhaseGateUserMixin.lua")
+Script.Load("lua/Mixins/LadderMoveMixin.lua")
 
-class 'ExoAvoca' (Exo)
-ExoAvoca.kMapName = "exoavoca"
+class 'ExoSiege' (Exo)
+ExoSiege.kMapName = "exosiege"
 
 local networkVars = {}
 AddMixinNetworkVars(StunMixin, networkVars)
 AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
+AddMixinNetworkVars(LadderMoveMixin, networkVars)
 
 
 
-function ExoAvoca:OnCreate()
+function ExoSiege:OnCreate()
     Exo.OnCreate(self)
     InitMixin(self, PhaseGateUserMixin)
+    InitMixin(self, LadderMoveMixin)
 
 end
 local function HealSelf(self)
@@ -34,7 +37,7 @@ local function HealSelf(self)
 end
 
 local oninit = Exo.OnInitialized
-function ExoAvoca:OnInitialized()
+function ExoSiege:OnInitialized()
 
 oninit(self)
 
@@ -42,16 +45,16 @@ oninit(self)
    self:SetTechId(kTechId.Exo)
    self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
 end
-        function ExoAvoca:GetTechId()
+        function ExoSiege:GetTechId()
          return kTechId.Exo
     end
 
-function ExoAvoca:GetIsStunAllowed()
+function ExoSiege:GetIsStunAllowed()
     return not self.timeLastStun or self.timeLastStun + 8 < Shared.GetTime() 
 end
 
 
-function ExoAvoca:OnGetMapBlipInfo()
+function ExoSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -66,7 +69,7 @@ function ExoAvoca:OnGetMapBlipInfo()
 end
 
 
-function ExoAvoca:OnStun()
+function ExoSiege:OnStun()
          if Server then
                 local stunwall = CreateEntity(StunWall.kMapName, self:GetOrigin(), 2)    
                 StartSoundEffectForPlayer(AlienCommander.kBoneWallSpawnSound, self)
@@ -74,4 +77,4 @@ function ExoAvoca:OnStun()
 end
 
 
-Shared.LinkClassToMap("ExoAvoca", ExoAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("ExoSiege", ExoSiege.kMapName, networkVars)

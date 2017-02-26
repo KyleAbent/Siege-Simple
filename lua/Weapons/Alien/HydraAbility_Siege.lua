@@ -1,3 +1,3 @@
 function HydraStructureAbility:GetDropMapName()
-    return HydraAvoca.kMapName
+    return HydraSiege.kMapName
 end

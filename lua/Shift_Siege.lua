@@ -2,31 +2,31 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 
-class 'ShiftAvoca' (Shift)
-ShiftAvoca.kMapName = "shiftavoca"
+class 'ShiftSiege' (Shift)
+ShiftSiege.kMapName = "shiftsiege"
 
 local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-function ShiftAvoca:GetInfestationRadius()
+function ShiftSiege:GetInfestationRadius()
     return 1
 end
-    function ShiftAvoca:OnInitialized()
+    function ShiftSiege:OnInitialized()
        InitMixin(self, InfestationMixin)
          InitMixin(self, LevelsMixin)
         InitMixin(self, AvocaMixin)
         self:SetTechId(kTechId.Shift)
          Shift.OnInitialized(self)
     end
-    function ShiftAvoca:OnOrderGiven()
+    function ShiftSiege:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
-        function ShiftAvoca:GetTechId()
+        function ShiftSiege:GetTechId()
          return kTechId.Shift
     end
-   function ShiftAvoca:OnGetMapBlipInfo()
+   function ShiftSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -39,13 +39,13 @@ end
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-    function ShiftAvoca:GetMaxLevel()
+    function ShiftSiege:GetMaxLevel()
     return kAlienDefaultLvl
     end
-    function ShiftAvoca:GetAddXPAmount()
+    function ShiftSiege:GetAddXPAmount()
     return kAlienDefaultAddXp
     end
-function ShiftAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
+function ShiftSiege:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
     
@@ -55,4 +55,4 @@ function ShiftAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, h
     end
 
 end
-Shared.LinkClassToMap("ShiftAvoca", ShiftAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("ShiftSiege", ShiftSiege.kMapName, networkVars)

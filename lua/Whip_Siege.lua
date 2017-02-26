@@ -2,21 +2,21 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 
-class 'WhipAvoca' (Whip)
-WhipAvoca.kMapName = "whipavoca"
+class 'WhipSiege' (Whip)
+WhipSiege.kMapName = "whipavoca"
 
 local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-function WhipAvoca:GetInfestationRadius()
+function WhipSiege:GetInfestationRadius()
     return 1
 end
-function WhipAvoca:OnOrderGiven()
+function WhipSiege:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
-    function WhipAvoca:OnInitialized()
+    function WhipSiege:OnInitialized()
          InitMixin(self, LevelsMixin)
            InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
@@ -24,10 +24,10 @@ end
           Whip.OnInitialized(self)
     end
     
-        function WhipAvoca:GetTechId()
+        function WhipSiege:GetTechId()
          return kTechId.Whip
     end
-   function WhipAvoca:OnGetMapBlipInfo()
+   function WhipSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -40,13 +40,13 @@ end
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-    function WhipAvoca:GetMaxLevel()
+    function WhipSiege:GetMaxLevel()
     return kAlienDefaultLvl
     end
-    function WhipAvoca:GetAddXPAmount()
+    function WhipSiege:GetAddXPAmount()
     return kAlienDefaultAddXp
     end
-Shared.LinkClassToMap("WhipAvoca", WhipAvoca.kMapName, networkVars) 
+Shared.LinkClassToMap("WhipSiege", WhipSiege.kMapName, networkVars) 
 
 local originit = Whip.OnInitialized
 function Whip:OnInitialized()

@@ -8,7 +8,7 @@ end
 end
 
 function Lerk:OnAdjustModelCoords(modelCoords)
-    local scale = .8
+    local scale = .75
     local coords = modelCoords
     coords.xAxis = coords.xAxis * scale
     coords.yAxis = coords.yAxis * scale

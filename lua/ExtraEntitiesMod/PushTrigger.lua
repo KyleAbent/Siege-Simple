@@ -16,17 +16,17 @@ end
 
 local function PushEntity(self, entity)
     for i = 1, 8 do
- Print("PushEntity 1")
+ --Print("PushEntity 1")
    end
     if entity:isa("Player") and not entity:isa("Commander") then
     
         for i = 1, 8 do
- Print("PushEntity 2")
+ --Print("PushEntity 2")
    end
         local force = self.pushForce
         if self.pushDirection then      
                 for i = 1, 8 do
- Print("PushEntity 3")
+ --Print("PushEntity 3")
    end
             // get him in the air a bit
             if entity.GetIsOnGround and entity:GetIsOnGround() then
@@ -63,7 +63,7 @@ function PushTrigger:OnCreate()
  
     Trigger.OnCreate(self)  
         for i = 1, 8 do
- Print("PushEntity 4")
+ --Print("PushEntity 4")
    end
 end
 
@@ -76,7 +76,7 @@ function PushTrigger:OnInitialized()
     end
     self:SetTriggerCollisionEnabled(true) 
             for i = 1, 8 do
- Print("PushEntity 5")
+ --Print("PushEntity 5")
    end
 end
 
@@ -87,7 +87,7 @@ function PushTrigger:OnTriggerEntered(enterEnt, triggerEnt)
 
          PushEntity(self, enterEnt)
             for i = 1, 8 do
- Print("PushEntity 6")
+ --Print("PushEntity 6")
    end
 end
 
@@ -97,7 +97,7 @@ function PushTrigger:OnUpdate(deltaTime)
 
         PushAllInTrigger(self)
             for i = 1, 8 do
- Print("PushEntity 7")
+ --Print("PushEntity 7")
    end
 end
 

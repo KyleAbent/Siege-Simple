@@ -3,19 +3,19 @@ Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/CommAbilities/Alien/CragUmbra.lua")
 Script.Load("lua/InfestationMixin.lua")
 
-class 'CragAvoca' (Crag)
-CragAvoca.kMapName = "cragavoca"
+class 'CragSiege' (Crag)
+CragSiege.kMapName = "cragsiege"
 
 local networkVars = {}
 
 --AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-function CragAvoca:GetInfestationRadius()
+function CragSiege:GetInfestationRadius()
     if self:GetIsACreditStructure() then return 1 else return 0 end
 end
 
-    function CragAvoca:OnInitialized()
+    function CragSiege:OnInitialized()
        --  InitMixin(self, LevelsMixin)
          InitMixin(self, InfestationMixin)
         InitMixin(self, AvocaMixin)
@@ -23,10 +23,10 @@ end
            Crag.OnInitialized(self)
     end
     
-        function CragAvoca:GetTechId()
+        function CragSiege:GetTechId()
          return kTechId.Crag
     end
-   function CragAvoca:OnGetMapBlipInfo()
+   function CragSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined
     local blipTeam = -1
@@ -40,11 +40,11 @@ end
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
 
-function CragAvoca:GetCragsInRange()
+function Crag:GetCragsInRange()
       local crag = GetEntitiesWithinRange("Crag", self:GetOrigin(), Crag.kHealRadius)
            return Clamp(#crag, 0, 3)
 end
-function CragAvoca:GetBonusAmt()
+function Crag:GetBonusAmt()
 return (self:GetCragsInRange()/10)
 end
 function Crag:GetUnitNameOverride(viewer)
@@ -53,7 +53,7 @@ function Crag:GetUnitNameOverride(viewer)
 return unitName
 end
 local origbuttons = Crag.GetTechButtons
-function CragAvoca:GetTechButtons(techId)
+function CragSiege:GetTechButtons(techId)
 local table = {}
 
 table = origbuttons(self, techId)
@@ -64,7 +64,7 @@ table = origbuttons(self, techId)
 
 end
 local origact = Crag.PerformActivation
-function CragAvoca:PerformActivation(techId, position, normal, commander)
+function CragSiege:PerformActivation(techId, position, normal, commander)
 origact(self, techId, position, normal, commander)
 
 local success  = false
@@ -78,7 +78,7 @@ end
 
 
 
-function CragAvoca:TriggerUmbra()
+function CragSiege:TriggerUmbra()
 
     local umbra = CreateEntity(CragUmbra.kMapName,  self:GetOrigin() + Vector(0, 0.2, 0), self:GetTeamNumber())
     umbra:SetTravelDestination(self:GetOrigin() + Vector(0, 2, 0) )
@@ -88,7 +88,7 @@ end
 
 
 
-function CragAvoca:TryHeal(target)
+function CragSiege:TryHeal(target)
 
     local unclampedHeal = target:GetMaxHealth() * Crag.kHealPercentage
     local heal = Clamp(unclampedHeal, Crag.kMinHeal, Crag.kMaxHeal) 
@@ -117,7 +117,7 @@ function CragAvoca:TryHeal(target)
    
 end
 -------- Hmmm?? does this even do anything? a 10% dmg discount from minigun? I have no idea.
-function CragAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
+function CragSiege:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
     
@@ -128,10 +128,10 @@ function CragAvoca:ModifyDamageTaken(damageTable, attacker, doer, damageType, hi
 
 end
 
-function CragAvoca:OnOrderGiven()
+function CragSiege:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
-Shared.LinkClassToMap("CragAvoca", CragAvoca.kMapName, networkVars)
+Shared.LinkClassToMap("CragSiege", CragSiege.kMapName, networkVars)
 
 
 
