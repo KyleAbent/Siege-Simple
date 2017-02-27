@@ -44,8 +44,8 @@ function UpdateAvocaAvailability(forAlien, tierOneTechId, tierTwoTechId, tierThr
              t1 = GetGamerules():GetAllTech() or (tierOneTechId ~= nil and tierOneTechId ~= kTechId.None and GetHasTech(forAlien, tierOneTechId))
             t2 = GetGamerules():GetAllTech() or (tierTwoTechId ~= nil and tierTwoTechId ~= kTechId.None and GetHasTech(forAlien, tierTwoTechId))
             t3 = GetGamerules():GetAllTech() or (tierThreeTechId ~= nil and tierThreeTechId ~= kTechId.None and GetHasTech(forAlien, tierThreeTechId))
-            t4 = GetGamerules():GetAllTech() or (tierFourTechId ~= nil and tierFourTechId ~= kTechId.None and GetHasTech(forAlien, tierFourTechId))
-             t5 = GetGamerules():GetAllTech() or (tierFiveTechId ~= nil and tierFiveTechId ~= kTechId.None and GetHasTech(forAlien, tierFiveTechId))
+            t4 = GetGamerules():GetAllTech() or (tierFourTechId ~= nil and tierFourTechId ~= kTechId.None and GetHasTech(forAlien, tierThreeTechId))
+             t5 = GetGamerules():GetAllTech() or (tierFiveTechId ~= nil and tierFiveTechId ~= kTechId.None and GetHasTech(forAlien, tierThreeTechId))
 
 
             if t1 then      
@@ -56,17 +56,21 @@ function UpdateAvocaAvailability(forAlien, tierOneTechId, tierTwoTechId, tierThr
                 UnlockAbility(forAlien,   LookupTechData(tierTwoTechId, kTechDataMapName))
             end
             
+            
+            -- 4 and 5 come with 3
               if t3 then
                 UnlockAbility(forAlien,   LookupTechData(tierThreeTechId, kTechDataMapName))
-            end
-            
-              if t4 then
+               if t4 then
+               
                UnlockAbility(forAlien,   LookupTechData(tierFourTechId, kTechDataMapName))
             end
             
             if t5 then
                UnlockAbility(forAlien,   LookupTechData(tierFiveTechId, kTechDataMapName))
             end
+            
+            end
+            
     --Print("t1 is %s", t1)
     --Print("t2 is %s", t2)
     --Print("t3 is %s", t3)

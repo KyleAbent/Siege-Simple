@@ -8,6 +8,7 @@ Fade.YExtents = 1.05
 
 local networkVars = {}
 
+local kBallFlagAttachPoint = "babbler_attach4"
 
 
 AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
@@ -26,6 +27,9 @@ return 5
 end
 function Fade:GetRedemptionCoolDown()
 return 35
+end
+function Fade:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
 end
 function Fade:GetMaxSpeed(possible)
      local speed = origspeed(self)

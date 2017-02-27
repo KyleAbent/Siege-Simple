@@ -1,5 +1,7 @@
 local origspeed = Skulk.GetMaxSpeed
 
+local kBallFlagAttachPoint = "babbler_attach2"
+
 function Skulk:GetMaxSpeed(possible)
      local speed = origspeed(self)
   --return speed * 1.10
@@ -11,12 +13,16 @@ end
 function Skulk:GetRebirthLength()
 return 2
 end
-
+function Skulk:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
+end
 if Server then
 
 function Skulk:GetTierFourTechId()
     return kTechId.None
 end
-
+function Skulk:GetTierFiveTechId()
+    return kTechId.None
+end
 
 end

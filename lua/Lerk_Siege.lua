@@ -1,3 +1,5 @@
+local kBallFlagAttachPoint = "fxnode_bilebomb"
+
 if Server then
 
 function Lerk:GetTierFourTechId()
@@ -20,7 +22,9 @@ function Lerk:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-
+function Lerk:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
+end
 function Lerk:GetRebirthLength()
 return 4
 end

@@ -2,6 +2,8 @@ Script.Load("lua/StunMixin.lua")
 Script.Load("lua/PhaseGateUserMixin.lua")
 Script.Load("lua/Mixins/LadderMoveMixin.lua")
 
+local kBallFlagAttachPoint = "Exosuit_HoodHinge"
+
 class 'ExoSiege' (Exo)
 ExoSiege.kMapName = "exosiege"
 
@@ -35,7 +37,9 @@ local function HealSelf(self)
     end
     
 end
-
+function ExoSiege:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
+end
 local oninit = Exo.OnInitialized
 function ExoSiege:OnInitialized()
 

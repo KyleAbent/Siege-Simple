@@ -520,7 +520,9 @@ function Plugin:SetGameState( Gamerules, State, OldState )
           
     
 end
-
+function Plugin:NotifyGiveRes( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, Format, ... )
+end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Admin Abuse]",  255, 0, 0, String, Format, ... )
 end
@@ -806,6 +808,69 @@ ModelSizeCommand:AddParam{ Type = "number" }
 ModelSizeCommand:Help( "sh_modelsize <player> <size> <true/false for health armor bonus>" )
 ModelSizeCommand:AddParam{ Type = "boolean", optional = true }
 */
+local function ThirdPerson( Client )
+local Player = Client:GetControllingPlayer()
+if not Player or not HasMixin( Player, "CameraHolder" ) then return end
+Player:SetCameraDistance(3) //* ConditionalValue(not Player:isa("ReadyRoomPlayer") and Player.modelsize > 1, Player.modelsize * .5, 1))
+end
+
+local ThirdPersonCommand = self:BindCommand( "sh_thirdperson", { "thirdperson", "3rdperson" }, ThirdPerson, true)
+ThirdPersonCommand:Help( "Triggers third person view" )
+	
+local function FirstPerson( Client )
+local Player = Client:GetControllingPlayer()
+if not Player or not HasMixin( Player, "CameraHolder" ) then return end
+Player:SetCameraDistance(0)
+end
+
+local FirstPersonCommand = self:BindCommand( "sh_firstperson", { "firstperson", "1stperson" }, FirstPerson, true)
+FirstPersonCommand:Help( "Triggers first person view" )
+
+local function GiveRes( Client, TargetClient, Number )
+local Giver = Client:GetControllingPlayer()
+local Reciever = TargetClient:GetControllingPlayer()
+//local TargetName = TargetClient:GetName()
+ //Only apply this formula to pres non commanders // If trying to give a number beyond the amount currently owned in pres, do not continue. Or If the reciever already has 100 resources then do not bother taking resources from the giver
+  if Giver:GetTeamNumber() ~= Reciever:GetTeamNumber() or Giver:isa("Commander") or Reciever:isa("Commander") or Number > Giver:GetResources() or Reciever:GetResources() == 100 then
+  self:NotifyGiveRes( Giver, "Unable to donate any amount of resources to %s", true, Reciever:GetName())
+ return end 
+
+ 
+            //If giving res to a person and that total amount exceeds 100. Only give what can fit before maxing to 100, and not waste the rest.
+            if Reciever:GetResources() + Number > 100 then // for example 80 + 30 = 110
+            local GiveBack = 0 //introduce x
+            GiveBack = Reciever:GetResources() + Number // x = 80 + 30 (110)
+            GiveBack = GiveBack - 100  // 110 = 110 - 100 (10)
+            Giver:SetResources(Giver:GetResources () - Number + GiveBack) // Sets resources to the value wanting to donate + the portion to give back that's above 100
+            local Show = Number - GiveBack
+            Reciever:SetResources(100) // Set res to 100 anyway because the check above says if getres + num > 100. Therefore it would be 100 anyway.
+              self:NotifyGiveRes( Giver, "%s has reached 100 res, therefore you've only donated %s resource(s)", true, Reciever:GetName(), Show)
+              self:NotifyGiveRes( Reciever, "%s donated %s resource(s) to you", true, Giver:GetName(), Show)
+            return //prevent from going through the process of handing out res again down below(?)
+            end
+            ////
+ //Otherwise if the giver has the amount to give, and the reciever amount does not go beyond 100, complete the trade. (pres)     
+ //Shine:Notify(Client, Number, TargetClient, "Successfully donated %s resource(s) to %s", nil)
+Giver:SetResources(Giver:GetResources() - Number)
+Reciever:SetResources(Reciever:GetResources() + Number)
+self:NotifyGiveRes( Giver, "Succesfully donated %s resource(s) to %s", true, Number, Reciever:GetName())
+self:NotifyGiveRes( Reciever, "%s donated %s resource(s) to you", true, Giver:GetName(), Number)
+//Notify(StringFormat("[GiveRes] Succesfully donated %s resource(s) to %s.",  Number, TargetName) )
+
+
+//Now for some fun and to expand on the potential of giveres within ns2 that ns1 did not reach?
+//In particular, team res and commanders. 
+
+//If the giver is a commander to a recieving teammate then take the resources out of team resources rather than personal.
+
+//if Giver:GetTeamNumber() == Reciever:GetTeamNumber() and Giver:isa(Commander) then
+end
+
+local GiveResCommand = self:BindCommand( "sh_giveres", "giveres", GiveRes, true)
+GiveResCommand:Help( "giveres <name> <amount> ~ (No commanders)" )
+GiveResCommand:AddParam{ Type = "client",  NotSelf = true, IgnoreCanTarget = true }
+GiveResCommand:AddParam{ Type = "number", Min = 1, Max = 100, Round = true }
+
 local function Give( Client, Targets, String, Number )
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()

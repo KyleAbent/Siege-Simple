@@ -1,6 +1,7 @@
 Script.Load("lua/Modifications/ReallyNow.lua")
 
 
+
 function GetValidTargetInWarmUp(target)
     return not target:isa("CommandStructure")
 end

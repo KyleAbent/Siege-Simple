@@ -1,4 +1,12 @@
 --Kyle 'Avoca' Abent
+function GetBallForPlayerOwner(who)
+            for _, ball in ientitylist(Shared.GetEntitiesWithClassname("Ball")) do
+                 if ball:GetParent() == who then --not owner
+                 return ball
+                 end
+    end    
+    return nil
+end
 function GetIsTimeUp(timeof, timelimitof)
  local time = Shared.GetTime()
  local boolean = (timeof + timelimitof) <= time
@@ -178,6 +186,14 @@ function GetSandCastle() --it washed away
     if entityList:GetSize() > 0 then
                  local sandcastle = entityList:GetEntityAtIndex(0) 
                  return sandcastle
+    end    
+    return nil
+end
+function GetRandomTechPoint()
+    local entityList = Shared.GetEntitiesWithClassname("TechPoint")
+    if entityList:GetSize() > 0 then
+                 local commandstation = entityList:GetEntityAtIndex(0) 
+                 return commandstation
     end    
     return nil
 end

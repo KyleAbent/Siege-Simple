@@ -5,7 +5,7 @@ Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
 Script.Load("lua/Additions/OnoGrow.lua")
-Script.Load("lua/Additions/OnicideStomp.lua")
+Script.Load("lua/Additions/Onocide.lua")
 Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
@@ -187,9 +187,9 @@ local kSiege_TechData =
      [kTechDataDisplayName] = "OnoGrow",
 [kTechDataTooltipInfo] = "wip"},
 
-   { [kTechDataId] = kTechId.OnicideStomp,        
+   { [kTechDataId] = kTechId.Onocide,        
   [kTechDataCategory] = kTechId.Onos,   
-     [kTechDataMapName] = OnicideStomp.kMapName,  
+     [kTechDataMapName] = Onocide.kMapName,  
 [kTechDataCostKey] = 10,
  [kTechDataResearchTimeKey] = 10, 
  --   [kTechDataDamageType] = kStabDamageType,  

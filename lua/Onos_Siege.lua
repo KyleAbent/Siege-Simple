@@ -1,4 +1,4 @@
-
+local kBallFlagAttachPoint = "babbler_attach6"
 
 function Onos:GetRebirthLength()
 return 6
@@ -49,7 +49,9 @@ function Onos:GetMaxSpeed(possible)
 end
 
 
-
+function Onos:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
+end
 function Onos:GetHasMovementSpecial()
     return GetHasTech(self, kTechId.Charge)
 end
@@ -85,7 +87,7 @@ function Onos:GetTierFourTechId()
 end
 
 function Onos:GetTierFiveTechId()
-    return kTechId.OnicideStomp
+    return kTechId.Onocide
 end
 
 end

@@ -12,6 +12,9 @@ kMatureCystHealth = 500 --default 450
 kBabblerHealth = 40 --default 10
 
 
+kEggBeaconMaxHealth = 715
+kEggBeaconMaxArmor = 200
+
 
 
 

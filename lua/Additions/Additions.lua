@@ -31,7 +31,8 @@ Script.Load("lua/Additions/PoopEgg.lua")
 Script.Load("lua/Additions/GorgeTunnelSalt.lua")
 
 
-
+Script.Load("lua/Additions/BallThrower.lua")
+Script.Load("lua/Additions/BallFlag.lua")
 --Avoca arc pregame 
 
 

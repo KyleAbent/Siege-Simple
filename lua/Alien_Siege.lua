@@ -6,9 +6,7 @@ local orig_Alien_OnCreate = Alien.OnCreate
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
     if Server then
-        local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
-        local t5 = (self.GetTierFiveTechId and self:GetTierFiveTechId() ) or nil
-        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4, t5) end, .8) 
+        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId()) end, .8) 
     end
      self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
      self.canredeemorrebirth = true
@@ -31,7 +29,13 @@ local function CheckPrimalScream(self)
 	return self.primaled
 end
 if Server then
+function Alien:GetTierFourTechId()
+    return kTechId.None
+end
 
+function Alien:GetTierFiveTechId()
+    return kTechId.None
+end
     function Alien:PrimalScream(duration)
         if not self.primaled then
 			self:AddTimedCallback(CheckPrimalScream, duration)
@@ -149,8 +153,7 @@ function Alien:CreditBuy(techId)
 end
 
 function Alien:RefreshTechsManually()
-         local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
-UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4 )
+        UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId() )
 end
 
 
@@ -350,8 +353,79 @@ Alien.kPrimaledThirdpersonMaterialName = "cinematics/vfx_materials/primal.materi
 Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal_view.surface_shader")
 Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
 
+
+Alien.kOnocideViewMaterialName = "cinematics/vfx_materials/Onocide_view.material"
+Alien.kOnocideThirdpersonMaterialName = "cinematics/vfx_materials/Onocide.material"
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide_view.surface_shader")
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide.surface_shader")
+
 local kEnzymeEffectInterval = 0.2
 
+
+function Alien:UpdateOnocideEffect(isLocal)
+    local weapon = self:GetWeaponInHUDSlot(4)
+    local boolean = false
+      if weapon then
+         boolean = weapon.primaryAttacking
+      end
+      
+    if self.OnocideClient ~= boolean then
+
+        if isLocal then
+        
+            local viewModel= nil        
+            if self:GetViewModelEntity() then
+                viewModel = self:GetViewModelEntity():GetRenderModel()  
+            end
+                
+            if viewModel then
+   
+                if boolean then
+                    self.primaledViewMaterial = AddMaterial(viewModel, Alien.kOnocideViewMaterialName)
+                else
+                
+                    if RemoveMaterial(viewModel, self.primaledViewMaterial) then
+                        self.primaledViewMaterial = nil
+                    end
+  
+                end
+            
+            end
+        
+        end
+        
+        local thirdpersonModel = self:GetRenderModel()
+        if thirdpersonModel then
+        
+            if boolean then
+                self.OnocideMaterial = AddMaterial(thirdpersonModel, Alien.kOnocideThirdpersonMaterialName)
+            else
+            
+                if RemoveMaterial(thirdpersonModel, self.OnocideMaterial) then
+                    self.OnocideMaterial = nil
+                end
+
+            end
+        
+        end
+        
+        self.OnocideClient = boolean
+        
+    end
+
+    // update cinemtics
+    if boolean then
+
+        if not self.lastOnocideEffect or self.lastOnocideEffect + kEnzymeEffectInterval < Shared.GetTime() then
+        
+            self:TriggerEffects("enzymed")
+            self.lastOnocideEffect = Shared.GetTime()
+        
+        end
+
+    end 
+
+end
 
 function Alien:UpdatePrimalEffect(isLocal)
     if self.primaledClient ~= self.primaled then
@@ -415,6 +489,7 @@ end
 local origcupdate = Alien.UpdateClientEffects
 function Alien:UpdateClientEffects(deltaTime, isLocal)
      self:UpdatePrimalEffect(isLocal)
+     if self:isa("Onos") then self:UpdateOnocideEffect(isLocal) end
      origcupdate(self, deltaTime,isLocal)
 end
 

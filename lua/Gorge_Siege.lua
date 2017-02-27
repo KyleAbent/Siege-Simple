@@ -4,6 +4,9 @@ local networkVars =
     timeLastWallWalkCheck = "private compensated time",
 }
 
+local kBallFlagAttachPoint = "babbler_attach1"
+
+
 if Client then
     Script.Load("lua/Gorge_Client.lua", true)
 end
@@ -36,7 +39,9 @@ function Gorge:OnInitialized()
 end
 
 
-
+function Gorge:GetBallFlagAttatchPoint(player)
+       return kBallFlagAttachPoint
+end
 function Gorge:GetRebirthLength()
 return 3
 end
