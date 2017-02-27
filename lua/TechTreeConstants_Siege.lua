@@ -48,6 +48,7 @@ local kSiege_TechIds =
     'Hunger',
     'ShiftHiveTwo',
     'LayStructures',
+    'OnicideStomp',
 
 
     

@@ -223,16 +223,17 @@ if not GetGamerules():GetGameStarted()  then return end
   
 end
 local function SwitchToOverHead(client, self, where)
+        client:BreakChains()
         local height = math.random(4,12)
         self:NotifyGeneric( client, "Overhead mode nearby otherwise inside entity origin. Height is %s", true, height)
         if client.specMode ~= kSpectatorMode.Overhead  then client:SetSpectatorMode(kSpectatorMode.Overhead)  end
         client:SetOrigin(where)
         client.overheadModeHeight =  height
-        client:BreakChains()
 
 end
-function Plugin:GetIsOverheadAllowed()
- return  ( GetGamerules():GetGameStarted() and findfreespace ==  viporigin )
+function Plugin:GetIsOverheadAllowed(findfreespace, viporigin)
+local chance = math.random(1,10)
+ return  ( GetGamerules():GetGameStarted() and findfreespace ==  viporigin and chance >= 7 )
 end
 local function overHeadandNear(self, client, vip)
           client:SetDesiredCameraDistance(0)
@@ -299,7 +300,7 @@ end
         firstPersonScoreBased(self, client)
          end
   
-         Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "[Director] untilNext: %s",Duration = betweenLast or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player )  
+         Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.75,Text = "[Director] untilNext: %s",Duration = betweenLast or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, client )  
 
 end
 /*

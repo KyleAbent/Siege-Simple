@@ -745,6 +745,11 @@ mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
 limit = 1
 CreditCost = 8
+elseif String == "BackupBattery"  then
+mapnameof = SentryBattery.kMapName
+techid = kTechId.SentryBattery
+limit = 1
+CreditCost = 6
 elseif String == "PhaseGate" then
 CreditCost = 15
 limit = 2

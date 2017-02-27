@@ -21,9 +21,11 @@ end
 function AvocaSpectator:LockAngles()
   local playerOfLock = Shared.GetEntity( self.lockedId ) 
     if playerOfLock ~= nil then
+            if (playerOfLock.GetIsAlive and playerOfLock:GetIsAlive())  then
              local dir = GetNormalizedVector(playerOfLock:GetOrigin() - self:GetOrigin())
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
              self:SetOffsetAngles(angles)
+            end
   end
 end
 function AvocaSpectator:ChangeView(self, untilNext, betweenLast)

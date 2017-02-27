@@ -17,6 +17,7 @@ end
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
+
 class 'ARCSiege' (ARC)
 ARCSiege.kMapName = "arcsiege"
 
@@ -32,8 +33,11 @@ function ARCSiege:OnCreate()
 ARC.OnCreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
+     self.startsBuilt = not self:isa("ARCCredit")
 end
-
+function ARCSiege:GetIsBuilt()
+ return self:GetIsAlive()
+end
 function ARCSiege:OnInitialized()
 self:SetTechId(kTechId.ARC)
 ARC.OnInitialized(self)

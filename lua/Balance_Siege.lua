@@ -1,3 +1,4 @@
+kOnocideDamage = 664
 kPrimalScreamROFIncrease = .3
 kVortexLifeSpan = 8
 kCommVortexCoolDown = 18

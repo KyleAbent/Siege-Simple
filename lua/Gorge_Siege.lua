@@ -343,6 +343,9 @@ function Gorge:GetTierFourTechId()
     return kTechId.None
 end
 
+function Gorge:GetTierFiveTechId()
+    return kTechId.None
+end
 
 end
 

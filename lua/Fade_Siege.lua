@@ -42,6 +42,10 @@ function Fade:GetTierFourTechId()
     return kTechId.AcidRocket
 end
 
+function Fade:GetTierFiveTechId()
+    return kTechId.None
+end
+
 end
 
 Shared.LinkClassToMap("Fade", Fade.kMapName, networkVars) 

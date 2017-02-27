@@ -4,6 +4,9 @@ function Lerk:GetTierFourTechId()
     return kTechId.PrimalScream
 end
 
+function Lerk:GetTierFiveTechId()
+    return kTechId.None
+end
 
 end
 

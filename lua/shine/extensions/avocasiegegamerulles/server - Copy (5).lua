@@ -379,7 +379,7 @@ local function UpdateCertainHealing(self)
             
             for index, player in ipairs(players) do
             
-                if player:GetIsAlive() and ( not GetIsInSiege(player) or player:isa("Fade") )  and ((player:GetOrigin() - self:GetOrigin()):GetLength() < Hive.kHealRadius) then   
+                if player:GetIsAlive() and not GetIsInSiege(player) and ((player:GetOrigin() - self:GetOrigin()):GetLength() < Hive.kHealRadius) then   
                     -- min healing, affects skulk only
                     player:AddHealth(math.max(10, player:GetMaxHealth() * Hive.kHealthPercentage), true )                
                 end

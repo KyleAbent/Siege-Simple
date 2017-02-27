@@ -2,7 +2,6 @@ Script.Load("lua/MAC.lua")
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
-Script.Load("lua/ConstructMixin.lua")
 
 --Kyle 'Avoca' Abent
 class 'MACSiege' (MAC)
@@ -21,7 +20,9 @@ MAC.OnCreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
 end
-
+function MAC:GetIsBuilt()
+ return self:GetIsAlive()
+end
 function MACSiege:OnInitialized()
 self:SetTechId(kTechId.MAC)
 InitMixin(self, LevelsMixin)
@@ -66,14 +67,12 @@ local networkVars =
 
 
 }
-AddMixinNetworkVars(ConstructMixin, networkVars)
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
 function DropMAC:OnCreate()
 MAC.OnCreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
-    InitMixin(self, ConstructMixin)
 end
 
 function DropMAC:OnInitialized()

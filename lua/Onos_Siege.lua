@@ -84,5 +84,8 @@ function Onos:GetTierFourTechId()
     return kTechId.OnoGrow
 end
 
+function Onos:GetTierFiveTechId()
+    return kTechId.OnicideStomp
+end
 
 end

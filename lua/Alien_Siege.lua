@@ -7,7 +7,8 @@ function Alien:OnCreate()
     orig_Alien_OnCreate(self)
     if Server then
         local t4 = ( self.GetTierFourTechId and self:GetTierFourTechId() ) or nil
-        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4) end, .8) 
+        local t5 = (self.GetTierFiveTechId and self:GetTierFiveTechId() ) or nil
+        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), t4, t5) end, .8) 
     end
      self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
      self.canredeemorrebirth = true
