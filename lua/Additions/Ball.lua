@@ -1,5 +1,5 @@
 --Kyle 'Avoca' Abent
-local networkVars = {} 
+
 Script.Load("lua/Weapons/Projectile.lua")
 Script.Load("lua/Additions/BallGoal.lua")
 Script.Load("lua/TeamMixin.lua")
@@ -11,6 +11,12 @@ Ball.kMapName = "Ball"
 Ball.kRadius = 0.05
 local kLifetime = 5
 
+local networkVars = { 
+
+ --mapname = "string (128)",
+
+
+ } 
 
 AddMixinNetworkVars(BaseModelMixin, networkVars)
 AddMixinNetworkVars(ModelMixin, networkVars)
@@ -23,17 +29,51 @@ function Ball:OnCreate()
     InitMixin(self, BaseModelMixin)
     InitMixin(self, ModelMixin)
     InitMixin(self, TeamMixin)
-    self.lastOwner = Entity.invalidI 
     self:SetPhysicsGroup(PhysicsGroup.RagdollGroup)
+   -- self.mapname = derp
     
 end
+/*
+function Ball:GetDropMapName()
+ if Server then
+  local toreturn =  self.mapname
+ Print("GetDropMapName is %s", toreturn)
+    return toreturn
+    end
+end
+*/
+function Ball:StartTimer()
+  --self:GetDropMapName() 
+--self:AddTimedCallback(Ball.IfConvertingEntity, math.random(4,8))
+self:AddTimedCallback(Ball.Destroy, math.random(4,8))
+end
+function Ball:Destroy()
+  DestroyEntity(self)
+  return false
+end
+/*
+function Ball:IfConvertingEntity()
+ if self:GetDropMapName() ~= derp then
+                local newEntity = CreateEntity(self:GetDropMapName(), self:GetOrigin(), 1)
+                newEntity:SetConstructionComplete()
+                DestroyEntity(self)
+ end
+    return false
+end
 
+function Ball:SetMapName(mapname)
+      Print("set map name to %s", mapname)
+     self.mapname = mapname
+           self:GetDropMapName()
+end
+*/
 function Ball:OnInitialized()
 
     Projectile.OnInitialized(self)
     
     if Server then
         self:AddTimedCallback(Ball.PickUp, 1)
+
      elseif Client then
                   local model = self:GetRenderModel()
               if self:GetTeamNumber() == 2 then
@@ -42,7 +82,7 @@ function Ball:OnInitialized()
               EquipmentOutline_AddModel( model, kEquipmentOutlineColor.TSFBlue )
               end
     end
-    
+
 end
 if Server then
 

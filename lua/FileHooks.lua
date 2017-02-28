@@ -12,13 +12,13 @@ ModLoader.SetupFileHook( "lua/Weapons/Alien/Shockwave.lua", "lua/Weapons/Alien/S
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Rifle.lua", "lua/Weapons/Marine/Rifle_Siege.lua", "post" )
 
-
+ModLoader.SetupFileHook( "lua/Weapons/Marine/Axe.lua", "lua/Weapons/Marine/Axe_Avoca.lua", "post" )
 
 
 ModLoader.SetupFileHook( "lua/Location.lua", "lua/Location_Siege.lua", "post" )
 
 
-ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Additions/AvocaShotgun.lua", "post" )
+--ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Additions/AvocaShotgun.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/CommAbilities/Alien/Contamination.lua", "lua/CommAbilities/Alien/Contamination_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Marine.lua", "lua/Marine_Siege.lua", "post" )

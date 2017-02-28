@@ -1,3 +1,4 @@
+--Kyle 'Avoca' Abent
 Script.Load("lua/Weapons/Weapon.lua")
 Script.Load("lua/Additions/Ball.lua")
 Script.Load("lua/Weapons/Projectile.lua")
@@ -7,6 +8,7 @@ class 'BallThrower' (Weapon)
 BallThrower.kMapName = "ball_thrower"
 
 local kModelName = PrecacheAsset("models/dev/dev_sphere.model")
+
 
 local kBombVelocity = 15
 local kShootLimit = 0.5
@@ -35,14 +37,17 @@ function FireBallProjectile(player)
         
         local findBall = GetBallForPlayerOwner(player)
         
+        local model = kModelName
+        
         if findBall then
+         model = findBall:GetModelName()
          DestroyEntity(findBall) --ugh
         end
         
         local newBall = CreateEntity(Ball.kMapName, startPoint, player:GetTeamNumber())
-        newBall:Setup(player, startVelocity, true, nil, player, kModelName)
+        newBall:Setup(player, startVelocity, true, Vector(1.5, 1, 0.4), player, model )
         newBall:SetTeamNumber(player:GetTeamNumber())
-        
+        newBall:StartTimer()
         
         --local Ball = player:CreatePredictedProjectile(Ball.kMapName, startPoint, startVelocity, 0.25, 0.25, true)
         
