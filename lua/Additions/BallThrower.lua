@@ -47,7 +47,7 @@ function FireBallProjectile(player)
         local newBall = CreateEntity(Ball.kMapName, startPoint, player:GetTeamNumber())
         newBall:Setup(player, startVelocity, true, Vector(1.5, 1, 0.4), player, model )
         newBall:SetTeamNumber(player:GetTeamNumber())
-        newBall:StartTimer()
+     --   newBall:StartTimer()
         
         --local Ball = player:CreatePredictedProjectile(Ball.kMapName, startPoint, startVelocity, 0.25, 0.25, true)
         

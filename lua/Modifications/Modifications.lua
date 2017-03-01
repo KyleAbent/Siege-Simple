@@ -1,3 +1,4 @@
+
 Script.Load("lua/Modifications/ReallyNow.lua")
 
 
@@ -160,14 +161,10 @@ SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 ---Hacks------------
 
 SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatorySiege.kMapName)
-SetCachedTechData(kTechId.CommandStation, kTechDataMapName,CommandStationSiege.kMapName)
-SetCachedTechData(kTechId.InfantryPortal, kTechDataMapName,InfantryPortalSiege.kMapName)
 SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoSiege.kMapName)
 
 
-SetCachedTechData(kTechId.Whip, kTechDataMapName,WhipSiege.kMapName)
-SetCachedTechData(kTechId.Crag, kTechDataMapName,CragSiege.kMapName)
-SetCachedTechData(kTechId.Shift, kTechDataMapName,ShiftSiege.kMapName)
+
 SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
 
 

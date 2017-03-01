@@ -29,7 +29,7 @@ function Ball:OnCreate()
     InitMixin(self, BaseModelMixin)
     InitMixin(self, ModelMixin)
     InitMixin(self, TeamMixin)
-    self:SetPhysicsGroup(PhysicsGroup.RagdollGroup)
+    self:SetPhysicsGroup(PhysicsGroup.CollisionGeometryGroup)
    -- self.mapname = derp
     
 end

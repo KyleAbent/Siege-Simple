@@ -1,18 +1,3 @@
-local origcreate = InfantryPortal.OnInitialized
-function InfantryPortal:OnInitialized()
-
- origcreate(self)
- if not self:isa("InfantryPortalSiege") then
-     
-      if Server then
-     
-      local ip = CreateEntity(InfantryPortalSiege.kMapName, self:GetOrigin(), 1)
-      ip:SetConstructionComplete()
-      end
-      DestroyEntity(self)
-     
- end
-end
 function InfantryPortal:CheckSpaceAboveForSpawn()
 
     local startPoint = self:GetOrigin() 
@@ -89,57 +74,9 @@ end
 end
 
 
-Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
-class 'InfantryPortalSiege' (InfantryPortal)
-InfantryPortalSiege.kMapName = "infantryportalsiege"
-
-local networkVars = {}
-
-AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
-    
-
-    function InfantryPortalSiege:OnInitialized()
-         InfantryPortal.OnInitialized(self)
-        InitMixin(self, LevelsMixin)
-        InitMixin(self, AvocaMixin)
-        self:SetTechId(kTechId.InfantryPortal)
-    end
-        function InfantryPortalSiege:GetTechId()
-         return kTechId.InfantryPortal
-    end
-    
-    function InfantryPortalSiege:GetMaxLevel()
-    return kInfantryPortalMaxLevel
-    end
-    
-    function InfantryPortalSiege:GetAddXPAmount()
-    return kInfantryPortalXPGain
-    end
-
-    function InfantryPortalSiege:GetSpawnTime()
-    local levelbonus = ( kMarineRespawnTime - (self.level/100) * kMarineRespawnTime)
-    local roundbonus = ( levelbonus - ( ( GetRoundLengthToSiege() / 2 ) /1) * levelbonus)
+    function InfantryPortal:GetSpawnTime()
+    local roundbonus =  ( ( GetRoundLengthToSiege() / 2 ) /1) 
     local total = roundbonus
    -- Print("InfantryPortalAvoca GetSpawnTime Is: (level bonus is %s, roundbonus is %s)", levelbonus, roundbonus)
     return Clamp(total, 4, kMarineRespawnTime)
 end
-
-function InfantryPortalSiege:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.InfantryPortal
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
-
-
-
-Shared.LinkClassToMap("InfantryPortalSiege", InfantryPortalSiege.kMapName, networkVars)

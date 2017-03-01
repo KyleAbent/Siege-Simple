@@ -1,3 +1,4 @@
+Script.Load("lua/Additions/BallFlag.lua")
 local function OnlyPregame(self, techPoint)
      local gamestarted = false
    if GetGamerules():GetGameState() == kGameState.Started  or GetGamerules():GetGameState() == kGameState.Countdown then gamestarted = true end

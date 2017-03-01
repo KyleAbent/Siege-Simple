@@ -11,7 +11,7 @@ Script.Load("lua/Additions/StunWall.lua")
 Script.Load("lua/Additions/MAC_Credits.lua")
 Script.Load("lua/Additions/ARC_Credits.lua")
 
-Script.Load("lua/Additions/CystSiege.lua")
+--Script.Load("lua/Additions/CystSiege.lua")
 
 Script.Load("lua/Additions/LayStructures.lua")
 
@@ -24,10 +24,10 @@ Script.Load("lua/Additions/PoopEgg.lua")
 --Script.Load("lua/Additions/ConcGrenadeThrower.lua")
 --Script.Load("lua/Additions/ConcGrenade.lua")
 
---Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
---Script.Load("lua/Additions/JediConcGrenade.lua")
---Script.Load("lua/ExtraEntitiesMod/LogicBreakable.lua")
---Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
+Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
+Script.Load("lua/Additions/JediConcGrenade.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicBreakable.lua")
+Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
 Script.Load("lua/Additions/GorgeTunnelSalt.lua")
 
 

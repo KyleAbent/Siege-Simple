@@ -813,15 +813,15 @@ mapnameof = Shade.kMapName
 techid = kTechId.Shade
 elseif String == "Crag" then
 CreditCost = 10
-mapnameof = CragSiege.kMapName
+mapnameof = Crag.kMapName
 techid = kTechId.Crag
 elseif String == "Whip" then
 CreditCost = 10
-mapnameof = WhipSiege.kMapName
+mapnameof = Whip.kMapName
 techid = kTechId.Crag
 elseif String == "Shift" then
 CreditCost = 10
-mapnameof = ShiftSiege.kMapName
+mapnameof = Shift.kMapName
 techid = kTechId.Shift
 elseif String == "Hydra" then
 CreditCost = 1
