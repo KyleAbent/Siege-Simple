@@ -7,10 +7,10 @@ function MichaelBayThisBitch(targetHit)
      local where = who:GetOrigin()
      
      if Server then
-         --if GetGamerules():GetGameStarted() then return end
+         if GetGamerules():GetGameStarted() then return end
          
          if targetHit:isa("CommandStructure") then
-         local replacementStation = CreateEntity(targetHit:GetMapName(), where + Vector(0,10,0), 2)
+         local replacementStation = CreateEntity(targetHit:GetMapName(), where + Vector(0,10,0), targetHit:GetTeamNumber() )
          
          if replacementStation then
          

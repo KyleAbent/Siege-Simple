@@ -1,3 +1,4 @@
+local originit= Whip.OnInitialized
 function Whip:OnInitialized()
 
 originit(self)

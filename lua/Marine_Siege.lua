@@ -3,6 +3,12 @@ Script.Load("lua/Additions/ConcGrenade.lua")
 Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
 Script.Load("lua/Additions/JediConcGrenade.lua")
 
+local origcreate = Marine.OnCreate
+function Marine:OnCreate()
+  origcreate(self)
+  if Server then ExploitCheck(self) end
+end
+
 function Marine:GetHasLayStructure()
         local weapon = self:GetWeaponInHUDSlot(5)
         local builder = false

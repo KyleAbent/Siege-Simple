@@ -579,7 +579,7 @@ return
 end
 
  
-if whoagain:isa("Alien") and mapname == CragSiege.kMapName then 
+if whoagain:isa("Alien") and mapname == Crag.kMapName then 
 
 
    if  GetIsOriginInHiveRoom( whoagain:GetOrigin() ) then
@@ -756,7 +756,7 @@ limit = 2
 mapnameof = PhaseGate.kMapName
 techid = kTechId.PhaseGate
 elseif String == "InfantryPortal" then
-mapnameof = InfantryPortalSiege.kMapName
+mapnameof = InfantryPortal.kMapName
 techid = kTechId.InfantryPortal
 CreditCost = 15
 elseif  String == "RoboticsFactory" then

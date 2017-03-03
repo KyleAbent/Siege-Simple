@@ -103,14 +103,14 @@ if Server then
     end
     
     function Ball:PickUp(currentRate)
-    
+       if Server then if GetGamerules():GetGameStarted() then   Print("ball game startred") DestroyEntity(self) return end end
        local playersNearby = GetEntitiesWithinXZRangeAreVisible( "Player", self:GetOrigin(), 1.5, true)
         Shared.SortEntitiesByDistance(self:GetOrigin(), playersNearby)
 
         for _, player in ipairs(playersNearby) do
         
             if not player:isa("Commander")  then
-            
+
                -- self:OnTouch(player)
                -- DestroyEntity(self) why delete and destroy? SEX & VIOLENCE!
                 self:SetParent(player)
