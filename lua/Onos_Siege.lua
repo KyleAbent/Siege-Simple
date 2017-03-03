@@ -1,4 +1,4 @@
-local kBallFlagAttachPoint = "babbler_attach6"
+local kBallFlagAttachPoint = "babbler_attach2"
 
 function Onos:GetRebirthLength()
 return 6

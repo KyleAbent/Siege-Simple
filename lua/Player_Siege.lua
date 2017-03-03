@@ -29,6 +29,9 @@ function Player:RunCommand(string)
 end
 function Player:NotifyShineBallGiven(self)
 end
+function Player:GetHasBall()
+ return GetBallForPlayerOwner(self)
+end
 function Player:GiveBall()
  self.hasball = true
   self:NotifyShineBallGiven(self)

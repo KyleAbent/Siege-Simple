@@ -396,6 +396,8 @@ end
 
 Shine.Hook.SetupClassHook( "Alien", "TriggerRedeemCountDown", "OnRedemedHook", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRebirthCountDown", "TriggerRebirthCountDown", "PassivePre" )
+Shine.Hook.SetupClassHook( "Player", "NotifyShineBallGiven", "OnBallGiven", "PassivePre" )
+
 
 Plugin.Version = "1.0"
 
@@ -539,6 +541,15 @@ end
             local derp = herp:GetControllingPlayer()
             Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text = "Redemption Cooldown: %s",Duration = derp:GetRedemptionCoolDown() or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
  end
+  function Plugin:OnBallGiven(player)
+   if  player and player:GetIsAlive() and player:GetHasBall() then
+             self:CreateTimer( 69, 1,  -1, function() 
+             if not player or not player:GetIsAlive() or not player:GetHasBall() then Plugin:DestroyTimer( 69 ) end
+            Shine.ScreenText.Add( 42, {X = 0.20, Y = 0.90,Text = "You have the ball!",Duration = 1 or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
+             end)
+   end
+
+end
 function Plugin:TriggerRebirthCountDown(player)
             local herp = player:GetClient()
             local derp = herp:GetControllingPlayer()

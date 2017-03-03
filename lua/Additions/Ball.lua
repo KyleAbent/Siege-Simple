@@ -42,11 +42,13 @@ function Ball:GetDropMapName()
     end
 end
 */
+/*
 function Ball:StartTimer()
   --self:GetDropMapName() 
 --self:AddTimedCallback(Ball.IfConvertingEntity, math.random(4,8))
-self:AddTimedCallback(Ball.Destroy, math.random(4,8))
+--self:AddTimedCallback(Ball.Destroy, math.random(4,8))
 end
+*/
 function Ball:Destroy()
   DestroyEntity(self)
   return false
