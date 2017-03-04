@@ -1,5 +1,6 @@
-Script.Load("lua/Additions/BallFlag.lua")
-if Server then 
+--Script.Load("lua/Additions/BallFlag.lua")
+--if Server then 
+/*
 local function OnlyPregame(self, techPoint)
      local gamestarted = false
    if GetGamerules():GetGameState() == kGameState.Started  or GetGamerules():GetGameState() == kGameState.Countdown then gamestarted = true end
@@ -14,8 +15,8 @@ function AlienTeam:SpawnInitialStructures(techPoint)
 orig_AlienTeam_SpawnInitialStructures(self, techPoint)
      OnlyPregame(self, techPoint)
 end
-
-end
+*/
+--end
 function AlienTeam:GetHive()
     for _, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
         if hive:GetIsBuilt() then

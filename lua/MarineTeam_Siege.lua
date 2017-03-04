@@ -1,4 +1,5 @@
-Script.Load("lua/Additions/BallFlag.lua")
+--Script.Load("lua/Additions/BallFlag.lua")
+/*
 local function OnlyPregame(self, techPoint)
      local gamestarted = false
    if GetGamerules():GetGameState() == kGameState.Started  or GetGamerules():GetGameState() == kGameState.Countdown then gamestarted = true end
@@ -13,6 +14,7 @@ function MarineTeam:SpawnInitialStructures(techPoint)
 orig_MarineTeam_SpawnInitialStructures(self, techPoint)
      OnlyPregame(self, techPoint)
 end
+*/
  /*
 local orig_MarineTeam_Initialize = MarineTeam.Initialize
 function MarineTeam:Initialize(teamName, teamNumber)
@@ -41,6 +43,7 @@ function MarineTeam:InitTechTree()
     self.techTree:AddActivation(kTechId.ArcSpawnOn,                kTechId.ARCRoboticsFactory,          kTechId.None)
     self.techTree:AddActivation(kTechId.ArcSpawnOff, kTechId.ARCRoboticsFactory, kTechId.None)
     self.techTree:AddBuildNode(kTechId.BackupLight,            kTechId.None,                kTechId.None)
+    self.techTree:AddBuyNode(kTechId.DualWelderExosuit, kTechId.ExosuitTech, kTechId.None)
     
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree

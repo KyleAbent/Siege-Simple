@@ -31,8 +31,9 @@ Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
 Script.Load("lua/Additions/GorgeTunnelSalt.lua")
 
 
-Script.Load("lua/Additions/BallThrower.lua")
-Script.Load("lua/Additions/BallFlag.lua")
+--Script.Load("lua/Additions/BallThrower.lua")
+--Script.Load("lua/Additions/BallFlag.lua")
+Script.Load("lua/Additions/ExoWelder.lua")
 --Avoca arc pregame 
 
 

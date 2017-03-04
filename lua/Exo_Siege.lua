@@ -1,6 +1,7 @@
 Script.Load("lua/StunMixin.lua")
 Script.Load("lua/PhaseGateUserMixin.lua")
 Script.Load("lua/Mixins/LadderMoveMixin.lua")
+Script.Load("lua/Additions/ExoWelder.lua")
 
 local kBallFlagAttachPoint = "Exosuit_HoodHinge"
 
@@ -12,6 +13,8 @@ AddMixinNetworkVars(StunMixin, networkVars)
 AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
 AddMixinNetworkVars(LadderMoveMixin, networkVars)
 
+local kDualWelderModelName = PrecacheAsset("models/marine/exosuit/exosuit_rr.model")
+local kDualWelderAnimationGraph = PrecacheAsset("models/marine/exosuit/exosuit_rr.animation_graph")
 
 
 function ExoSiege:OnCreate()
@@ -19,6 +22,54 @@ function ExoSiege:OnCreate()
     InitMixin(self, PhaseGateUserMixin)
     InitMixin(self, LadderMoveMixin)
 
+end
+local origmodel = Exo.InitExoModel
+
+function ExoSiege:InitExoModel()
+
+    local hasWelders = false
+    local modelName = kDualWelderModelName
+    local graphName = kDualWelderAnimationGraph
+    
+  if self.layout == "WelderWelder" then
+         modelName = kDualWelderModelName
+        graphName = kDualWelderAnimationGraph
+        self.hasDualGuns = true
+        hasWelders = true
+        self:SetModel(modelName, graphName)
+    end
+    
+    
+    if hasWelders then 
+    else
+    origmodel(self)
+    end
+  
+  
+
+  
+end
+
+function ExoSiege:InitWeapons()
+    local hasWelders = false
+    local weaponHolder = self:GetWeapon(ExoWeaponHolder.kMapName)
+    if not weaponHolder then
+        weaponHolder = self:GiveItem(ExoWeaponHolder.kMapName, false)   
+    end    
+    
+  
+        if self.layout == "WelderWelder" then
+        weaponHolder:SetWelderWeapons()
+        self:SetHUDSlotActive(1)
+        hasWelders = true
+        end
+        
+        if hasWelders then
+        
+        else
+        Exo.InitWeapons(self)
+        end
+    
 end
 local function HealSelf(self)
 
@@ -56,7 +107,6 @@ end
 function ExoSiege:GetIsStunAllowed()
     return not self.timeLastStun or self.timeLastStun + 8 < Shared.GetTime() 
 end
-
 
 function ExoSiege:OnGetMapBlipInfo()
     local success = false

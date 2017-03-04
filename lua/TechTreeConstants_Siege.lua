@@ -49,6 +49,7 @@ local kSiege_TechIds =
     'ShiftHiveTwo',
     'LayStructures',
     'Onocide',
+    'DualWelderExosuit',
 
 
     

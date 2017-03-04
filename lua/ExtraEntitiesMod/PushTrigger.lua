@@ -1,7 +1,4 @@
 --thanks eem
-    for i = 1, 8 do
- Print("PushEntity 0")
-   end
 class 'PushTrigger' (Trigger)
 
 PushTrigger.kMapName = "push_trigger"

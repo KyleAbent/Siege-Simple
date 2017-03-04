@@ -1,4 +1,54 @@
-local originit= Whip.OnInitialized
+Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
+
+class 'Whip_Salty_Infestation' (Whip)
+Whip_Salty_Infestation.kMapName = "whipinfestation"
+
+local networkVars = {}
+
+AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
+function Whip_Salty_Infestation:GetInfestationRadius()
+    return 1
+end
+function Whip_Salty_Infestation:OnOrderGiven()
+   if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
+end
+    function Whip_Salty_Infestation:OnInitialized()
+         InitMixin(self, LevelsMixin)
+           InitMixin(self, InfestationMixin)
+        InitMixin(self, AvocaMixin)
+        self:SetTechId(kTechId.Whip)
+          Whip.OnInitialized(self)
+    end
+    
+        function Whip_Salty_Infestation:GetTechId()
+         return kTechId.Whip
+    end
+   function Whip_Salty_Infestation:OnGetMapBlipInfo()
+    local success = false
+    local blipType = kMinimapBlipType.Undefined
+    local blipTeam = -1
+    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
+    blipType = kMinimapBlipType.Whip
+     blipTeam = self:GetTeamNumber()
+    if blipType ~= 0 then
+        success = true
+    end
+    
+    return success, blipType, blipTeam, isAttacked, false --isParasited
+end
+    function Whip_Salty_Infestation:GetMaxLevel()
+    return kAlienDefaultLvl
+    end
+    function Whip_Salty_Infestation:GetAddXPAmount()
+    return kAlienDefaultAddXp
+    end
+Shared.LinkClassToMap("Whip_Salty_Infestation", Whip_Salty_Infestation.kMapName, networkVars) 
+
+local originit = Whip.OnInitialized
 function Whip:OnInitialized()
 
 originit(self)

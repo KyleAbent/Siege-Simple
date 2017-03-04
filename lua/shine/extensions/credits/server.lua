@@ -817,7 +817,7 @@ mapnameof = Crag.kMapName
 techid = kTechId.Crag
 elseif String == "Whip" then
 CreditCost = 10
-mapnameof = Whip.kMapName
+mapnameof = Whip_Salty_Infestation.kMapName
 techid = kTechId.Crag
 elseif String == "Shift" then
 CreditCost = 10
@@ -945,6 +945,7 @@ if not Player then return end
  if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 8 end 
  if String == "RailGun" and not Player:isa("Exo") then cost = 29 delayafter = 25  end 
  if String == "MiniGun" and not Player:isa("Exo") then  cost = 30  delayafter = 25 end
+   if String == "Welder" and not Player:isa("Exo") then  cost = 25  delayafter = 15 end
  if String == "Gorge" then cost = 9 end
  if String == "Lerk" then  cost = 12 end
  if String == "Fade" then cost = 20 end
@@ -956,6 +957,7 @@ if not Player then return end
               if cost == 8 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
              elseif cost == 30 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
              elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == 25 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 9 then DeductBuy(self, Client, cost) Player:CreditBuy(kTechId.Gorge)  

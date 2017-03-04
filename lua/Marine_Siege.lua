@@ -3,6 +3,7 @@ Script.Load("lua/Additions/ConcGrenade.lua")
 Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
 Script.Load("lua/Additions/JediConcGrenade.lua")
 
+
 local origcreate = Marine.OnCreate
 function Marine:OnCreate()
   origcreate(self)
@@ -69,7 +70,12 @@ function Marine:GiveDualExo(spawnPoint)
     return exo
     
 end
+function Marine:GiveDualWelder(spawnPoint)
 
+    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "WelderWelder" })
+    return exo
+    
+end
 function Marine:GiveClawRailgunExo(spawnPoint)
 
     local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
@@ -84,7 +90,70 @@ function Marine:GiveDualRailgunExo(spawnPoint)
     
 end
 
+local function BuyWelderExo(self)
 
+    local maxAttempts = 100
+    for index = 1, maxAttempts do
+    
+        -- Find open area nearby to place the big guy.
+        local capsuleHeight, capsuleRadius = self:GetTraceCapsule()
+        local extents = Vector(Exo.kXZExtents, Exo.kYExtents, Exo.kXZExtents)
+
+        local spawnPoint        
+        local checkPoint = self:GetOrigin() + Vector(0, 0.02, 0)
+        
+        if GetHasRoomForCapsule(extents, checkPoint + Vector(0, extents.y, 0), CollisionRep.Move, PhysicsMask.Evolve, self) then
+            spawnPoint = checkPoint
+        else
+            spawnPoint = GetRandomSpawnForCapsule(extents.y, extents.x, checkPoint, 0.5, 5, EntityFilterOne(self))
+        end    
+            
+
+        if spawnPoint then
+        
+            self:AddResources(-GetCostForTech(techId))
+            
+                self:GiveDualWelder(spawnPoint)
+            return
+            
+        end
+        
+    end
+    
+    Print("Error: Could not find a spawn point to place the Exo")
+    
+end
+
+local origattemptbuy = Marine.AttemptToBuy
+function Marine:AttemptToBuy(techIds)
+
+  local techId = techIds[1]
+    
+    local hostStructure = GetHostStructureFor(self, techId)
+
+    if hostStructure then
+    
+        local mapName = LookupTechData(techId, kTechDataMapName)
+        
+        if mapName then
+        
+            Shared.PlayPrivateSound(self, Marine.kSpendResourcesSoundName, nil, 1.0, self:GetOrigin())
+            
+            if self:GetTeam() and self:GetTeam().OnBought then
+                self:GetTeam():OnBought(techId)
+            end
+            
+            if techId == kTechId.DualWelderExosuit then
+                 Print("Derp")
+                 BuyWelderExo(self)
+             else
+                origattemptbuy(self, techIds)
+            end
+       end
+   end
+    
+
+end
 
 elseif Client then
 

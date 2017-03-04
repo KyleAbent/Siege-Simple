@@ -1,3 +1,6 @@
+kExoPlayerWeldRate = 15
+kExoStructureWeldRate = 65
+
 kNanoArmorHealPerSecond = 1 -- * # of proto in radius?
 kObsAdvBeaconPowerOff = 16 --12 w/ lvl 25
 kEggBeaconBuildTime = 8
