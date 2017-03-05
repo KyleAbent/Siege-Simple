@@ -20,7 +20,7 @@ function Marine:GetHasLayStructure()
     return builder
 end
 function Marine:GetCanBeVortexed()
-    return false
+    return true
 end
 
 if Server then

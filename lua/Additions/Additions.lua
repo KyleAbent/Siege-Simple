@@ -11,7 +11,7 @@ Script.Load("lua/Additions/StunWall.lua")
 Script.Load("lua/Additions/MAC_Credits.lua")
 Script.Load("lua/Additions/ARC_Credits.lua")
 
---Script.Load("lua/Additions/CystSiege.lua")
+Script.Load("lua/Additions/CystSiege.lua")
 
 Script.Load("lua/Additions/LayStructures.lua")
 

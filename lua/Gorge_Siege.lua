@@ -46,7 +46,7 @@ function Gorge:GetRebirthLength()
 return 3
 end
 function Gorge:GetRedemptionCoolDown()
-return 30
+return 15
 end
 function Gorge:GetBaseArmor()
     return kGorgeArmor

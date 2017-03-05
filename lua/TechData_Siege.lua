@@ -75,7 +75,7 @@ local kSiege_TechData =
 {        
          { [kTechDataId] = kTechId.DualWelderExosuit,    
  [kTechIDShowEnables] = false,     
-  [kTechDataDisplayName] = "DUALMINIGUN_EXOSUIT", 
+  [kTechDataDisplayName] = "Dual Welders yo (Might not want to eject right now)", 
 [kTechDataMapName] = "exosiege",         
       [kTechDataCostKey] = kDualExosuitCost - 10, 
 [kTechDataHotkey] = Move.E,

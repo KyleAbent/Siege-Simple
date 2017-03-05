@@ -1,10 +1,10 @@
 local kBallFlagAttachPoint = "babbler_attach2"
 
 function Onos:GetRebirthLength()
-return 6
+return 5
 end
 function Onos:GetRedemptionCoolDown()
-return 45
+return 25
 end
 
 function Onos:PreUpdateMove(input, runningPrediction)

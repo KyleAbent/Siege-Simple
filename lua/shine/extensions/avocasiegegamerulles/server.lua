@@ -532,7 +532,7 @@ function Plugin:NotifyMods( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Moderator Chat]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:GiveCyst(Player)
-            local ent = CreateEntity(CystAvoca.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
+            local ent = CreateEntity(CystSiege.kMapName, Player:GetOrigin(), Player:GetTeamNumber())  
              ent:SetConstructionComplete()
 end
 

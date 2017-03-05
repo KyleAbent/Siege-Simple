@@ -29,7 +29,7 @@ function Lerk:GetRebirthLength()
 return 4
 end
 function Lerk:GetRedemptionCoolDown()
-return 25
+return 15
 end
 local origspeed = Lerk.GetMaxSpeed
 

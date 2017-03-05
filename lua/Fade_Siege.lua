@@ -23,10 +23,10 @@ InitMixin(self, PhaseGateUserMixin)
 
 end
 function Fade:GetRebirthLength()
-return 5
+return 4
 end
 function Fade:GetRedemptionCoolDown()
-return 35
+return 20
 end
 function Fade:GetBallFlagAttatchPoint(player)
        return kBallFlagAttachPoint
