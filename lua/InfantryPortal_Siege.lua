@@ -78,5 +78,5 @@ end
     local roundbonus =  ( ( GetRoundLengthToSiege() / 2 ) /1) 
     local total = roundbonus
    -- Print("InfantryPortalAvoca GetSpawnTime Is: (level bonus is %s, roundbonus is %s)", levelbonus, roundbonus)
-    return Clamp(total, 4, kMarineRespawnTime)
+    return Clamp(total, 6, kMarineRespawnTime)
 end

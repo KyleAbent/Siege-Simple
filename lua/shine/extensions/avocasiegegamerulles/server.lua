@@ -335,7 +335,7 @@ local function DynamicWaveTime( self )
     
     if self.queuePosition <= self:GetTeam():GetEggCount() then
         local entryTime = self:GetRespawnQueueEntryTime() or 0
-        local waveSpawnTime = Clamp( ( kAlienSpawnTime - ( ( GetRoundLengthToSiege() / 2 ) /1) * kAlienSpawnTime), 4, kAlienSpawnTime)
+        local waveSpawnTime = Clamp( ( kAlienSpawnTime - ( ( GetRoundLengthToSiege() / 2 ) /1) * kAlienSpawnTime), 2, kAlienSpawnTime)
         --Print("Alien Spawn time is %s", waveSpawnTime)
         self.timeWaveSpawnEnd = entryTime + waveSpawnTime
     else

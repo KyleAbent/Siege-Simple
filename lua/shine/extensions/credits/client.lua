@@ -27,6 +27,7 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
     self:AddSideButton( "Crag(10)", function() Shared.ConsoleCommand ("sh_buy Crag")  end)
     self:AddSideButton( "Whip(10)", function() Shared.ConsoleCommand ("sh_buy Whip")  end)
     self:AddSideButton( "Shift(10)", function() Shared.ConsoleCommand ("sh_buy Shift")  end)
+   -- self:AddSideButton( "Clog(2)", function() Shared.ConsoleCommand ("sh_buy Clog")  end)
       if player:isa("Gorge") then
     self:AddSideButton( "Tunnel@Hive(4)", function() Shared.ConsoleCommand ("sh_buycustom TunnelEntrance")  end)
       end

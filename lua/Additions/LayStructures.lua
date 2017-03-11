@@ -83,7 +83,12 @@ function LayStructures:GetstructuresLeft()
 end
 
 function LayStructures:GetViewModelName(sex, variant)
+    local parent = self:GetParent()
+    if parent:GetTeamNumber() == 1 then
     return kViewModels[sex][variant]
+    else 
+     return parent:GetVariantViewModel(parent:GetVariant())
+     end
 end
 
 function LayStructures:GetAnimationGraphName()
@@ -219,7 +224,7 @@ local function DropStructure(self, player)
                 
                     if not GetIsInSiege(structure) then
                   if structure.SetConstructionComplete then  structure:SetConstructionComplete() end
-                 if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
+                -- if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
                    end --not siege
                 
                 end--teamnum 
@@ -308,7 +313,9 @@ function LayStructures:OnDraw(player, previousWeaponMapName)
     Weapon.OnDraw(self, player, previousWeaponMapName)
     
     // Attach weapon to parent's hand
+    if player:GetTeamNumber() == 1 then
     self:SetAttachPoint(Weapon.kHumanAttachPoint)
+    end
     
     self.droppingStructure = false
     

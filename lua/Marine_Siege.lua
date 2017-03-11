@@ -20,7 +20,7 @@ function Marine:GetHasLayStructure()
     return builder
 end
 function Marine:GetCanBeVortexed()
-    return true
+    return false
 end
 
 if Server then
@@ -144,9 +144,9 @@ function Marine:AttemptToBuy(techIds)
             end
             
             if techId == kTechId.DualWelderExosuit then
-                 Print("Derp")
                  BuyWelderExo(self)
              else
+                self:AddResources(-GetCostForTech(techId))
                 origattemptbuy(self, techIds)
             end
        end

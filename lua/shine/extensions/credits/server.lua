@@ -573,8 +573,8 @@ local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground
    local autobuild = false 
    local success = false
 
-if whoagain:isa("Marine") and whoagain:GetHasLayStructure() then 
-self:NotifySalt(who, "Empty hudslot 5 before buying structure, newb. You're such a newb.", true)
+if whoagain:GetHasLayStructure() then 
+self:NotifySalt(who, "Empty laystructure before buying structure, newb. You're such a newb.", true)
 return
 end
 
@@ -627,33 +627,15 @@ self:DeductSaltIfNotPregame(self, whoagain, cost, delayafter)
 
 local entity = nil 
 
-if whoagain:GetTeamNumber() == 1 then
-         if not whoagain:isa("Exo") then 
+         if not whoagain:isa("Exo") and ( mapname ~= NutrientMist.kMapName and mapname ~= EnzymeCloud.kMapName 
+         and mapname ~= HallucinationCloud.kMapName  ) then 
           whoagain:GiveLayStructure(techid, mapname)
         else
-      entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
-        if entity.SetOwner then entity:SetOwner(whoagain) end
-              if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
+           entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
+           if entity.SetOwner then entity:SetOwner(whoagain) end
+          if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
+              if entity.SetOwner then entity:SetOwner(whoagain) end
         end
-elseif whoagain:GetTeamNumber() == 2 then
-    entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(),1,4), whoagain:GetTeamNumber()) 
-    if not entity then 
-       self:NotifySalt( who, "Invalid Purchase Request of %s.", true, String) 
-      return 
-      else
-       if entity.SetIsACreditStructure then 
-        --if not whoagain:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, whoagain:GetOrigin(), whoagain:GetTeamNumber()) end
-          entity:SetIsACreditStructure(true) 
-          end
-      end
-    if entity.SetOwner then entity:SetOwner(whoagain) end
-      if not GetIsAlienInSiege(whoagain) then
-      if entity.SetConstructionComplete then  entity:SetConstructionComplete() end      
-       else
-       self:NotifySalt( who, "%s placed IN siege, therefore it is not autobuilt.", true, String)
-        end --
-end --
-
 
 
 if entity then 
@@ -818,7 +800,7 @@ techid = kTechId.Crag
 elseif String == "Whip" then
 CreditCost = 10
 mapnameof = Whip_Salty_Infestation.kMapName
-techid = kTechId.Crag
+techid = kTechId.Whip
 elseif String == "Shift" then
 CreditCost = 10
 mapnameof = Shift.kMapName

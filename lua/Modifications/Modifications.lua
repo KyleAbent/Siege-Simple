@@ -2,6 +2,18 @@
 Script.Load("lua/Modifications/ReallyNow.lua")
 
 
+if Client then 
+
+local originalGUISetColorOf = GUIItem.SetColor
+function GUIItem:SetColor(color)
+	if color then
+		originalGUISetColorOf(self, color)
+	else
+		originalGUISetColorOf(self, Color(1,1,0,1)) 
+	end
+end
+
+end
 
 function GetValidTargetInWarmUp(target)
     return not target:isa("CommandStructure")
