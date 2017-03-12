@@ -188,14 +188,14 @@ function LayStructures:OnPrimaryAttack(player)
     end
     
 end
-local function RemoveSupply(self, player)
+local function RemoveSupply(self, player, structure)
 
         
         local team = player:GetTeam()
         if team and team.RemoveSupplyUsed then
             
             team:RemoveSupplyUsed(LookupTechData(self.techId, kTechDataSupply, 0))
-            self.supplyAdded = false
+            structure.supplyAdded = false
             
         end
     
@@ -231,7 +231,7 @@ local function DropStructure(self, player)
                 end--structure
                 structure:SetOwner(player)
                 if HasMixin(structure, "Avoca") then structure:SetIsACreditStructure(true) end
-                if HasMixin(structure, "Supply") then RemoveSupply(self, player) end
+                if HasMixin(structure, "Supply") then RemoveSupply(self, player, structure) end
 
                 
                 // Check for space
