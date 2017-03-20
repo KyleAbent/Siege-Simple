@@ -934,7 +934,7 @@ if not Player then return end
  if String == "Onos" then cost = 25 end
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
  
-  
+            --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
          if Player:GetTeamNumber() == 1 then
               if cost == 8 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
              elseif cost == 30 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
@@ -942,7 +942,7 @@ if not Player then return end
              elseif cost == 25 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 9 then DeductBuy(self, Client, cost) Player:CreditBuy(kTechId.Gorge)  
+              if cost == 9 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
               elseif cost == 12  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
               elseif cost == 20 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
               elseif cost == 25 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 

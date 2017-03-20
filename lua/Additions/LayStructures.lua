@@ -224,7 +224,7 @@ local function DropStructure(self, player)
                 
                     if not GetIsInSiege(structure) then
                   if structure.SetConstructionComplete then  structure:SetConstructionComplete() end
-                -- if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
+                 if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
                    end --not siege
                 
                 end--teamnum 
@@ -331,8 +331,11 @@ function LayStructures:Dropped(prevOwner)
            structure:SetConstructionComplete()
            end
        
-   DestroyEntity(self)
+   if Server then DestroyEntity(self) end
     
+end
+function LayStructures:GetBlinkAllowed()
+return true
 end
 local kExtents = Vector(1, 1, 1) // 0.5 to account for pathing being too high/too low making it hard to palce tunnels
 local function IsPathable(position)

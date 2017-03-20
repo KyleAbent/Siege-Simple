@@ -18,7 +18,7 @@ end
 function StunWall:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords
 	local scale = .5
-	local y = 1
+	local y = 0.7
         coords.xAxis = coords.xAxis * scale
         coords.yAxis = coords.yAxis * y
         coords.zAxis = coords.zAxis * scale

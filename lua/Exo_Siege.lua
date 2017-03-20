@@ -88,7 +88,16 @@ local function HealSelf(self)
     end
     
 end
-function ExoSiege:GetBallFlagAttatchPoint(player)
+local origanimation = ExoSiege.OnUpdateAnimationInput
+function ExoSiege:OnUpdateAnimationInput(modelMixin)
+
+  origanimation(self, modelMixin)
+    
+end
+function ExoSiege:GetCanControl()
+    return not self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
+end
+function ExoSiege:GetBallFlagAttatchPoint(player) --lolugh 
        return kBallFlagAttachPoint
 end
 local oninit = Exo.OnInitialized

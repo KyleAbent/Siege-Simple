@@ -146,7 +146,7 @@ function Marine:AttemptToBuy(techIds)
             if techId == kTechId.DualWelderExosuit then
                  BuyWelderExo(self)
              else
-                self:AddResources(-GetCostForTech(techId))
+                if hostStructure:isa("Armory") then self:AddResources(-GetCostForTech(techId)) end
                 origattemptbuy(self, techIds)
             end
        end

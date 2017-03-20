@@ -165,7 +165,7 @@ function Alien:RedemptionTimer()
            local threshold =   math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax)  / 100
               --Print("threshold is %s", threshold)
               local scalar = self:GetHealthScalar()
-               if self:GetHasUpgrade(kTechId.Redemption) and scalar <= threshold  then
+               if GetHasRedemptionUpgrade(self) and scalar <= threshold  then
                  self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown()
                  --Print("scalar is %s threshold is %s", scalar, threshold)
                  if self.canredeemorrebirth then
