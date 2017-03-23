@@ -41,6 +41,19 @@ end
 function ARCSiege:OnInitialized()
 self:SetTechId(kTechId.ARC)
 ARC.OnInitialized(self)
+    /*
+      if Server then
+        self.targetSelector = TargetSelector():Init(
+                self,
+                ARC.kFireRange,
+                false, 
+                { kMarineStaticTargets, kMarineMobileTargets },
+                { self.FilterTarget(self) },
+                { function(target)  
+                local AimingAt = Shared.GetEntity(self.targetedEntity) 
+               if AimingAt then return target == AimingAt else return target:isa("Hive") end end })
+        end
+     */           
 end
         function ARCSiege:GetTechId()
          return kTechId.ARC
@@ -58,6 +71,7 @@ function ARCSiege:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
+/*
 local function DoNotEraseTarget(self)
    local currentOrder = self:GetCurrentOrder()
     if self:GetInAttackMode() then
@@ -84,7 +98,7 @@ function ARC:UpdateOrders(deltaTime)
 end
 
 end//server
-    
+    */
     
  
 Shared.LinkClassToMap("ARCSiege", ARCSiege.kMapName, networkVars)
