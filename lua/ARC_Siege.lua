@@ -75,7 +75,7 @@ if Server then
 
 local origorders = ARC.UpdateOrders
 function ARC:UpdateOrders(deltaTime)
-   if GetIsInSiege(self) then
+   if currentOrder:GetType() == kTechId.ARCDeploy and GetIsInSiege(self) then
        DoNotEraseTarget(self)
        return 
    end
