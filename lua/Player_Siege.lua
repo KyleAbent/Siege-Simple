@@ -1,21 +1,30 @@
 --Kyle 'Avoca' Abent
-local networkVars = {hasball = "private boolean"} 
-local kBallFlagAttachPoint = "Head"
+local networkVars = {gravity = "private float (-5 to 5 by 1)",} 
 
 local origcreate = Player.OnCreate
 function Player:OnCreate()
    origcreate(self)
-   self.hasball = false
+    self.gravity = 0
 end
-    function Player:PreOnKill(attacker, doer, point, direction)
-       self:ThrowBall()
+    local origGravity = Player.ModifyGravityForce
+    function Player:ModifyGravityForce(gravityTable)
+    
+    if self.gravity == 0 then
+    origGravity(self, gravityTable)
+    else
+        gravityTable.gravity = ConditionalValue(self:GetIsOnGround(), 0, self.gravity)
     end
+    
+        if self.gravity ~= 0 then
+       
+    end
+end
+function Player:SetGravity(value)
+self.gravity = value
+end
 function Player:HookWithShineToBuyMist(player)
        self:Kill() //What a horrible Joke.. Oh Hey! Purchase Mist! ... *Dies
                    --11.15 well except for that this is replaced via shine to do the dirty work, ya dig. I digg.
-end
-function Player:GetBallFlagAttatchPoint(player)
-       return kBallFlagAttachPoint
 end
 
 function Player:HookWithShineToBuyMed(player)
@@ -27,25 +36,20 @@ end
 function Player:RunCommand(string)
  self:GetClient():RunIt(string)
 end
-function Player:NotifyShineBallGiven(self)
+
+
+if Server then
+
+local origcopydata = Player.CopyPlayerDataFrom
+
+function Player:CopyPlayerDataFrom(player)
+
+origcopydata(self, player)
+
+self.gravity = player.gravity
+
+
 end
-function Player:GetHasBall()
- return GetBallForPlayerOwner(self)
-end
-function Player:GiveBall()
- self.hasball = true
-  self:NotifyShineBallGiven(self)
-end
-function Player:ThrowBall()
-   if self.hasball then
-        FireBallProjectile(self)
-        self.hasball = false
-    end
-end
-local origbuttons = Player.HandleButtons
-function Player:HandleButtons(input)
-   origbuttons(self,input)
-    if self.hasball and bit.band(input.commands, Move.Use) ~= 0 then
-        self:ThrowBall()
-     end
+
+
 end

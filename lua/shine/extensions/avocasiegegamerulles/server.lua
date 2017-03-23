@@ -134,7 +134,6 @@ local function NewHpdateGestation(self)
            if  GetHasRebirthUpgrade(newPlayer) then
           newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
-           newPlayer:SetHealth(self:GetMaxHealth() * 0.7 )
            end
           
 
@@ -779,6 +778,24 @@ local GiveResCommand = self:BindCommand( "sh_giveres", "giveres", GiveRes, true)
 GiveResCommand:Help( "giveres <name> <amount> ~ (No commanders)" )
 GiveResCommand:AddParam{ Type = "client",  NotSelf = true, IgnoreCanTarget = true }
 GiveResCommand:AddParam{ Type = "number", Min = 1, Max = 100, Round = true }
+
+
+local function Gravity( Client, Number )
+ for _, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do 
+    player:SetGravity(Number)
+ end
+   self:NotifyGeneric( nil, "Set Gravity to %s (0=off)", true, Number)  
+end
+local GravityCommand = self:BindCommand( "sh_gravity", "gravity", Gravity )
+GravityCommand:AddParam{ Type = "number" }
+GravityCommand:Help( "sh_gravity <number> (0 = default) applies to all players and copies values on respawn, meaning new players may not be affected?" )
+
+local function Gbd( Client )
+local Player = Client:GetControllingPlayer()
+ Player:GiveLayStructure(kTechId.Door, BreakableDoor.kMapName)
+end
+local GbdCommand = self:BindCommand( "sh_gbd", "gbd", Gbd )
+GbdCommand:Help( "gives self laystructure breakabledoor placeable anywhere without limit - aboos" )
 
 local function Give( Client, Targets, String, Number )
 for i = 1, #Targets do

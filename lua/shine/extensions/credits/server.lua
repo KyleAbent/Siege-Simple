@@ -172,7 +172,7 @@ local entities = {}
             local entity = table.random(entities)
              if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
                 DestroyEntity(entity)
-                 self:NotifySalt( Client, "Deleted your old %s so you can spawn a new one, newb.", true, mapname)
+                 self:NotifySalt( Client, "(Logic Fallacy):Deleted your old %s so you can spawn a new one.", true, mapname)
                  return false  
             end
       end
@@ -732,6 +732,11 @@ mapnameof = SentryBattery.kMapName
 techid = kTechId.SentryBattery
 limit = 1
 CreditCost = 6
+elseif String == "BackupLight"  then
+mapnameof = BackupLight.kMapName
+techid = kTechId.BackupLight
+limit = 2
+CreditCost = 6
 elseif String == "PhaseGate" then
 CreditCost = 15
 limit = 2
@@ -754,6 +759,11 @@ elseif String == "Arc" then
 techid = kTechId.ARC
 CreditCost = 20
 mapnameof = ARCCredit.kMapName
+limit = 1
+elseif String == "Extractor" then 
+techid = kTechId.Extractor
+CreditCost = 1000
+mapnameof = Extractor.kMapName
 limit = 1
 elseif string == nil then
 end
@@ -809,6 +819,16 @@ elseif String == "Hydra" then
 CreditCost = 1
 mapnameof = HydraSiege.kMapName
 techid = kTechId.Hydra
+elseif String == "SaltyEgg" then
+CreditCost = 15
+mapnameof = SaltyEgg.kMapName
+techid = kTechId.Egg
+limit = 5
+elseif String == "Harvester" then
+CreditCost = 1000
+mapnameof = Harvester.kMapName
+techid = kTechId.Harvester
+limit = 1
 end
        
 return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid

@@ -58,8 +58,32 @@ function ARCSiege:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
+local function DoNotEraseTarget(self)
+   local currentOrder = self:GetCurrentOrder()
+    if self:GetInAttackMode() then
+        if self.targetPosition then
+            local targetEntity = Shared.GetEntity(self.targetedEntity)
+            if targetEntity then
+                self.targetPosition = targetEntity:GetOrigin()
+                self:SetTargetDirection(self.targetPosition)
+            end
+        end
+     end
+     
+end
+if Server then
 
-    
+local origorders = ARC.UpdateOrders
+function ARC:UpdateOrders(deltaTime)
+   if GetIsInSiege(self) then
+       DoNotEraseTarget(self)
+       return 
+   end
+  origorders(self, deltaTime)
+
+end
+
+end//server
     
     
  

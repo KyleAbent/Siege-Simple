@@ -1,3 +1,5 @@
+kRebirthHpBuffTriggered = 1.10
+kRebirthHpBuffNew = 1.10
 kOnocideDamage = 664
 kPrimalScreamROFIncrease = .3
 kVortexLifeSpan = 8

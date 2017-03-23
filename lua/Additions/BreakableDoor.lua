@@ -15,7 +15,7 @@ class 'BreakableDoor' (ScriptActor)
 
 BreakableDoor.kMapName = "breakable_door"
 
-local kModelNameDefault = PrecacheAsset("models/misc/door/door.model")
+BreakableDoor.kModelName = PrecacheAsset("models/misc/door/door.model")
 local kDoorAnimationGraph = PrecacheAsset("models/misc/door/door.animation_graph")
 local networkVars =
 {
@@ -44,7 +44,7 @@ function BreakableDoor:OnCreate()
 end
 function BreakableDoor:OnInitialized()
         ScriptActor.OnInitialized(self)
-    self:SetModel(kModelNameDefault, kDoorAnimationGraph)  
+    self:SetModel(BreakableDoor.kModelName , kDoorAnimationGraph)  
         InitMixin(self, WeldableMixin)
     
    self.open = false
@@ -95,7 +95,7 @@ end
 function BreakableDoor:Reset() 
        self:SetPhysicsType(PhysicsType.Kinematic)
     self:SetPhysicsGroup(0)
-    self:SetModel(kModelNameDefault, kDoorAnimationGraph)      
+    self:SetModel(BreakableDoor.kModelName , kDoorAnimationGraph)      
    self.open = false
         self.health = 4000
 end

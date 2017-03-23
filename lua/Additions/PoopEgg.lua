@@ -37,5 +37,20 @@ end
 function PoopEgg:GetInfestationRadius()
     return 1
 end
-
 Shared.LinkClassToMap("PoopEgg", PoopEgg.kMapName, networkVars)
+
+class 'SaltyEgg' (PoopEgg)
+
+SaltyEgg.kMapName = "saltyegg"
+
+function SaltyEgg:OnInitialized()
+    PoopEgg.OnInitialized(self)
+    self:SetOrigin(self:GetOrigin() + Vector(0, .25, 0) ) 
+end
+      function SaltyEgg:GetUnitNameOverride(viewer)
+    local unitName = GetDisplayName(self)   
+    unitName = string.format(Locale.ResolveString("SaltyEgg"))
+return unitName
+end 
+Shared.LinkClassToMap("SaltyEgg", SaltyEgg.kMapName, networkVars)
+

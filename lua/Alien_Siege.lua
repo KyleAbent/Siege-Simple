@@ -5,14 +5,18 @@ local orig_Alien_OnCreate = Alien.OnCreate
     end
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
-    if Server then
-        self:AddTimedCallback(function() UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId()) end, .8) 
-    end
+     self:UpdateWeapons()
      self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
      self.canredeemorrebirth = true
       self.primaled = false
       self.primaledID = Entity.invalidI 
 
+end
+function Alien:UpdateWeapons()
+     local lasttime = 1
+     if Server then
+        self:AddTimedCallback(function() UpdateAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId()) end, 0.6) 
+     end
 end
 local orig_Alien_OnInitialized = Alien.OnInitialized
 function Alien:OnInitialized()
@@ -153,9 +157,9 @@ function Alien:CreditBuy(techId)
 end
 
 function Alien:RefreshTechsManually()
-        UpdateAvocaAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId() )
+        UpdateAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId() )
 end
-
+ 
 
 end
 

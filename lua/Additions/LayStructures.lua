@@ -211,8 +211,7 @@ local function DropStructure(self, player)
             // Create mine.
             local structure = CreateEntity(self:GetDropMapName(), coords.origin, player:GetTeamNumber())
             if structure then
-            
-                structure:SetOwner(player)
+               if not self.mapname == BreakableDoor.kMapName then  structure:SetOwner(player) end --aboos
                 if structure.SetConstructionComplete  then
                if structure:GetTeamNumber() == 1 then
                  if not GetIsPointOnInfestation(structure:GetOrigin()) then
@@ -382,7 +381,7 @@ function LayStructures:GetPositionForStructure(player)
        --     isonstructure = false --( trace.entity.GetCanStick and trace.entity:GetCanStick() )
        --     isPositionValid = isonstructure
         end
-        
+  
              if not IsPathable(displayOrigin) then
                     isPositionValid = false
                 end
@@ -410,7 +409,8 @@ function LayStructures:GetPositionForStructure(player)
         structPosition = Coords.GetLookIn(displayOrigin, structureFacing, trace.normal)
         
     end
-    
+       if  self.mapname == BreakableDoor.kMapName then isPositionValid = true  end
+       
     return foundPositionInRange, structPosition, isPositionValid
     
 end

@@ -3,7 +3,6 @@ Script.Load("lua/PhaseGateUserMixin.lua")
 Script.Load("lua/Mixins/LadderMoveMixin.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
 
-local kBallFlagAttachPoint = "Exosuit_HoodHinge"
 
 class 'ExoSiege' (Exo)
 ExoSiege.kMapName = "exosiege"
@@ -16,11 +15,67 @@ AddMixinNetworkVars(LadderMoveMixin, networkVars)
 local kDualWelderModelName = PrecacheAsset("models/marine/exosuit/exosuit_rr.model")
 local kDualWelderAnimationGraph = PrecacheAsset("models/marine/exosuit/exosuit_rr.animation_graph")
 
+local kHoloMarineMaterialname = PrecacheAsset("cinematics/vfx_materials/marine_ip_spawn.material")
+
+local kAtomReconstructionTime = 3
+
+local function CreateSpawn(self)
+    self:SetIsVisible(false)
+    if Client then 
+    if not self.fakeMarineModel and not self.fakeMarineMaterial then
+        self.timeSpinStarted = Shared.GetTime()
+        self.fakeMarineModel = Client.CreateRenderModel(RenderScene.Zone_Default)
+        self.fakeMarineModel:SetModel(Shared.GetModelIndex(kDualWelderModelName))
+        
+        local coords = self:GetCoords()
+        coords.origin = coords.origin + Vector(0, 0.4, 0)
+        
+        self.fakeMarineModel:SetCoords(coords)
+        self.fakeMarineModel:InstanceMaterials()
+        self.fakeMarineModel:SetMaterialParameter("hiddenAmount", 1.0)
+        
+        self.fakeMarineMaterial = AddMaterial(self.fakeMarineModel, kHoloMarineMaterialname)
+    
+    end
+    
+    local spawnProgress = Clamp((Shared.GetTime() - self.timeSpinStarted) / kAtomReconstructionTime, 0, 1)
+    
+    self.fakeMarineModel:SetIsVisible(true)
+    self.fakeMarineMaterial:SetParameter("spawnProgress", spawnProgress+0.2)    -- Add a little so it always fills up
+    end
+    self:SetCameraDistance(3)
+    self.isMoveBlocked = true
+    return false
+end
+
+local function DestroySpinEffect(self)
+    if Client then
+    if self.spinCinematic then
+    
+        Client.DestroyCinematic(self.spinCinematic)    
+        self.spinCinematic = nil
+    
+    end
+    
+    if self.fakeMarineModel then    
+        self.fakeMarineModel:SetIsVisible(false)
+    end
+    end
+   self:SetCameraDistance(0)
+    self.isMoveBlocked = false
+    self:SetIsVisible(true)
+    return false
+end
+
 
 function ExoSiege:OnCreate()
     Exo.OnCreate(self)
     InitMixin(self, PhaseGateUserMixin)
     InitMixin(self, LadderMoveMixin)
+    
+
+    
+    self:AddTimedCallback(function() DestroySpinEffect(self) return false end, 3) 
 
 end
 local origmodel = Exo.InitExoModel
@@ -44,7 +99,8 @@ function ExoSiege:InitExoModel()
     else
     origmodel(self)
     end
-  
+
+     
   
 
   
@@ -88,17 +144,8 @@ local function HealSelf(self)
     end
     
 end
-local origanimation = ExoSiege.OnUpdateAnimationInput
-function ExoSiege:OnUpdateAnimationInput(modelMixin)
-
-  origanimation(self, modelMixin)
-    
-end
 function ExoSiege:GetCanControl()
-    return not self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
-end
-function ExoSiege:GetBallFlagAttatchPoint(player) --lolugh 
-       return kBallFlagAttachPoint
+    return self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
 end
 local oninit = Exo.OnInitialized
 function ExoSiege:OnInitialized()
@@ -108,6 +155,7 @@ oninit(self)
     InitMixin(self, StunMixin)
    self:SetTechId(kTechId.Exo)
    self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+    CreateSpawn(self)
 end
         function ExoSiege:GetTechId()
          return kTechId.Exo

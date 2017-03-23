@@ -30,7 +30,7 @@ local function UnlockAbility(forAlien, mapName)
 
 end
 
-function UpdateAvocaAvailability(forAlien, tierOneTechId, tierTwoTechId, tierThreeTechId, tierFourTechId, tierFiveTechId)
+function UpdateAvailability(forAlien, tierOneTechId, tierTwoTechId, tierThreeTechId, tierFourTechId, tierFiveTechId)
         
 
         local team = forAlien:GetTeam()

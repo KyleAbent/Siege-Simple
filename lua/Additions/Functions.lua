@@ -72,9 +72,9 @@ function GetIsPointWithinHiveRadius(point)
    return false
 end
 
-function UpdateAliensWeaponsManually() ///Seriously this makes more sense than spamming some complicated formula every 0.5 seconds no?
+function UpdateAliensWeaponsManually() 
  for _, alien in ientitylist(Shared.GetEntitiesWithClassname("Alien")) do 
-        alien:RefreshTechsManually() 
+        alien:UpdateWeapons() 
 end
 end
 function FindFreeSpace(where, mindistance, maxdistance)    

@@ -79,6 +79,8 @@ ModLoader.SetupFileHook( "lua/Weapons/Marine/Welder.lua", "lua/Weapons/Marine/We
 
 ModLoader.SetupFileHook( "lua/NS2Utility.lua", "lua/NS2Utility_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/NS2ConsoleCommands_Server.lua", "lua/NS2ConsoleCommands_Siege_Server.lua", "post" )
+
 ModLoader.SetupFileHook( "lua/Hive.lua", "lua/Hive_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/MAC.lua", "lua/MAC_Siege.lua", "post" )
