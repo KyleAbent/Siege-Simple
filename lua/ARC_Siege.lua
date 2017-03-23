@@ -75,7 +75,7 @@ if Server then
 
 local origorders = ARC.UpdateOrders
 function ARC:UpdateOrders(deltaTime)
-   if  self:GetInAttackMode() and GetIsInSiege(self) then
+   if self.targetPosition and self:GetInAttackMode() and GetIsInSiege(self) then
        DoNotEraseTarget(self)
        return 
    end
