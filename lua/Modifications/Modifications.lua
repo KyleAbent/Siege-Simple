@@ -53,7 +53,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 if Server then 
                     if attacker and attacker:isa("Player")  then 
                       local points = self:GetPointValue()
-                       attacker:AddScore(scoreReward)
+                       attacker:AddScore(points)
                      end 
                     end
                 self:TriggerRebirth()
