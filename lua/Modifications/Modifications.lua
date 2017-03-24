@@ -1,7 +1,31 @@
 
 Script.Load("lua/Modifications/ReallyNow.lua")
 
+local kUmbraModifier = {}
+kUmbraModifier["Shotgun"] = kUmbraShotgunModifier
+kUmbraModifier["Rifle"] = kUmbraBulletModifier
+kUmbraModifier["HeavyMachineGun"] = kUmbraBulletModifier
+kUmbraModifier["Pistol"] = kUmbraBulletModifier
+kUmbraModifier["Sentry"] = kUmbraBulletModifier
+kUmbraModifier["Minigun"] = kUmbraMinigunModifier
+kUmbraModifier["Railgun"] = kUmbraRailgunModifier
+kUmbraModifier["Grenade"] = kUmbraGrenadeModifer
 
+function UmbraMixin:ModifyDamageTaken(damageTable, attacker, doer, damageType)
+
+    if self:GetHasUmbra() then
+    
+        local modifier = 1
+        if doer then        
+            modifier = kUmbraModifier[doer:GetClassName()] or 1        
+        end
+    
+        damageTable.damage = damageTable.damage * modifier
+        
+    end
+    
+
+end
 
 if Client then 
 
