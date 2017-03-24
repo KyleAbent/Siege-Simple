@@ -10,6 +10,7 @@ function Alien:OnCreate()
      self.canredeemorrebirth = true
       self.primaled = false
       self.primaledID = Entity.invalidI 
+      self.primalGiveTime = 0
 
 end
 function Alien:UpdateWeapons()

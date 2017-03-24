@@ -1,5 +1,3 @@
-local kBallFlagAttachPoint = "babbler_attach2"
-
 function Onos:GetRebirthLength()
 return 5
 end
@@ -47,11 +45,57 @@ function Onos:GetMaxSpeed(possible)
     
     
 end
+--ugh
+local kBlockDoers =
+{
+    "Minigun",
+    "Pistol",
+    "Rifle",
+    "HeavyRifle",
+    "HeavyMachineGun",
+    "Shotgun",
+    "Axe",
+    "Welder",
+    "Sentry",
+    "Claw"
+}
+local function GetHitsBoneShield(self, doer, hitPoint)
 
+    if table.contains(kBlockDoers, doer:GetClassName()) then
+    
+        local viewDirection = GetNormalizedVectorXZ(self:GetViewCoords().zAxis)
+        local zPosition = viewDirection:DotProduct(GetNormalizedVector(hitPoint - self:GetOrigin()))
 
-function Onos:GetBallFlagAttatchPoint(player)
-       return kBallFlagAttachPoint
+        return zPosition > -0.1
+    
+    end
+    
+    return false
+
 end
+function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
+
+    if hitPoint ~= nil  then
+    
+       local damageReduct = 1
+       
+        if self:GetIsBoneShieldActive() then
+          if GetHitsBoneShield(self, doer, hitPoint) then
+           damageReduct = kBoneShieldDamageReduction
+           end
+        elseif self:GetIsCharging()  then  
+        damageReduct =  0.8
+        end
+        
+        if damageReduct ~= 1 then
+        damageTable.damage = damageTable.damage * damageReduct
+        self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
+        end
+        
+    end
+
+end
+
 function Onos:GetHasMovementSpecial()
     return GetHasTech(self, kTechId.Charge)
 end

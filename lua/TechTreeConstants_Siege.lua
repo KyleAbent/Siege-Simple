@@ -50,6 +50,7 @@ local kSiege_TechIds =
     'LayStructures',
     'Onocide',
     'DualWelderExosuit',
+    'DualFlamerExosuit',
 
 
     

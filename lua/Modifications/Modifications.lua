@@ -20,35 +20,18 @@ function GetValidTargetInWarmUp(target)
     return not target:isa("CommandStructure")
 end
 
-if Server then 
-
-local saltDestroyold = OwnerMixin.OnEntityChange
-function OwnerMixin:OnEntityChange(oldId, newId)
-    local currentOwner = Shared.GetEntity(self.ownerId)    
-  if self.ownerId == oldId and HasMixin(self, "Live") and ( currentOwner and not currentOwner:isa("Commander") ) and newId == nil then
-  self:OnDestroy()
-  self:Kill()
-  return
-  else
-  saltDestroyold(self,newOwner)
-  end
-
-
-
-end
-local function AddFullScore(attacker, victim)
-    local points = victim and victim:GetPointValue() or 0
-   if HasMixin(attacker, "Scoring") then attacker:AddScore(points) end
-end
-end
-
 local origkill = LiveMixin.Kill
 function LiveMixin:Kill(attacker, doer, point, direction)
   if self:GetIsAlive() and self:GetCanDie() then
           ---Rebirth
          if self:isa("Alien") then
           if GetHasRebirthUpgrade(self) and self:GetEligableForRebirth() then
-                AddFullScore(attacker, self )
+                if Server then 
+                    if attacker and attacker:isa("Player")  then 
+                      local points = self:GetPointValue()
+                       attacker:AddScore(scoreReward)
+                     end 
+                    end
                 self:TriggerRebirth()
                 return
                 end

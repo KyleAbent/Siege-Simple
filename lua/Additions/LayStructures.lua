@@ -223,7 +223,7 @@ local function DropStructure(self, player)
                 
                     if not GetIsInSiege(structure) then
                   if structure.SetConstructionComplete then  structure:SetConstructionComplete() end
-                 if not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
+                 if not structure:isa("Hydra") and not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
                    end --not siege
                 
                 end--teamnum 

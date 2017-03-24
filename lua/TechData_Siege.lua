@@ -12,6 +12,7 @@ Script.Load("lua/Weapons/Alien/AcidRocket.lua")
 Script.Load("lua/MAC_Siege.lua")
 Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
+Script.Load("lua/Additions/ExoFlamer.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -75,12 +76,23 @@ local kSiege_TechData =
 {        
          { [kTechDataId] = kTechId.DualWelderExosuit,    
  [kTechIDShowEnables] = false,     
-  [kTechDataDisplayName] = "Dual Welders yo (Might not want to eject right now)", 
+  [kTechDataDisplayName] = "Dual Welders", 
 [kTechDataMapName] = "exosiege",         
       [kTechDataCostKey] = kDualExosuitCost - 10, 
 [kTechDataHotkey] = Move.E,
  [kTechDataTooltipInfo] = "Dual Welders yo", 
 [kTechDataSpawnHeightOffset] = kCommanderEquipmentDropSpawnHeight},
+
+
+         { [kTechDataId] = kTechId.DualFlamerExosuit,    
+ [kTechIDShowEnables] = false,     
+  [kTechDataDisplayName] = "Dual flamer", 
+[kTechDataMapName] = "exosiege",         
+      [kTechDataCostKey] = kDualExosuitCost - 5, 
+[kTechDataHotkey] = Move.E,
+ [kTechDataTooltipInfo] = "Dual Welders yo", 
+[kTechDataSpawnHeightOffset] = kCommanderEquipmentDropSpawnHeight},
+
 
   { [kTechDataId] = kTechId.LayStructures,   
   [kTechDataMaxHealth] = kMarineWeaponHealth,  

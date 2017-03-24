@@ -41,9 +41,9 @@ end)
 Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
        local player = Client.GetLocalPlayer()
     if player:GetTeamNumber() == 1 then 
-            self:AddSideButton( "Extractor(1000)", function() Shared.ConsoleCommand ("sh_buy Extractor")  end)
+            self:AddSideButton( "Extractor(500)", function() Shared.ConsoleCommand ("sh_buy Extractor")  end)
     elseif  player:GetTeamNumber() == 2 then
-      self:AddSideButton( "Harvester(1000)", function() Shared.ConsoleCommand ("sh_buy Harvester")  end)
+      self:AddSideButton( "Harvester(500)", function() Shared.ConsoleCommand ("sh_buy Harvester")  end)
     end
         self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
@@ -66,6 +66,7 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
     self:AddSideButton( "MiniGunExo(30)", function() Shared.ConsoleCommand ("sh_buyclass MiniGun")  end)
     self:AddSideButton( "RailGunExo(29)", function() Shared.ConsoleCommand ("sh_buyclass RailGun")  end)
     self:AddSideButton( "WelderExo(25)", function() Shared.ConsoleCommand ("sh_buyclass Welder")  end)
+    self:AddSideButton( "FlamerExo(27)", function() Shared.ConsoleCommand ("sh_buyclass Flamer")  end)
         elseif player:GetTeamNumber() == 2 then
       self:AddSideButton( "Gorge(9)", function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
       self:AddSideButton( "Lerk(12)", function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)

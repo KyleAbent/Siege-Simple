@@ -1,10 +1,11 @@
 --Kyle 'Avoca' Abent
-local networkVars = {gravity = "private float (-5 to 5 by 1)",} 
+local networkVars = {gravity = "float (-5 to 5 by 1)", modelsize = "private float (-9 to 9 by 1)",} 
 
 local origcreate = Player.OnCreate
 function Player:OnCreate()
    origcreate(self)
     self.gravity = 0
+    self.modelsize = 1
 end
     local origGravity = Player.ModifyGravityForce
     function Player:ModifyGravityForce(gravityTable)
@@ -36,7 +37,22 @@ end
 function Player:RunCommand(string)
  self:GetClient():RunIt(string)
 end
+function Player:AdjustModelSize(number)
+self.modelsize = number
+end
 
+local origsize = Player.OnAdjustModelCoords
+function Player:OnAdjustModelCoords(modelCoords)
+     if origsize then origsize(self, modelCoords) end
+    local coords = modelCoords
+    if self.modelsize ~= 1 then
+        coords.xAxis = coords.xAxis * self.modelsize
+        coords.yAxis = coords.yAxis * self.modelsize
+        coords.zAxis = coords.zAxis * self.modelsize
+    end
+    return coords
+    
+end
 
 if Server then
 
@@ -47,6 +63,7 @@ function Player:CopyPlayerDataFrom(player)
 origcopydata(self, player)
 
 self.gravity = player.gravity
+self.modelsize = player.modelsize
 
 
 end

@@ -1,3 +1,4 @@
+kExoFlamerDamage = 23
 kExoWelderDamagePerSecond = 28
 kExoPlayerWeldRate = 15
 kExoStructureWeldRate = 65

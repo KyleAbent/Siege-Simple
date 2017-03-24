@@ -76,6 +76,12 @@ function Marine:GiveDualWelder(spawnPoint)
     return exo
     
 end
+function Marine:GiveDualFlamer(spawnPoint)
+
+    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "FlamerFlamer" })
+    return exo
+    
+end
 function Marine:GiveClawRailgunExo(spawnPoint)
 
     local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
@@ -123,7 +129,39 @@ local function BuyWelderExo(self)
     Print("Error: Could not find a spawn point to place the Exo")
     
 end
+local function BuyFlamerExo(self)
 
+    local maxAttempts = 100
+    for index = 1, maxAttempts do
+    
+        -- Find open area nearby to place the big guy.
+        local capsuleHeight, capsuleRadius = self:GetTraceCapsule()
+        local extents = Vector(Exo.kXZExtents, Exo.kYExtents, Exo.kXZExtents)
+
+        local spawnPoint        
+        local checkPoint = self:GetOrigin() + Vector(0, 0.02, 0)
+        
+        if GetHasRoomForCapsule(extents, checkPoint + Vector(0, extents.y, 0), CollisionRep.Move, PhysicsMask.Evolve, self) then
+            spawnPoint = checkPoint
+        else
+            spawnPoint = GetRandomSpawnForCapsule(extents.y, extents.x, checkPoint, 0.5, 5, EntityFilterOne(self))
+        end    
+            
+
+        if spawnPoint then
+        
+            self:AddResources(-GetCostForTech(techId))
+            
+                self:GiveDualFlamer(spawnPoint)
+            return
+            
+        end
+        
+    end
+    
+    Print("Error: Could not find a spawn point to place the Exo")
+    
+end
 local origattemptbuy = Marine.AttemptToBuy
 function Marine:AttemptToBuy(techIds)
 
@@ -145,7 +183,9 @@ function Marine:AttemptToBuy(techIds)
             
             if techId == kTechId.DualWelderExosuit then
                  BuyWelderExo(self)
-             else
+            elseif techId == kTechId.DualFlamerExosuit then
+                 BuyFlamerExo(self)
+               else
                 if hostStructure:isa("Armory") then self:AddResources(-GetCostForTech(techId)) end
                 origattemptbuy(self, techIds)
             end

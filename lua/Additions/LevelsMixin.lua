@@ -48,8 +48,10 @@ function LevelsMixin:AddXP(amount)
         self.level = self.level + xpReward
         
      --if self:GetTeamNumber() == 1 then
+       if Server then
         local defaultarmor = LookupTechData(self:GetTechId(), kTechDataMaxArmor) or 200
         self:AdjustMaxArmor(defaultarmor * (self.level/100) +  defaultarmor) 
+       end
     -- end
       
     return xpReward

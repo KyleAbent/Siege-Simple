@@ -35,7 +35,7 @@ function ExoSiege:InitExoModel()
     local modelName = kDualWelderModelName
     local graphName = kDualWelderAnimationGraph
     
-  if self.layout == "WelderWelder" then
+  if self.layout == "WelderWelder" or self.layout == "FlamerFlamer" then
          modelName = kDualWelderModelName
         graphName = kDualWelderAnimationGraph
         self.hasDualGuns = true
@@ -56,7 +56,6 @@ function ExoSiege:InitExoModel()
 end
 
 function ExoSiege:InitWeapons()
-    local hasWelders = false
     local weaponHolder = self:GetWeapon(ExoWeaponHolder.kMapName)
     if not weaponHolder then
         weaponHolder = self:GiveItem(ExoWeaponHolder.kMapName, false)   
@@ -66,14 +65,17 @@ function ExoSiege:InitWeapons()
         if self.layout == "WelderWelder" then
         weaponHolder:SetWelderWeapons()
         self:SetHUDSlotActive(1)
-        hasWelders = true
+        return
+        elseif self.layout == "FlamerFlamer" then
+        weaponHolder:SetFlamerWeapons()
+        self:SetHUDSlotActive(1)
+        return
         end
         
-        if hasWelders then
         
-        else
+
         Exo.InitWeapons(self)
-        end
+
     
 end
 local function HealSelf(self)
@@ -94,7 +96,7 @@ local function HealSelf(self)
     
 end
 function ExoSiege:GetCanControl()
-    return self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
+    return not self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
 end
 local oninit = Exo.OnInitialized
 function ExoSiege:OnInitialized()

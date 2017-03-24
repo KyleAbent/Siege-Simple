@@ -642,24 +642,22 @@ RunCMDCommand:Help( "<player> <string> makes the client type something in consol
 
 
 
-/*
-
-local function Gravity( Client, Targets, Number )
+local function ModelSize( Client, Targets, Number )
+  if Number > 10 then return end
+    self:NotifyGeneric( nil, "Adjusted %s players size to %s percent", true, #Targets, Number * 100)
     for i = 1, #Targets do
     local Player = Targets[ i ]:GetControllingPlayer()
-            if not Player:isa("Commander") and Player:isa("Alien") or Player:isa("Marine") or Player:isa("ReadyRoomTeam") then
-              self:NotifyGeneric( nil, "Adjusted %s 's gravity to %s", true, Player:GetName(), Number)
-              Player.gravity = Number
+            if not Player:isa("Commander") and not Player:isa("Spectator") and Player.modelsize and Player:GetIsAlive() then
+                Player:AdjustModelSize(Number)
              end
-//Glitchy way. There's resistance in the first person camera, to this. Perhaps try hooking with shine and changing that way, instead.
      end
 end
-local GravityCommand = self:BindCommand( "sh_gravity", "playergravity", Gravity )
-GravityCommand:AddParam{ Type = "clients" }
-GravityCommand:AddParam{ Type = "number" }
-GravityCommand:Help( "sh_gravity <player> <number> works differently than ns1. kinda glitchy. respawn to reset." )
 
-*/
+local ModelSizeCommand = self:BindCommand( "sh_modelsize", "modelsize", ModelSize )
+ModelSizeCommand:AddParam{ Type = "clients" }
+ModelSizeCommand:AddParam{ Type = "number" }
+ModelSizeCommand:Help( "sh_playergravity <player> <number> works differently than ns1. kinda glitchy. respawn to reset." )
+
 local function Bury( Client, Targets, Number )
 //local Giver = Client:GetControllingPlayer()
 for i = 1, #Targets do

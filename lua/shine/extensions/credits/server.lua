@@ -374,8 +374,26 @@ function Plugin:SaveCredits(Client, disconnected)
        end
      if disconnected == true then Shine.SaveJSONFile( self.CreditData, CreditsPath  ) end
 end
+
+function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force ) 
+
+    if Gamerules:GetGameStarted() and NewTeam == 0 then
+     self:DestroyAllSaltStructFor(Player:GetClient())
+    end
+
+end
+
+function Plugin:DestroyAllSaltStructFor(Client)
+//Intention: Kill Salt Structures if client f4s, otherwise 'limit' becomes nil and infinite 
+local Player = Client:GetControllingPlayer()
+        for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", Player:GetTeamNumber())) do
+        if entity:GetOwner() == Player then entity:Kill() end 
+      end
+    
+end
 function Plugin:ClientDisconnect(Client)
 self:SaveCredits(Client, true)
+self:DestroyAllSaltStructFor(Client)
 end
 function Plugin:GetPlayerSaltInfo(Client)
    local Credits = 0
@@ -762,7 +780,7 @@ mapnameof = ARCCredit.kMapName
 limit = 1
 elseif String == "Extractor" then 
 techid = kTechId.Extractor
-CreditCost = 1000
+CreditCost = 500
 mapnameof = Extractor.kMapName
 limit = 1
 elseif string == nil then
@@ -825,7 +843,7 @@ mapnameof = SaltyEgg.kMapName
 techid = kTechId.Egg
 limit = 5
 elseif String == "Harvester" then
-CreditCost = 1000
+CreditCost = 500
 mapnameof = Harvester.kMapName
 techid = kTechId.Harvester
 limit = 1
@@ -944,14 +962,18 @@ local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 1
 if not Player then return end
- if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 8 end 
- if String == "RailGun" and not Player:isa("Exo") then cost = 29 delayafter = 25  end 
- if String == "MiniGun" and not Player:isa("Exo") then  cost = 30  delayafter = 25 end
-   if String == "Welder" and not Player:isa("Exo") then  cost = 25  delayafter = 15 end
- if String == "Gorge" then cost = 9 end
- if String == "Lerk" then  cost = 12 end
- if String == "Fade" then cost = 20 end
- if String == "Onos" then cost = 25 end
+
+ if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 8 
+  elseif String == "RailGun" and not Player:isa("Exo") then cost = 29 delayafter = 25   
+  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 30  delayafter = 25 
+  elseif String == "Welder" and not Player:isa("Exo") then  cost = 25  delayafter = 15 
+   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 27  delayafter = 15 
+  elseif String == "Gorge" then cost = 9 
+  elseif String == "Lerk" then  cost = 12 
+  elseif String == "Fade" then cost = 20 
+  elseif String == "Onos" then cost = 25 
+  end
+  
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
  
             --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
@@ -960,6 +982,7 @@ if not Player then return end
              elseif cost == 30 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
              elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
              elseif cost == 25 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
+             elseif cost == 27 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 9 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
