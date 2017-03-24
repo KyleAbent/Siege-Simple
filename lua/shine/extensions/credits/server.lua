@@ -1046,6 +1046,11 @@ CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
 
 local function AddSalt(Client, Targets, Number, Display, Double)
+
+  if Number > 911 then
+      Number = 911
+  end 
+  
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
 if Double == true then Number = Number * self.Config.kCreditMultiplier end
