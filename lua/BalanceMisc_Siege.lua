@@ -9,7 +9,7 @@ kHeavyMachineGunWeight = 0.20 -- default 0.26
 
 
 kDrifterSupply = 5 --default 10
-kBabblerHealth = 20
+
 
 kHiveInfestationRadius = 8
 kMaxEntitiesInRadius = 30 
