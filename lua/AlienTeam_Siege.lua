@@ -50,7 +50,7 @@ self.techTree:AddPassive(kTechId.OnoGrow,              kTechId.None, kTechId.Non
 
 self.techTree:AddPassive(kTechId.AcidRocket, kTechId.Stab, kTechId.None, kTechId.AllAliens) -- though linking 
 
-
+self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTechId.AllAliens)
 
    
     self.techTree:AddPassive(kTechId.CragHiveTwo, kTechId.CragHive)

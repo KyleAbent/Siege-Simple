@@ -1,6 +1,20 @@
 JetpackMarine.kJetpackFuelReplenishDelay = .27 -- 30% deduction of .4
 
 
+/*
+3.24 untested
+*/
+/*
+function JetpackMarine:OnProcessMove(input)
+     Marine.OnProcessMove(self, input)
+     if Server then
+        if self.poisoned then
+          self:SetFuel( self:GetFuel() - kJetpackWeightLiftForce)
+        end
+     end
+end
+*/
+
 
 function JetpackMarine:GetFuel()
 

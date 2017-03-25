@@ -1,5 +1,15 @@
+
+Script.Load("lua/ADditions/LerkBomb.lua")
+Script.Load("lua/Weapons/PredictedProjectile.lua")
+
 local kBallFlagAttachPoint = "fxnode_bilebomb"
 
+local origcreate = Lerk.OnCreate
+
+function Lerk:OnCreate()
+     origcreate(self)
+    InitMixin(self, PredictedProjectileShooterMixin)
+end
 if Server then
 
 function Lerk:GetTierFourTechId()
@@ -7,7 +17,7 @@ function Lerk:GetTierFourTechId()
 end
 
 function Lerk:GetTierFiveTechId()
-    return kTechId.None
+    return kTechId.LerkBileBomb
 end
 
 end

@@ -51,6 +51,7 @@ local kSiege_TechIds =
     'Onocide',
     'DualWelderExosuit',
     'DualFlamerExosuit',
+    'LerkBileBomb',
 
 
     

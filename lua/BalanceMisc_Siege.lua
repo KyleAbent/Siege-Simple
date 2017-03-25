@@ -12,8 +12,7 @@ kDrifterSupply = 5 --default 10
 
 
 kHiveInfestationRadius = 8
-kMaxEntitiesInRadius = 30 
-kMaxEntityRadius = 10 
+
 kMACSupply = 5
 kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
 kJetpackUseFuelRate = 0.147 -- 30% decrease from .21

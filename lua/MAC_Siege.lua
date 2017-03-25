@@ -13,6 +13,9 @@ local networkVars =
 
 
 }
+
+MAC.kWeldRate = 1
+
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
 function MACSiege:OnCreate()

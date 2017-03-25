@@ -1,3 +1,23 @@
+kXenocideDamageType = kDamageType.Structural
+kSwipeDamageType = kDamageType.Normal
+kGoreDamage = 100
+
+
+kUmbraEnergyCost = 23
+
+kGorgeCost = 10
+kLerkCost = 20
+kFadeCost = 40
+kOnosCost = 65
+
+
+kSkulkUpgradeCost = 0
+kGorgeUpgradeCost = 0
+kLerkUpgradeCost = 0
+kFadeUpgradeCost = 0
+kOnosUpgradeCost = 0
+
+
 kUmbraShotgunModifier = 0.70
 kUmbraBulletModifier = 0.70
 kUmbraMinigunModifier = 0.70
@@ -5,10 +25,10 @@ kUmbraRailgunModifier = 0.70
 kUmbraGrenadeModifer = 0.70
 
 
-kNumBabblerEggsPerGorge = 9
+kNumBabblerEggsPerGorge = 3
 kRebirthHpBuffTriggered = 1.10
 kRebirthHpBuffNew = 1.10
-kOnocideDamage = 664
+kOnocideDamage = 779
 kPrimalScreamROFIncrease = .3
 kVortexLifeSpan = 8
 kCommVortexCoolDown = 18

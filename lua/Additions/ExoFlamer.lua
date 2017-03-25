@@ -184,6 +184,7 @@ local function BurnSporesAndUmbra(self, startPoint, endPoint)
         
         local bombs = GetEntitiesWithinRange("Bomb", checkAtPoint, 1.6)
         table.copy(GetEntitiesWithinRange("WhipBomb", checkAtPoint, 1.6), bombs, true)
+        table.copy(GetEntitiesWithinRange("LerkBomb", checkAtPoint, 1.6), bombs, true)
         table.copy(GetEntitiesWithinRange("Rocket", checkAtPoint, 1.6), bombs, true)
         
         for index, bomb in ipairs(bombs) do

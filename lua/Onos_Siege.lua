@@ -84,7 +84,7 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
            damageReduct = kBoneShieldDamageReduction
            end
         elseif self:GetIsCharging()  then  
-        damageReduct =  0.8
+        damageReduct =  0.7
         end
         
         if damageReduct ~= 1 then

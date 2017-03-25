@@ -9,6 +9,7 @@ Script.Load("lua/Additions/Onocide.lua")
 Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
+Script.Load("lua/Additions/LerkBileBomb.lua")
 Script.Load("lua/MAC_Siege.lua")
 Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
@@ -163,6 +164,15 @@ local kSiege_TechData =
     [kTechDataDamageType] = kDamageType.Corrode,  
      [kTechDataDisplayName] = "AcidRocket",
  [kTechDataTooltipInfo] = "Ranged Projectile dealing damage only to armor and structures"},
+  
+   { [kTechDataId] = kTechId.LerkBileBomb,        
+  [kTechDataCategory] = kTechId.Lerk,   
+     [kTechDataMapName] = LerkBileBomb.kMapName,  
+[kTechDataCostKey] = kStabResearchCost,
+ [kTechDataResearchTimeKey] = kStabResearchTime, 
+    [kTechDataDamageType] = kDamageType.Corrode,  
+     [kTechDataDisplayName] = "LerkBileBomb",
+ [kTechDataTooltipInfo] = "Derp"},
 
                  { [kTechDataId] = kTechId.CommVortex, 
         [kTechDataMapName] = CommVortex.kMapName, 

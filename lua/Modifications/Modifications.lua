@@ -11,6 +11,17 @@ kUmbraModifier["Minigun"] = kUmbraMinigunModifier
 kUmbraModifier["Railgun"] = kUmbraRailgunModifier
 kUmbraModifier["Grenade"] = kUmbraGrenadeModifer
 
+
+function HealSprayMixin:GetSecondaryAttackDelay()
+    if self:isa("Lerk") then
+    return kHealsprayFireDelay
+    else
+    return 
+    kHealsprayFireDelay * 4 
+    end
+    
+end
+
 function UmbraMixin:ModifyDamageTaken(damageTable, attacker, doer, damageType)
 
     if self:GetHasUmbra() then

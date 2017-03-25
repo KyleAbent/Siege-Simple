@@ -743,7 +743,7 @@ techid = kTechId.Armory
 elseif String == "Sentry"  then
 mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
-limit = 1
+limit = 2
 CreditCost = 8
 elseif String == "BackupBattery"  then
 mapnameof = SentryBattery.kMapName

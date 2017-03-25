@@ -10,7 +10,7 @@ kStructureBeaconBuildTime = 8
 --kJumpPackCost = 7
 
 kAcidRocketDamage = 25
-kAcidRocketDamageType = kDamageType.Normal
+kAcidRocketDamageType = kDamageType.Structural
 kAcidRocketFireDelay = 0.5
 kAcidRocketEnergyCost = 10
 kAcidRocketRadius = 6
