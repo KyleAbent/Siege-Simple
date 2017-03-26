@@ -39,7 +39,7 @@ function Onos:GetMaxSpeed(possible)
    if not self:GetIsOnFire() then speed = 9.375 end
     if self:GetIsPoopGrowing() then speed = 0 end
     local boneShieldSlowdown = self:GetIsBoneShieldActive() and kBoneShieldMoveFraction or 1
-    local chargeExtra = self:GetChargeFraction() * (12 - speed)
+    local chargeExtra = self:GetChargeFraction() * (11 - speed)
     
     return ( speed + chargeExtra ) * boneShieldSlowdown
     

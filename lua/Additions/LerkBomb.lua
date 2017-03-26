@@ -17,7 +17,7 @@ PrecacheAsset("cinematics/vfx_materials/decals/bilebomb_decal.surface_shader")
 
 class 'LerkBomb' (PredictedProjectile)
 
-LerkBomb.kMapName            = "bomb"
+LerkBomb.kMapName            = "lerkbomb"
 LerkBomb.kModelName          = PrecacheAsset("models/alien/gorge/bilebomb.model")
 
 LerkBomb.kRadius             = 0.2
@@ -92,8 +92,8 @@ if Server then
         local dotMarker = CreateEntity(DotMarker.kMapName, self:GetModelOrigin(), self:GetTeamNumber())
 		dotMarker:SetTechId(kTechId.BileBomb)
 		dotMarker:SetDamageType(kBileBombDamageType)        
-        dotMarker:SetLifeTime(kBileBombDuration)
-        dotMarker:SetDamage(kBileBombDamage * 0.3)
+        dotMarker:SetLifeTime(kBileBombDuration * 0.4)
+        dotMarker:SetDamage(kBileBombDamage * 0.7 )
         dotMarker:SetRadius(kBileBombSplashRadius * 0.7)
         dotMarker:SetDamageIntervall(kBileBombDotInterval * 0.7)
         dotMarker:SetDotMarkerType(DotMarker.kType.Static)

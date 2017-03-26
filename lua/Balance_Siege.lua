@@ -1,4 +1,4 @@
-kXenocideDamageType = kDamageType.Structural
+--kXenocideDamageType = kDamageType.Structural
 kSwipeDamageType = kDamageType.Normal
 kGoreDamage = 100
 
@@ -13,9 +13,9 @@ kOnosCost = 65
 
 kSkulkUpgradeCost = 0
 kGorgeUpgradeCost = 0
-kLerkUpgradeCost = 0
-kFadeUpgradeCost = 0
-kOnosUpgradeCost = 0
+kLerkUpgradeCost = 1
+kFadeUpgradeCost = 1
+kOnosUpgradeCost = 1
 
 
 kUmbraShotgunModifier = 0.70

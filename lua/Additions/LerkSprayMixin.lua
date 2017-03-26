@@ -2,7 +2,7 @@ LerkSprayMixin = CreateMixin( LerkSprayMixin )
 LerkSprayMixin.type = "HealSpray"
 
 -- Players heal by base amount + percentage of max health
-local kHealPlayerPercent = 3
+local kHealPlayerPercent = 2
 
 local kRange = 4
 local kHealCylinderWidth = 3
@@ -101,7 +101,7 @@ end
 
 local function DrainFuel(self, player, targetEntity)
 
-    player:SetFuel( player:GetFuel() - 0.15  )
+    targetEntity:SetFuel( targetEntity:GetFuel() - 0.15  )
     
 
 end

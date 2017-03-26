@@ -4,6 +4,10 @@ Script.Load("lua/Additions/AvocaMixin.lua")
 class 'RoboSiege' (RoboticsFactory)
 RoboSiege.kMapName = "robosiege"
 
+
+
+RoboticsFactory.kRolloutLength = 1
+
 local networkVars = 
 
 {
