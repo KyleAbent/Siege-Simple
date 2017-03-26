@@ -80,7 +80,9 @@ function ExoSiege:InitWeapons()
 end
 local function HealSelf(self)
 
-  local toheal = false
+
+  local toheal = true
+  /*
                 for _, proto in ipairs(GetEntitiesForTeamWithinRange("PrototypeLab", 1, self:GetOrigin(), 4)) do
                     
                     if GetIsUnitActive(proto) then
@@ -89,6 +91,7 @@ local function HealSelf(self)
                     end
                     
                 end
+           */
           --  Print("toheal is %s", toheal)
     if toheal then
     self:SetArmor(self:GetArmor() + kNanoArmorHealPerSecond, true) 

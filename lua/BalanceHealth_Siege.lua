@@ -1,5 +1,9 @@
 kSentryHealth = 650    kSentryArmor = 125    kSentryPointValue = 3
 
+kExosuitArmorPerUpgradeLevel = 20
+ kExosuitArmor = 360
+
+
 kFadeArmor = 104 --30% increase from 80
 kFadeArmorFullyUpgradedAmount = 156 --30% increase from 120
 
@@ -22,5 +26,8 @@ kEggBeaconMaxArmor = 200
 kEggHealth = 500    kEggArmor = 0    kEggPointValue = 2
 kMatureEggHealth = 650    kMatureEggArmor = 0
 
+
+kArmoryHealth = 2000    kArmoryArmor = 500    kArmoryPointValue = 6
+kAdvancedArmoryHealth = 3500    kAdvancedArmoryArmor = 750    kAdvancedArmoryPointValue = 11
 
 

@@ -65,8 +65,8 @@ kDualExosuitCost = 35 -- default 45
 
 --kMarineRespawnTime = 8 --default 9
 
-kFlameThrowerEnergyDamage = 0 -- 1 if speed adjust doesn't work
-kBlinkEnergyCost = 29 -- default 32
+kFlameThrowerEnergyDamage = 1 
+kBlinkEnergyCost = 27 -- default 32
 kStartBlinkEnergyCost = 13 --default 14
 kBoneShieldArmorPerSecond = 95 --default 112
 kMucousShieldPercent = 0.20 --default 0.15

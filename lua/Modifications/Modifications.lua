@@ -1,4 +1,24 @@
 
+
+if Server then
+
+    local function UpdateLifetime(self, deltaTime)
+    
+        local lifeTime = self.lifeTime - deltaTime or nil
+        if lifeTime <= 0 then
+            DestroyEntity(self)
+        else
+            self.lifeTime = lifeTime
+        end
+     end   
+        
+    function ParticleEffect:OnUpdate(deltaTime)
+        UpdateLifetime(self, deltaTime)
+    end
+    
+
+end
+
 Script.Load("lua/Modifications/ReallyNow.lua")
 
 local kUmbraModifier = {}
@@ -10,17 +30,6 @@ kUmbraModifier["Sentry"] = kUmbraBulletModifier
 kUmbraModifier["Minigun"] = kUmbraMinigunModifier
 kUmbraModifier["Railgun"] = kUmbraRailgunModifier
 kUmbraModifier["Grenade"] = kUmbraGrenadeModifer
-
-
-function HealSprayMixin:GetSecondaryAttackDelay()
-    if self:isa("Lerk") then
-    return kHealsprayFireDelay
-    else
-    return 
-    kHealsprayFireDelay * 4 
-    end
-    
-end
 
 function UmbraMixin:ModifyDamageTaken(damageTable, attacker, doer, damageType)
 
