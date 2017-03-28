@@ -181,6 +181,18 @@ local level = 1
      -- Print("GetRoundLengthToSiege = %s", level)
        return level 
 end
+
+function GetPayloadPercent() 
+    local entityList = Shared.GetEntitiesWithClassname("AvocaArc")
+    if entityList:GetSize() > 0 then
+                 local payload = entityList:GetEntityAtIndex(0) 
+                 local furthestgoal = payload:GetHighestWaypoint()
+               //  local distance = payload:GetDistance(furthestgoal) / 2
+                 local distance =  GetPathDistance(payload:GetOrigin(), furthestgoal:GetOrigin()) / 2
+                 return math.round(distance, 1)
+    end    
+    return nil
+end
 function GetSandCastle() --it washed away
     local entityList = Shared.GetEntitiesWithClassname("SandCastle")
     if entityList:GetSize() > 0 then

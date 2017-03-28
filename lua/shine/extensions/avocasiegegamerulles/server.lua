@@ -323,6 +323,10 @@ local function AddFrontTimer(who)
     local FrontLength =  math.ceil( Shared.GetTime() + NowToFront - Shared.GetTime() )
     Shine.ScreenText.Add( 1, {X = 0.40, Y = 0.75,Text = "FrontDoor: %s",Duration = FrontLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
+local function AddPayLoadPercent(who)
+    local Client = who
+    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.85,Text = string.format("Payload: %s seconds",  GetPayloadPercent() ) , Duration = 4,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+end
 local function AddSiegeTimer(who)
     local Client = who
     local NowToSiege = GetSandCastle():GetSiegeLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
@@ -336,6 +340,17 @@ local function AddPrimaryTimer(who)
     local PrimaryLength =  math.ceil( Shared.GetTime() + NowToPrimary - Shared.GetTime() )
     Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.65,Text = "PrimaryDoor: %s",Duration = PrimaryLength,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
 end
+local function GivePayloadInfoToAll(self)
+       self:CreateTimer( 1, 4, -1, function() 
+              local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player then
+                  AddPayLoadPercent(Player)
+                  end
+               end
+        end)
+end
 local function GiveTimersToAll()
               local Players = Shine.GetAllPlayers()
               for i = 1, #Players do
@@ -345,7 +360,7 @@ local function GiveTimersToAll()
                   AddSiegeTimer(Player) --DownPrimary is the 30 min expiration date. UpPrimary is no timer goes beyond 20.
                     if kPrimaryTimer ~= 0 then  AddPrimaryTimer(Player) end
                   end
-end
+              end
 end
 function Plugin:SendMessageToMods(string)
               local Players = Shine.GetAllPlayers()
@@ -405,6 +420,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
 
  if State == kGameState.Started then 
     GiveTimersToAll()
+     if string.find(Shared.GetMapName(), "pl_") then GivePayloadInfoToAll(self) end
   else
  Shine.ScreenText.End(1) 
  Shine.ScreenText.End(2)

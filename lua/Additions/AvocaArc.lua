@@ -1,5 +1,14 @@
 --Kyle 'Avoca' Abent
 class 'AvocaArc' (ARC)
+
+local networkVars = 
+
+{
+    waypoint = "private float (1 to 25 by 0)",
+
+}
+
+
 AvocaArc.kMapName = "avocaarc"
 local kNanoshieldMaterial = PrecacheAsset("Glow/green/green.material")
 local kPhaseSound = PrecacheAsset("sound/NS2.fev/marine/structures/phase_gate_teleport")
@@ -11,11 +20,12 @@ function AvocaArc:OnCreate()
  ARC.OnCreate(self)
  self:AdjustMaxHealth(self:GetMaxHealth())
  self:AdjustMaxArmor(self:GetMaxArmor())
+  self.waypoint= 1
 end
 function AvocaArc:OnInitialized()
  ARC.OnInitialized(self)
    if Server then
- self:AddTimedCallback(AvocaArc.Instruct, 2.5)
+ self:AddTimedCallback(AvocaArc.Instruct, 1)
  --self:AddTimedCallback(AvocaArc.Waypoint, 16)
  -- self:AddTimedCallback(AvocaArc.Scan, 6)
  end
@@ -31,10 +41,9 @@ end
 function AvocaArc:GetMaxArmor()
     return 1000
 end
-local function SoTheGameCanEnd(self, who) --Although HiveDefense prolongs it
-   local arc = GetEntitiesWithinRange("ARC", who:GetOrigin(), ARC.kFireRange)
-   local scan = GetEntitiesWithinRange("Scan", who:GetOrigin(), ARC.kFireRange)
-   if #arc >= 1 and not #scan >= 1 then CreateEntity(Scan.kMapName, who:GetOrigin(), 1) end
+local function SoTheGameCanEnd(self, who)
+   local scan = #GetEntitiesWithinRange("Scan", who:GetOrigin(), ARC.kFireRange) or 0
+   if not scan then CreateEntity(Scan.kMapName, who:GetOrigin(), 1) end
 end
 local function CheckHivesForScan()
 local hives = {}
@@ -51,17 +60,67 @@ end
 function ARC:GetShowDamageIndicator()
     return true
 end
+function AvocaArc:GetHighestWaypointCount()
+    return  #GetEntitiesWithinRange("FuncTrainWaypoint", self:GetOrigin(), 9999999) or 0
+end
+function AvocaArc:GetHighestWaypoint()
+    local count = #GetEntitiesWithinRange("FuncTrainWaypoint", self:GetOrigin(), 9999999) or 0
+        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
+           if ent.number == count then
+             return ent
+          end       
+    end  
+end
 local function MoveToHives(who) --Closest hive from origin
+if not GetFrontDoorOpen() then return true end
 local where = who:GetOrigin()
- local hive =  GetNearest(where, "Hive", 2, function(ent) return not ent:GetIsDestroyed() end)
-
+local destination = Vector(0,0,0)
+local self = who
+ local nextDestination = nil
+ local count = #GetEntitiesWithinRange("FuncTrainWaypoint", who:GetOrigin(), 9999999) or 0
  
-               if hive then
-        local origin = hive:GetOrigin() -- The arc should auto deploy beforehand
-        who:GiveOrder(kTechId.Move, nil, origin, nil, true, true)
-                    return
-                end  
-    -- Print("No closest hive????")    
+ // Print("Self waypoint is %s", self.waypoint)
+  
+    local toMatch = self.waypoint
+    for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
+           if ent.number == toMatch then
+            self.waypoint = ent.number
+            destination = ent:GetOrigin()
+            break
+          end       
+    end  
+    
+    local toBreak = toMatch + 1
+    for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
+                if ent.number == toBreak then
+                nextDestination = ent:GetOrigin()
+                break
+             end
+    end     
+
+  local closertoNext =(self:GetOrigin() - destination ):GetLength() <=  1 //and ( self:GetOrigin() - nextDestination) >= 
+  local getIsNear 
+  
+    //Print("closertoNext is %s", closertoNext)   
+          if closertoNext then
+              destination = nextDestination
+              self.waypoint = toBreak
+          end
+
+
+                    if self.waypoint > count then
+                     //   Print("Count is %s", count)
+                        // end of track
+                        //self.driving = false
+                        //TODO : what happens then?
+                        self.waypoint = 1
+                    end
+                    
+                    who:GiveOrder(kTechId.Move, nil, destination, nil, true, true)
+                //    Print("Self waypoint is %s", self.waypoint)
+              
+         
+                    return true
 end
 
 local function CheckForAndActAccordingly(who)
@@ -95,43 +154,84 @@ local function GiveUnDeploy(who)
      who:TriggerEffects("arc_stop_charge")
      who:TriggerEffects("arc_undeploying")
 end
-function AvocaArc:SpecificRules()
-local moving = self.mode == ARC.kMode.Moving     
+local function PlayersNearby(who)
+
+local players =  GetEntitiesForTeamWithinRange("Player", 1, who:GetOrigin(), 5.5)
+local alive = false
+    if not who:GetInAttackMode() and #players >= 1 then
+         for i = 1, #players do
+            local player = players[i]
+            if player:GetIsAlive() and alive == false then alive = true end
+            if ( player:GetIsAlive() and  player.GetIsNanoShielded and not player:GetIsNanoShielded()) then player:ActivateNanoShield() end
+           if player:isa("Marine")  then
+             if ( player:GetHealth() == player:GetMaxHealth() ) then
+           local addarmoramount = math.random(4,8)
+           addarmoramount = who:GetInAttackMode() and addarmoramount * 1.5 or addarmoramount
+           player:AddHealth(addarmoramount, false, not true, nil, nil, true)
+           else
+           player:AddHealth(Armory.kHealAmount, false, false, nil, nil, true)   
+           end
+           end
+         end
+    end
+return alive
+end
+if Server then
+
+    function AvocaArc:OnOrderComplete(currentOrder)
+
+        if currentOrder == kTechId.Move then
+          self:ClearOrders()
+        end
+    
+    end
+    
+    end
+function AvocaArc:SpecificRules() 
+
+//local moving = self.mode == ARC.kMode.Moving     
+//Print("moving is %s", moving) 
         
-local attacking = self.deployMode == ARC.kDeployMode.Deployed
-local inradius = GetIsPointWithinHiveRadius(self:GetOrigin()) or CheckForAndActAccordingly(self)  
-local shouldstop = false
-local shouldmove = not shouldstop and not moving and not inradius
-local shouldstop = moving and shouldstop
+local attacking = self:GetInAttackMode()
+//Print("attacking is %s", moving) 
+local inradius = (self:GetOrigin() == self:GetHighestWaypoint():GetOrigin()() )  and GetIsPointWithinHiveRadius(self:GetOrigin()) or CheckForAndActAccordingly(self)  
+--if inradius then self:Scan() end
+//Print("inradius is %s", inradius) 
+
+local shouldstop = not PlayersNearby(self)
+//Print("shouldstop is %s", shouldstop) 
+local shouldmove = not shouldstop and not inradius
+//Print("shouldmove is %s", shouldmove) 
+//local shouldstop = moving and not PlayersNearby(self)
+//Print("shouldstop is %s", shouldstop) 
 local shouldattack = inradius and not attacking 
-local shouldundeploy = attacking and not inradius and not moving
+//Print("shouldattack is %s", shouldattack) 
+local shouldundeploy = attacking and not inradius
+//Print("shouldundeploy is %s", shouldundeploy) 
   
-  if moving then
     
     if shouldstop or shouldattack then 
-           FindNewParent(self)
-       --Print("StopOrder")
+     //  Print("StopOrder")
+       FindNewParent(self)
        self:ClearOrders()
        self:SetMode(ARC.kMode.Stationary)
       end 
- elseif not moving then
       
     if shouldmove and not shouldattack  then
         if shouldundeploy then
-      
+         --Print("ShouldUndeploy")
          GiveUnDeploy(self)
-       else 
+       else --should move
+      // Print("GiveMove")
        MoveToHives(self)
        end
        
    elseif shouldattack then
-   
+     --Print("ShouldAttack")
      GiveDeploy(self)
     return true
-    
- end
+   end
  
-    end
 end
 function AvocaArc:GetDeathIconIndex()
     return kDeathMessageIcon.ARC
