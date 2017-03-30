@@ -377,7 +377,7 @@ end
 
 function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force ) 
 
-    if Gamerules:GetGameStarted() and NewTeam == 0 then
+    if not Player:isa("Commander") and Gamerules:GetGameStarted() and NewTeam == 0 then
      self:DestroyAllSaltStructFor(Player:GetClient())
     end
 

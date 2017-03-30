@@ -187,9 +187,11 @@ function GetPayloadPercent()
     if entityList:GetSize() > 0 then
                  local payload = entityList:GetEntityAtIndex(0) 
                  local furthestgoal = payload:GetHighestWaypoint()
+                 local speed = payload:GetMoveSpeed()
+                 local isReverse = speed < 2
                //  local distance = payload:GetDistance(furthestgoal) / 2
-                 local distance =  GetPathDistance(payload:GetOrigin(), furthestgoal:GetOrigin()) / 2
-                 return math.round(distance, 1)
+                 local distance =  GetPathDistance(payload:GetOrigin(), furthestgoal:GetOrigin()) / speed
+                 return math.round(distance, 1), speed, isReverse
     end    
     return nil
 end

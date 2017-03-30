@@ -325,7 +325,17 @@ local function AddFrontTimer(who)
 end
 local function AddPayLoadPercent(who)
     local Client = who
-    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.85,Text = string.format("Payload: %s seconds",  GetPayloadPercent() ) , Duration = 4,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    local time, speed, isReverse = GetPayloadPercent()
+    if isReverse then
+    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.85,Text = string.format("Payload(%sx): Reversing!",  speed-1 ) , Duration = 4,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    return
+    end
+    
+     if time > 1 then
+    Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.85,Text = string.format("Payload(%sx): %s seconds",  speed-1, time ) , Duration = 4,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    else
+     Shine.ScreenText.Add( 3, {X = 0.40, Y = 0.85,Text = "Payload: Deployed!", Duration = 4,R = 255, G = 255, B = 255,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+    end
 end
 local function AddSiegeTimer(who)
     local Client = who
