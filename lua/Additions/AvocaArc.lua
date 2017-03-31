@@ -32,6 +32,9 @@ end
 function AvocaArc:SetMoveSpeed(value)
  AvocaArc.kMoveSpeed = value
 end
+function AvocaArc:GetIsSelectable(byTeamNumber)
+return false
+end
 function AvocaArc:OnInitialized()
  ARC.OnInitialized(self)
    if Server then
@@ -183,15 +186,8 @@ end
     unitName = "Payload"
 return unitName
 end 
-function AvocaArc:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
-
-    if hitPoint ~= nil then
-    
-        damageTable.damage = 0
-        self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
-        
-    end
-
+function AvocaArc:GetCanTakeDamageOverride()
+    return false
 end
 local function ReverseFromWaypoints(who)
 if who.waypoint <= 1 or not GetFrontDoorOpen() or who:GetInAttackMode() then return true end
@@ -337,7 +333,7 @@ local alive = false
            if player:isa("Marine")  then
              if ( player:GetHealth() == player:GetMaxHealth() ) then
            local addarmoramount = math.random(4,8)
-           addarmoramount = who:GetInAttackMode() and addarmoramount * 1.5 or addarmoramount
+           addarmoramount =  addarmoramount
            player:AddHealth(addarmoramount, false, not true, nil, nil, true)
            else
            player:AddHealth(Armory.kHealAmount, false, false, nil, nil, true)   

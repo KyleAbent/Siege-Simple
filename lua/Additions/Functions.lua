@@ -189,9 +189,10 @@ function GetPayloadPercent()
                  local furthestgoal = payload:GetHighestWaypoint()
                  local speed = payload:GetMoveSpeed()
                  local isReverse = speed < 2
-               //  local distance = payload:GetDistance(furthestgoal) / 2
-                 local distance =  GetPathDistance(payload:GetOrigin(), furthestgoal:GetOrigin()) / speed
-                 return math.round(distance, 1), speed, isReverse
+                 local distance =  GetPathDistance(payload:GetOrigin(), furthestgoal:GetOrigin()) 
+                 local time = math.round(distance / speed, 1)
+                 //Print("Distance is %s, speed is %s, time is %s", distance, speed, time)
+                 return time, speed, isReverse
     end    
     return nil
 end
