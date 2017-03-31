@@ -258,7 +258,7 @@ local function firstPersonScoreBased(self, client)
     
     local tableof = {}
                 for _, scorer in ipairs(GetEntitiesWithMixin("Scoring")) do
-                 if not scorer:isa("Commander") and scorer:GetIsAlive() then table.insert(tableof, scorer) end
+                 if not scorer:isa("ReadyRoomPlayer") and not scorer:isa("Commander") and scorer:GetIsAlive() then table.insert(tableof, scorer) end
               end  
     if table.count(tableof) == 0 then return end
     local max = Clamp(table.count(tableof), 1, 4)

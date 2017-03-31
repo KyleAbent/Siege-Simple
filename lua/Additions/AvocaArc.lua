@@ -332,7 +332,7 @@ local alive = false
             if ( player:GetIsAlive() and  player.GetIsNanoShielded and not player:GetIsNanoShielded()) then player:ActivateNanoShield() end
            if player:isa("Marine")  then
              if ( player:GetHealth() == player:GetMaxHealth() ) then
-           local addarmoramount = math.random(4,8)
+           local addarmoramount = math.random(1,4)
            addarmoramount =  addarmoramount
            player:AddHealth(addarmoramount, false, not true, nil, nil, true)
            else

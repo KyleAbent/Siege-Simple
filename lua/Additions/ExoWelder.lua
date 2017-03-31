@@ -43,10 +43,10 @@ local kWelderEffectRate = 0.45
 
 local kFireLoopingSound = PrecacheAsset("sound/NS2.fev/marine/welder/weld")
 
-local kHealScoreAdded = 4
+local kHealScoreAdded = 2
 -- Every kAmountHealedForPoints points of damage healed, the player gets
 -- kHealScoreAdded points to their score.
-local kAmountHealedForPoints = 200
+local kAmountHealedForPoints = 175
 
 function ExoWelder:OnCreate()
 
@@ -251,9 +251,11 @@ function ExoWelder:PerformWeld(player)
                 success = prevHealthScalar ~= target:GetHealthScalar()
                 
                 if success then
-                
+                    local pointsHealth = kAmountHealedForPoints
+                    local scoreToAdd = kHealScoreAdded
                     local addAmount = (target:GetHealth() - prevHealth) + (target:GetArmor() - prevArmor)
-                    player:AddContinuousScore("WeldHealth", addAmount, kAmountHealedForPoints, kHealScoreAdded)
+                          addAmount = addAmount * ConditionalValue(target:isa("Player"),  3, 1)
+                    player:AddContinuousScore("WeldHealth", addAmount, pointsHealth, scoreToAdd)
                     
                     -- weld owner as well
                     player:SetArmor(player:GetArmor() + kWelderFireDelay * kSelfWeldAmount)
