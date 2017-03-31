@@ -425,12 +425,19 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
 end
 
 end
-
+local function OpenAllBreakableDoors()
+ for _, door in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do 
+           door.open = true
+       door.timeOfDestruction = Shared.GetTime() 
+       door:SetHealth(door:GetHealth() - 50)
+ end
+end
 function Plugin:SetGameState( Gamerules, State, OldState )
 
  if State == kGameState.Started then 
     GiveTimersToAll()
      if string.find(Shared.GetMapName(), "pl_") then GivePayloadInfoToAll(self) end
+     OpenAllBreakableDoors()
   else
  Shine.ScreenText.End(1) 
  Shine.ScreenText.End(2)

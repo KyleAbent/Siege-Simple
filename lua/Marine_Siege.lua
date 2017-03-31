@@ -9,6 +9,12 @@ function Marine:OnCreate()
   origcreate(self)
   if Server then ExploitCheck(self) end
 end
+function Marine:OnLocationChange(locationName)
+
+if not GetSiegeDoorOpen() and string.find(locationName, "siege") or string.find(locationName, "Siege") then self:Kill()  end
+
+end
+
 
 function Marine:GetHasLayStructure()
         local weapon = self:GetWeaponInHUDSlot(5)

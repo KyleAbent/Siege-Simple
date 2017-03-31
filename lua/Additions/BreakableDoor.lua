@@ -104,7 +104,7 @@ local function GetRecentlyDestroyed(self)
     return (self.timeOfDestruction + 8) > Shared.GetTime()
 end
 function BreakableDoor:GetCanBeWeldedOverride()
-    return not GetRecentlyDestroyed(self)
+    return GetFrontDoorOpen() and not GetRecentlyDestroyed(self)
 end
 /*
 local function DisplayTimeTillWeldable(self)
