@@ -15,7 +15,7 @@ local networkVars =
     scale = "vector",
     model = "string (128)",
     savedOrigin = "vector",
-    opened = "private boolean",
+    opened = "boolean",
 }
 
 AddMixinNetworkVars(BaseModelMixin, networkVars)
@@ -98,7 +98,7 @@ function SiegeDoor:HasOpened()
 return self.opened
 end
 function SiegeDoor:GetIsLocked()    
-return not GetSiegeDoorOpen()
+return self.opened
 end
 function SiegeDoor:MakeSurePlayersCanGoThroughWhenMoving()
                 self:UpdateModelCoords()

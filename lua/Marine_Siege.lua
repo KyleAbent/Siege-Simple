@@ -1,18 +1,22 @@
-Script.Load("lua/Additions/ConcGrenadeThrower.lua")
-Script.Load("lua/Additions/ConcGrenade.lua")
-Script.Load("lua/Additions/JediConcGrenadeThrower.lua")
-Script.Load("lua/Additions/JediConcGrenade.lua")
-
-
 local origcreate = Marine.OnCreate
 function Marine:OnCreate()
   origcreate(self)
-  if Server then ExploitCheck(self) end
+ local open = GetSiegeDoorOpen()
+ //Print("siege door is open %s", open)
+       if open == false then
+         if string.find(locationName, "siege") or string.find(locationName, "Siege") 
+           then self:Kill()  
+            end
+        end
 end
 function Marine:OnLocationChange(locationName)
-
-if not GetSiegeDoorOpen() and string.find(locationName, "siege") or string.find(locationName, "Siege") then self:Kill()  end
-
+ local open = GetSiegeDoorOpen()
+ //Print("siege door is open %s", open)
+       if open == false then
+         if string.find(locationName, "siege") or string.find(locationName, "Siege") 
+           then self:Kill()  
+            end
+        end
 end
 
 

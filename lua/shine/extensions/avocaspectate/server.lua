@@ -290,12 +290,12 @@ end
         end
        
         if vip ~= nil then 
-              local roll = math.random(1,2)
-             if roll == 1 then
+            //  local roll = math.random(1,2)
+            // if roll == 1 then
               overHeadandNear(self, client, vip)
-             elseif roll == 2 then
-              firstPersonScoreBased(self, client)
-              end
+            // elseif roll == 2 then
+            //  firstPersonScoreBased(self, client)
+            //  end
         else
         firstPersonScoreBased(self, client)
          end
@@ -318,7 +318,7 @@ function Plugin:ClientConnect(client)
       end)
       end
       
-    if client:GetUserId() == 388510592 then --or client:GetUserId() == 22542592 then --388510592 then 
+    if client:GetUserId() == 388510592 or client:GetUserId() == 22542592 then --388510592 then 
      self:SimpleTimer( 4, function() 
      if client then Shared.ConsoleCommand(string.format("sh_setteam %s 3", client:GetUserId())) client:GetControllingPlayer():Replace(AvocaSpectator.kMapName)  local Client = client:GetControllingPlayer() Client:SetSpectatorMode(kSpectatorMode.FirstPerson) end--AutoSpectate(self, Client) end
       end)

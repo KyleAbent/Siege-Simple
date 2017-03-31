@@ -122,7 +122,7 @@ if Server then
 local origscore = ScoringMixin.AddScore
 
 function ScoringMixin:AddScore(points, res, wasKill)
-   if points ~= nil and wasKill and self:isa("Alien") then points = math.round(points * 1.30 + points, 2) end
+   if points ~= nil and wasKill and self:isa("Alien") then points = math.round(points * 1.30 + points, 1) end
    origscore(self, points, res, wasKill)
 end
 

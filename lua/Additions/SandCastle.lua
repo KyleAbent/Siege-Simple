@@ -20,7 +20,8 @@ local networkVars =
 {
    SiegeTimer = "float",
    FrontTimer = "float",
-   PrimaryTimer = "float",
+   frontOpened = "boolean",
+   siegeOpened = "boolean",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -28,7 +29,8 @@ function SandCastle:TimerValues()
    if kPrimaryTimer == nil then kPrimaryTimer = 0 end
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
-   self.PrimaryTimer = math.max(kPrimaryTimer, kSideTimer) -- b/c maps still use kSideTimer
+   self.siegeOpened = false
+   self.frontOpened = false
 end
 
 function SandCastle:OnReset() 
@@ -56,6 +58,16 @@ function SandCastle:OnRoundStart()
 end
 function SandCastle:GetSiegeLength()
  return self.SiegeTimer
+end
+function SandCastle:SetSiegeOpenBoolean(option)
+ self.siegeOpened = option
+end
+function SandCastle:GetSiegeOpenBoolean()
+  //Print("Sandcastle siege open is %s", self.siegeOpened)
+ return self.siegeOpened 
+end
+function SandCastle:GetFrontOpenBoolean()
+ return self.frontOpened
 end
 function SandCastle:GetFrontLength()
  return self.FrontTimer 
@@ -88,6 +100,9 @@ function SandCastle:OpenSiegeDoors()
               
               end  
               
+              self.siegeOpened = true
+              
+              
 end
 
 function SandCastle:OpenFrontDoors()
@@ -104,6 +119,8 @@ function SandCastle:OpenFrontDoors()
               end
 
                end
+               
+               self.frontOpened = true
 end
 function SandCastle:OpenPrimaryDoors()
           GetGamerules():SetDamageMultiplier(1)

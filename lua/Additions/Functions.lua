@@ -130,9 +130,9 @@ if GetSiegeDoorOpen() then return end
   if not GetFrontDoorOpen() then 
       
       if who:isa("Cyst") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
-            frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
+            frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12   end)
      elseif who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
-            frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4 and(  ent.GetIsLocked and ent:GetIsLocked() )  end)
+            frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4   end)
       end
   
       if frontdoor  then who:Kill( )return end
@@ -140,6 +140,7 @@ if GetSiegeDoorOpen() then return end
   end
    
   if GetIsInSiege(who)  then
+    Print("in Siege")
    who:Kill() 
   end
 
@@ -152,10 +153,11 @@ function GetPrimaryDoorOpen()
    return GetSandCastle():GetIsPrimaryOpen()
 end
 function GetFrontDoorOpen()
-   return GetSandCastle():GetIsFrontOpen()
+   return GetSandCastle():GetFrontOpenBoolean()
 end
 function GetSiegeDoorOpen()
-   return GetSandCastle():GetIsSiegeOpen()
+   local boolean = GetSandCastle():GetSiegeOpenBoolean()
+   return boolean
 end
 function GetRoundLengthToSiege()
     
@@ -191,6 +193,14 @@ function GetPayloadPercent()
                  local time = math.round(distance / speed, 1)
                  //Print("Distance is %s, speed is %s, time is %s", distance, speed, time)
                  return time, speed, isReverse
+    end    
+    return nil
+end
+function GetSiegeDoor() --it washed away
+    local entityList = Shared.GetEntitiesWithClassname("SiegeDoor")
+    if entityList:GetSize() > 0 then
+                 local siegedoor = entityList:GetEntityAtIndex(0) 
+                 return siegedoor
     end    
     return nil
 end
