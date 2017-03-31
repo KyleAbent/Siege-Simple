@@ -4,7 +4,7 @@ function Marine:OnCreate()
  local open = GetSiegeDoorOpen()
  //Print("siege door is open %s", open)
        if open == false then
-         if string.find(locationName, "siege") or string.find(locationName, "Siege") 
+         if GetIsInSiege(self)
            then self:Kill()  
             end
         end
