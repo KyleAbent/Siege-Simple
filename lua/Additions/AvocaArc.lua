@@ -39,6 +39,7 @@ function AvocaArc:OnInitialized()
  ARC.OnInitialized(self)
    if Server then
  self:AddTimedCallback(AvocaArc.Instruct, 1)
+   self:AddTimedCallback(AvocaArc.DefensiveOrder, 1) 
  --self:AddTimedCallback(AvocaArc.Waypoint, 16)
  -- self:AddTimedCallback(AvocaArc.Scan, 6)
  end
@@ -417,15 +418,14 @@ function AvocaArc:OnGetMapBlipInfo()
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
 if Server then
-function AvocaArc:Waypoint()
+function AvocaArc:DefensiveOrder()
     for _, marine in ipairs(GetEntitiesWithinRange("Marine", self:GetOrigin(), 9999)) do
-                     if  marine:GetClient():GetIsVirtual() and  marine:GetIsAlive() and not marine:isa("Commander") then
+                     if marine:GetIsAlive() and not marine:isa("Commander") then //marine:GetClient():GetIsVirtual()
                      marine:GiveOrder(kTechId.Defend, self:GetId(), self:GetOrigin(), nil, true, true)
                      end
     end
     return true
 end
-
 
 function AvocaArc:Instruct()
    self:SpecificRules()

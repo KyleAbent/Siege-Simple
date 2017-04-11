@@ -227,7 +227,7 @@ if Server then
           self:SetCameraDistance(3)
           if Client then CreateSpinEffect(self) end
           self.isLockedEjecting = true
-          self:AddTimedCallback(function() DestroySpinEffect(self) self.isLockedEjecting = false self:SetCameraDistance(0) Exo.EjectExo(self)  end, 3)
+          self:AddTimedCallback(function() DestroySpinEffect(self) self.isLockedEjecting = false self:SetCameraDistance(0) Exo.EjectExo(self)  end, 1)
     
     end
 end

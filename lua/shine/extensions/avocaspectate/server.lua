@@ -22,7 +22,7 @@ local choices = {}
  
               
                    for index, player in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
-                  if not player:isa("Spectator") and not player:isa("Commander") and player:GetIsOnGround() then table.insert(choices, player) break end
+                  if not player:isa("Spectator")  and not player:isa("ReadyRoomPlayer")  and not player:isa("Commander") and player:GetIsOnGround() then table.insert(choices, player) break end
               end 
             
               local random = table.random(choices)
@@ -109,7 +109,7 @@ if interesting ~= nil then table.insert(choices,interesting) end
               
              for index, breakabledoor in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do
               if breakabledoor:GetHealthScalar() <= .7 and not breakabledoor:GetHealth() == 0 and  breakabledoor:GetIsInCombat() then
-                     local player =  GetNearest(breakabledoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and ent ~= self end)
+                     local player =  GetNearest(breakabledoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("ReadyRoomPlayer") and not ent:isa("Commander") and ent ~= self end)
                      if player then
                      table.insert(choices, player) 
                      break  -- just 1
@@ -157,7 +157,7 @@ local choices = {}
     --if fronttimer <= 10, or after 10s focus on doors opening
     
              for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
-                     local player =  GetNearest(frontdoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and ent ~= self end)
+                     local player =  GetNearest(frontdoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and not ent:isa("ReadyRoomPlayer") and ent ~= self end)
                      if player then
                      table.insert(choices, player) 
                      break  -- just 1
@@ -247,6 +247,8 @@ local function overHeadandNear(self, client, vip)
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
              client:SetOffsetAngles(angles)
              client:SetLockOnTarget(vip:GetId())
+             //Sixteenth notes within eigth notes which is the other untilNext
+             
              self:NotifyGeneric( client, "VIP is %s, location is %s", true, vip:GetClassName(), GetLocationName(client) )
 end
 local function firstPersonScoreBased(self, client)

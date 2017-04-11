@@ -1,8 +1,34 @@
 --Kyle 'Avoca' Abent 
-local networkVars = {lastswitch = "private time", nextangle = "private integer (0 to 8)", lockedId = "entityid"} 
+//Well I am copying everything, you know. But I like my name cause it's a good one.
+local networkVars = {lastswitch = "private time", nextangle = "private integer (0 to 8)", lockedId = "entityid", lastzoom = "private time"} 
 class 'AvocaSpectator' (Spectator)
 AvocaSpectator.kMapName = "Spectator"
 
+--AvocaSpectator.kModelName = PrecacheAsset("models/alien/fade/fade.model")
+local kDefaultFreeLookSpeed = Player.kWalkMaxSpeed * 1.21
+local kMaxSpeed = kDefaultFreeLookSpeed --Player.kWalkMaxSpeed * 5
+local kAcceleration = 15
+local kDeltatimeBetweenAction = 0.3
+
+function AvocaSpectator:SetMaxSpeed(derp)
+    kMaxSpeed = derp
+    kAcceleration = kMaxSpeed
+end
+function AvocaSpectator:GetMaxSpeed(possible)
+    return kMaxSpeed
+end
+
+function AvocaSpectator:GetAcceleration()
+    return kAcceleration
+end
+function AvocaSpectator:OnInitialized()
+
+    Spectator.OnInitialized(self)
+    self:CreateController() -- Gods have physique
+end
+function AvocaSpectator:GetControllerPhysicsGroup()
+    return PhysicsGroup.BigPlayerControllersGroup  
+end
 function AvocaSpectator:OnCreate()
  Spectator.OnCreate(self)
   self.lastswitch = Shared.GetTime()
@@ -11,6 +37,7 @@ function AvocaSpectator:OnCreate()
         end
         self.nextangle = math.random(4,8)
          self.lockedId = Entity.invalidI 
+          self.lastzoom = 0
 end
 function AvocaSpectator:SetLockOnTarget(userid)
    self.lockedId = userid
@@ -36,6 +63,53 @@ function AvocaSpectator:LockAnglesTarget(who)
 end
 function AvocaSpectator:UnlockAngles()
 
+end
+function AvocaSpectator:OnEntityChange(oldId)
+
+    if self.lockedId == oldId then
+        self.lockedId = Entity.invalidId
+       self.lastswitch = Shared.GetTime()
+       self.nextangle = math.random(4,8)
+     self:ChangeView(self, self.nextangle, self.lastswitch )
+    end    
+    
+
+end
+function AvocaSpectator:OverrideInput(input)
+
+    ClampInputPitch(input)
+     //Attempts of Zooming in when outside radius
+          if  self.lockedId ~= Entity.invalidI then
+            local target = Shared.GetEntity( self.lockedId ) 
+              if target and target:GetIsAlive() then
+                 local distance = self:GetDistance(target)
+                 if distance >= 5 and self.lastzoom + 1 <= Shared.GetTime() then
+                      Print("Distance %s lastzoom %s", distance, self.lastzoom) //debug my ass
+                      self.lastzoom = Shared.GetTime()   //java is leaking
+                      input.move.z = input.move.z + 1
+                      local scalar = distance - 4
+                      local ymove = 0
+                      local myY = self:GetOrigin().y
+                      local urY = target:GetOrigin().y
+                      local difference =  urY - myY
+                            if difference == 0 then
+                                ymove = difference
+                            elseif difference <= -1 then
+                               ymove = -1
+                            elseif difference >= 1 then
+                               ymove = 1
+                            end
+                       input.move.y = input.move.y + (ymove) 
+                       local speed = target.GetMaxSpeed and target:GetMaxSpeed() or 4
+                      self:SetMaxSpeed( speed * scalar)
+                      Print(" new distance is %s, new lastzoom is %s", distance, self.lastzoom)
+                 end
+              end
+          
+          end
+    
+    return input
+    
 end
 function AvocaSpectator:UpdateCamera()
          self:LockAngles()
