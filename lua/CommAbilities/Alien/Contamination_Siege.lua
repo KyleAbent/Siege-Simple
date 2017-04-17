@@ -60,16 +60,4 @@ function Contamination:OnInitialized()
     end
 
 end
-
-function Contamination:StartBeaconTimer()
-
-self:AddTimedCallback(Contamination.DelayActivation, math.random(1,8))
-
-end
-
-function Contamination:DelayActivation()
-return GetImaginator():HandleIntrepid(self)
-end
-
-
 Shared.LinkClassToMap("Contamination", Contamination.kMapName, networkVars)

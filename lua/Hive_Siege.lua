@@ -15,19 +15,6 @@ end
 
 if Server then
 
-
-local orig_Hive_OnConstructionComplete = Hive.OnConstructionComplete
-function Hive:OnConstructionComplete()
-
-
-   if GetResearcher():GetAlienEnabled() then
-   self.bioMassLevel = 3
-   UpdateTypeOfHive(self)
-   end
-   
-end
-
-
 function Hive:CheckForDoubleUpG()  --CONSTANT issue of Double hives. Meaning no upgs. Ruining games after time spent seeding server.
  
 --Print("Hive:CheckForDoubleUpG()")

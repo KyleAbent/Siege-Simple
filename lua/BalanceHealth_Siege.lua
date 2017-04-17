@@ -16,7 +16,7 @@ kMatureCystArmor = 30 --default 0
 kMatureCystHealth = 500 --default 450
 
 kBabblerHealth = 25 --default 10
-kOnosHealtPerBioMass = 31
+--kOnosHealtPerBioMass = 31
 
 
 kEggBeaconMaxHealth = 715

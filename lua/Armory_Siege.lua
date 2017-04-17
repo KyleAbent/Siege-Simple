@@ -1,6 +1,3 @@
-function Armory:GetMinRangeAC()
-return ArmoryAutoCCMR 
-end
 function Armory:GetShouldResupplyPlayer(player)
     if not player:GetIsAlive() then
         return false

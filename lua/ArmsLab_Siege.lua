@@ -20,8 +20,5 @@ local originit = ArmsLab.OnInitialized
     function ArmsLab:GetAddXPAmount()
     return kDefaultAddXp
     end
-function ArmsLab:GetMinRangeAC()
-return ArmsLabAutoCCMR 
-end
 
 Shared.LinkClassToMap("ArmsLab", ArmsLab.kMapName, networkVars)

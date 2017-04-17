@@ -1,130 +1,4 @@
-
-
-
 if Server then
-
-
- function ARC:CreateScan()
-    local origin = self:GetOrigin()
-        if GetIsInSiege(self) then
-          local hive =  GetNearest(origin, "Hive", 2)
-           if hive then
-              origin = hive:GetOrigin()
-           end
-        end
-        local scan = CreateEntity(Scan.kMapName, origin, 1)
- end
- function ARC:Instruct()
-   self:SpecificRules()
-   return true
-end
-local function FindNewParent(who)
-    local where = who:GetOrigin()
-    local player =  GetNearest(where, "Player", 1, function(ent) return ent:GetIsAlive() end)
-    if player then
-    who:SetOwner(player)
-    end
-end
-local function GiveDeploy(who)
-    --Print("GiveDeploy")
-who:GiveOrder(kTechId.ARCDeploy, who:GetId(), who:GetOrigin(), nil, true, true)
-end
-local function GiveUnDeploy(who)
-     --Print("GiveUnDeploy")
-     who:CompletedCurrentOrder()
-     who:SetMode(ARC.kMode.Stationary)
-     who.deployMode = ARC.kDeployMode.Undeploying
-     who:TriggerEffects("arc_stop_charge")
-     who:TriggerEffects("arc_undeploying")
-end
-local function GetSiegeLocation()
---local locations = {}
-
-local hive = nil
-
- for _, hivey in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
-    hive = hivey
- end
- local siegeloc = nil
- if hive ~= nil then
-  siegeloc = GetNearest(hive:GetOrigin(), "Location", nil, function(ent) return string.find(ent.name, "siege") or string.find(ent.name, "Siege") end)
- end
- 
-if siegeloc then return siegeloc end
- return nil
-end
-local function MoveToHives(self) --Closest hive from origin
---Print("Siegearc MoveToHives")
-local siegelocation = GetSiegeLocation()
-if not siegelocation then return true end
-local siegepower = GetPowerPointForLocation(siegelocation.name)
-local hiveclosest = GetNearest(siegepower:GetOrigin(), "Hive", 2)
-local origin = 0
-
---if hiveclosest then
---origin = siegepower:GetOrigin()
---origin = origin + hiveclosest:GetOrigin()
---origin = origin + siegelocation:GetOrigin()
---origin = origin / 3
---end
-if origin == 0 then origin = FindArcHiveSpawn(siegepower:GetOrigin())  end
-local where = origin
-               if where then
-        self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
-                    return
-                end  
-   return not self.mode == ARC.kMode.Moving  and not GetIsInSiege(self)  
-end
-
-function ARC:SpecificRules()
---Print("Siegearc SpecificRules")
-local moving = self.mode == ARC.kMode.Moving     
---Print("moving is %s", moving) 
-        
-local attacking = self:GetInAttackMode()
---Print("attacking is %s", moving) 
-local inradius = GetIsInSiege(self) and GetIsPointWithinHiveRadius(self:GetOrigin()) 
---Print("inradius is %s", inradius) 
-
-local shouldstop = not true
---Print("shouldstop is %s", shouldstop) 
-local shouldmove = not moving and not inradius
---Print("shouldmove is %s", shouldmove) 
-local shouldstop = moving and inradius
---Print("shouldstop is %s", shouldstop) 
-local shouldattack = inradius and not attacking 
---Print("shouldattack is %s", shouldattack) 
-local shouldundeploy = attacking and not inradius and not moving
---Print("shouldundeploy is %s", shouldundeploy) 
-  
-  if moving then
-    
-    if shouldstop or shouldattack then 
-       --Print("StopOrder")
-       FindNewParent(self)
-       self:ClearOrders()
-       self:SetMode(ARC.kMode.Stationary)
-      end 
- elseif not moving then
-      
-    if shouldmove and not shouldattack  then
-        if shouldundeploy then
-         --Print("ShouldUndeploy")
-         GiveUnDeploy(self)
-       else --should move
-       --Print("GiveMove")
-       MoveToHives(self)
-       end
-       
-   elseif shouldattack then
-     --Print("ShouldAttack")
-     GiveDeploy(self)
-    return true
-    
- end
- 
-    end
-end
 
 
 local origrules = ARC.AcquireTarget
@@ -150,6 +24,7 @@ ARCSiege.kMapName = "arcsiege"
 local networkVars = 
 
 {
+
 
 }
 AddMixinNetworkVars(ResearchMixin, networkVars)
@@ -196,9 +71,6 @@ function ARCSiege:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-
-    
-
 /*
 local function DoNotEraseTarget(self)
    local currentOrder = self:GetCurrentOrder()
@@ -228,6 +100,5 @@ end
 end//server
     */
     
-   
+ 
 Shared.LinkClassToMap("ARCSiege", ARCSiege.kMapName, networkVars)
-

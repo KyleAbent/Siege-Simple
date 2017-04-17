@@ -13,9 +13,6 @@ AddMixinNetworkVars(InfestationMixin, networkVars)
 function Whip_Salty_Infestation:GetInfestationRadius()
     return 1
 end
-function Whip:GetMinRangeAC()
-return WhipAutoCCMR       
-end
 function Whip_Salty_Infestation:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end

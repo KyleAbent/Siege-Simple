@@ -1,6 +1,4 @@
-function Observatory:GetMinRangeAC()
-return ObsAutoCCMR   
-end
+
 
 
 function Observatory:GetTechButtons(techId)

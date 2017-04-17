@@ -15,9 +15,6 @@ local originit = PhaseGate.OnInitialized
         function PhaseGate:GetTechId()
          return kTechId.PhaseGate
     end
-    function PhaseGate:GetMinRangeAC()
-    return math.random(PGAutoCCMRMax, PGAutoCCMRMin) 
-      end
     function PhaseGate:GetMaxLevel()
     return kDefaultLvl
     end

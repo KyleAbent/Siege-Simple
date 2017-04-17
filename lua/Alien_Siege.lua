@@ -14,9 +14,9 @@ function Alien:OnCreate()
 
 end
 function Alien:UpdateWeapons()
+     local lasttime = 1
      if Server then
         self:AddTimedCallback(function() UpdateAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId()) end, 0.6) 
-        self:AddTimedCallback(function() UpdateAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId()) end, 1) 
      end
 end
 local orig_Alien_OnInitialized = Alien.OnInitialized

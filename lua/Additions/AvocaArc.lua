@@ -9,7 +9,7 @@ local networkVars =
     lastReverse = "private time", 
 
 }
-AvocaArc.kMoveSpeed = 0.7
+AvocaArc.kMoveSpeed = 1
 AvocaArc.kAttackDamage = 4000
 AvocaArc.kMapName = "avocaarc"
 local kNanoshieldMaterial = PrecacheAsset("Glow/green/green.material")
@@ -332,11 +332,20 @@ local function GiveUnDeploy(who)
 end
 local function PlayersNearby(who)
 
-local players =  GetEntitiesForTeamWithinRange("Player", 1, who:GetOrigin(), 4)
+local players =  GetEntitiesForTeamWithinRange("Player", 1, who:GetOrigin(), 6)
+local aliens =  GetEntitiesForTeamWithinRange("Player", 2, who:GetOrigin(), 4)
 local alive = false
-    if not who:GetInAttackMode() and #players >= 1 then
+local enemy = false
+
+    for i = 1, #aliens do
+            local alien = aliens[i] 
+             if alien:GetIsAlive() and alive == false then enemy = true break end
+     end
+     
+    if not enemy and not who:GetInAttackMode() and #players >= 1 then
          for i = 1, #players do
             local player = players[i]
+              if player:isa("Marine") then player:AddHealth( math.random(4,8) ) end
              if player:isa("Marine")  or player:isa("Exo") then
              if player:GetIsAlive() and alive == false then alive = true who.lastNearby = Shared.GetTime() end
             end
@@ -383,9 +392,9 @@ shouldstop = shouldstop and not shouldReverse
           if shouldmove then
       // Print("GiveMove")
            MoveToWaypoints(self)
-          local movespeed = 0.7
-           movespeed = movespeed  + 0.25
-          self:SetMoveSpeed(Clamp(movespeed, 0.7, 2.5))
+          local movespeed = 1
+           movespeed = movespeed  + 1
+          self:SetMoveSpeed(Clamp(movespeed, 1, 4))
           elseif shouldReverse then
          ReverseFromWaypoints(self)
        end

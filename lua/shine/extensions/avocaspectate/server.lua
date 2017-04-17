@@ -56,17 +56,6 @@ local neutralavgorigin = Vector(0, 0, 0)
     end
 
 end
-local function GetIsBusy(who)
-  local order = who:GetCurrentOrder()
-local busy = false
-   if order then
-   busy = true
-   end
-  -- if who:isa("MAC") then
- --  elseif who:isa("Drifter") then
-   -- end
-return busy
-end
 local function GetSiegeView()
 
 
@@ -153,13 +142,24 @@ if interesting ~= nil then table.insert(choices,interesting) end
               return random
 
 end
+local function GetIsBusy(who)
+  local order = who:GetCurrentOrder()
+local busy = false
+   if order then
+   busy = true
+   end
+  -- if who:isa("MAC") then
+ --  elseif who:isa("Drifter") then
+   -- end
+return busy
+end
 local function GetSetupView()
  --Print("GetSetupView")
 local choices = {}
 --macs, drifters, not built constructs
 --front door
     --if fronttimer <= 10, or after 10s focus on doors opening
-     /*
+    
              for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
                      local player =  GetNearest(frontdoor:GetOrigin(), "Player", nil, function(ent) return not ent:isa("Commander") and not ent:isa("ReadyRoomPlayer") and ent ~= self end)
                      if player then
@@ -167,32 +167,18 @@ local choices = {}
                      break  -- just 1
                      end
               end 
-       */       
-       
-                      for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
-                    local order = arc:GetCurrentOrder()
-                      if order then 
-                 if order:GetType() == kTechId.Move then table.insert(choices, arc) break end -- just 1
-                     end
-              end 
               
              for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
                   if GetIsBusy(mac) then table.insert(choices, mac) break end 
-              end   
-         /*  
+              end     
              for index, cyst in ientitylist(Shared.GetEntitiesWithClassname("Cyst")) do
                   if not cyst:GetIsBuilt() then table.insert(choices, cyst) break end 
-              end
-      */
-  
+              end  
              for index, drifter in ientitylist(Shared.GetEntitiesWithClassname("Drifter")) do
                   if GetIsBusy(drifter) then table.insert(choices, drifter) break end 
               end    
                    for _, construct in ipairs(GetEntitiesWithMixin("Construct")) do
-                  if not construct:isa("PowerPoint") and not GetIsInSiege(construct) and not construct:GetIsBuilt() 
-                  then table.insert(choices, construct) 
-                 --  break
-                   end --built and not disabled should be summed up by if in combat?
+                  if not construct:isa("PowerPoint") and not GetIsInSiege(construct) and not construct:GetIsBuilt() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
               end    
               
               local random = table.random(choices)
@@ -249,13 +235,17 @@ local function SwitchToOverHead(client, self, where)
         client.overheadModeHeight =  height
 
 end
+function Plugin:GetIsOverheadAllowed(findfreespace, viporigin)
+local chance = math.random(1,10)
+ return  ( GetGamerules():GetGameStarted() and findfreespace ==  viporigin and chance >= 7 )
+end
 local function overHeadandNear(self, client, vip)
           client:SetDesiredCameraDistance(0)
         -- Print("vip is %s", vip:GetClassName())
           if client:GetSpectatorMode() ~= kSpectatorMode.FreeLook then client:SetSpectatorMode(kSpectatorMode.FreeLook)  end
           local viporigin = vip:GetOrigin()
           local findfreespace = FindFreeSpace(viporigin, 1, 8)
-          if findfreespace == viporigin then findfreespace.x = findfreespace.x - 2 return end
+          if self:GetIsOverheadAllowed(viporigin, findfreespace) then SwitchToOverHead(client, self, viporigin) return end
               client:SetOrigin(findfreespace)
              local dir = GetNormalizedVector(viporigin - client:GetOrigin())
              local angles = Angles(GetPitchFromVector(dir), GetYawFromVector(dir), 0)
@@ -334,6 +324,7 @@ function Plugin:ClientConnect(client)
      if client then Shared.ConsoleCommand(string.format("sh_ban %s 0", client:GetUserId() )  )end
       end)
       end
+      
       
      if client:GetUserId() == 8086089 or client:GetUserId() == 2962389  then 
      self:SimpleTimer( 4, function() 

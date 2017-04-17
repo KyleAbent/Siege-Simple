@@ -307,8 +307,6 @@ end
 function Plugin:MapPostLoad()
 
       Server.CreateEntity(SandCastle.kMapName)
-      Server.CreateEntity(Imaginator.kMapName)
-      Server.CreateEntity(Researcher.kMapName)
 end
 
 local function GetSandCastle() --it washed away
@@ -449,11 +447,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
   
            if State == kGameState.Countdown then
              GetSandCastle():OnRoundStart()
-             GetImaginator():OnRoundStart()
-             -- GetResearcher():OnRoundStart()
        elseif State == kGameState.NotStarted then
-                --GetImaginator():OnPreGame()
-             --GetResearcher():OnPreGame()
              GetSandCastle():OnPreGame()
           end
           
@@ -887,44 +881,6 @@ end
 local CystCommand = self:BindCommand( "sh_cyst", "cyst", Cyst )
 CystCommand:AddParam{ Type = "clients" }
 CystCommand:Help( "<player> Give cyst to player(s)" )
-
-
-local function Researcher( Client, Number, Boolean )
-
-if Number == 1 then 
-GetResearcher().marineenabled = Boolean
-elseif Number == 2 then
-GetResearcher():SetAlienEnabled(Boolean)
-end
-
-
-  
-   self:NotifyGeneric( nil, "%s Researcher set to %s (No Comm Required)", true, Number, Boolean)
-  
-end
-
-local ResearcherCommand = self:BindCommand( "sh_researcher", "researcher", Researcher )
-ResearcherCommand:Help( "sh_researcher - <team> - true/false - Automated Research system (No comm required) " )
-ResearcherCommand:AddParam{ Type = "team" }
-ResearcherCommand:AddParam{ Type = "boolean" }
-
-local function Imaginator( Client, Number, Boolean )
-GetImaginator():SetImagination(Boolean, Number)
-if Number == 1 then 
-GetImaginator().marineenabled = Boolean
-elseif Number == 2 then
-GetImaginator().alienenabled = Boolean
-end
- self:NotifyGeneric( nil, "%s Imaginator set to %s (No Comm Required)", true, Number, Boolean)
-  
-end
-
-local ImaginatorCommand = self:BindCommand( "sh_imaginator", "imaginator", Imaginator )
-ImaginatorCommand:Help( "sh_Imaginator - 1/2 - true/false - Automated structure placement system (No Comm Required) " )
-ImaginatorCommand:AddParam{ Type = "team" }
-ImaginatorCommand:AddParam{ Type = "boolean" }
-
-
 local function OpenFrontDoors()
            for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
                 sandcastle:OpenFrontDoors() 
@@ -965,45 +921,6 @@ end --
 local OpenCommand = self:BindCommand( "sh_open", "open", Open )
 OpenCommand:AddParam{ Type = "string" }
 OpenCommand:Help( "Opens <type> doors (Front/Primary/Siege) (not case sensitive) - timer will still display." )
-
-local function TestFilm( Client )
-           for i = 1, 10 do
-          Shared.ConsoleCommand("addbot")
-         end
-         Shared.ConsoleCommand("sh_randomrr")
-            Shared.ConsoleCommand("sh_forceroundstart")
-            Shared.ConsoleCommand("sh_imaginator 1 true")
-           Shared.ConsoleCommand("sh_researcher 1 true")
-          Shared.ConsoleCommand("sh_imaginator 2 true")
-           Shared.ConsoleCommand("sh_researcher 2 true")
-
-  
-   self:NotifyGeneric( nil, "%s Test Film ", true)
-  
-end
-
-local TestFilmCommand = self:BindCommand( "sh_testfilm", "testfilm", TestFilm )
-TestFilmCommand:Help( "sh_testfilm adds bots forces round and enables imaginator researcher  " )
-
-
-local function AutoComm( Client )
-
-
-     if not GetGamerules():GetGameStarted() then
-            Shared.ConsoleCommand("sh_forceroundstart")
-           end
-            Shared.ConsoleCommand("sh_imaginator 1 true")
-           Shared.ConsoleCommand("sh_researcher 1 true")
-          Shared.ConsoleCommand("sh_imaginator 2 true")
-           Shared.ConsoleCommand("sh_researcher 2 true")
-
-  
-   self:NotifyGeneric( nil, "%s Enabled Auto Comm", true)
-  
-end
-
-local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )
-AutoCommCommand:Help( "sh_testfilm forces autocomm (disables if human comm) and forces round to start  " )
 
 
 

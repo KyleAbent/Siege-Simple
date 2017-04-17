@@ -6,8 +6,6 @@ ModLoader.SetupFileHook( "lua/Weapons/Alien/HydraAbility.lua", "lua/Weapons/Alie
 
 ModLoader.SetupFileHook( "lua/TeamJoin.lua", "lua/TeamJoin_Siege.lua", "post" )
 
-ModLoader.SetupFileHook( "lua/PowerPoint.lua", "lua/PowerPoint_Siege.lua", "post" )
-
 ModLoader.SetupFileHook( "lua/BalanceMisc.lua", "lua/BalanceMisc_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Globals.lua", "lua/Globals_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/BuildUtility.lua", "lua/BuildUtility_Siege.lua", "post" )
@@ -50,6 +48,8 @@ ModLoader.SetupFileHook( "lua/AlienTeam.lua", "lua/AlienTeam_Siege.lua", "post" 
 ModLoader.SetupFileHook( "lua/Cyst.lua", "lua/Cyst_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Server.lua", "lua/Server_Siege.lua", "post" )
+
+--ModLoader.SetupFileHook( "lua/weapons/marine/HeavyMachineGun.lua", "lua/weapons/marine/HeavyMachineGun_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Embryo.lua", "lua/Embryo_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/AlienCommander.lua", "lua/AlienCommander_Siege.lua", "post" ) 

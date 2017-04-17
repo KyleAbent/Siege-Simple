@@ -6,11 +6,8 @@ Script.Load("lua/Additions/BreakableDoor.lua")
 Script.Load("lua/ClassMods/ClassMods.lua")
 Script.Load("lua/Additions/AvocaArc.lua")
 Script.Load("lua/Additions/FuncTrainWaypoint.lua")
---Script.Load("lua/Additions/SiegeArc.lua")
+--Script.Load("lua/Additions/PLArc.lua")
 Script.Load("lua/Additions/StunWall.lua")
-
-Script.Load("lua/Additions/Imaginator.lua")
-Script.Load("lua/Additions/Researcher.lua")
 
 Script.Load("lua/Additions/MAC_Credits.lua")
 Script.Load("lua/Additions/ARC_Credits.lua")

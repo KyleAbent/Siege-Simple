@@ -45,8 +45,6 @@ function GetCheckSentryLimit(techId, origin, normal, commander)
     
 end
 
-function Sentry:GetMinRangeAC()
-return SentryAutoCCMR     
-end
+
  
 
