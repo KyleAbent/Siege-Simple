@@ -9,7 +9,7 @@ local networkVars =
     lastReverse = "private time", 
 
 }
-AvocaArc.kMoveSpeed = 2
+AvocaArc.kMoveSpeed = 0.7
 AvocaArc.kAttackDamage = 4000
 AvocaArc.kMapName = "avocaarc"
 local kNanoshieldMaterial = PrecacheAsset("Glow/green/green.material")
@@ -39,9 +39,10 @@ function AvocaArc:OnInitialized()
  ARC.OnInitialized(self)
    if Server then
  self:AddTimedCallback(AvocaArc.Instruct, 1)
-   self:AddTimedCallback(AvocaArc.DefensiveOrder, 1) 
+   self:AddTimedCallback(AvocaArc.DefensiveOrder, 8) 
  --self:AddTimedCallback(AvocaArc.Waypoint, 16)
  -- self:AddTimedCallback(AvocaArc.Scan, 6)
+  -- self:AddTimedCallback(AvocaArc.PBAoe,  8)
  end
 
 end
@@ -106,8 +107,8 @@ function AvocaArc:OnTag(tagName)
 end
 function AvocaArc:PBAoe()
         GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
-        local hitEntities = GetEntitiesWithMixinWithinRange("Live", self:GetOrigin(), ARC.kSplashRadius)
-        RadiusDamage(hitEntities, self:GetOrigin(), ARC.kSplashRadius, AvocaArc.kAttackDamage, self, true)
+        local hitEntities = GetEntitiesWithMixinWithinRange("Live", self:GetOrigin(), 18)
+        RadiusDamage(hitEntities, self:GetOrigin(), 18, AvocaArc.kAttackDamage, self, true)
         return true
 end
 function AvocaArc:GetPointValue()
@@ -182,6 +183,9 @@ function AvocaArc:UpdateMoveOrder(deltaTime)
     end
     
 end
+function AvocaArc:GetCanBeVortexed()
+return false
+end
   function AvocaArc:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
     unitName = "Payload"
@@ -198,12 +202,14 @@ local destination = Vector(0,0,0)
 local self = who
  local previousDestination = nil
  local currentWaypoint = self.waypoint
+ local toSet = currentWaypoint
  
  
      local toMatch = currentWaypoint - 1
     for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
            if ent.number == toMatch then
             destination = ent:GetOrigin()
+            toSet = toMatch
             break
           end       
     end  
@@ -212,9 +218,11 @@ local self = who
     for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
                 if ent.number == toEven then
                 previousDestination = ent:GetOrigin()
+                toSet = toEven
                 break
              end
     end     
+    
 
   local closertoPrevious =(self:GetOrigin() - destination ):GetLength() <=  1 //and ( self:GetOrigin() - nextDestination) >= 
   local getIsNear 
@@ -222,6 +230,7 @@ local self = who
     //Print("closertoNext is %s", closertoNext)   
           if closertoPrevious then
               destination = previousDestination
+              self.waypoint = toSet
           end
                     self:ClearOrders()
                     self:SetMoveSpeed(0.3)
@@ -282,10 +291,9 @@ local self = who
                          GiveDeploy(self)
                          if Server then 
                         self:AddTimedCallback(AvocaArc.SoTheGameCanEnd,  4)
-                        -- self:AddTimedCallback(AvocaArc.PBAoe,  4)
                          end
                     end
-                  --  if oldWaypoint ~= self.waypoint then self:PBAoe() end
+                    if oldWaypoint ~= self.waypoint then self:PBAoe() end
                   self:ClearOrders()
                     who:GiveOrder(kTechId.Move, nil, destination, nil, true, true)
                 //    Print("Self waypoint is %s", self.waypoint)
@@ -329,17 +337,9 @@ local alive = false
     if not who:GetInAttackMode() and #players >= 1 then
          for i = 1, #players do
             local player = players[i]
-            if player:GetIsAlive() and alive == false then alive = true who.lastNearby = Shared.GetTime() end
-            if ( player:GetIsAlive() and  player.GetIsNanoShielded and not player:GetIsNanoShielded()) then player:ActivateNanoShield() end
-           if player:isa("Marine")  then
-             if ( player:GetHealth() == player:GetMaxHealth() ) then
-           local addarmoramount = math.random(1,4)
-           addarmoramount =  addarmoramount
-           player:AddHealth(addarmoramount, false, not true, nil, nil, true)
-           else
-           player:AddHealth(Armory.kHealAmount, false, false, nil, nil, true)   
-           end
-           end
+             if player:isa("Marine")  or player:isa("Exo") then
+             if player:GetIsAlive() and alive == false then alive = true who.lastNearby = Shared.GetTime() end
+            end
          end
     end
 return alive, #players
@@ -383,9 +383,9 @@ shouldstop = shouldstop and not shouldReverse
           if shouldmove then
       // Print("GiveMove")
            MoveToWaypoints(self)
-          local movespeed = 1
-           movespeed = movespeed  + numplayers
-          self:SetMoveSpeed(Clamp(movespeed, 2, 4))
+          local movespeed = 0.7
+           movespeed = movespeed  + 0.25
+          self:SetMoveSpeed(Clamp(movespeed, 0.7, 2.5))
           elseif shouldReverse then
          ReverseFromWaypoints(self)
        end
@@ -421,7 +421,9 @@ if Server then
 function AvocaArc:DefensiveOrder()
     for _, marine in ipairs(GetEntitiesWithinRange("Marine", self:GetOrigin(), 9999)) do
                      if marine:GetIsAlive() and not marine:isa("Commander") then //marine:GetClient():GetIsVirtual()
-                     marine:GiveOrder(kTechId.Defend, self:GetId(), self:GetOrigin(), nil, true, true)
+                       if ( marine.GetHasOrder and not  marine:GetHasOrder() ) then
+                       marine:GiveOrder(kTechId.Defend, self:GetId(), self:GetOrigin(), nil, true, true)
+                        end
                      end
     end
     return true

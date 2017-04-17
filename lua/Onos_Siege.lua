@@ -82,6 +82,7 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
         if self:GetIsBoneShieldActive() then
           if GetHitsBoneShield(self, doer, hitPoint) then
            damageReduct = kBoneShieldDamageReduction
+           self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
            end
         elseif self:GetIsCharging()  then  
         damageReduct =  0.7
@@ -89,7 +90,6 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
         
         if damageReduct ~= 1 then
         damageTable.damage = damageTable.damage * damageReduct
-        self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
         end
         
     end

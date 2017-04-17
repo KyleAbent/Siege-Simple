@@ -5,26 +5,11 @@ class 'AvocaSpectator' (Spectator)
 AvocaSpectator.kMapName = "Spectator"
 
 --AvocaSpectator.kModelName = PrecacheAsset("models/alien/fade/fade.model")
-local kDefaultFreeLookSpeed = Player.kWalkMaxSpeed * 1.21
-local kMaxSpeed = kDefaultFreeLookSpeed --Player.kWalkMaxSpeed * 5
-local kAcceleration = 15
-local kDeltatimeBetweenAction = 0.3
 
-function AvocaSpectator:SetMaxSpeed(derp)
-    kMaxSpeed = derp
-    kAcceleration = kMaxSpeed
-end
-function AvocaSpectator:GetMaxSpeed(possible)
-    return kMaxSpeed
-end
-
-function AvocaSpectator:GetAcceleration()
-    return kAcceleration
-end
 function AvocaSpectator:OnInitialized()
 
     Spectator.OnInitialized(self)
-    self:CreateController() -- Gods have physique
+
 end
 function AvocaSpectator:GetControllerPhysicsGroup()
     return PhysicsGroup.BigPlayerControllersGroup  
@@ -81,10 +66,10 @@ function AvocaSpectator:OverrideInput(input)
      //Attempts of Zooming in when outside radius
           if  self.lockedId ~= Entity.invalidI then
             local target = Shared.GetEntity( self.lockedId ) 
-              if target and target:GetIsAlive() then
+              if target and  ( target.GetIsAlive and target:GetIsAlive() ) then
                  local distance = self:GetDistance(target)
                  if distance >= 5 and self.lastzoom + 1 <= Shared.GetTime() then
-                      Print("Distance %s lastzoom %s", distance, self.lastzoom) //debug my ass
+                    //  Print("Distance %s lastzoom %s", distance, self.lastzoom) //debug my ass
                       self.lastzoom = Shared.GetTime()   //java is leaking
                       input.move.z = input.move.z + 1
                       local scalar = distance - 4
@@ -100,9 +85,9 @@ function AvocaSpectator:OverrideInput(input)
                                ymove = 1
                             end
                        input.move.y = input.move.y + (ymove) 
-                       local speed = target.GetMaxSpeed and target:GetMaxSpeed() or 4
-                      self:SetMaxSpeed( speed * scalar)
-                      Print(" new distance is %s, new lastzoom is %s", distance, self.lastzoom)
+                   elseif distance <= 1.8 and self.lastzoom + 1 <= Shared.GetTime() then
+                   input.move.z = input.move.z - 1
+                     // Print(" new distance is %s, new lastzoom is %s", distance, self.lastzoom)
                  end
               end
           

@@ -30,6 +30,9 @@ if self:GetTechId() ~= kTechId.ARCRoboticsFactory then self:SetTechId(kTechId.Ro
 RoboticsFactory.OnInitialized(self)
 end
 
+function RoboSiege:GetMinRangeAC()
+return RoboAutoCCMR    
+end
 function RoboSiege:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined

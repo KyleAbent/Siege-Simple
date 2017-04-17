@@ -25,7 +25,7 @@ kUmbraRailgunModifier = 0.70
 kUmbraGrenadeModifer = 0.70
 
 
-kNumBabblerEggsPerGorge = 3
+--kNumBabblerEggsPerGorge = 3
 kRebirthHpBuffTriggered = 1.10
 kRebirthHpBuffNew = 1.10
 kOnocideDamage = 779

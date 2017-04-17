@@ -1,3 +1,6 @@
+function InfantryPortal:GetMinRangeAC()
+return IPAutoCCMR  
+end
 function InfantryPortal:CheckSpaceAboveForSpawn()
 
     local startPoint = self:GetOrigin() 

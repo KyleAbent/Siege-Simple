@@ -31,7 +31,13 @@ function Welder:PerformWeld(player)
                    player:AddContinuousScore("WeldHealth", addAmount, kAmountLeveledForPoints, kLevelScoreAdded)
                    end     
        end
+       
+       if target:isa("Marine") then
+          target:AddHealth(1)
+       end
+       
     end
+          
         return origweld(self, player)
     
 end
