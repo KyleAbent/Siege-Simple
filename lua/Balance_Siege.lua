@@ -3,6 +3,8 @@ kSwipeDamageType = kDamageType.Normal
 kGoreDamage = 100
 
 
+kSentryDamage = 6
+
 kUmbraEnergyCost = 23
 
 kGorgeCost = 10
@@ -36,7 +38,7 @@ kPrimalScreamEnergyCost = 25
 kPrimalScreamRange = 10
 kPrimalScreamDamageModifier = 1.3
 kPrimalScreamDuration = 4
-kPrimalScreamEnergyGain = 60
+kPrimalScreamEnergyGain = 25
 kPrimalScreamROF = 3
 
 kRedemptionCost = 2
@@ -66,7 +68,7 @@ kDualExosuitCost = 35 -- default 45
 --kMarineRespawnTime = 8 --default 9
 
 kFlameThrowerEnergyDamage = 1 
---kBlinkEnergyCost = 27 -- default 32
+kBlinkEnergyCost = 27 -- default 32
 kStartBlinkEnergyCost = 13 --default 14
 kBoneShieldArmorPerSecond = 95 --default 112
 kMucousShieldPercent = 0.20 --default 0.15

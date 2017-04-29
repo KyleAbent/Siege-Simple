@@ -229,6 +229,8 @@ SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoSiege.kMapName)
 
 
 SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
+SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
+
 
 
 

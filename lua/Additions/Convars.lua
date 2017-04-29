@@ -1,4 +1,4 @@
-kExoFlamerDamage = 23
+kExoFlamerDamage = 25
 kExoWelderDamagePerSecond = 28
 kExoPlayerWeldRate = 15
 kExoStructureWeldRate = 65
@@ -55,5 +55,5 @@ kDefaultAddXp = 0.15
 kArmoryAddXp = 0.45
 kArmoryLvl = 75
 kInfantryPortalXPGain = 0.05
-kCommSentryPerRoom = 6
+kCommSentryPerRoom = 8
 kMacMaxLevel = 50
