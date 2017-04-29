@@ -40,7 +40,6 @@ local kSiege_TechIds =
     'CommVortex',
     'AcidRocket',
     'DropMAC',
-    --'JumpPack',
     'Redemption',
     'Rebirth',
     'CragHiveTwo',
@@ -52,6 +51,7 @@ local kSiege_TechIds =
     'DualWelderExosuit',
     'DualFlamerExosuit',
     'LerkBileBomb',
+    'JumpPack'
 
 
     

@@ -10,7 +10,6 @@ function MarineTeam:InitTechTree()
     
     self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
     self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
-    -- self.techTree:AddTargetedBuyNode(kTechId.JumpPack,            kTechId.JetpackTech,         kTechId.None)
     -- self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
      self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.None) 
     self.techTree:AddActivation(kTechId.MacSpawnOn,                kTechId.RoboticsFactory,          kTechId.None)
@@ -20,6 +19,7 @@ function MarineTeam:InitTechTree()
     self.techTree:AddBuildNode(kTechId.BackupLight,            kTechId.None,                kTechId.None)
     self.techTree:AddBuyNode(kTechId.DualWelderExosuit, kTechId.ExosuitTech, kTechId.None)
     self.techTree:AddBuyNode(kTechId.DualFlamerExosuit, kTechId.ExosuitTech, kTechId.None)
+   self.techTree:AddTargetedBuyNode(kTechId.JumpPack, kTechId.JetpackTech, kTechId.None)
     
     
     self.techTree:SetComplete()

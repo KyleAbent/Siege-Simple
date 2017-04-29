@@ -1,3 +1,21 @@
+local networkVars =
+{
+   noComm = "private boolean",
+}
+function Cyst:CheckYoselfFoo()
+local team2Commander = GetGamerules().team2:GetCommander() 
+self.noComm = GetImaginator():GetAlienEnabled() and not team2Commander
+return true
+end
+local origcreate = Cyst.OnCreate
+function Cyst:OnCreate()
+origcreate(self)
+self.noComm = false
+  if Server then
+  self:CheckYoselfFoo()
+ self:AddTimedCallback(function() self:CheckYoselfFoo() end, 4)
+ end
+end
 function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
@@ -11,11 +29,11 @@ end
 
 local origone = Cyst.GetCystParentRange
 function Cyst:GetCystParentRange()
-return GetImaginator():GetAlienEnabled() and 999 or origone(self)
+return self.noComm and 999 or origone(self)
 end
 local origtwo = Cyst.GetCystParentRange
 function Cyst:GetCystParentRange()
-return GetImaginator():GetAlienEnabled() and 999 or origtwo(self)
+return self.noComm and 999 or origtwo(self)
 end
 
 function Cyst:GetMinRangeAC()
@@ -26,11 +44,11 @@ if Server then
 
 local origthree = Cyst.GetIsActuallyConnected
    function Cyst:GetIsActuallyConnected()
-     return GetImaginator():GetAlienEnabled() and true or origthree(self)
+     return self.noComm and true or origthree(self)
    end
   local origfour = Cyst.GetCanAutoBuild 
   function Cyst:GetCanAutoBuild()
-     return GetImaginator():GetAlienEnabled() and true or origfour(self)
+     return self.noComm and true or origfour(self)
    end
     
 end

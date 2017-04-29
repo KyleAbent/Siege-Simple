@@ -42,17 +42,26 @@ local random = {}
     
     return where
 end
+local function GetScalar()
+  --NowToSiegeOpen
+  if GetSiegeDoorOpen() then
+  return 0.7
+  else 
+  return 0.3
+  end
+  
+end
 local function SpewBile( self )
-    
+    local team1Commander = GetGamerules().team1:GetCommander() 
     local team2Commander = GetGamerules().team2:GetCommander() 
-    if not self:GetIsAlive() or team2Commander then
+    if not self:GetIsAlive() or team2Commander or ( team1Commander and not GetSiegeDoorOpen() ) then
         return false
     end
     
     local dotMarker = CreateEntity( DotMarker.kMapName, GetNearestToBile(self), self:GetTeamNumber() )
     dotMarker:SetDamageType( kBileBombDamageType )
     dotMarker:SetLifeTime( kBileBombDuration * 0.7 )
-    dotMarker:SetDamage( kBileBombDamage * 0.7 )
+    dotMarker:SetDamage( kBileBombDamage * GetScalar() )
     dotMarker:SetRadius( kBileBombSplashRadius )
     dotMarker:SetDamageIntervall( kBileBombDotInterval * 0.7 )
     dotMarker:SetDotMarkerType( DotMarker.kType.Static )

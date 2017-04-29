@@ -1,16 +1,17 @@
+kJumpPackCost = 5
 ArmoryAutoCCMR =  16
 PGAutoCCMRMax = 54
 PGAutoCCMRMin = 32
 ObsAutoCCMR = kScanRadius
-RoboAutoCCMR = 54
+RoboAutoCCMR = 54 / 2
 SentryAutoCCMR = 16
-ProtoAutoCCMR = 42
+ProtoAutoCCMR = 42 / 2
 --CommandStationAutoCCMR = math.random(16,420)
 ArmsLabAutoCCMR = 4
 IPAutoCCMR = 8
 
-ShadeAutoCCMR = 17
-ShiftAutoCCMR  = kEnergizeRange
+ShadeAutoCCMR = 16 / 2
+ShiftAutoCCMR  = kEnergizeRange / 2
 CragAutoCCMR  = 14 / 3
 WhipAutoCCMR  = 14 / 3
 

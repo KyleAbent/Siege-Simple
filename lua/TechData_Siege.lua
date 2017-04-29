@@ -74,7 +74,15 @@ function GetCheckStructureBeacon(techId, origin, normal, commander)
 end
 
 local kSiege_TechData =
-{        
+{   
+
+             { [kTechDataId] = kTechId.JumpPack,
+        [kTechDataCostKey] = kJumpPackCost,
+        [kTechDataDisplayName] = "Jump Pack", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Press DUCK + Jump at the same time.. Does not work with jetpack. "},
+
+     
          { [kTechDataId] = kTechId.DualWelderExosuit,    
  [kTechIDShowEnables] = false,     
   [kTechDataDisplayName] = "Dual Welders", 

@@ -15,7 +15,7 @@ if Server then
         local scan = CreateEntity(Scan.kMapName, origin, 1)
  end
  function ARC:Instruct()
-   self:SpecificRules()
+     self:SpecificRules()
    return true
 end
 local function FindNewParent(who)
@@ -53,6 +53,15 @@ local hive = nil
 if siegeloc then return siegeloc end
  return nil
 end
+local function MoveToPowers(self)
+   --Austin 
+local randomlocation = GetActiveAirLock()
+local power = GetPowerPointForLocation(randomlocation.name)
+   if power then 
+      local where = FindFreeSpace(power:GetOrigin(), 4, 24)
+     self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
+   end
+end
 local function MoveToHives(self) --Closest hive from origin
 --Print("Siegearc MoveToHives")
 local siegelocation = GetSiegeLocation()
@@ -75,7 +84,17 @@ local where = origin
                 end  
    return not self.mode == ARC.kMode.Moving  and not GetIsInSiege(self)  
 end
-
+local function CheckForAndActAccordingly(who)
+local stopanddeploy = false
+          for _, enemy in ipairs(GetEntitiesWithMixinForTeamWithinRange("Live", 2, who:GetOrigin(), kARCRange)) do
+             if who:GetCanFireAtTarget(enemy, enemy:GetOrigin()) then
+             stopanddeploy = true
+             break
+             end
+          end
+        --Print("stopanddeploy is %s", stopanddeploy)
+       return stopanddeploy
+end
 function ARC:SpecificRules()
 --Print("Siegearc SpecificRules")
 local moving = self.mode == ARC.kMode.Moving     
@@ -83,7 +102,7 @@ local moving = self.mode == ARC.kMode.Moving
         
 local attacking = self:GetInAttackMode()
 --Print("attacking is %s", moving) 
-local inradius = GetIsInSiege(self) and GetIsPointWithinHiveRadius(self:GetOrigin()) 
+local inradius = (GetSiegeDoorOpen() and GetIsInSiege(self) and GetIsPointWithinHiveRadius(self:GetOrigin()) ) or ( not GetSiegeDoorOpen() and CheckForAndActAccordingly(self)  )
 --Print("inradius is %s", inradius) 
 
 local shouldstop = not true
@@ -113,7 +132,11 @@ local shouldundeploy = attacking and not inradius and not moving
          GiveUnDeploy(self)
        else --should move
        --Print("GiveMove")
-       MoveToHives(self)
+          if GetSiegeDoorOpen() then 
+           MoveToHives(self) 
+          else
+             MoveToPowers(self)
+           end
        end
        
    elseif shouldattack then

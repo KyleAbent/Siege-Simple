@@ -1,4 +1,11 @@
 --Kyle 'Avoca' Abent
+function GetActiveAirLock()
+  local airlocks = {}
+  for _, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
+        if location:GetIsAirLock() then table.insert(airlocks,location) end
+    end
+    return table.random(airlocks) 
+end
  function GetHasCragHive()
     for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
        if hive:GetTechId() == kTechId.CragHive then return true end
@@ -142,7 +149,7 @@ function GetResearcher()
 end
 function GetIsTimeUp(timeof, timelimitof)
  local time = Shared.GetTime()
- local boolean = (timeof + timelimitof) <= time
+ local boolean = (timeof + timelimitof) < time
  --Print("timeof is %s, timelimitof is %s, time is %s", timeof, timelimitof, time)
  -- if boolean == true then Print("GetTimeIsUp boolean is %s, timelimitof is %s", boolean, timelimitof) end
  return boolean
@@ -266,7 +273,7 @@ if GetSiegeDoorOpen() then return end
   
   if not GetFrontDoorOpen() then 
       
-      if who:isa("Cyst") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
+      if who:isa("Cyst") and not GetImaginator():GetAlienEnabled() then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12   end)
      elseif who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4   end)

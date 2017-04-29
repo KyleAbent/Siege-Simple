@@ -1,3 +1,4 @@
+
 --Kyle 'Avoca' Abent
 
 
@@ -11,7 +12,10 @@ local networkVars =
 {
  alienenabled = "boolean",
  marineenabled = "boolean",
-  lastrobo = "time",
+  lastrobo = "private time",
+  lastink = "private time",
+  lasthealwave = "private time",
+  --lastmarineBeacon = "private time",
 }
 
 
@@ -51,6 +55,8 @@ function Imaginator:OnCreate()
    self.marineenabled = false
    self.alienenabled = false
    self.lastrobo = 0
+   self.lastink = 0
+   self.lasthealwave = 0
    self:SetUpdates(true)
 end
 function Imaginator:GetMarineEnabled()
@@ -178,7 +184,7 @@ local function Touch(who, where, what, number)
          if tower then
             who:SetAttached(tower)
             if number == 1 then
-            tower:SetConstructionComplete()
+           -- tower:SetConstructionComplete()
             else
                if not tower:GetGameEffectMask(kGameEffect.OnInfestation) then 
                CreateEntity(Clog.kMapName, FindFreeSpace(tower:GetOrigin(), 1, 4) , 2) 
@@ -491,9 +497,8 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true H
 
       --table.insert(tospawn, kTechId.Scan)
       
-    local  AdvancedArmory = #GetEntitiesForTeam( "AdvancedArmory", 1 )
      
-          if AdvancedArmory  and pcount < 9 then
+          if GetHasAdvancedArmory()  and pcount < 9 then
            table.insert(tospawn, kTechId.PrototypeLab)
          end
       
@@ -589,13 +594,7 @@ local function GetTechId(mapname)
       end
       return nil
 end
-local function GetActiveAirLock()
-  local airlocks = {}
-  for _, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
-        if location:GetIsAirLock() then table.insert(airlocks,location) end
-    end
-    return table.random(airlocks) 
-end
+
 local function GetScanMinRangeReq(where)
 
             local obs = #GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
@@ -659,12 +658,36 @@ local function IsBeingGrown(self, target)
     return false
 
 end
-local function GiveDrifterConstructOrder(who, where)
+local function GetDrifterBuff()
+ local buffs = {}
+ if GetHasShadeHive()  then table.insert(buffs,kTechId.Hallucinate) end
+ if GetHasCragHive()  then table.insert(buffs,kTechId.MucousMembrane) end
+  if GetHasShiftHive()  then table.insert(buffs,kTechId.EnzymeCloud) end
+    return table.random(buffs)
+end
+local function GiveDrifterOrder(who, where)
 
 local structure =  GetNearestMixin(who:GetOrigin(), "Construct", 2, function(ent) return not ent:GetIsBuilt() and not IsBeingGrown(who, ent) and (not ent.GetCanAutoBuild or ent:GetCanAutoBuild()) and not (GetIsInSiege(ent) and not GetSiegeDoorOpen() )  end)
+local player =  GetNearest(who:GetOrigin(), "Alien", 2, function(ent) return ent:GetIsInCombat() and ent:GetIsAlive() end) 
     
-        if structure then      
-  
+    local target = nil
+    
+    if structure then
+      target = structure
+    end
+    
+    
+    if GetFrontDoorOpen() and player then
+        local chance = math.random(1,100)
+        local boolean = chance >= 70
+        if boolean then
+        who:GiveOrder(GetDrifterBuff(), player:GetId(), player:GetOrigin(), nil, false, false)
+        return
+        end
+    end
+    
+        if  structure then      
+    
             who:GiveOrder(kTechId.Grow, structure:GetId(), structure:GetOrigin(), nil, false, false)
             return  
       
@@ -691,7 +714,7 @@ local hive = nil
      for i = 1, #Drifters do
         local drifter = Drifters[i]
            if not drifter:GetHasOrder() then
-          GiveDrifterConstructOrder(drifter, drifter:GetOrigin())
+          GiveDrifterOrder(drifter, drifter:GetOrigin())
           end
      end
    
@@ -701,21 +724,6 @@ local hive = nil
    
 end
 
-local function ManageArcs()
-local arc = GetNonBusyArc()
-local powerpoints = {}
-
-   for index, powerpoint in ipairs(GetEntitiesForTeam("PowerPoint", 1)) do
-       if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then
-           table.insert(powerpoints, powerpoint)
-       end
-   end
- if arc then
-        local where = FindFreeSpace(table.random(powerpoints):GetOrigin(), 4, 24)
-        arc:GiveOrder(kTechId.Move, nil, where, nil, true, true)
- end
- 
-end
 local function GiveConstructOrder(who, where)
 
 local random = {}
@@ -766,27 +774,12 @@ end
 
 local function ManageArcs()
 
-      if GetSiegeDoorOpen() then 
+      
               for index, arc in ipairs(GetEntitiesForTeam("ARC", 1)) do
              arc:Instruct()
               end
-    return 
-      end
       
       
-      
-local arc = GetNonBusyArc()
-local powerpoints = {}
-
-   for index, powerpoint in ipairs(GetEntitiesForTeam("PowerPoint", 1)) do
-       if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then
-           table.insert(powerpoints, powerpoint)
-       end
-   end
- if arc then
-        local where = FindFreeSpace(table.random(powerpoints):GetOrigin(), 4, 8)
-        arc:GiveOrder(kTechId.Move, nil, where, nil, true, true)
- end
  
 end
 local function ManageRoboticFactories(self)
@@ -913,7 +906,44 @@ local function HasThreeUpgFor()
 GetGamerules().team2
 end
 */
-local function GetAlienSpawnList(cystonly)
+local function IsInRangeOfHive(who)
+      local hives = GetEntitiesWithinRange("Hive", who:GetOrigin(), Shade.kCloakRadius)
+   if #hives >=1 then return true end
+   return false
+end
+local function IsInRangeOfARC(who)
+      local arc = GetEntitiesWithinRange("ARC", who:GetOrigin(), Shade.kCloakRadius)
+   if #arc >=1 then return true end
+   return false
+end
+local function GetArcsDeployedSiege()
+
+  for index, arc in ipairs(GetEntitiesForTeam("ARC", 1)) do
+    if GetIsInSiege(arc) then
+    return true
+    end
+  end
+  
+  return false
+  
+end
+local function HasTeamInNeed(who)
+    for _, entity in ipairs(GetEntitiesWithinRange("Live", who:GetOrigin(), who.kHealRadius)) do
+                     if entity:GetIsAlive() and not entity:isa("Commander") then //marine:GetClient():GetIsVirtual(
+                       if entity:GetIsInCombat() and entity:GetHealthScalar() <= 0.91  then
+                          return true
+                        end
+                     end
+    end
+end
+local function AllNearByHealWave(who)
+    for _, crag in ipairs(GetEntitiesWithinRange("Crag", who:GetOrigin(), who.kHealRadius)) do
+         if not crag:GetIsOnFire() and  GetIsUnitActive(crag) then
+            crag:TriggerHealWave()
+         end
+    end
+end
+local function GetAlienSpawnList(self, cystonly)
 
 local tospawn = {}
 local canafford = {}
@@ -921,10 +951,31 @@ local gamestarted = false
 if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true end
       
       
-      local  Shade = #GetEntitiesForTeam( "Shade", 2 )
+      local  Shade = GetEntitiesForTeam( "Shade", 2 )
       
-      if Shade <= 14 then
+      if #Shade <= 14 then
       table.insert(tospawn, kTechId.Shade)
+      end
+      
+      --ShadeInk
+      --Spawn here if in range of arc or if in radius of hive during siege (and delay passed) if delay passed and keep track of delay
+      --Not written with server perf. in mind ;)
+      if #Shade >= 1 and cystonly then
+          for i = 1, #Shade do
+            local ent = Shade[i]
+             local cost = LookupTechData(kTechId.ShadeInk, kTechDataCostKey)
+             local siegeopen = GetSiegeDoorOpen()
+             if GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
+             GetIsUnitActive(ent) and GetIsTimeUp(self.lastink, kShadeInkCooldown) and 
+             ( ( IsInRangeOfARC(ent) and not GetSiegeDoorOpen() ) or ( IsInRangeOfHive(ent) and GetSiegeDoorOpen() ) ) then --and GetArcsDeployedSiege() ) ) then
+             
+             if Server then CreateEntity(ShadeInk.kMapName, ent:GetOrigin() + Vector(0, 0.2, 0), 2) end
+              ent:TriggerEffects("shade_ink")
+              self.lastink = Shared.GetTime()
+              ent:GetTeam():SetTeamResources(ent:GetTeam():GetTeamResources() - cost) 
+              break
+             end
+          end
       end
      
       local  Shift = #GetEntitiesForTeam( "Shift", 2 )
@@ -938,10 +989,30 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
       table.insert(tospawn, kTechId.Whip)
       end 
       
-      local  Crag = #GetEntitiesForTeam( "Crag", 2 )
-      if Crag <= 18 then
+      local  Crag = GetEntitiesForTeam( "Crag", 2 )
+      if #Crag <= 18 then
       table.insert(tospawn, kTechId.Crag)
       end 
+      
+      --HealWave
+      if #Crag >= 1 and cystonly then
+          for i = 1, #Crag do
+            local ent = Crag[i]
+             local cost = LookupTechData(kTechId.HealWave, kTechDataCostKey)
+             
+             if GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
+             GetIsUnitActive(ent) and GetIsTimeUp(self.lasthealwave, kHealWaveCooldown) and 
+             ( HasTeamInNeed(ent) or ( IsInRangeOfHive(ent) and GetSiegeDoorOpen() and GetArcsDeployedSiege() ) ) then
+             
+              AllNearByHealWave(ent)
+              self.lasthealwave = Shared.GetTime()
+              ent:GetTeam():SetTeamResources(ent:GetTeam():GetTeamResources() - cost) 
+              
+              break
+             end
+          end
+      end
+      
       
       table.insert(tospawn, kTechId.NutrientMist)
       
@@ -1200,7 +1271,7 @@ local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
 if hivecount < 3 then return end -- build hives first ya newb
 local randomspawn = nil
 local powerPoints = GetDisabledPowerPoints()
-local tospawn, cost, gamestarted = GetAlienSpawnList(cystonly)
+local tospawn, cost, gamestarted = GetAlienSpawnList(self, cystonly)
 local success = false
 local entity = nil
 
@@ -1312,9 +1383,10 @@ local function GiveMarineDefend(who)
 end
 function Imaginator:HandleIntrepid(who)
   local team1Commander = GetGamerules().team1:GetCommander()
-  if not team1Commander and self.marineenabled then 
- GiveMarineDefend(who)
-  end
+  --if not team1Commander and self.marineenabled then 
+ --GiveMarineDefend(who)
+    --Too advantagous ?
+  --end
   
   --Still gotta add shadeink management for regular shades in arc radius along with during siege time. 
   --Still WIP braindead but good footage :P
@@ -1361,7 +1433,46 @@ AdditionalSpawns(who)
 return who:GetIsAlive() and not who:GetIsDestroyed()
 
 end
+function Imaginator:suchasShades()
+--Cache would be nice
 
+local hive = nil
+
+   for index, hivey in ipairs(GetEntitiesForTeam("Hive", 2)) do
+       hive = hivey
+       break
+   end
+   
+ if not hive then return end
+ 
+   local shades = GetEntitiesWithinRange( "Shade", hive:GetOrigin(), 18 )
+   
+   if #shades <= 2 then 
+        local cost = LookupTechData(kTechId.Shade, kTechDataCostKey)
+        if TresCheck(2, cost) then
+               local origin = FindFreeSpace(hive:GetOrigin(), 2, 14) --not too far else shadeink not hit hive!
+               local shade = CreateEntity(Shade.kMapName, origin,  2)
+               shade:GetTeam():SetTeamResources(shade:GetTeam():GetTeamResources() - cost)
+               --Global tres reduct function?
+        end
+   end
+   
+   
+return false
+end
+function Imaginator:EnsureSiegeWall()
+local delay = math.random(4,16)
+
+   self:AddTimedCallback(Imaginator.suchasShades, delay)
+
+
+return true
+end
+function Imaginator:OnSiegeOpen()
+
+   self:AddTimedCallback(Imaginator.EnsureSiegeWall, 8)
+
+end
 --
 
 Shared.LinkClassToMap("Imaginator", Imaginator.kMapName, networkVars)

@@ -87,6 +87,7 @@ end
 end
 function SandCastle:OpenSiegeDoors()
      self.SiegeTimer = 0
+     if GetGameStarted() then GetImaginator():OnSiegeOpen() end
      -- Print("OpenSiegeDoors SandCastle")
                for index, siegedoor in ientitylist(Shared.GetEntitiesWithClassname("SiegeDoor")) do
                  if not siegedoor:isa("FrontDoor") then OpenEightTimes(siegedoor) end

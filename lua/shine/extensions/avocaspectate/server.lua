@@ -81,7 +81,12 @@ local choices = {}
 --egg or structure beacon
 local interesting = GetLocationWithMostMixedPlayers()
 if interesting ~= nil then table.insert(choices,interesting) end
-               
+           
+
+              for index, shadeink in ientitylist(Shared.GetEntitiesWithClassname("ShadeInk")) do
+                   table.insert(choices, shadeink)
+              end     
+    
               for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
                   if GetIsBusy(mac) then table.insert(choices, mac) break end 
               end     

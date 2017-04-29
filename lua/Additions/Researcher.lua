@@ -155,11 +155,12 @@ end
 function Researcher:UpdateHivesManually()
        local  hivecount = 0
        local isSetup = not GetSetupConcluded()
-       
+       local hasOneBuilt = false
                  for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
                   
                      if hive:GetIsBuilt() then 
                          hivecount = hivecount + 1 
+                         hasOneBuilt = true
                          if not isSetup or hivecount == 3 then
                          HiveResearch(hive) 
                          end
@@ -167,7 +168,7 @@ function Researcher:UpdateHivesManually()
                end
           
           
-      if  hivecount < 3 and TresCheck(2,40) then
+      if  hasOneBuilt and hivecount < 3 and TresCheck(2,40) then
           for _, techpoint in ientitylist(Shared.GetEntitiesWithClassname("TechPoint")) do
              if techpoint:GetAttached() == nil then 
                local hive =  techpoint:SpawnCommandStructure(2) 

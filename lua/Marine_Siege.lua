@@ -1,3 +1,9 @@
+local networkVars =
+{
+   hasjumppack = "private boolean",
+   lastjump = "private time",
+}
+
 local origcreate = Marine.OnCreate
 function Marine:OnCreate()
   origcreate(self)
@@ -8,6 +14,8 @@ function Marine:OnCreate()
            then self:Kill()  
             end
         end
+        self.hasjumppack  = false
+         self.lastjump = 0
 end
 function Marine:OnLocationChange(locationName)
  local open = GetSiegeDoorOpen()
@@ -33,7 +41,36 @@ function Marine:GetCanBeVortexed()
     return false
 end
 
+
+local origMove = Marine.OnProcessMove
+function Marine:OnProcessMove(input)
+  origMove(self, input)
+  if not self:isa("JetpackMarine") then
+      if self.hasjumppack then
+       if Shared.GetTime() >  self.lastjump + 1.5 and bit.band(input.commands, Move.Jump) ~= 0 and bit.band(input.commands, Move.Crouch) ~= 0 then
+       --if self:GetGravity() ~= 0 then self:JumpPackNotGravity() end
+       local range = 12
+       local force = 12
+       local velocity = self:GetVelocity() * 0.5
+       local forwardVec = self:GetViewAngles():GetCoords().zAxis
+       local newVelocity = velocity + GetNormalizedVectorXZ(forwardVec) * force
+          //Jumping upward ruins it.
+        newVelocity.y = newVelocity.y * 0.3
+        self:SetVelocity(  self:GetVelocity() + newVelocity )
+        self.lastjump = Shared.GetTime()
+        end
+    end
+  end
+end
 if Server then
+
+local origdata = Marine.CopyPlayerDataFrom
+
+function Marine:CopyPlayerDataFrom(player)
+ origdata(self, player)
+self.hasjumppack = player.hasjumppack
+end
+
 /*
 local origcweapons = Marine.InitWeapons
 
@@ -172,11 +209,26 @@ local function BuyFlamerExo(self)
     Print("Error: Could not find a spawn point to place the Exo")
     
 end
+function Marine:GetHasJumpPack()
+
+if self.hasjumppack then return true
+else return false
+end
+
+end
 local origattemptbuy = Marine.AttemptToBuy
 function Marine:AttemptToBuy(techIds)
 
   local techId = techIds[1]
-    
+  
+               if techId == kTechId.JumpPack then
+              --  StartSoundEffectForPlayer(Marine.activatedsound, self)
+            //    self:AddResources(-GetCostForTech(techId))
+                self.hasjumppack = true
+              --  Print("Bought jump pack")
+                return true
+                end
+                
     local hostStructure = GetHostStructureFor(self, techId)
 
     if hostStructure then
@@ -191,6 +243,7 @@ function Marine:AttemptToBuy(techIds)
                 self:GetTeam():OnBought(techId)
             end
             
+
             if techId == kTechId.DualWelderExosuit then
                  BuyWelderExo(self)
             elseif techId == kTechId.DualFlamerExosuit then
@@ -249,3 +302,5 @@ return
 end
 
 end -- client
+
+Shared.LinkClassToMap("Marine", Marine.kMapName, networkVars)
