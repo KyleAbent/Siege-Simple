@@ -29,6 +29,41 @@ function Contamination:OnCreate()
     origcreate(self)
     InitMixin(self, PointGiverMixin)
 end
+local function GetNearestToBile(self)
+local where = self:GetOrigin()
+local random = {}
+    for _, ent in ipairs(GetEntitiesWithMixinForTeamWithinRange("Live",1, where, self:GetCurrentInfestationRadius() )) do
+       table.insert(random, ent)
+    end
+    
+    if #random >= 1 then
+     where = table.random(random):GetOrigin()
+    end
+    
+    return where
+end
+local function SpewBile( self )
+    
+    local team2Commander = GetGamerules().team2:GetCommander() 
+    if not self:GetIsAlive() or team2Commander then
+        return false
+    end
+    
+    local dotMarker = CreateEntity( DotMarker.kMapName, GetNearestToBile(self), self:GetTeamNumber() )
+    dotMarker:SetDamageType( kBileBombDamageType )
+    dotMarker:SetLifeTime( kBileBombDuration * 0.7 )
+    dotMarker:SetDamage( kBileBombDamage * 0.7 )
+    dotMarker:SetRadius( kBileBombSplashRadius )
+    dotMarker:SetDamageIntervall( kBileBombDotInterval * 0.7 )
+    dotMarker:SetDotMarkerType( DotMarker.kType.Static )
+    dotMarker:SetTargetEffectName( "bilebomb_onstructure" )
+    dotMarker:SetDeathIconIndex( kDeathMessageIcon.BileBomb )
+    dotMarker:SetOwner( self:GetOwner() )
+    dotMarker:SetFallOffFunc( SineFalloff )
+    dotMarker:TriggerEffects( "bilebomb_hit" )
+    return true
+    
+end
 function Contamination:OnInitialized()
 
     ScriptActor.OnInitialized(self)
@@ -50,6 +85,7 @@ function Contamination:OnInitialized()
         self:SetCoords( coords )
         
         self:AddTimedCallback( TimeUp, GetLifeSpan(self) )
+        self:AddTimedCallback( SpewBile, 1 )
         
     elseif Client then
     
@@ -60,4 +96,16 @@ function Contamination:OnInitialized()
     end
 
 end
+
+function Contamination:StartBeaconTimer()
+
+self:AddTimedCallback(Contamination.DelayActivation, math.random(1,8))
+
+end
+
+function Contamination:DelayActivation()
+return GetImaginator():HandleIntrepid(self)
+end
+
+
 Shared.LinkClassToMap("Contamination", Contamination.kMapName, networkVars)

@@ -5,6 +5,9 @@ end
 function Crag:GetBonusAmt()
 return (self:GetCragsInRange()/10)
 end
+function Crag:GetMinRangeAC()
+return CragAutoCCMR 
+end
 function Crag:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
     unitName = string.format(Locale.ResolveString("Crag (%sS %sB)"), self:GetCragsInRange(), self:GetBonusAmt() )

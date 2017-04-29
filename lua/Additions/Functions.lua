@@ -1,9 +1,142 @@
 --Kyle 'Avoca' Abent
-function GetBallForPlayerOwner(who)
-            for _, ball in ientitylist(Shared.GetEntitiesWithClassname("Ball")) do
-                 if ball:GetParent() == who then --not owner
-                 return ball
-                 end
+ function GetHasCragHive()
+    for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
+       if hive:GetTechId() == kTechId.CragHive then return true end
+    end
+    return false
+end
+ function GetHasShiftHive()
+    for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
+       if hive:GetTechId() == kTechId.ShiftHive then return true end
+    end
+    return false
+end
+ function GetHasShadeHive()
+    for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
+       if hive:GetTechId() == kTechId.ShadeHive then return true end
+    end
+    return false
+end
+local function GetLocationNameWhere(where)
+        local location = GetLocationForPoint(where)
+        local locationName = location and location:GetName() or ""
+        return locationName
+end
+function GetWhereIsInSiege(where)
+if string.find(GetLocationNameWhere(where), "siege") or string.find(GetLocationNameWhere(where), "Siege") then return true end
+return false
+end
+       function FindArcHiveSpawn(where)    
+        for index = 1, 8 do
+           local extents = LookupTechData(kTechId.Skulk, kTechDataMaxExtents, nil)
+           local capsuleHeight, capsuleRadius = GetTraceCapsuleFromExtents(extents)  
+           local spawnPoint = GetRandomSpawnForCapsule(capsuleHeight, capsuleRadius, where, .5, 48, EntityFilterAll())
+           local inradius = false
+
+           if spawnPoint ~= nil then
+             spawnPoint = GetGroundAtPosition(spawnPoint, nil, PhysicsMask.AllButPCs, extents)
+             inradius = #GetEntitiesWithinRange("Hive", spawnPoint, ARC.kFireRange) >= 1
+           end
+                -- Print("FindArcHiveSpawn inradius is %s", inradius)
+           local sameLocation = spawnPoint ~= nil and GetWhereIsInSiege(spawnPoint)
+         --  Print("FindArcHiveSpawn sameLocation is %s", sameLocation)
+
+           if spawnPoint ~= nil and sameLocation and inradius then
+           return spawnPoint
+           end
+       end
+--           Print("No valid spot found for FindArcHiveSpawn")
+           return nil --FindFreeSpace(where, .5, 48)
+    end
+    
+function UpdateTypeOfHive(who)
+local hasshade = false
+local hasecrag = false
+local hasshift = false
+
+             for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
+               if hive:GetIsAlive() and hive:GetIsBuilt() then 
+                  if hive:GetTechId() ==  kTechId.CragHive then
+                  hasecrag = true
+                  elseif hive:GetTechId() ==  kTechId.ShadeHive then
+                  hasshade = true
+                  elseif hive:GetTechId() ==  kTechId.ShiftHive then
+                  hasshift = true
+                  end
+                end
+              end
+local techids = {}
+if hasecrag == false then table.insert(techids, kTechId.CragHive) end
+if hasshade == false then table.insert(techids, kTechId.ShadeHive) end
+if hasshift == false then table.insert(techids, kTechId.ShiftHive) end
+   
+   if #techids == 0 then return end 
+    for i = 1, #techids do
+      local current = techids[i]
+      if who:GetTechId() == techid then
+      table.remove(techids, current)
+      end
+    end
+    
+    local random = table.random(techids)
+    
+    who:UpgradeToTechId(random) 
+    who:GetTeam():GetTechTree():SetTechChanged()
+
+end
+
+function ChangeArcTo(who, mapname)
+
+if not who or not mapname or not who.rolledout  then return end
+
+
+
+                      local entity = CreateEntity(mapname, who:GetOrigin(), 1)
+                      entity:SetHealth(who:GetHealth())
+                      entity:SetArmor(who:GetArmor())
+                      who.rolledout = true
+                      if who:GetIsDeployed() then entity:SetDeployed() end
+                      DestroyEntity(who)
+                     
+
+end
+function GetNonBusyArc()
+          for _, ARC in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
+               if not ARC:GetInAttackMode() and not ARC:isa("AvocaArc") and not ARC:isa("ARCCredit") and ARC.mode ~= ARC.kMode.Moving then
+                return ARC
+                end
+          end
+end
+ function TresCheck(team, cost)
+    if team == 1 then
+    return GetGamerules().team1:GetTeamResources() >= cost
+    elseif team == 2 then
+    return GetGamerules().team2:GetTeamResources() >= cost
+    end
+
+end
+function GetAllLocationsWithSameName(origin)
+local location = GetLocationForPoint(origin)
+local locations = {}
+local name = location.name
+ for _, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
+        if location.name == name then table.insert(locations, location) end
+    end
+    return locations
+end
+function GetImaginator() 
+    local entityList = Shared.GetEntitiesWithClassname("Imaginator")
+    if entityList:GetSize() > 0 then
+                 local imaginator = entityList:GetEntityAtIndex(0) 
+                 return imaginator
+    end    
+    return nil
+end
+function GetResearcher() 
+    local entityList = Shared.GetEntitiesWithClassname("Researcher")
+    if entityList:GetSize() > 0 then
+                 local researcher = entityList:GetEntityAtIndex(0) 
+                 return researcher
     end    
     return nil
 end
@@ -77,10 +210,10 @@ function UpdateAliensWeaponsManually()
         alien:UpdateWeapons() 
 end
 end
-function FindFreeSpace(where, mindistance, maxdistance)    
+function FindFreeSpace(where, mindistance, maxdistance, infestreq)    
      if not mindistance then mindistance = .5 end
      if not maxdistance then maxdistance = 24 end
-        for index = 1, 1 do
+        for index = 1, math.random(4,8) do
            local extents = LookupTechData(kTechId.Skulk, kTechDataMaxExtents, nil)
            local capsuleHeight, capsuleRadius = GetTraceCapsuleFromExtents(extents)  
            local spawnPoint = GetRandomSpawnForCapsule(capsuleHeight, capsuleRadius, where, mindistance, maxdistance, EntityFilterAll())
@@ -94,6 +227,10 @@ function FindFreeSpace(where, mindistance, maxdistance)
            local wherelocation = GetLocationForPoint(where)
            wherelocation = wherelocation and wherelocation.name or nil
            local sameLocation = spawnPoint ~= nil and locationName == wherelocation
+           
+           if infestreq then
+             sameLocation = sameLocation and GetIsPointOnInfestation(spawnPoint)
+           end
         
            if spawnPoint ~= nil and sameLocation   then
               return spawnPoint

@@ -60,6 +60,18 @@ function AvocaSpectator:OnEntityChange(oldId)
     
 
 end
+local function GetCDistance(target)
+local dist = 5
+ if target:isa("Hive") then
+ dist = 6
+ elseif target:isa("Contamination") then
+  dist = 4
+  elseif target:isa("Marine") then
+  dist = 4 
+  end
+  return dist
+  
+end
 function AvocaSpectator:OverrideInput(input)
 
     ClampInputPitch(input)
@@ -67,12 +79,12 @@ function AvocaSpectator:OverrideInput(input)
           if  self.lockedId ~= Entity.invalidI then
             local target = Shared.GetEntity( self.lockedId ) 
               if target and  ( target.GetIsAlive and target:GetIsAlive() ) then
+                 if target:isa("Contamination") then input.move.x = input.move.x + 0.25 end
                  local distance = self:GetDistance(target)
-                 if distance >= 5 and self.lastzoom + 1 <= Shared.GetTime() then
+                 if distance >= GetCDistance(target) and self.lastzoom + 1 <= Shared.GetTime() then
                     //  Print("Distance %s lastzoom %s", distance, self.lastzoom) //debug my ass
                       self.lastzoom = Shared.GetTime()   //java is leaking
-                      input.move.z = input.move.z + 1
-                      local scalar = distance - 4
+                      input.move.z = input.move.z + 0.5
                       local ymove = 0
                       local myY = self:GetOrigin().y
                       local urY = target:GetOrigin().y

@@ -5,20 +5,28 @@ class 'PoopEgg' (Egg)
 
 PoopEgg.kMapName = "poopegg"
 
-local networkVars = { }
+local networkVars = { salty = "private boolean" }
 AddMixinNetworkVars(InfestationMixin, networkVars)
 
     function PoopEgg:OnInitialized()
          Egg.OnInitialized(self)
           InitMixin(self, InfestationMixin)
         self:SetTechId(kTechId.Egg)
+        self.salty = false
     end
             function PoopEgg:GetTechId()
          return kTechId.Egg
     end
+     function PoopEgg:SetSalty()
+         self.salty = true
+    end
       function PoopEgg:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
+    if not self.salty then
     unitName = string.format(Locale.ResolveString("PoopEgg"))
+    else
+    unitName = string.format(Locale.ResolveString("PoopEgg"))
+    end
 return unitName
 end 
     function PoopEgg:OnGetMapBlipInfo()
@@ -39,18 +47,4 @@ function PoopEgg:GetInfestationRadius()
 end
 Shared.LinkClassToMap("PoopEgg", PoopEgg.kMapName, networkVars)
 
-class 'SaltyEgg' (PoopEgg)
-
-SaltyEgg.kMapName = "saltyegg"
-
-function SaltyEgg:OnInitialized()
-    PoopEgg.OnInitialized(self)
-    self:SetOrigin(self:GetOrigin() + Vector(0, .25, 0) ) 
-end
-      function SaltyEgg:GetUnitNameOverride(viewer)
-    local unitName = GetDisplayName(self)   
-    unitName = string.format(Locale.ResolveString("SaltyEgg"))
-return unitName
-end 
-Shared.LinkClassToMap("SaltyEgg", SaltyEgg.kMapName, networkVars)
 

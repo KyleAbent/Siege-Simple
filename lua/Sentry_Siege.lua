@@ -1,18 +1,6 @@
-Sentry.kFov = 360
-Sentry.kMaxPitch = 180
-Sentry.kMaxYaw = Sentry.kFov / 2
-Sentry.kBaseROF = kSentryAttackBaseROF
-Sentry.kRandROF = kSentryAttackRandROF
-Sentry.kSpread = Math.Radians(3)
-kSentryAttackBaseROF = 0.10
-
-Sentry.kBarrelScanRate = 33      -- Degrees per second to scan back and forth with no target
-Sentry.kBarrelMoveRate = 90    -- Degrees per second to move sentry orientation towards target or back to flat when targeted
-
-Sentry.kTargetAcquireTime = 0.10
-Sentry.kAttackEffectIntervall = 0.3
-
-
+function Sentry:GetFov()
+    return 360
+end
 
 local networkVars = {}
 
@@ -57,6 +45,8 @@ function GetCheckSentryLimit(techId, origin, normal, commander)
     
 end
 
-
+function Sentry:GetMinRangeAC()
+return SentryAutoCCMR     
+end
  
 

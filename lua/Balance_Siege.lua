@@ -3,8 +3,6 @@ kSwipeDamageType = kDamageType.Normal
 kGoreDamage = 100
 
 
-kSentryDamage = 6
-
 kUmbraEnergyCost = 23
 
 kGorgeCost = 10
@@ -38,7 +36,7 @@ kPrimalScreamEnergyCost = 25
 kPrimalScreamRange = 10
 kPrimalScreamDamageModifier = 1.3
 kPrimalScreamDuration = 4
-kPrimalScreamEnergyGain = 25
+kPrimalScreamEnergyGain = 60
 kPrimalScreamROF = 3
 
 kRedemptionCost = 2

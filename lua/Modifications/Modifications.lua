@@ -1,4 +1,24 @@
-
+function Shell:GetMinRangeAC()
+return  9999   
+end
+function Spur:GetMinRangeAC()
+return  9999   
+end
+function Veil:GetMinRangeAC()
+return  9999   
+end
+function Armory:GetMinRangeAC()
+return ArmoryAutoCCMR 
+end
+function ArmsLab:GetMinRangeAC()
+return ArmsLabAutoCCMR 
+end
+function Clog:GetMinRangeAC()
+return  kCystRedeployRange * .7      
+end
+function CommandStation:GetMinRangeAC()
+return math.random(16,42)      
+end
 
 if Server then
 
@@ -229,8 +249,6 @@ SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoSiege.kMapName)
 
 
 SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
-SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
-
 
 
 
