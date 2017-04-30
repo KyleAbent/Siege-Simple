@@ -2,7 +2,7 @@
 local Shine = Shine
 local Plugin = Plugin
 
-
+local kAutoCommTimer = 20--math.random(120,300)
 
 
 local OldBurnSporesAndUmbra
@@ -301,11 +301,12 @@ Plugin.Version = "1.0"
 function Plugin:Initialise()
 self.Enabled = true
 self:CreateCommands()
+self.autoCommTime = kAutoCommTimer
 return true
 end
 
 function Plugin:MapPostLoad()
-
+      --self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
       Server.CreateEntity(Researcher.kMapName)
@@ -387,7 +388,7 @@ end
 function Plugin:ClientConfirmConnect(Client)
  
  if Client:GetIsVirtual() then return end
-
+        /*
                    self:SimpleTimer( 4, function() 
                   if not Client then return end
                    Shine.ScreenText.Add( 27, {X = 0.80, Y = 0.20,Text = "Server Rules:",Duration = 30,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 2,FadeIn = 0,}, Client )
@@ -400,7 +401,7 @@ function Plugin:ClientConfirmConnect(Client)
                   if not Client then return end
  Shine.ScreenText.Add( 29, {X = 0.80, Y = 0.30,Text = "No Bullying",Duration = 16,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 2,FadeIn = 0,}, Client )
                  end)
- 
+        */
  
       
 if GetGamerules():GetGameStarted() then
@@ -421,9 +422,11 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
          AddPrimaryTimer(Client)
    end
    
-   
-   
-
+else
+                         self:CreateTimer( 27, 1,  self.autoCommTime, function() 
+                         if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
+                          Shine.ScreenText.Add( "AutoCount", {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                        end)
 
 end
 
@@ -455,9 +458,45 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                 --GetImaginator():OnPreGame()
              --GetResearcher():OnPreGame()
              GetSandCastle():OnPreGame()
+             self:StartAutoCommTimer()
           end
           
     
+end
+function Plugin:StartAutoCommTimer()
+self.autoCommTime = kAutoCommTimer
+
+                    self:SimpleTimer( self.autoCommTime, function() 
+                    if GetGamerules():GetGameStarted()  then return end
+                        for i = 1, 10 do
+          Shared.ConsoleCommand("addbot")
+         end
+         Shared.ConsoleCommand("sh_randomrr")
+            Shared.ConsoleCommand("sh_forceroundstart")
+            Shared.ConsoleCommand("sh_imaginator 1 true")
+           Shared.ConsoleCommand("sh_researcher 1 true")
+          Shared.ConsoleCommand("sh_imaginator 2 true")
+           Shared.ConsoleCommand("sh_researcher 2 true")
+                 end)
+                 
+ 
+ self:CreateTimer( 41, 1,  self.autoCommTime, function() 
+ if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 41 ) end
+  self.autoCommTime = Clamp(self.autoCommTime - 1, 0, kAutoCommTimer)
+ end)
+
+              local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player then
+                         self:CreateTimer( 84, 1,  -1, function() 
+                         if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 84 ) end
+                          Shine.ScreenText.Add( "Countdown", {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                        end)
+         end
+         end
+             
+
 end
 function Plugin:NotifyGiveRes( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, Format, ... )

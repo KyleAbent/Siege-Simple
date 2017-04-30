@@ -2,22 +2,16 @@
 PrecacheAsset("materials/power/powered_decal.surface_shader")
 local kAirLockMaterial = PrecacheAsset("materials/power/powered_decal.material")
 
-
-local networkVars =
-{
-airlock = "boolean" 
-}
 local originit = Location.OnInitialized
 function Location:OnInitialized()
 originit(self)
-self.airlock = false
 end
 local function IsPowerUp(self)
  local powerpoint = GetPowerPointForLocation(self.name)
 
    local boolean = false
- if powerpoint and not powerpoint:GetIsDisabled() then boolean = true end
-  -- Print("IsPowerUp in %s is %s", self.name, boolean)
+ if powerpoint and powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then boolean = true end
+   ---Print("IsPowerUp in %s is %s", self.name, boolean)
  return boolean 
 end
 
@@ -44,7 +38,7 @@ local lottery = {}
      return nil
 end
 function Location:GetIsAirLock()
-     local boolean = IsPowerUp(self) and ( self.airlock or not GetSetupConcluded() ) 
+     local boolean = IsPowerUp(self)
     -- Print("%s airlock is %s", self.name, boolean)
      return boolean
 end
@@ -70,16 +64,6 @@ local lottery = {}
      
      return nil
 end
-local function SetAllSameNamesAsAirLock(self)
-    local locations = GetAllLocationsWithSameName(self:GetOrigin())
-    
-    for i = 1, #locations do
-    local location = locations[i]   
-     if not location.airlock then location.airlock = true end
-  end
-  
-  
-end
 local function RealWorld(self, entity)
                local powerPoint = GetPowerPointForLocation(self.name)
             if powerPoint ~= nil then
@@ -98,8 +82,6 @@ local function IfImagination(self, entity)
                     if entity:isa("Marine") and not entity:isa("Commander") then
                          if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() then 
                          powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
-                          elseif  powerPoint:GetIsBuilt() and not powerPoint:GetIsDisabled() then
-                          SetAllSameNamesAsAirLock(self)
                          end
                     end 
             end 
@@ -124,15 +106,5 @@ local locorig = Location.OnTriggerEntered
                 
 end
 
-function Location:BuffFadesInSiegeRoom()
-
-    for _, entity in ipairs(self:GetEntitiesInTrigger()) do
-          if entity:isa("Fade") then
-          entity:AddEnergy(.1)
-          --  Print("Buffing fade in siege room")
-          end
-    end
-
-end
 
 end

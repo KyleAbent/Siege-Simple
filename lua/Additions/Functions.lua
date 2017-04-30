@@ -1,10 +1,30 @@
 --Kyle 'Avoca' Abent
-function GetActiveAirLock()
-  local airlocks = {}
-  for _, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
-        if location:GetIsAirLock() then table.insert(airlocks,location) end
+function GetSiegePowerOrig()
+  local powers = {}
+  for _, loc in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
+      if ( string.find(loc.name, "siege") or string.find(loc.name, "Siege") )  and not
+       ( string.find(loc.name, "hall") and not  string.find(loc.name, "Hall") ) then 
+        return GetPowerPointForLocation(loc.name)
+      end
     end
-    return table.random(airlocks) 
+end
+function GetWhereIsInSiege(where)
+
+return false
+end
+function GetRandomActivePower()
+  local powers = {}
+  for _, power in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+        if power:GetIsBuilt() and not power:GetIsDisabled() then table.insert(powers,power) end
+    end
+    return table.random(powers)
+end
+function GetRandomPowerOrigin()
+  local powers = {}
+  for _, power in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+        if power:GetIsBuilt() and not power:GetIsDisabled() then table.insert(powers,power) end
+    end
+    return table.random(powers):GetOrigin()
 end
  function GetHasCragHive()
     for index, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
@@ -178,7 +198,7 @@ local neutralavgorigin = Vector(0, 0, 0)
    // Print("nearest is %s", nearest.name)
         return nearest
     end
-
+  return nil
 end
 function GetIsRoomPowerDown(who)
  local location = GetLocationForPoint(who:GetOrigin())
@@ -244,6 +264,11 @@ function FindFreeSpace(where, mindistance, maxdistance, infestreq)
            end
        end
 --           Print("No valid spot found for FindFreeSpace")
+          if infestreq and not GetIsPointOnInfestation(where) then
+             if Server then CreateEntity(Cyst.kMapName, FindFreeSpace(where,1, 6),  2) end
+             --For now anyway, bite me. Remove later? :X or tres spend. Who knows right now. I wanna see this in action.
+          end
+          
            return where
 end
 local function GetLocationName(who)

@@ -56,6 +56,9 @@ end
 if Server then
 
     function StructureBeacon:OnConstructionComplete()
+        if  GetImaginator():GetAlienEnabled() and math.random(1,100) >= 85 then
+            if Server then CreateEntity(Contamination.kMapName, FindFreeSpace(self:GetOrigin()), 2) end
+        end
         if GetIsInSiege(self) then kLifeSpan = 4 end
         self:AddTimedCallback(TimeUp, kLifeSpan )  
         self:Magnetize()
@@ -78,12 +81,13 @@ if Server then
                              if HasMixin(structure, "Obstacle") then
                                 if structure.obstacleId == -1 then structure:AddToMesh() end
                              end
+                             structure:Check()
                             if success then return self:GetIsAlive() end
                        end 
                        
-                         structure:ClearOrders()
-                         success = structure:GiveOrder(kTechId.Move, self:GetId(), FindFreeSpace(self:GetOrigin(), .5, 7), nil, true, true) 
-                        if success then return self:GetIsAlive() end
+                       --  structure:ClearOrders()
+                        -- success = structure:GiveOrder(kTechId.Move, self:GetId(), FindFreeSpace(self:GetOrigin(), .5, 7), nil, true, true) 
+                      --  if success then return self:GetIsAlive() end
                        
             end
       end

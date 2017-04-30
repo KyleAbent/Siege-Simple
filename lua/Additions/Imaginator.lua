@@ -16,6 +16,7 @@ local networkVars =
   lastink = "private time",
   lasthealwave = "private time",
   --lastmarineBeacon = "private time",
+  --lastWand = "private time",
 }
 
 
@@ -95,6 +96,13 @@ function Imaginator:OnUpdate(deltatime)
          self:CystTimer()
          end
          
+         if not  self.timelastOnOffSwitch or self.timelastOnOffSwitch + 2 <= Shared.GetTime() then
+           local team1Commander = GetGamerules().team2:GetCommander()
+           local team2Commander = GetGamerules().team2:GetCommander()
+          self.timelastOnOffSwitch = Shared.GetTime()
+          self.marineEnabled = not team1Commander
+          self.alienEnabled = not team2Commander
+         end
          
          end
    
@@ -165,13 +173,11 @@ end
 local function PowerPointStuff(who, self)
 local location = GetLocationForPoint(who:GetOrigin())
 local powerpoint =  location and GetPowerPointForLocation(location.name)
-  local team1Commander = GetGamerules().team1:GetCommander()
-  local team2Commander = GetGamerules().team2:GetCommander()
       if powerpoint ~= nil then 
-              if not ( team1Commander and self.marineenabled )  and ( powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() ) then 
+              if self.marineenabled   and ( powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() ) then 
                 return 1
               end
-             if ( not team2Commander and self.alienenabled ) and ( powerpoint:GetIsDisabled() )  then
+             if  self.alienenabled  and ( powerpoint:GetIsDisabled() )  then
                   return 2
                end
      end
@@ -228,14 +234,12 @@ return self.alienenabled
 end
 function Imaginator:Imaginations() 
   local gamestarted = not  GetGameInfoEntity():GetWarmUpActive()
-  local team1Commander = GetGamerules().team1:GetCommander()
-  local team2Commander = GetGamerules().team2:GetCommander()
   
-            if gamestarted and self.marineenabled and not team1Commander then 
+            if gamestarted and self.marineenabled  then 
               self:MarineConstructs()
            end
             
-            if gamestarted  and self.alienenabled and not team2Commander then
+            if gamestarted  and self.alienenabled then
               self:AlienConstructs(false)
            end
            
@@ -244,7 +248,6 @@ end
 function Imaginator:CystTimer()
   local gamestarted = false 
    if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true end
-  --local team2Commander = GetGamerules().team2:GetCommander()
               if gamestarted  and self.alienenabled then --and not team2Commander) then
               self:AlienConstructs(true)
            end
@@ -772,14 +775,14 @@ local cc = nil
    
 end
 
-local function ManageArcs()
+local function ManageArcs(self)
 
-      
+     -- if GetIsTimeUp(self.lastWand, math.random(8, 16) ) then
               for index, arc in ipairs(GetEntitiesForTeam("ARC", 1)) do
              arc:Instruct()
               end
-      
-      
+     -- self.lastWand = Shared.GetTime()
+    --  end
  
 end
 local function ManageRoboticFactories(self)
@@ -866,14 +869,12 @@ function Imaginator:ActualFormulaMarine()
 local randomspawn = nil
 local tospawn, cost, gamestarted = GetMarineSpawnList()
  ManageMacs() 
-if gamestarted and not string.find(Shared.GetMapName(), "pl_") then ManageRoboticFactories(self)  ManageArcs() end
-local airlock = GetActiveAirLock()
+if gamestarted and not string.find(Shared.GetMapName(), "pl_") then ManageRoboticFactories(self)  ManageArcs(self) end
+local powerpoint = GetRandomActivePower()
 local success = false
 local entity = nil
-            if airlock and tospawn then
-                local powerpoint = GetPowerPointForLocation(airlock.name)
-             if powerpoint then
-                 local potential = FindPosition(GetAllLocationsWithSameName(airlock:GetOrigin()), powerpoint, 1)
+            if powerpoint and tospawn then
+                 local potential = FindPosition(GetAllLocationsWithSameName(powerpoint:GetOrigin()), powerpoint, 1)
                  if potential == nil then local roll = math.random(1,3) if roll == 3 then self:ActualFormulaMarine() return else return end end
                  randomspawn = FindFreeSpace(potential, 2.5)
             if randomspawn then
@@ -893,8 +894,7 @@ local entity = nil
                        entity = CreateEntityForTeam(tospawn, randomspawn, 1)
                         if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
                         success = true
-                     end
-               end   
+                     end  
             end
   end
     
@@ -1014,7 +1014,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
       end
       
       
-      table.insert(tospawn, kTechId.NutrientMist)
+      --table.insert(tospawn, kTechId.NutrientMist)
       
       
       
@@ -1041,10 +1041,14 @@ local function GetBioMassLevel()
            local bioMass = (teamInfo and teamInfo.GetBioMassLevel) and teamInfo:GetBioMassLevel() or 0
            return bioMass
 end
-local function FindPoorVictim()
-local airlock = GetActiveAirLock()
-local spawnpoint = airlock and airlock:GetRandomMarine() or nil
-       return spawnpoint
+local function ThreatNearestNode(where)
+local nearestnode = GetNearest(where, "PowerPoint", 1,  function(ent) return   ent:GetIsBuilt() and not ent:GetIsDisabled() and GetLocationForPoint(where) ==  GetLocationForPoint(ent:GetOrigin())  end )
+    if nearestnode then
+     CreatePheromone(kTechId.ThreatMarker,nearestnode:GetOrigin(), 2) 
+    else
+     CreatePheromone(kTechId.ExpandingMarker,where, 2) 
+    end
+
 end
 local function ChanceRandomContamination(who) --messy
     --  Print("ChanceRandomContamination")
@@ -1052,14 +1056,29 @@ local function ChanceRandomContamination(who) --messy
      local chance = GetSiegeDoorOpen() and 50 or 30
      local randomchance = math.random(1, 100)
      if (not gamestarted or TresCheck( 2, 5 ) ) and randomchance <= chance then
-     local airlock = GetActiveAirLock()
-     if not airlock then return end 
-       local where = GetPowerPointForLocation(airlock.name)
-             where = where:GetOrigin()
-             where = FindFreeSpace(where, 2, 24)
+     
+           local where = nil
+           if not GetSiegeDoorOpen()  then
+           
+               local stirItUp = math.random(1,2)
+               if stirItUp == 1 then
+                where = GetLocationWithMostMixedPlayers()
+               end
+               if stirItUp == 2 or where == nil then
+               where = GetRandomActivePower()
+                end
+                
+           else
+           where = GetSiegePowerOrig()
+           end
+           
+             
            if where then 
+           where = where:GetOrigin() 
+           where = FindFreeSpace(where, 2, 24)
                local contamination = CreateEntityForTeam(kTechId.Contamination, FindFreeSpace(where, 4, 8), 2)
-                    CreatePheromone(kTechId.ExpandingMarker,contamination:GetOrigin(), 2) 
+                   
+                      ThreatNearestNode(contamination:GetOrigin())
                     contamination:StartBeaconTimer()
             if gamestarted then contamination:GetTeam():SetTeamResources(contamination:GetTeam():GetTeamResources() - 5) end
                         --     Print("nearestbuiltnode is %s", contamination)
@@ -1092,7 +1111,7 @@ return true
 end
 local function UpgChambers()
            local gamestarted = not GetGameInfoEntity():GetWarmUpActive()   
-if not gamestarted then return nil end     
+if not gamestarted then return true end     
  local tospawn = {}
 local canafford = {}    
 
@@ -1142,17 +1161,15 @@ local hasshift = false
       return finalchoice, finalcost, gamestarted
        
 end
-local function GetHivePowerPoint()
+local function GetHive()
  local hivey = nil
             for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
                hivey = hive
                break   
              end
-local node = GetNearest(hivey:GetOrigin(), "PowerPoint", 1, function(ent) return GetLocationForPoint(ent:GetOrigin()) == GetLocationForPoint(hivey:GetOrigin())  end)
 
-if node then return node end
 
-return nil
+return hivey
 
 end
 function Imaginator:ClearAttached()
@@ -1162,9 +1179,9 @@ function Imaginator:DoBetterUpgs()
 local tospawn, cost, gamestarted = UpgChambers()
 local success = false
 local randomspawn = nil
-local hivepower = GetHivePowerPoint()
-     if hivepower and tospawn then             
-                 randomspawn = FindFreeSpace(hivepower:GetOrigin(), 4, 24, true)
+local hive = GetHive()
+     if hive and tospawn then             
+                 randomspawn = FindFreeSpace( hive:GetOrigin(), 4, 24, true)
             if randomspawn then
                    local entity = CreateEntityForTeam(tospawn, randomspawn, 2)
                     if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
@@ -1288,7 +1305,7 @@ local entity = nil
                       local range = GetRange(nearestof, randomspawn) --6.28 -- improved formula?
                       --Print("tospawn is %s, location is %s, range between is %s", tospawn, GetLocationForPoint(randomspawn).name, range)
                           local minrange =  nearestof:GetMinRangeAC()
-                          if tospawn == kTechId.NutrientMist then minrange = NutrientMist.kSearchRange end
+                         -- if tospawn == kTechId.NutrientMist then minrange = NutrientMist.kSearchRange end
                           if range >=  minrange then
                             entity = CreateEntityForTeam(tospawn, randomspawn, 2)
                           if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
@@ -1304,7 +1321,7 @@ local entity = nil
                end   
             end
   end
-    
+   -- if success and entity then self:AdditionalSpawns(entity) end
   return success
  end
 function Imaginator:AutoBuildResTowers()
@@ -1329,8 +1346,8 @@ end
 
 end
 
-local function AdditionalSpawns(who)
-
+function Imaginator:AdditionalSpawns(who)
+local where = who:GetOrigin()
 local contamchance = math.random(1, 100) 
 
 local mistchance = math.random(1, 100)
@@ -1345,16 +1362,32 @@ table.insert(tospawn, kTechId.Contamination)
 
 end  
 
-if mistchance <= 15 then
+if mistchance <= 70 then --Require unbuilt struct or egg
 
-table.insert(tospawn, kTechId.NutrientMist) 
+
+
+   for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Construct", 2, where, 8)) do
+      if not entity:GetIsBuilt() then
+      table.insert(tospawn, kTechId.NutrientMist) 
+      break
+      end
+    end
+        
 
 end
 
 
-if rupturechance <= 50 then
+    
+if rupturechance <= 70 then -- Require player to blind
 
-table.insert(tospawn, kTechId.Rupture)
+    for _, player in ipairs(GetEntitiesForTeamWithinRange("Player", 1, where, 8)) do
+                     if player:GetIsAlive() and not player:isa("Commander") then 
+                       table.insert(tospawn, kTechId.Rupture)
+                       break
+                     end
+    end
+    
+
 
 end
 
@@ -1426,7 +1459,7 @@ local randomlychosen = table.random(tospawn)
 local cost = LookupTechData(randomlychosen, kTechDataCostKey)
 
 TresSpawn(who, cost, randomlychosen)
-AdditionalSpawns(who)
+self:AdditionalSpawns(who)
 
 
 

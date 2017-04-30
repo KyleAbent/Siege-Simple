@@ -1,6 +1,14 @@
 
 
-
+local networkVars =
+{
+   lastWand = "private time",
+}
+local origcreate = ARC.OnCreate
+function ARC:OnCreate()
+origcreate(self)
+self.lastWand = 0
+end
 if Server then
 
 
@@ -55,12 +63,16 @@ if siegeloc then return siegeloc end
 end
 local function MoveToPowers(self)
    --Austin 
-local randomlocation = GetActiveAirLock()
-local power = GetPowerPointForLocation(randomlocation.name)
-   if power then 
-      local where = FindFreeSpace(power:GetOrigin(), 4, 24)
+      if GetIsTimeUp(self.lastWand, math.random(8, 16) ) then
+      local where = FindFreeSpace(GetRandomPowerOrigin(), 4, 24)
+      if where then
      self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
-   end
+     end
+     
+     self.lastWand = Shared.GetTime()
+     
+     end
+     
 end
 local function MoveToHives(self) --Closest hive from origin
 --Print("Siegearc MoveToHives")
@@ -163,6 +175,9 @@ end
 
 
 end
+
+Shared.LinkClassToMap("ARC", ARC.kMapName, networkVars)
+
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
