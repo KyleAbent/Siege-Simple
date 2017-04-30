@@ -1,6 +1,6 @@
 --Kyle 'Avoca' Abent 
 //Well I am copying everything, you know. But I like my name cause it's a good one.
-local networkVars = {lastswitch = "private time", nextangle = "private integer (0 to 8)", lockedId = "entityid", lastzoom = "private time"} 
+local networkVars = {lastswitch = "private time", nextangle = "private integer (0 to 8)", lockedId = "entityid"} 
 class 'AvocaSpectator' (Spectator)
 AvocaSpectator.kMapName = "Spectator"
 
@@ -22,7 +22,6 @@ function AvocaSpectator:OnCreate()
         end
         self.nextangle = math.random(4,8)
          self.lockedId = Entity.invalidI 
-          self.lastzoom = 0
 end
 function AvocaSpectator:SetLockOnTarget(userid)
    self.lockedId = userid
@@ -85,9 +84,8 @@ function AvocaSpectator:OverrideInput(input)
               if target and  ( target.GetIsAlive and target:GetIsAlive() ) then
                  if target:isa("Contamination") then input.move.x = input.move.x + 0.15 end
                  local distance = self:GetDistance(target)
-                 if distance >= GetCDistance(target) and self.lastzoom + 1 <= Shared.GetTime() then
+                 if distance >= GetCDistance(target) then
                     //  Print("Distance %s lastzoom %s", distance, self.lastzoom) //debug my ass
-                      self.lastzoom = Shared.GetTime()   //java is leaking
                       input.move.z = input.move.z + 0.5
                       local ymove = 0
                       local myY = self:GetOrigin().y
@@ -101,7 +99,7 @@ function AvocaSpectator:OverrideInput(input)
                                ymove = 1
                             end
                        input.move.y = input.move.y + (ymove) 
-                   elseif distance <= 1.8 and self.lastzoom + 1 <= Shared.GetTime() then
+                   elseif distance <= 1.8 then
                    input.move.z = input.move.z - 1
                      // Print(" new distance is %s, new lastzoom is %s", distance, self.lastzoom)
                  end

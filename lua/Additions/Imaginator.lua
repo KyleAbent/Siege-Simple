@@ -968,7 +968,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
              if GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
              GetIsUnitActive(ent) and GetIsTimeUp(self.lastink, kShadeInkCooldown) and 
              ( ( IsInRangeOfARC(ent) and not GetSiegeDoorOpen() ) or ( IsInRangeOfHive(ent) and GetSiegeDoorOpen() ) ) then --and GetArcsDeployedSiege() ) ) then
-             
+             --It stil spawns shadeink outside of hive radius. Why not move closer?
              if Server then CreateEntity(ShadeInk.kMapName, ent:GetOrigin() + Vector(0, 0.2, 0), 2) end
               ent:TriggerEffects("shade_ink")
               self.lastink = Shared.GetTime()
