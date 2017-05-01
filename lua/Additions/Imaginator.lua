@@ -358,7 +358,7 @@ local ips = GetEntitiesForTeamWithinRange("InfantryPortal", 1, who:GetOrigin(), 
       for i = 1, #ArmsLabs do
           local ent = ArmsLabs[i]
           if ( ent:GetIsBuilt() and not ent:GetIsPowered() ) then
-          table.remove(ArmsLabs, ent)
+          table.remove(ArmsLabs, 0)
           end
       end
       
@@ -965,7 +965,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
             local ent = Shade[i]
              local cost = LookupTechData(kTechId.ShadeInk, kTechDataCostKey)
              local siegeopen = GetSiegeDoorOpen()
-             if GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
+             if GetHasShadeHive() and GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
              GetIsUnitActive(ent) and GetIsTimeUp(self.lastink, kShadeInkCooldown) and 
              ( ( IsInRangeOfARC(ent) and not GetSiegeDoorOpen() ) or ( IsInRangeOfHive(ent) and GetSiegeDoorOpen() ) ) then --and GetArcsDeployedSiege() ) ) then
              --It stil spawns shadeink outside of hive radius. Why not move closer?
@@ -1431,7 +1431,7 @@ local tospawn = {}
       local BoneWall = #GetEntitiesForTeam( "BoneWall", 2 )
      --local ShadeInk =  #GetEntitiesWithinRange( "ShadeInk", who:GetOrigin(), 18 )
      -- local ARC = #GetEntitiesWithinRange( "ARC", who:GetOrigin(), 18 )
-      local Hydra = #GetEntitiesWithinRange( "Hydra", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
+      local Whip = #GetEntitiesWithinRange( "Whip", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
       --Rupture
       --Mist
       --DrifterAvoca
@@ -1439,7 +1439,7 @@ local tospawn = {}
    
 --if ARC >= 1 and ShadeInk <1  then table.insert(tospawn, kTechId.ShadeInk) end
 
-if Hydra <3  then table.insert(tospawn, kTechId.Hydra) end
+if Whip <=3  then table.insert(tospawn, kTechId.Whip) end
    
 if StructureBeacon < 1 and GetHasShiftHive() then table.insert(tospawn, kTechId.StructureBeacon) end
 

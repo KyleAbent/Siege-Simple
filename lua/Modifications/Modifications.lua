@@ -89,7 +89,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
   if self:GetIsAlive() and self:GetCanDie() then
           ---Rebirth
          if self:isa("Alien") then
-          if ( self:GetHasOutterController() and self:GetClient():GetIsVirtual() and math.random(1,100) <= 30) or GetHasRebirthUpgrade(self) and self:GetEligableForRebirth() then
+          if GetHasRebirthUpgrade(self) and self:GetEligableForRebirth() then
                 if Server then 
                     if attacker and attacker:isa("Player")  then 
                       local points = self:GetPointValue()

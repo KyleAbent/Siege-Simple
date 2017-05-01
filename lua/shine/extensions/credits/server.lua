@@ -652,7 +652,7 @@ local entity = nil
            entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
            if entity.SetOwner then entity:SetOwner(whoagain) end
           if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
-              if entity:isa("PoopEgg") then ent:SetSalty() end
+              if entity:isa("PoopEgg") or entity:isa("Whip") then ent:SetSalty() end
         end
 
 
@@ -827,7 +827,7 @@ mapnameof = Crag.kMapName
 techid = kTechId.Crag
 elseif String == "Whip" then
 CreditCost = 10
-mapnameof = Whip_Salty_Infestation.kMapName
+mapnameof = Whip.kMapName
 techid = kTechId.Whip
 elseif String == "Shift" then
 CreditCost = 10

@@ -20,15 +20,7 @@ AddMixinNetworkVars(InfestationMixin, networkVars)
      function PoopEgg:SetSalty()
          self.salty = true
     end
-      function PoopEgg:GetUnitNameOverride(viewer)
-    local unitName = GetDisplayName(self)   
-    if not self.salty then
-    unitName = string.format(Locale.ResolveString("PoopEgg"))
-    else
-    unitName = string.format(Locale.ResolveString("PoopEgg"))
-    end
-return unitName
-end 
+
     function PoopEgg:OnGetMapBlipInfo()
     local success = false
     local blipType = kMinimapBlipType.Undefined

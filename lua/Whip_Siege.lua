@@ -2,60 +2,40 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 
-class 'Whip_Salty_Infestation' (Whip)
-Whip_Salty_Infestation.kMapName = "whipinfestation"
 
-local networkVars = {}
+local networkVars = { salty = "private boolean" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-function Whip_Salty_Infestation:GetInfestationRadius()
+function Whip:GetInfestationRadius()
+    if self.salty then
     return 1
+    else
+    return 0
+    end
 end
 function Whip:GetMinRangeAC()
 return WhipAutoCCMR       
 end
-function Whip_Salty_Infestation:OnOrderGiven()
+function Whip:OnOrderGiven()
    if self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end
-    function Whip_Salty_Infestation:OnInitialized()
-         InitMixin(self, LevelsMixin)
-           InitMixin(self, InfestationMixin)
-        InitMixin(self, AvocaMixin)
-        self:SetTechId(kTechId.Whip)
-          Whip.OnInitialized(self)
-    end
     
-        function Whip_Salty_Infestation:GetTechId()
-         return kTechId.Whip
-    end
-   function Whip_Salty_Infestation:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.Whip
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
-    function Whip_Salty_Infestation:GetMaxLevel()
+    function Whip:GetMaxLevel()
     return kAlienDefaultLvl
     end
-    function Whip_Salty_Infestation:GetAddXPAmount()
+    function Whip:GetAddXPAmount()
     return kAlienDefaultAddXp
     end
-Shared.LinkClassToMap("Whip_Salty_Infestation", Whip_Salty_Infestation.kMapName, networkVars) 
 
 local originit = Whip.OnInitialized
 function Whip:OnInitialized()
-
+self:SetArtificalSalty()
 originit(self)
-
+         InitMixin(self, LevelsMixin)
+           InitMixin(self, InfestationMixin)
+        InitMixin(self, AvocaMixin)
 if Server then
         local targetTypes = { kAlienStaticTargets, kAlienMobileTargets }
         self.slapTargetSelector = TargetSelector():Init(self, Whip.kRange, true, targetTypes, { self.SlapFilter(self) })
@@ -101,6 +81,13 @@ function Whip:GetCanBomb(target, targetPoint)
     return true
     
 end
+
+     function Whip:SetArtificalSalty()
+         self.salty = GetImaginator():GetAlienEnabled() 
+    end
+     function Whip:SetSalty()
+         self.salty = true 
+    end
 function Whip:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
@@ -112,5 +99,6 @@ function Whip:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
 
 end
 
+Shared.LinkClassToMap("Whip", Whip.kMapName, networkVars)
 
     
