@@ -244,6 +244,22 @@ end
 --  The order they are listed should not really matter, but it is used to break ties (again, ties should be unlikely given we are using fuzzy, interpolated eval)
 --  Must NOT be local, since MarineBrain uses it.
 ------------------------------------------
+    function GetBotDesireWeapon(marine)
+       local weapon = marine:GetWeaponInHUDSlot(1)
+       
+          if (weapon) then
+             if weapon:isa("Rifle") then
+              return true
+             else
+              return false
+             end
+        else
+             return true
+       end
+       
+       
+     end
+     
 kMarineBrainActions =
 {
     function(bot, brain)
@@ -251,14 +267,14 @@ kMarineBrainActions =
         local name = "grabShotgun"
 
         local marine = bot:GetPlayer()
-        local haveShotgun = marine:GetWeapon( Shotgun.kMapName ) ~= nil
+        local desire = GetBotDesireWeapon(marine)
         local shotguns = GetEntitiesWithinRangeAreVisible( "Shotgun", marine:GetOrigin(), 20, true )
         -- ignore shotguns owned by someone already
         shotguns = FilterArray( shotguns, function(ent) return ent:GetParent() == nil end )
         local bestDist, bestShotgun = GetNearestFiltered(marine:GetOrigin(), shotguns)
 
         local weight = 0.0
-        if not haveShotgun and bestShotgun ~= nil then
+        if desire and bestShotgun ~= nil then
             weight = EvalLPF( bestDist, {
                     {0.0  , 10.0} , 
                     {3.0  , 10.0} , 
@@ -280,7 +296,72 @@ kMarineBrainActions =
                     end
                 end }
     end,
+    function(bot, brain)
 
+        local name = "grabFlame"
+
+        local marine = bot:GetPlayer()
+        local desire = GetBotDesireWeapon(marine)
+        local flames = GetEntitiesWithinRangeAreVisible( "Flamethrower", marine:GetOrigin(), 20, true )
+        flames = FilterArray( flames, function(ent) return ent:GetParent() == nil end )
+        local bestDist, bestFlame = GetNearestFiltered(marine:GetOrigin(), flames)
+
+        local weight = 0.0
+        if desire and bestFlame ~= nil then
+            weight = EvalLPF( bestDist, {
+                    {0.0  , 10.0} , 
+                    {3.0  , 10.0} , 
+                    {5.0  , 1.0}  , 
+                    {10.0 , 0.2}
+                    })
+        end
+
+        local ginfo = GetGameInfoEntity()
+        if ginfo and ginfo:GetWarmUpActive() then weight = 0 end
+        
+        return { name = name, weight = weight,
+                perform = function(move)
+                    if bestFlame ~= nil then
+                        PerformMove( marine:GetOrigin(), bestFlame:GetOrigin(), bot, brain, move )
+                        if bestDist < 1.0 then
+                            move.commands = AddMoveCommand( move.commands, Move.Drop )
+                        end
+                    end
+                end }
+    end,
+    function(bot, brain)
+
+        local name = "grabMG"
+
+        local marine = bot:GetPlayer()
+        local desire = GetBotDesireWeapon(marine)
+        local hmgs = GetEntitiesWithinRangeAreVisible( "HeavyMachineGun", marine:GetOrigin(), 20, true )
+        hmgs = FilterArray( hmgs, function(ent) return ent:GetParent() == nil end )
+        local bestDist, bestHMG = GetNearestFiltered(marine:GetOrigin(), hmgs)
+
+        local weight = 0.0
+        if desire and bestHMG ~= nil then
+            weight = EvalLPF( bestDist, {
+                    {0.0  , 10.0} , 
+                    {3.0  , 10.0} , 
+                    {5.0  , 1.0}  , 
+                    {10.0 , 0.2}
+                    })
+        end
+
+        local ginfo = GetGameInfoEntity()
+        if ginfo and ginfo:GetWarmUpActive() then weight = 0 end
+        
+        return { name = name, weight = weight,
+                perform = function(move)
+                    if bestHMG ~= nil then
+                        PerformMove( marine:GetOrigin(), bestHMG:GetOrigin(), bot, brain, move )
+                        if bestDist < 1.0 then
+                            move.commands = AddMoveCommand( move.commands, Move.Drop )
+                        end
+                    end
+                end }
+    end,
     function(bot, brain)
 
         local name = "medpack"
@@ -385,12 +466,14 @@ kMarineBrainActions =
         local weapon = marine:GetActiveWeapon()
         local s = brain:GetSenses()
         local weight = 0.0
+        local hasFlamethrower = marine:GetWeapon( Flamethrower.kMapName ) ~= nil
+        local range = ConditionalValue(hasFlamethrower, 8, 10)
 
         if weapon ~= nil and weapon:isa("ClipWeapon") and s:Get("ammoFraction") > 0.0 then
 
             local threat = s:Get("biggestThreat")
 
-            if threat ~= nil and threat.distance < 10 and s:Get("clipFraction") > 0.0 then
+            if threat ~= nil and threat.distance < range and s:Get("clipFraction") > 0.0 then
                 -- threat really close, and we have some ammo, shoot it!
                 weight = 0.0
             else
@@ -417,6 +500,8 @@ kMarineBrainActions =
         local threat = sdb:Get("biggestThreat")
         local weight = 0.0
 
+
+          
         if threat ~= nil and sdb:Get("weaponReady") then
 
             weight = EvalLPF( threat.distance, {
@@ -481,7 +566,7 @@ kMarineBrainActions =
             local targetId = order:GetParam()
             local target = Shared.GetEntity(targetId)
 
-            if target ~= nil and (order:GetType() == kTechId.Construct or order:GetType() == kTechId.Build) then
+            if target ~= ni and ( order:GetType() == kTechId.Construct or order:GetType() == kTechId.Build ) then
 
                 -- Because construct orders are often given by the auto-system, do not necessarily obey them
                 -- Load-balance them
@@ -646,6 +731,8 @@ kMarineBrainActions =
 
     end,
 
+
+    
     function(bot, brain)
 
         local name = "buyWeapon"
@@ -767,104 +854,6 @@ kMarineBrainActions =
 }
 
 ------------------------------------------
---  More urgent == should really attack it ASAP
-------------------------------------------
-local function GetAttackUrgency(bot, mem)
-
-    local teamBrain = bot.brain.teamBrain
-
-    -- See if we know whether if it is alive or not
-    local target = Shared.GetEntity(mem.entId)
-    if not HasMixin(target, "Live") or not target:GetIsAlive() then
-        return nil
-    end
-
-    -- for load-balancing
-    local numOthers = teamBrain:GetNumAssignedTo( mem,
-            function(otherId)
-                if otherId ~= bot:GetPlayer():GetId() then
-                    return true
-                end
-                return false
-            end)
-
-    -- Closer --> more urgent
-
-    local closeBonus = 0
-    local dist = bot:GetPlayer():GetOrigin():GetDistance( mem.lastSeenPos )
-
-    if dist < 15 then
-        -- Do not modify numOthers here
-        closeBonus = 10/math.max(0.01, dist)
-    end
-
-    ------------------------------------------
-    -- Passives - not an immediate threat, but attack them if you got nothing better to do
-    ------------------------------------------
-    local passiveUrgencies =
-    {
-        [kMinimapBlipType.Crag] = numOthers >= 2           and 0.2 or 0.95, -- kind of a special case
-        [kMinimapBlipType.Hive] = numOthers >= 6           and 0.5 or 0.9,
-        [kMinimapBlipType.Harvester] = numOthers >= 2      and 0.4 or 0.8,
-        [kMinimapBlipType.Egg] = numOthers >= 1            and 0.2 or 0.5,
-        [kMinimapBlipType.Shade] = numOthers >= 2          and 0.2 or 0.5,
-        [kMinimapBlipType.Shift] = numOthers >= 2          and 0.2 or 0.5,
-        [kMinimapBlipType.Shell] = numOthers >= 2          and 0.2 or 0.5,
-        [kMinimapBlipType.Veil] = numOthers >= 2           and 0.2 or 0.5,
-        [kMinimapBlipType.Spur] = numOthers >= 2           and 0.2 or 0.5,
-        [kMinimapBlipType.TunnelEntrance] = numOthers >= 1 and 0.2 or 0.5
-    }
-
-    if bot.brain.debug then
-        if mem.btype == kMinimapBlipType.Hive then
-            Print("got Hive, urgency = %f", passiveUrgencies[mem.btype])
-        end
-    end
-
-    if passiveUrgencies[ mem.btype ] ~= nil then
-        return passiveUrgencies[ mem.btype ] + closeBonus
-    end
-
-    ------------------------------------------
-    --  Active threats - ie. they can hurt you
-    --  Only load balance if we cannot see the target
-    ------------------------------------------
-    function EvalActiveUrgenciesTable(numOthers)
-        local activeUrgencies =
-        {
-            [kMinimapBlipType.Embryo] = numOthers >= 1 and 0.1 or 1.0,
-            [kMinimapBlipType.Hydra] = numOthers >= 2  and 0.1 or 2.0,
-            [kMinimapBlipType.Whip] = numOthers >= 2   and 0.1 or 3.0,
-            [kMinimapBlipType.Skulk] = numOthers >= 2  and 0.1 or 4.0,
-            [kMinimapBlipType.Gorge] =  numOthers >= 2  and 0.1 or 3.0,
-            [kMinimapBlipType.Lerk] = numOthers >= 2   and 0.1 or 5.0,
-            [kMinimapBlipType.Fade] = numOthers >= 3   and 0.1 or 6.0,
-            [kMinimapBlipType.Onos] =  numOthers >= 4  and 0.1 or 7.0,
-        }
-        return activeUrgencies
-    end
-
-    -- Optimization: we only need to do visibilty check if the entity type is active
-    -- So get the table first with 0 others
-    local urgTable = EvalActiveUrgenciesTable(0)
-
-    if urgTable[ mem.btype ] then
-
-        -- For nearby active threads, respond no matter what - regardless of how many others are around
-        if dist < 15 then
-            numOthers = 0
-        end
-
-        urgTable = EvalActiveUrgenciesTable(numOthers)
-        return urgTable[ mem.btype ] + closeBonus
-
-    end
-
-    return nil
-
-end
-
-------------------------------------------
 --  Build the senses database
 ------------------------------------------
 
@@ -921,23 +910,48 @@ function CreateMarineBrainSenses()
             end)
 
     s:Add("biggestThreat", function(db)
-            local marine = db.bot:GetPlayer()
-            local memories = GetTeamMemories( marine:GetTeamNumber() )
-            local maxUrgency, maxMem = GetMaxTableEntry( memories,
-                function( mem )
-                    return GetAttackUrgency( db.bot, mem )
-                end)
-            local dist = nil
-            if maxMem ~= nil then
-                if db.bot.brain.debug then
-                    Print("max mem type = %s", EnumToString(kMinimapBlipType, maxMem.btype))
-                end
-                dist = marine:GetEyePos():GetDistance(maxMem.lastSeenPos)
-                return {urgency = maxUrgency, memory = maxMem, distance = dist}
-            else
-                return nil
-            end
-            end)
+      local marine = db.bot:GetPlayer()
+       local hasFlamethrower = marine:GetWeapon( Flamethrower.kMapName ) ~= nil
+          --prioritize flammable non player
+       local nearestFlammable = nil 
+       if hasFlamethrower then nearestFlammable = GetNearestMixin(marine:GetOrigin(), "Live", 2,  function(ent) return ent:GetIsAlive() and ent:GetDistance(marine) <= 8 and not ent:isa("Cyst") and not ent:isa("Player") and GetLocationForPoint(marine:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end ) end
+       local nearestPlayer = GetNearest(marine:GetOrigin(), "Player", 2,  function(ent)  return ent:GetIsAlive() and GetLocationForPoint(marine:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )        
+        
+        local dist = nil
+        local bestMem =  {}
+        local ent = nil
+        
+        if nearestFlammable then 
+          bestMem = {
+          entId = nearestFlammable:GetId(),
+          lastSeenPos = nearestFlammable:GetOrigin(),
+          lastSeenTime = Shared.GetTime()
+          }
+          ent = nearestFlammable 
+        end
+          ent = nearestFlammable
+        if not ent and nearestPlayer then  
+          bestMem = {
+          entId = nearestPlayer:GetId(),
+          lastSeenPos = nearestPlayer:GetOrigin(),
+          lastSeenTime = Shared.GetTime()
+          }
+          ent = nearestPlayer
+        end
+        local maxUrgency = 0  
+        local dist = 0
+        
+        if ent ~= nil then
+          maxUrgency = math.random(10,70)
+          dist =  marine:GetEyePos():GetDistance(ent:GetOrigin())
+        else
+        return nil
+        end
+            
+  
+                return {urgency = maxUrgency, memory = bestMem, distance = dist}
+ end)
+
 
     s:Add("nearestArmory", function(db)
 
@@ -1014,13 +1028,16 @@ function CreateMarineBrainSenses()
             end)
 
     s:Add("attackNearestCyst", function(db)
+            
             local cyst = db:Get("nearestCyst")
-            local power = db:Get("nearestPower")
-            if cyst.entity ~= nil and power.entity ~= nil then
-                local cystPos = cyst.entity:GetOrigin()
-                local powerPos = power.entity:GetOrigin()
-                --DebugLine( cystPos, powerPos, 0.0, 1,1,0,1,  true )
-                return cystPos:GetDistance(powerPos) < 24
+            local marine = db.bot:GetPlayer()
+            local marinePos = marine:GetOrigin()
+            if cyst.entity ~= nil then
+                 local haveShotgun = marine:GetWeapon( Shotgun.kMapName ) ~= nil
+                 if haveShotgun then req = 4 end
+                 local distance =  marinePos:GetDistance( cyst.entity:GetOrigin() )
+                 local req = 8
+                return distance <= req
             else
                 return false
             end

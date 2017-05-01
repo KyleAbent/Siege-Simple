@@ -5,6 +5,9 @@ Script.Load("lua/bots/BrainSenses.lua")
 local kUpgrades = {
     kTechId.Rebirth,
         
+    kTechId.Hunger,
+    kTechId.ThickenedSkin,
+    
     kTechId.Vampirism,
     kTechId.Aura,
     kTechId.Focus,
@@ -14,8 +17,8 @@ local kUpgrades = {
 
 local kEvolutions = {
     kTechId.Gorge,
-    kTechId.Lerk,
-    kTechId.Fade,
+    --kTechId.Lerk,
+   -- kTechId.Fade,
     kTechId.Onos
 }
 
@@ -159,7 +162,7 @@ local function PerformAttack( eyePos, mem, bot, brain, move )
 
     assert( mem )
 
-    local target = Shared.GetEntity(mem.entId)
+    local target = mem
 
     if target ~= nil then
 
@@ -330,11 +333,13 @@ kSkulkBrainActions =
         local skulk = bot:GetPlayer()
         local eyePos = skulk:GetEyePos()
         
-        local memories = GetTeamMemories(skulk:GetTeamNumber())
-        local bestUrgency, bestMem = GetMaxTableEntry( memories, 
-                function( mem )
-                    return GetAttackUrgency( bot, mem )
-                end)
+       local nearestnonMarine = GetNearestMixin(skulk:GetOrigin(), "Live", 1,  function(ent) return not ent:isa("Weapon") and not ent:isa("Player") and ent:GetCanTakeDamage() and GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )
+       local nearestMarine = GetNearest(skulk:GetOrigin(), "Player", 1,  function(ent) return GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )        
+       local bestMem =  nil
+              
+        if not nearestMarine and nearestnonMarine then bestMem = nearestnonMarine end
+        
+        if nearestMarine then bestMem = nearestMarine end
         
         local weapon = skulk:GetActiveWeapon()
         local canAttack = weapon ~= nil and weapon:isa("BiteLeap")
@@ -344,22 +349,13 @@ kSkulkBrainActions =
         if canAttack and bestMem ~= nil then
 
             local dist = 0.0
-            if Shared.GetEntity(bestMem.entId) ~= nil then
-                dist = GetDistanceToTouch( eyePos, Shared.GetEntity(bestMem.entId) )
+            if bestMem ~= nil then
+                dist = GetDistanceToTouch( eyePos, bestMem )
             else
-                dist = eyePos:GetDistance( bestMem.lastSeenPos )
+                dist = eyePos:GetDistance( bestMem )
             end
 
-            weight = EvalLPF( dist, {
-                    { 0.0, EvalLPF( bestUrgency, {
-                        { 0.0, 0.0 },
-                        { 10.0, 25.0 }
-                        })},
-                    { 10.0, EvalLPF( bestUrgency, {
-                            { 0.0, 0.0 },
-                            { 10.0, 5.0 }
-                            })},
-                    { 100.0, 0.0 } })
+            weight = math.random(10,30)
         end
 
         return { name = name, weight = weight,

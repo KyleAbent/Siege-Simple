@@ -163,6 +163,30 @@ function SandCastle:CountPrimaryTimer()
        end
        
 end
+function SandCastle:ARCHitSiegeRoom()
+   local inside = {}
+   
+   for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Live", 2, self:GetOrigin(), 99999)) do
+      if not entity:isa("Player") and GetIsInSiege(entity) then
+      table.insert(inside, entity) 
+      end
+    end
+    local victim = nil
+    if #inside == 0 then return end
+    for i = 1, #inside do
+     local ent = inside[i]
+      local damage = math.random(100,400)
+      ent:TakeDamage(damage, nil, nil, nil, nil, damage / 2, damage,  kDamageType.Normal)
+     ent:TriggerEffects("arc_hit_secondary")
+     
+      GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = (ent:GetCoords() )})
+      
+    end
+    
+    
+
+    
+end
 function SandCastle:OnUpdate(deltatime)
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
@@ -174,6 +198,13 @@ function SandCastle:OnUpdate(deltatime)
        
            if self. SiegeTimer ~= 0 then
            self:CountSTimer() 
+           else
+           
+           if not self.timelastArcHIT or self.timelastArcHIT + math.random(8,12) <= Shared.GetTime() then
+               self:ARCHitSiegeRoom()
+               self.timelastArcHIT = Shared.GetTime()
+            end
+            
           end
           
           

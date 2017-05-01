@@ -98,7 +98,7 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
     bot:GetMotion():SetDesiredMoveTarget( marinePos )
     
     local distance = eyePos:GetDistance(marinePos)
-    if distance < 25 and GetBotCanSeeTarget( bot:GetPlayer(), bestTarget ) then
+    if distance < kBileBombSplashRadius and GetBotCanSeeTarget( bot:GetPlayer(), bestTarget ) then
         doFire = true
     end
     
@@ -113,7 +113,7 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
         move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
  
 
-        if GetDistanceToTouch(eyePos, bestTarget) < 10 then
+        if GetDistanceToTouch(eyePos, bestTarget) < kBileBombSplashRadius then
             -- Stop running at the structure when close enough
             bot:GetMotion():SetDesiredMoveTarget(nil)
             
@@ -122,8 +122,13 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
     else
         bot:GetMotion():SetDesiredViewTarget( nil )
 
-        -- Occasionally jump
-        if math.random() < 0.01 and bot:GetPlayer():GetIsOnGround() then
+        -- Occasionally jump and move left / right 
+        if math.random(1,100) >= math.random(1,30) then
+           move.move.x = move.move.x + 1
+        else
+                  move.move.x = move.move.z + 1
+        end
+        if math.random(1,100) >= math.random(1,30) and bot:GetPlayer():GetIsOnGround() then
             move.commands = AddMoveCommand( move.commands, Move.Jump )
             if distance < 15 then
                 -- When approaching, try to jump sideways

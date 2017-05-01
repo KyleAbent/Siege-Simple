@@ -87,15 +87,12 @@ if interesting ~= nil then table.insert(choices,interesting) end
                    table.insert(choices, shadeink)
               end     
     
-              for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
-                  if GetIsBusy(mac) then table.insert(choices, mac) break end 
-              end     
+           --   for index, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
+            --      if GetIsBusy(mac) then table.insert(choices, mac) break end 
+            --  end     
               
                for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
-                    local order = arc:GetCurrentOrder()
-                      if order then 
-                 if order:GetType() == kTechId.Move then table.insert(choices, arc) break end -- just 1
-                     end
+                      table.insert(choices, arc)
               end 
              for index, contam in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
                   table.insert(choices, contam) 
@@ -146,12 +143,12 @@ if interesting ~= nil then table.insert(choices,interesting) end
                   if construct:GetIsBuilt() and construct:GetHealthScalar() <= .3 and construct:GetIsInCombat() then table.insert(choices, construct) break end --built and not disabled should be summed up by if in combat?
               end     
 
-             for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
-                 local order = arc:GetCurrentOrder()
-                  if order then
-                 if order:GetType() == kTechId.Move then table.insert(choices, arc) break end -- just 1
-                 end
-              end          
+             --for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
+              --   local order = arc:GetCurrentOrder()
+               --   if order then
+                -- if order:GetType() == kTechId.Move then table.insert(choices, arc) break end -- just 1
+                 --end
+              --end          
               
               
               local random = table.random(choices)

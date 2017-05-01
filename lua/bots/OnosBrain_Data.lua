@@ -6,6 +6,9 @@ local kUpgrades = {
     kTechId.Redemption,
     kTechId.Rebirth,
     
+    kTechId.Hunger,
+    kTechId.ThickenedSkin,
+    
     kTechId.Vampirism,
     kTechId.Aura,
     kTechId.Focus,

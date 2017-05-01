@@ -598,15 +598,15 @@ local function GetTechId(mapname)
       return nil
 end
 
-local function GetScanMinRangeReq(where)
+local function GetHasActiveObsInRange(where)
 
             local obs = #GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
             
             for i = 1, obs do
-             if GetIsUnitActive(obs) then return 999 end
+             if GetIsUnitActive(obs) then return true end
             end
             
-            return kScanRadius  
+            return false  
                 
 end
 local function BuildNotificationMessage(where, self, mapname)
@@ -883,7 +883,7 @@ local entity = nil
                       local range = GetRange(nearestof, randomspawn) --6.28 -- improved formula?
                   --    Print("tospawn is %s, location is %s, range between is %s", tospawn, GetLocationForPoint(randomspawn).name, range)
                           local minrange = nearestof:GetMinRangeAC()
-                          if tospawn == kTechId.Scan then minrange = kScanRadius end
+                          if tospawn == kTechId.Scan and GetHasActiveObsInRange(randomspawn) then return end
                           if range >=  minrange  then
                             entity = CreateEntityForTeam(tospawn, randomspawn, 1)
                         if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
@@ -1041,7 +1041,14 @@ local function GetBioMassLevel()
            local bioMass = (teamInfo and teamInfo.GetBioMassLevel) and teamInfo:GetBioMassLevel() or 0
            return bioMass
 end
+local function ThreatMarineBase(where)
+local cc = GetNearest(where, "CommandStation", 1,  function(ent) return   ent:GetIsBuilt()  end )
+    if cc then
+     CreatePheromone(kTechId.ThreatMarker,cc:GetOrigin(), 2) 
+     end
+end
 local function ThreatNearestNode(where)
+if  GetSiegeDoorOpen() then return ThreatMarineBase(where) end
 local nearestnode = GetNearest(where, "PowerPoint", 1,  function(ent) return   ent:GetIsBuilt() and not ent:GetIsDisabled() and GetLocationForPoint(where) ==  GetLocationForPoint(ent:GetOrigin())  end )
     if nearestnode then
      CreatePheromone(kTechId.ThreatMarker,nearestnode:GetOrigin(), 2) 
@@ -1057,8 +1064,10 @@ local function ChanceRandomContamination(who) --messy
      local randomchance = math.random(1, 100)
      if (not gamestarted or TresCheck( 2, 5 ) ) and randomchance <= chance then
      
+     local inSiege = GetSiegeDoorOpen() and math.random(1,2) == 1 
+     
            local where = nil
-           if not GetSiegeDoorOpen()  then
+           if not inSiege  then
            
                local stirItUp = math.random(1,2)
                if stirItUp == 1 then
@@ -1408,16 +1417,16 @@ local function GiveMarineDefend(who)
     for _, marine in ipairs(GetEntitiesWithinRange("Marine", who:GetOrigin(), 9999)) do
                      if marine:GetIsAlive() and not marine:isa("Commander") then //marine:GetClient():GetIsVirtual()
                        if ( marine.GetHasOrder and not  marine:GetHasOrder() ) then
-                       marine:GiveOrder(kTechId.Defend, who:GetId(), who:GetOrigin(), nil, true, true)
+                       marine:GiveOrder(kTechId.Attack, who:GetId(), who:GetOrigin(), nil, true, true)
                         end
                      end
     end
     return true
 end
 function Imaginator:HandleIntrepid(who)
-  local team1Commander = GetGamerules().team1:GetCommander()
-  --if not team1Commander and self.marineenabled then 
- --GiveMarineDefend(who)
+  if GetSiegeDoorOpen() and self.marineenabled then
+   GiveMarineDefend(who)
+   end
     --Too advantagous ?
   --end
   
@@ -1425,10 +1434,10 @@ function Imaginator:HandleIntrepid(who)
   --Still WIP braindead but good footage :P
 
 local tospawn = {}
-      local  StructureBeacon = #GetEntitiesForTeam( "StructureBeacon", 2 )
-      local  EggBeacon = #GetEntitiesForTeam( "EggBeacon", 2 )
-      local CommVortex = #GetEntitiesForTeam( "CommVortex", 2 )
-      local BoneWall = #GetEntitiesForTeam( "BoneWall", 2 )
+      local  StructureBeacon = #GetEntitiesForTeam( "StructureBeacon", who:GetCurrentInfestationRadius() )
+      local  EggBeacon = #GetEntitiesForTeam( "EggBeacon", who:GetCurrentInfestationRadius() )
+      local CommVortex = #GetEntitiesForTeam( "CommVortex", who:GetCurrentInfestationRadius() )
+      local BoneWall = #GetEntitiesForTeam( "BoneWall", who:GetCurrentInfestationRadius() )
      --local ShadeInk =  #GetEntitiesWithinRange( "ShadeInk", who:GetOrigin(), 18 )
      -- local ARC = #GetEntitiesWithinRange( "ARC", who:GetOrigin(), 18 )
       local Whip = #GetEntitiesWithinRange( "Whip", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
@@ -1447,8 +1456,6 @@ if EggBeacon < 1 and  GetHasCragHive() then table.insert(tospawn, kTechId.EggBea
 
 
 if CommVortex < 1 and  GetHasShadeHive() then table.insert(tospawn, kTechId.CommVortex) end
-
-if BoneWall < 1 then table.insert(tospawn, kTechId.BoneWall) end
 
 if BoneWall < 1 then table.insert(tospawn, kTechId.BoneWall) end
 
