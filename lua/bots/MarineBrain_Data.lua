@@ -707,7 +707,28 @@ kMarineBrainActions =
             end }
 
     end,
+    function(bot, brain)
 
+        local name = "clearFlammable"
+        local marine = bot:GetPlayer()
+        local sdb = brain:GetSenses()
+        local weight = 0.0
+
+        if sdb:Get("weaponReady") and sdb:Get("attackNearestFlammable") then
+            weight = 0.5
+        else
+            weight = 0.0
+        end
+
+        return { name = name, weight = weight,
+            perform = function(move)
+                    local flamey = sdb:Get("nearestFlammable")
+                    assert(flamey ~= nil)
+                    assert(flamey.entity ~= nil)
+                    PerformAttackEntity( marine:GetEyePos(), flamey.entity, flamey.entity:GetOrigin(), bot, brain, move )
+            end }
+
+    end,
     function(bot, brain)
 
         local name = "clearCyst"
@@ -730,7 +751,28 @@ kMarineBrainActions =
             end }
 
     end,
+    function(bot, brain)
 
+        local name = "clearClog"
+        local marine = bot:GetPlayer()
+        local sdb = brain:GetSenses()
+        local weight = 0.0
+
+        if sdb:Get("weaponReady") and sdb:Get("attackNearestClog") then
+            weight = 0.5
+        else
+            weight = 0.0
+        end
+
+        return { name = name, weight = weight,
+            perform = function(move)
+                    local clog = sdb:Get("nearestClog")
+                    assert(clog ~= nil)
+                    assert(clog.entity ~= nil)
+                    PerformAttackEntity( marine:GetEyePos(), clog.entity, clog.entity:GetOrigin(), bot, brain, move )
+            end }
+
+    end,
 
     
     function(bot, brain)
@@ -912,25 +954,13 @@ function CreateMarineBrainSenses()
     s:Add("biggestThreat", function(db)
       local marine = db.bot:GetPlayer()
        local hasFlamethrower = marine:GetWeapon( Flamethrower.kMapName ) ~= nil
-          --prioritize flammable non player
-       local nearestFlammable = nil 
-       if hasFlamethrower then nearestFlammable = GetNearestMixin(marine:GetOrigin(), "Live", 2,  function(ent) return ent:GetIsAlive() and ent:GetDistance(marine) <= 8 and not ent:isa("Cyst") and not ent:isa("Player") and GetLocationForPoint(marine:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end ) end
        local nearestPlayer = GetNearest(marine:GetOrigin(), "Player", 2,  function(ent)  return ent:GetIsAlive() and GetLocationForPoint(marine:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )        
         
         local dist = nil
         local bestMem =  {}
         local ent = nil
         
-        if nearestFlammable then 
-          bestMem = {
-          entId = nearestFlammable:GetId(),
-          lastSeenPos = nearestFlammable:GetOrigin(),
-          lastSeenTime = Shared.GetTime()
-          }
-          ent = nearestFlammable 
-        end
-          ent = nearestFlammable
-        if not ent and nearestPlayer then  
+        if not hasFlamethrower and not ent and nearestPlayer then  
           bestMem = {
           entId = nearestPlayer:GetId(),
           lastSeenPos = nearestPlayer:GetOrigin(),
@@ -938,6 +968,7 @@ function CreateMarineBrainSenses()
           }
           ent = nearestPlayer
         end
+        
         local maxUrgency = 0  
         local dist = 0
         
@@ -950,7 +981,7 @@ function CreateMarineBrainSenses()
             
   
                 return {urgency = maxUrgency, memory = bestMem, distance = dist}
- end)
+            end)
 
 
     s:Add("nearestArmory", function(db)
@@ -1041,8 +1072,71 @@ function CreateMarineBrainSenses()
             else
                 return false
             end
+            
+            end)
+    s:Add("nearestClog", function(db)
+
+            local marine = db.bot:GetPlayer()
+            local marinePos = marine:GetOrigin()
+            local clogs = GetEntitiesWithinRange("Clog", marinePos, 20)
+
+            local dist, clog = GetMinTableEntry( clogs, function(clog)
+                    return marinePos:GetDistance( clog:GetOrigin() )
+                end)
+
+            return {entity =  clog, distance = dist}
             end)
 
+    s:Add("attackNearestClog", function(db)
+            
+            local clog = db:Get("nearestClog")
+            local marine = db.bot:GetPlayer()
+            local marinePos = marine:GetOrigin()
+            if clog.entity ~= nil then
+                 local haveShotgun = marine:GetWeapon( Shotgun.kMapName ) ~= nil
+                 if haveShotgun then req = 4 end
+                 local distance =  marinePos:GetDistance( clog.entity:GetOrigin() )
+                 local req = 8
+                return distance <= req
+            else
+                return false
+            end
+            end)
+            
+     s:Add("nearestFlammable", function(db)
+           
+            local marine = db.bot:GetPlayer()
+            local marinePos = marine:GetOrigin()
+            local flammables = {}
+            
+                for _, ent in ipairs( GetEntitiesWithMixinForTeamWithinRange("Live", 2, marinePos, 8) ) do
+                if  ent:GetIsAlive() and not ent:isa("Cyst") and not ent:isa("Player") and GetLocationForPoint(marine:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  then 
+                  table.insert(flammables, ent)
+                   end
+                end
+            local dist, flammable = GetMinTableEntry( flammables, function(flammable)
+                    return marinePos:GetDistance( flammable:GetOrigin() )
+                end)
+
+            return {entity =  flammable, distance = dist}
+            end)
+
+    s:Add("attackNearestFlammable", function(db)
+               local marine = db.bot:GetPlayer()
+               local hasFlamethrower = marine:GetWeapon( Flamethrower.kMapName ) ~= nil
+               if not hasFlamethrower then return false end
+            local flammable = db:Get("nearestFlammable")
+            local marine = db.bot:GetPlayer()
+            local marinePos = marine:GetOrigin()
+            if flammable.entity ~= nil then
+                 local distance =  marinePos:GetDistance( flammable.entity:GetOrigin() )
+                 local req = 8
+                return distance <= req
+            else
+                return false
+            end
+            end)
+ 
     s:Add("comPingElapsed", function(db)
 
             local pingTime = GetGamerules():GetTeam1():GetCommanderPingTime()

@@ -286,7 +286,7 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 class 'ObservatorySiege' (Observatory)--may not nee dto do ongetmapblipinfo because the way i redone the setcachedtechdata to simply change the mapname to this :)
 ObservatorySiege.kMapName = "observatorysiege"
-
+--Remove this from being its own class ya derp
 local networkVars = { lastbeacon = "private time" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)

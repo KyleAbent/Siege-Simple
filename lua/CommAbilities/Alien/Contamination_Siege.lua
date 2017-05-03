@@ -94,7 +94,7 @@ function Contamination:OnInitialized()
         self:SetCoords( coords )
         
         self:AddTimedCallback( TimeUp, GetLifeSpan(self) )
-        self:AddTimedCallback( SpewBile, 1 )
+        if not GetWhereIsInSiege(self:GetOrigin()) then self:AddTimedCallback( SpewBile, 1 ) end
         
     elseif Client then
     

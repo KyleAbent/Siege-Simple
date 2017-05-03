@@ -5,7 +5,7 @@ PGAutoCCMRMin = 32
 ObsAutoCCMR = kScanRadius
 RoboAutoCCMR = 54 / 2
 SentryAutoCCMR = 16
-ProtoAutoCCMR = 42 / 2
+ProtoAutoCCMR = 35 / 3
 --CommandStationAutoCCMR = math.random(16,420)
 ArmsLabAutoCCMR = 4
 IPAutoCCMR = 8
@@ -19,7 +19,7 @@ WhipAutoCCMR  = 14 / 3
 
 
 
-kExoFlamerDamage = 23
+kExoFlamerDamage = 25
 kExoWelderDamagePerSecond = 28
 kExoPlayerWeldRate = 15
 kExoStructureWeldRate = 65

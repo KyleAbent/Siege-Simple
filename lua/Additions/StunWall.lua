@@ -6,7 +6,15 @@ StunWall.kMapName = "stunwall"
 function StunWall:OnInitialized()
 BoneWall.OnInitialized(self)
 
+local function GetLifeSpan(self)
+return 1
+end
+local function TimeUp(self)
+    self:Kill()
+    return false
+end
 if Server then 
+ self:AddTimedCallback( TimeUp, GetLifeSpan(self) )
  self:AdjustMaxHealth(self:GetMaxHealth() / 2)
 end
 

@@ -387,7 +387,7 @@ function Plugin:DestroyAllSaltStructFor(Client)
 //Intention: Kill Salt Structures if client f4s, otherwise 'limit' becomes nil and infinite 
 local Player = Client:GetControllingPlayer()
         for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", Player:GetTeamNumber())) do
-        if entity:GetOwner() == Player then entity:Kill() end 
+        if not entity:isa("Commander") and not entity:isa("AdvancedArmory") and entity:GetOwner() == Player then entity:Kill() end 
       end
     
 end

@@ -1,6 +1,6 @@
 
-Script.Load("lua/ADditions/LerkBomb.lua")
-Script.Load("lua/Weapons/PredictedProjectile.lua")
+--Script.Load("lua/ADditions/LerkBomb.lua")
+--Script.Load("lua/Weapons/PredictedProjectile.lua")
 
 local kBallFlagAttachPoint = "fxnode_bilebomb"
 
@@ -17,7 +17,7 @@ function Lerk:GetTierFourTechId()
 end
 
 function Lerk:GetTierFiveTechId()
-    return kTechId.LerkBileBomb
+    return kTechId.None --kTechId.LerkBileBomb
 end
 
 end

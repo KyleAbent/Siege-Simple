@@ -17,29 +17,37 @@ local networkVars =
   lasthealwave = "private time",
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
+  setupExtTresScale = "private integer (0 to 20)"
 }
 
 
+local function GetHasActiveObsInRange(where)
 
+            local obs = GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
+            if #obs == 0 then return false end
+            for i = 1, #obs do
+             local ent = obs[i]
+             if GetIsUnitActive(ent) then return true end
+            end
+            
+            return false  
+                
+end
+local function GetHasPGInRoom(where)
+
+            local pgs = GetEntitiesForTeamWithinRange("PhaseGate", 1, where, 999999)
+            if #pgs == 0 then return false end
+            for i = 1, #pgs do
+             local ent = pgs[i]
+              if GetLocationForPoint(ent:GetOrigin()) == GetLocationForPoint(where) then return true end
+            end
+            
+            return false  
+                
+end
 local function BuildPowerNodes()
             for _, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
                        if not powerpoint:GetIsSocketed() then powerpoint:SetConstructionComplete()  powerpoint:Kill() end
-             end
-end
-local function Socket()
-            for _, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
-                       if not powerpoint:GetIsSocketed() and not GetIsInSiege(powerpoint) then 
-                        powerpoint:SocketPowerNode()
-                        if not string.find(Shared.GetMapName(), "pl_")  then
-                        local resnodes = GetEntitiesWithinRange( "ResourcePoint", powerpoint:GetOrigin(), 18 )
-                         if #resnodes >= 4 then 
-                          powerpoint:SetConstructionComplete()
-                        powerpoint:Kill()
-                         end
-                       else
-                          powerpoint:SocketPowerNode()
-                       end
-                     end
              end
 end
 local function ChangeBuiltNodeLightsDiscolulz()
@@ -59,6 +67,7 @@ function Imaginator:OnCreate()
    self.lastink = 0
    self.lasthealwave = 0
    self:SetUpdates(true)
+   self.setupExtTresScale = 0
 end
 function Imaginator:GetMarineEnabled()
 local boolean = self.marineenabled
@@ -127,47 +136,53 @@ function Imaginator:OnRoundStart()
    for i = 1, 4 do
      Print("Imaginator OnRoundStart")
    end
-
-
-    --  self.marineenabled = false
-   --self.alienenabled = false
-  
-     --  self:AddTimedCallback(Imaginator.DelayActivation, 16)
-     if self.alienenabled then
-            Socket()
-      end
       
 end
 function Imaginator:SetImagination(boolean, team)
 
-
-
   if team == 1 then
   self.marineenabled = boolean
-          --  if boolean == true then
-         --       local  BigMac = #GetEntitiesForTeam( "BigMac", 1 )
-         --        if not BigMac then  
-         --    else
-             
-         --    end
-   
   elseif team == 2 then
   self.alienenabled = boolean
-  if self.alienenabled == true then Socket() end --and not GetSandCastle():GetIsFrontOpen() then Socket() end
   end
 
 
 end
-local function GetDisabledPowerPoints()
- local nodes = {}
+local function GetAlienSpawnLocation()
+ local places = {}
+  local location = nil
+  --Fine tuned ;)
             for _, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
                     if powerpoint and  (powerpoint:GetIsDisabled() or ( powerpoint:GetIsSocketed() and not powerpoint:GetIsBuilt() ) )  and not ( not GetSiegeDoorOpen() and GetIsInSiege(powerpoint) ) then
-                    table.insert(nodes, powerpoint)
+                    table.insert(places, powerpoint)
                     end
-                    
              end
-
-return nodes
+       if not cystonly then
+            for _, cyst in ientitylist(Shared.GetEntitiesWithClassname("Cyst")) do
+               if cyst:GetIsBuilt() then
+                  --  local location = GetLocationForPoint(cyst:GetOrigin())
+                 --   local powerpoint =  location and GetPowerPointForLocation(location.name)
+                 --   if powerpoint and not powerpoint:GetIsDisabled() and powerpoint:GetIsBuilt()  then
+                     table.insert(places, cyst)
+                   -- end
+                end
+             end
+        else
+        
+             for _, entity in ipairs( GetEntitiesWithMixinForTeam("Construct", 2 ) ) do
+               if not entity:GetGameEffectMask(kGameEffect.OnInfestation) then 
+                  local location = GetLocationForPoint(entity:GetOrigin())
+                  local powerpoint =  location and GetPowerPointForLocation(location.name)
+                  if powerpoint and powerpoint:GetIsDisabled() then
+                     table.insert(places, entity)
+                   end
+               end
+            end
+       
+        
+        end
+ if #places == 0 then return nil end
+return table.random(places)
 
 end
 local function PowerPointStuff(who, self)
@@ -259,9 +274,9 @@ local origin = nil
   for i = 1, #ents do
     local entity = ents[i]   
       if teamnum == 2 then
-    if entity:isa("Alien") and entity:GetIsAlive() then return FindFreeSpace(entity:GetOrigin(), math.random(2, 4), math.random(8,24), true) end
+    if entity:isa("Alien") and entity:GetIsAlive() and isPathable( entity:GetOrigin() ) then return FindFreeSpace(entity:GetOrigin(), math.random(2, 4), math.random(8,24), true) end
     elseif teamnum == 1 then
-    if entity:isa("Marine") and entity:GetIsAlive() then return FindFreeSpace(entity:GetOrigin(), math.random(2,4), math.random(8,24), false ) end
+    if entity:isa("Marine") and entity:GetIsAlive() and isPathable( entity:GetOrigin() ) then return FindFreeSpace(entity:GetOrigin(), math.random(2,4), math.random(8,24), false ) end
     end 
   end
 return origin
@@ -273,56 +288,28 @@ local function changeColorsBack()
     end
 end
 
-local function FindPosition(location, powerpoint, teamnum)
+local function FindPosition(location, searchEnt, teamnum)
   if #location == 0  then return end
   local origin = nil
-  
+  local where = {}
     for i = 1, #location do
     local location = location[i]   
       local ents = location:GetEntitiesInTrigger()
       local potential = InsideLocation(ents, teamnum)
-      if potential ~= nil then origin = potential  return origin end 
+      if potential ~= nil then  table.insert(where, potential) end 
   end
-  
-  //else
-  
-    //  for _, light in ipairs(GetLightsForLocation(location.name)) do
-    //  return light.originalCoords.origin 
-    //end
-   -- self:AddTimedCallback(function() changeColorsBack(location) end, math.random(4,8) )
-
-  
+     for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Construct", teamnum, searchEnt:GetOrigin(), 24) ) do
+       if  GetLocationForPoint(entity:GetOrigin()) ==  GetLocationForPoint(searchEnt:GetOrigin()) then
+          table.insert(where, entity:GetOrigin())
+       end
+     end
+  if #where == 0 then return nil end
+  return table.random(where)
 
 end
 local function GetRange(who, where)
-    local ArcFormula = (where - who:GetOrigin()):GetLengthXZ()
+    local ArcFormula = (where - who:GetOrigin()):GetLength() -- include Y
     return ArcFormula
-end
-
-
-local function GetSentryMinRangeReq(where)
-local count = 0
-            local ents = GetEntitiesForTeamWithinRange("Sentry", 1, where, 16)
-            for index, ent in ipairs(ents) do
-                  count = count + 1
-           end
-           
-           count = Clamp(count, 1, 4)
-           
-           return count*8
-                
-end
-local function GetWhipMinRangeReq(where)
-local count = 0
-            local ents = GetEntitiesForTeamWithinRange("Whip", 1, where, 16)
-            for index, ent in ipairs(ents) do
-                  count = count + 1
-           end
-           
-           count = Clamp(count, 1, 4)
-           
-           return count*16
-                
 end
 local function GetHasAdvancedArmory()
     for index, armory in ipairs(GetEntitiesForTeam("Armory", 1)) do
@@ -343,28 +330,49 @@ local boolean = who.GetIsACreditStructure and who:GetIsACreditStructure() or fal
 return boolean
 
 end
-local function OrganizedIPCheck(who)
+local function GetAlienCostScalar(self,cost)
+  if not cost then cost = math.random(4,8) end
+  if GetSetupConcluded() then
+    local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
+    return math.min(toReturn, cost)--Don't punish for more.
+  else
+  return cost / 2
+  end
+  
+end
+local function GetMarineCostScalar(self,cost)
+  if not cost then cost = math.random(4,12) end
+  if GetSetupConcluded() then
+    local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
+    return math.min(toReturn, cost)--Don't punish for more.
+  else
+  return cost / 2
+  end
+  
+end
+local function OrganizedIPCheck(who, self)
 
 -- One entity at a time
 local count = 0
 local ips = GetEntitiesForTeamWithinRange("InfantryPortal", 1, who:GetOrigin(), kInfantryPortalAttachRange)
  --ADd in getisactive
       --Add in arms lab because having these spread through the map is a bit odd.
-      local armscost = LookupTechData(kTechId.ArmsLab, kTechDataCostKey)
+      local armscost = GetMarineCostScalar(self,LookupTechData(kTechId.ArmsLab, kTechDataCostKey))
       local  ArmsLabs = GetEntitiesForTeam( "ArmsLab", 1 )
-      
+      local labs = #ArmsLabs or 0
       if #ArmsLabs >= 1 then 
+
       
       for i = 1, #ArmsLabs do
           local ent = ArmsLabs[i]
           if ( ent:GetIsBuilt() and not ent:GetIsPowered() ) then
-          table.remove(ArmsLabs, 0)
+          labs = labs - 1
           end
       end
       
       end
       
-      if #ArmsLabs < 2 and TresCheck(1, armscost) then
+      if labs < 2 and TresCheck(1, armscost) then
                local origin = FindFreeSpace(who:GetOrigin(), 1, kInfantryPortalAttachRange)
                local armslab = CreateEntity(ArmsLab.kMapName, origin,  1)
               armslab:GetTeam():SetTeamResources(armslab:GetTeam():GetTeamResources() - armscost)
@@ -381,7 +389,7 @@ local ips = GetEntitiesForTeamWithinRange("InfantryPortal", 1, who:GetOrigin(), 
            if count >= 2 then return end
            
          --  for i = 1, math.abs( 2 - count ) do --one at a time
-           local cost = 20
+           local cost = GetMarineCostScalar(self,20)
                if TresCheck(1, cost) then 
                 local where = who:GetOrigin()
                local origin = FindFreeSpace(where, 4, kInfantryPortalAttachRange)
@@ -394,17 +402,17 @@ local ips = GetEntitiesForTeamWithinRange("InfantryPortal", 1, who:GetOrigin(), 
               
            
 end
-local function HaveCCsCheckIps()
+local function HaveCCsCheckIps(self)
    local CommandStations = GetEntitiesForTeam( "CommandStation", 1 )
        if not CommandStations then return end
-        OrganizedIPCheck(table.random(CommandStations))
+        OrganizedIPCheck(table.random(CommandStations), self)
 end
-local function GetMarineSpawnList()
+local function GetMarineSpawnList(self)
 local tospawn = {}
 local canafford = {}
 local cost = 1 
 local gamestarted = false
-if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true HaveCCsCheckIps() end
+if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true HaveCCsCheckIps(self) end
 --Horrible for performance, right? Not precaching ++ local variables ++ table && for loops !!! 
 
  local  PhaseGates = GetEntitiesForTeam( "PhaseGate", 1 )
@@ -559,7 +567,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true H
      end
 
       local finalcost = not gamestarted and 0
-      finalcost = LookupTechData(finalchoice, kTechDataCostKey) 
+      finalcost = GetMarineCostScalar(self, LookupTechData(finalchoice, kTechDataCostKey))
       finalcost = ConditionalValue (finalchoice == kTechId.PrototypeLab, 5, finalcost)
       --Print("GetMarineSpawnList() return finalchoice %s, finalcost %s", finalchoice, finalcost)
       return finalchoice, finalcost, gamestarted
@@ -598,17 +606,6 @@ local function GetTechId(mapname)
       return nil
 end
 
-local function GetHasActiveObsInRange(where)
-
-            local obs = #GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
-            
-            for i = 1, obs do
-             if GetIsUnitActive(obs) then return true end
-            end
-            
-            return false  
-                
-end
 local function BuildNotificationMessage(where, self, mapname)
 
 end
@@ -798,8 +795,9 @@ local function ManageRoboticFactories(self)
      if #robos >= 1 then 
      if chanceSpawn == 1 and MACS <= 11 and TresCheck(1, kMACCost ) then
       local single = table.random(robos)
+      local maccost = GetMarineCostScalar(self, kMACCost)
        if GetIsTimeUp(self.lastrobo, math.random(4, 12)) and GetIsUnitActive(single) and not single:GetIsResearching() then
-      single:GetTeam():SetTeamResources(single:GetTeam():GetTeamResources() - kMACCost)
+      single:GetTeam():SetTeamResources(single:GetTeam():GetTeamResources() - maccost)
       single:OverrideCreateManufactureEntity(kTechId.MAC)
       self.lastrobo = Shared.GetTime()
       end
@@ -832,20 +830,23 @@ local function ManageRoboticFactories(self)
      
      
       if ArcCount < 12 and TresCheck(1, kARCCost) then
-         if GetIsTimeUp(self.lastrobo, math.random(4, 12))  and GetIsUnitActive(ARCRobo) and not ARCRobo.open then
-         ARCRobo:GetTeam():SetTeamResources(ARCRobo:GetTeam():GetTeamResources() - kARCCost)
+         local arccost = GetMarineCostScalar(self, kARCCost)
+         if ( GetIsTimeUp(self.lastrobo, math.random(4, 12)) or GetSiegeDoorOpen() )   and GetIsUnitActive(ARCRobo) and not ARCRobo.open then
+         ARCRobo:GetTeam():SetTeamResources(ARCRobo:GetTeam():GetTeamResources() - arccost)
          ARCRobo:OverrideCreateManufactureEntity(kTechId.ARC)
          self.lastrobo = Shared.GetTime()
          end
       end
 
-      if string.find(Shared.GetMapName(), "pl_") then return end
+      --if string.find(Shared.GetMapName(), "pl_") then return end
 
 
       if GetSetupConcluded() and ArcCount>= 1 and TresCheck(1,3) then --because if they scan, they stop :x and fire
       local randomarc = table.random(ARCS)
+      --   if not GetHasActiveObsInRange(randomarc:GetOrigin()) then
           randomarc:CreateScan()
           randomarc:GetTeam():SetTeamResources(randomarc:GetTeam():GetTeamResources() - 3)
+       -- end
       end
       
 
@@ -862,12 +863,15 @@ local boolean_three = ( ent:GetTechId() == kTechId.ARCRoboticsFactory and tospaw
 return boolean_one or (boolean_two or boolean_three) --or boolean_four  --and not boolean_five
 end
 */
+
+
 function Imaginator:ActualFormulaMarine()
+
 
       
 --Print("AutoBuildConstructs")
 local randomspawn = nil
-local tospawn, cost, gamestarted = GetMarineSpawnList()
+local tospawn, cost, gamestarted = GetMarineSpawnList(self)
  ManageMacs() 
 if gamestarted and not string.find(Shared.GetMapName(), "pl_") then ManageRoboticFactories(self)  ManageArcs(self) end
 local powerpoint = GetRandomActivePower()
@@ -884,6 +888,8 @@ local entity = nil
                   --    Print("tospawn is %s, location is %s, range between is %s", tospawn, GetLocationForPoint(randomspawn).name, range)
                           local minrange = nearestof:GetMinRangeAC()
                           if tospawn == kTechId.Scan and GetHasActiveObsInRange(randomspawn) then return end
+                          if tospawn == kTechId.PhaseGate and GetHasPGInRoom(randomspawn) then return end
+                          
                           if range >=  minrange  then
                             entity = CreateEntityForTeam(tospawn, randomspawn, 1)
                         if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
@@ -999,7 +1005,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true e
           for i = 1, #Crag do
             local ent = Crag[i]
              local cost = LookupTechData(kTechId.HealWave, kTechDataCostKey)
-             
+                 
              if GetFrontDoorOpen() and TresCheck(2,cost) and not ent:GetIsOnFire() and 
              GetIsUnitActive(ent) and GetIsTimeUp(self.lasthealwave, kHealWaveCooldown) and 
              ( HasTeamInNeed(ent) or ( IsInRangeOfHive(ent) and GetSiegeDoorOpen() and GetArcsDeployedSiege() ) ) then
@@ -1284,10 +1290,11 @@ end
 */
 local function FakeCyst(where) 
          local cyst = GetEntitiesWithinRange("Cyst",where, kCystRedeployRange)
-        if not (#cyst >=1) and TresCheck(2, 1) then
+         local cost = not GetSetupConcluded() and 1 or 0
+        if not (#cyst >=1) and TresCheck(2, cost) then
         where = FindFreeSpace(where, 1, 8, false)
         entity = CreateEntityForTeam(kTechId.Cyst, where, 2)
-        entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - 1)
+        entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost)
         end
 end
 function Imaginator:ActualAlienFormula(cystonly)
@@ -1296,15 +1303,13 @@ ManageDrifters()
 local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
 if hivecount < 3 then return end -- build hives first ya newb
 local randomspawn = nil
-local powerPoints = GetDisabledPowerPoints()
+local spawnArea = GetAlienSpawnLocation() 
 local tospawn, cost, gamestarted = GetAlienSpawnList(self, cystonly)
 local success = false
 local entity = nil
 
-     if powerPoints and tospawn then
-                local powerpoint = table.random(powerPoints)
-             if powerpoint then       
-                 local potential = FindPosition(GetAllLocationsWithSameName(powerpoint:GetOrigin(), tospawn == kTechId.Clog), powerpoint, 2)
+     if spawnArea and tospawn then     
+                 local potential = FindPosition(GetAllLocationsWithSameName(spawnArea:GetOrigin(), tospawn == kTechId.Clog), spawnArea, 2)
                  if potential == nil then local roll = math.random(1,3) if roll == 3 then self:ActualAlienFormula() return else return end  end              
                  randomspawn = FindFreeSpace(potential, math.random(2.5, 4) , math.random(8, 16), not tospawn == kTechId.Cyst )
             if randomspawn then
@@ -1317,6 +1322,7 @@ local entity = nil
                          -- if tospawn == kTechId.NutrientMist then minrange = NutrientMist.kSearchRange end
                           if range >=  minrange then
                             entity = CreateEntityForTeam(tospawn, randomspawn, 2)
+                            --cost = GetAlienCostScalar(self, cost)
                           if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
                           end
                           success = true
@@ -1326,8 +1332,7 @@ local entity = nil
                            if not entity:isa("Cyst") then FakeCyst(entity:GetOrigin()) end
                         if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
                         success = true
-                     end
-               end   
+                     end 
             end
   end
    -- if success and entity then self:AdditionalSpawns(entity) end
@@ -1424,9 +1429,9 @@ local function GiveMarineDefend(who)
     return true
 end
 function Imaginator:HandleIntrepid(who)
-  if GetSiegeDoorOpen() and self.marineenabled then
-   GiveMarineDefend(who)
-   end
+  --if GetSiegeDoorOpen() and self.marineenabled then
+  -- GiveMarineDefend(who)
+  -- end
     --Too advantagous ?
   --end
   
@@ -1508,11 +1513,24 @@ local delay = math.random(4,16)
 
 return true
 end
+function Imaginator:GetMarineExtCount()
+ return #GetEntitiesForTeam( "Extractor", 1 )
+end
+function Imaginator:OnFrontOpen()
+
+            for _, extractor in ientitylist(Shared.GetEntitiesWithClassname("Extractor")) do
+                       if  extractor:GetIsBuilt() and GetIsUnitActive(extractor) then
+                       self.setupExtTresScale = self.setupExtTresScale + 1
+                       end
+             end
+             
+end
+ 
 function Imaginator:OnSiegeOpen()
 
    self:AddTimedCallback(Imaginator.EnsureSiegeWall, 8)
 
-end
+end 
 --
 
 Shared.LinkClassToMap("Imaginator", Imaginator.kMapName, networkVars)

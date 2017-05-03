@@ -107,7 +107,8 @@ function SandCastle:OpenSiegeDoors()
 end
 
 function SandCastle:OpenFrontDoors()
-           GetGamerules():SetDamageMultiplier(1)
+           GetGamerules():SetDamageMultiplier(1) 
+              if GetGameStarted() then GetImaginator():OnFrontOpen() end
       self.FrontTimer = 0
                for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
                       OpenEightTimes(frontdoor)
@@ -167,17 +168,18 @@ function SandCastle:ARCHitSiegeRoom()
    local inside = {}
    
    for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Live", 2, self:GetOrigin(), 99999)) do
-      if not entity:isa("Player") and GetIsInSiege(entity) then
+      if not entity:isa("Player") and GetIsInSiege(entity) and entity:GetIsAlive() then
       table.insert(inside, entity) 
       end
     end
     local victim = nil
     if #inside == 0 then return end
+    
     for i = 1, #inside do
      local ent = inside[i]
       local damage = math.random(100,400)
       ent:TakeDamage(damage, nil, nil, nil, nil, damage / 2, damage,  kDamageType.Normal)
-     ent:TriggerEffects("arc_hit_secondary")
+     --ent:TriggerEffects("arc_hit_secondary")
      
       GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = (ent:GetCoords() )})
       

@@ -423,10 +423,10 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    end
    
 else
-                         self:CreateTimer( 27, 1,  self.autoCommTime, function() 
-                         if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
-                          Shine.ScreenText.Add( "AutoCount", {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
-                        end)
+                      --   self:CreateTimer( 27, 1,  self.autoCommTime, function() 
+                      --   if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
+                      --    Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                      --  end)
 
 end
 
@@ -458,7 +458,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                 --GetImaginator():OnPreGame()
              --GetResearcher():OnPreGame()
              GetSandCastle():OnPreGame()
-             self:StartAutoCommTimer()
+    --        self:StartAutoCommTimer()
           end
           
     
@@ -491,7 +491,7 @@ self.autoCommTime = kAutoCommTimer
                   if Player then
                          self:CreateTimer( 84, 1,  -1, function() 
                          if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 84 ) end
-                          Shine.ScreenText.Add( "Countdown", {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                          Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                         end)
          end
          end

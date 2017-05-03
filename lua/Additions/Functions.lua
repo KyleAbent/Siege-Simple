@@ -1,4 +1,12 @@
 --Kyle 'Avoca' Abent
+local kExtents = Vector(0.4, 0.5, 0.4) -- 0.5 to account for pathing being too high/too low making it hard to palce tunnels
+function isPathable(position)
+--Gorgetunnelability local function
+
+    local noBuild = Pathing.GetIsFlagSet(position, kExtents, Pathing.PolyFlag_NoBuild)
+    local walk = Pathing.GetIsFlagSet(position, kExtents, Pathing.PolyFlag_Walk)
+    return not noBuild and walk
+end
 function GetSiegePowerOrig()
   local powers = {}
   for _, loc in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
@@ -7,10 +15,6 @@ function GetSiegePowerOrig()
         return GetPowerPointForLocation(loc.name)
       end
     end
-end
-function GetWhereIsInSiege(where)
-
-return false
 end
 function GetRandomActivePower()
   local powers = {}

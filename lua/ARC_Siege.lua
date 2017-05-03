@@ -74,27 +74,41 @@ local function MoveToPowers(self)
      end
      
 end
-local function MoveToHives(self) --Closest hive from origin
---Print("Siegearc MoveToHives")
+local function FindSiegeTP(self)
+
+  local tp = GetNearest(self:GetOrigin(), "TeleportTrigger", nil, function(ent) return GetWhereIsInSiege(ent:GetOrigin()) end)
+  
+  if tp then
+  
+  return true, tp:GetOrigin()
+  
+  end
+  
+  return false, nil
+
+
+end
+local function MoveToHives(self) 
 local siegelocation = GetSiegeLocation()
 if not siegelocation then return true end
 local siegepower = GetPowerPointForLocation(siegelocation.name)
-local hiveclosest = GetNearest(siegepower:GetOrigin(), "Hive", 2)
-local origin = 0
-
---if hiveclosest then
---origin = siegepower:GetOrigin()
---origin = origin + hiveclosest:GetOrigin()
---origin = origin + siegelocation:GetOrigin()
---origin = origin / 3
---end
-if origin == 0 then origin = FindArcHiveSpawn(siegepower:GetOrigin())  end
-local where = origin
+local hasSiegeTP, tpLocation = FindSiegeTP(self)
+local where = FindArcHiveSpawn(siegepower:GetOrigin()) 
+                       --Some maps have a TP rather than path, so go to tp then teleport to siege :P.
+                       if hasSiegeTP then
+                           if self:GetDistance(tpLocation) <= 4 then
+                              self:SetOrigin( where ) -- h4x
+                              return true
+                           else
+                              where = tpLocation
+                           end
+                       end
+                       
                if where then
-        self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
-                    return
-                end  
-   return not self.mode == ARC.kMode.Moving  and not GetIsInSiege(self)  
+                      self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
+                end 
+                 
+   return true
 end
 local function CheckForAndActAccordingly(who)
 local stopanddeploy = false

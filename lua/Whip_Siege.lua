@@ -18,6 +18,31 @@ end
 function Whip:GetMinRangeAC()
 return WhipAutoCCMR       
 end
+
+if Server then
+
+function Whip:TryAttack(selector)
+    return selector:AcquireTarget()
+end
+
+function Whip:UpdateRootState()
+    
+    local infested = self:GetGameEffectMask(kGameEffect.OnInfestation) or self.salty
+    local moveOrdered = self:GetCurrentOrder() and self:GetCurrentOrder():GetType() == kTechId.Move
+    -- unroot if we have a move order or infestation recedes
+    if self.rooted and (moveOrdered or not infested) then
+        self:Unroot()
+    end
+    
+    -- root if on infestation and not moving/teleporting
+    if not self.rooted and infested and not (moveOrdered or self:GetIsTeleporting()) then
+        self:Root()
+    end
+    
+end
+
+end
+
 function Whip:OnOrderGiven()
    if not  GetImaginator():GetAlienEnabled() and self:GetInfestationRadius() ~= 0 then self:SetInfestationRadius(0) end
 end

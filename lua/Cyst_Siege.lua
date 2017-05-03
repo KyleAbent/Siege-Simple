@@ -37,7 +37,7 @@ return self.noComm and 999 or origtwo(self)
 end
 
 function Cyst:GetMinRangeAC()
-return  kCystRedeployRange     
+return  kCystRedeployRange + 1    
 end
 
 if Server then

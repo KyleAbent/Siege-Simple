@@ -46,7 +46,7 @@ local kFireLoopingSound = PrecacheAsset("sound/NS2.fev/marine/welder/weld")
 local kHealScoreAdded = 2
 -- Every kAmountHealedForPoints points of damage healed, the player gets
 -- kHealScoreAdded points to their score.
-local kAmountHealedForPoints = 175
+local kAmountHealedForPoints = 800
 
 function ExoWelder:OnCreate()
 

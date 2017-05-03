@@ -19,24 +19,6 @@ end
 function Location:GetIsPowerUp()
 return IsPowerUp(self)
 end
-function Location:GetRandomMarine()
-
-local lottery = {}
-     for _, unit in ipairs(GetEntitiesWithMixinForTeamWithinRange("Live", 1, self:GetOrigin(), 24)) do
-     
-         local location = GetLocationForPoint(unit:GetOrigin())
-         if location and location.name == self.name then
-              table.insert(lottery, unit)
-         end
-     end
-     
-     if table.count(lottery) ~= 0 then
-        local entity = table.random(lottery)
-        return entity:GetOrigin()
-     end
-     
-     return nil
-end
 function Location:GetIsAirLock()
      local boolean = IsPowerUp(self)
     -- Print("%s airlock is %s", self.name, boolean)
@@ -79,11 +61,15 @@ local function IfImagination(self, entity)
            if imagination:GetMarineEnabled() then
                local powerPoint = GetPowerPointForLocation(self.name)
             if powerPoint ~= nil then
-                    if entity:isa("Marine") and not entity:isa("Commander") then
                          if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() then 
                          powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
                          end
-                    end 
+                        if not GetSetupConcluded() and entity:isa("Alien") and not entity:isa("Commander") then
+                         local frontdoor = GetEntitiesWithinRange("FrontDoor", entity:GetOrigin(), 7)
+                         if #frontdoor >=1 then return end --sometimes hugging door tricks the location :x
+                         powerPoint:SetConstructionComplete()
+                         powerPoint:Kill()
+                        end
             end 
           end
 end
