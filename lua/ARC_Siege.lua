@@ -121,6 +121,15 @@ local stopanddeploy = false
         --Print("stopanddeploy is %s", stopanddeploy)
        return stopanddeploy
 end
+local function GetIsInRadius(self)
+
+      if GetSiegeDoorOpen() then
+     return  GetIsInSiege(self) and GetIsPointWithinHiveRadius(self:GetOrigin())
+     else
+     return  CheckForAndActAccordingly(self)  
+     end
+  
+end
 function ARC:SpecificRules()
 --Print("Siegearc SpecificRules")
 local moving = self.mode == ARC.kMode.Moving     
@@ -128,7 +137,7 @@ local moving = self.mode == ARC.kMode.Moving
         
 local attacking = self:GetInAttackMode()
 --Print("attacking is %s", moving) 
-local inradius = (GetSiegeDoorOpen() and GetIsInSiege(self) and GetIsPointWithinHiveRadius(self:GetOrigin()) ) or ( not GetSiegeDoorOpen() and CheckForAndActAccordingly(self)  )
+local inradius = GetIsInRadius(self)
 --Print("inradius is %s", inradius) 
 
 local shouldstop = not true

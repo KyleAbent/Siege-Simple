@@ -733,7 +733,7 @@ mapnameof = MedPack.kMapName
 techid = kTechId.MedPack
 delay = 16
 elseif String == "Observatory"  then
-mapnameof = ObservatorySiege.kMapName
+mapnameof = Observatory.kMapName
 techid = kTechId.Observatory
 CreditCost = 10
 elseif String == "Armory"  then

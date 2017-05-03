@@ -1,3 +1,29 @@
+local function HealSelf(self)
+
+
+  local toheal = true
+  /*
+                for _, proto in ipairs(GetEntitiesForTeamWithinRange("PrototypeLab", 1, self:GetOrigin(), 4)) do
+                    
+                    if GetIsUnitActive(proto) then
+                        toheal = true
+                        break
+                    end
+                    
+                end
+           */
+          --  Print("toheal is %s", toheal)
+    if toheal then
+    self:SetArmor(self:GetArmor() + kNanoArmorHealPerSecond, true) 
+    end
+    
+end
+
+local oninit = Exosuit.OnInitialized
+    function Exosuit:PerformEject()
+    oninit(self)
+     self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+    end
    if Server then
 
 

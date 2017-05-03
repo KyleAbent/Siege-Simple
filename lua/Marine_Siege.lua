@@ -97,14 +97,29 @@ function Marine:GiveLayStructure(techid, mapname)
   -- end
 end
 
-
+function Marine:GetWeaponsToStore()
+local toReturn = {}
+            local weapons = self:GetWeapons()
+            
+          if weapons then
+          
+            for i = 1, #weapons do            
+                weapons[i]:SetParent(nil)     
+                local weapon
+                table.insert(toReturn, weapons[i]:GetId())       
+            end
+            
+           end
+           
+           return toReturn
+end
 function Marine:GiveExo(spawnPoint)
     local random = math.random(1,2)
     if random == 1 then 
-        local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
+        local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun", storedWeaponsIds = self:GetWeaponsToStore()  })
     return exo
     else
-        local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+        local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     end
 
@@ -113,70 +128,39 @@ end
 
 function Marine:GiveDualExo(spawnPoint)
 
-    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun" })
+    local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "MinigunMinigun", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     
 end
 function Marine:GiveDualWelder(spawnPoint)
 
-    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "WelderWelder" })
+    local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "WelderWelder", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     
 end
 function Marine:GiveDualFlamer(spawnPoint)
 
-    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "FlamerFlamer" })
+    local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "FlamerFlamer", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     
 end
 function Marine:GiveClawRailgunExo(spawnPoint)
 
-    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun" })
+    local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "ClawRailgun", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     
 end
 
 function Marine:GiveDualRailgunExo(spawnPoint)
 
-    local exo = self:Replace(ExoSiege.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun" })
+    local exo = self:Replace(Exo.kMapName, self:GetTeamNumber(), false, spawnPoint, { layout = "RailgunRailgun", storedWeaponsIds = self:GetWeaponsToStore() })
     return exo
     
 end
-
-local function BuyWelderExo(self)
-
-    local maxAttempts = 100
-    for index = 1, maxAttempts do
-    
-        -- Find open area nearby to place the big guy.
-        local capsuleHeight, capsuleRadius = self:GetTraceCapsule()
-        local extents = Vector(Exo.kXZExtents, Exo.kYExtents, Exo.kXZExtents)
-
-        local spawnPoint        
-        local checkPoint = self:GetOrigin() + Vector(0, 0.02, 0)
-        
-        if GetHasRoomForCapsule(extents, checkPoint + Vector(0, extents.y, 0), CollisionRep.Move, PhysicsMask.Evolve, self) then
-            spawnPoint = checkPoint
-        else
-            spawnPoint = GetRandomSpawnForCapsule(extents.y, extents.x, checkPoint, 0.5, 5, EntityFilterOne(self))
-        end    
-            
-
-        if spawnPoint then
-        
-            self:AddResources(-GetCostForTech(techId))
-            
-                self:GiveDualWelder(spawnPoint)
-            return
-            
-        end
-        
-    end
-    
-    Print("Error: Could not find a spawn point to place the Exo")
-    
-end
-local function BuyFlamerExo(self)
+kIsExoTechId = { [kTechId.DualFlamerExosuit] = true, [kTechId.DualMinigunExosuit] = true,
+                 [kTechId.DualWelderExosuit] = true, [kTechId.DualRailgunExosuit] = true }
+                 
+local function BuyExo(self, techId)
 
     local maxAttempts = 100
     for index = 1, maxAttempts do
@@ -194,12 +178,28 @@ local function BuyFlamerExo(self)
             spawnPoint = GetRandomSpawnForCapsule(extents.y, extents.x, checkPoint, 0.5, 5, EntityFilterOne(self))
         end    
             
+        local weapons 
 
         if spawnPoint then
         
             self:AddResources(-GetCostForTech(techId))
             
-                self:GiveDualFlamer(spawnPoint)
+            local exo = nil
+            
+            if techId == kTechId.DualFlamerExosuit then
+                exo = self:GiveDualFlamer(spawnPoint)
+            elseif techId == kTechId.DualMinigunExosuit then
+                exo = self:GiveDualExo(spawnPoint)
+            elseif techId == kTechId.DualWelderExosuit then
+                exo = self:GiveDualWelder(spawnPoint)
+            elseif techId == kTechId.DualRailgunExosuit then
+                exo = self:GiveDualRailgunExo(spawnPoint)
+            end
+            
+
+            
+            exo:TriggerEffects("spawn_exo")
+            
             return
             
         end
@@ -209,6 +209,7 @@ local function BuyFlamerExo(self)
     Print("Error: Could not find a spawn point to place the Exo")
     
 end
+
 function Marine:GetHasJumpPack()
 
 if self.hasjumppack then return true
@@ -243,11 +244,9 @@ function Marine:AttemptToBuy(techIds)
                 self:GetTeam():OnBought(techId)
             end
             
-
-            if techId == kTechId.DualWelderExosuit then
-                 BuyWelderExo(self)
-            elseif techId == kTechId.DualFlamerExosuit then
-                 BuyFlamerExo(self)
+                 
+              if kIsExoTechId[techId] then
+                BuyExo(self, techId)     
                else
                 if hostStructure:isa("Armory") then self:AddResources(-GetCostForTech(techId)) end
                 origattemptbuy(self, techIds)

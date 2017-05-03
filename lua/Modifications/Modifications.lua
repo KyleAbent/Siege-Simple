@@ -243,11 +243,6 @@ SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 ---Hacks------------
 
-SetCachedTechData(kTechId.Observatory, kTechDataMapName, ObservatorySiege.kMapName)
-SetCachedTechData(kTechId.Exo, kTechDataMapName,ExoSiege.kMapName)
-
-
-
 SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
 
 

@@ -17,7 +17,7 @@ local networkVars =
   lasthealwave = "private time",
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
-  setupExtTresScale = "private integer (0 to 20)"
+  --setupExtTresScale = "private integer (0 to 20)"
 }
 
 
@@ -67,7 +67,7 @@ function Imaginator:OnCreate()
    self.lastink = 0
    self.lasthealwave = 0
    self:SetUpdates(true)
-   self.setupExtTresScale = 0
+  -- self.setupExtTresScale = 0
 end
 function Imaginator:GetMarineEnabled()
 local boolean = self.marineenabled
@@ -1517,13 +1517,13 @@ function Imaginator:GetMarineExtCount()
  return #GetEntitiesForTeam( "Extractor", 1 )
 end
 function Imaginator:OnFrontOpen()
-
+ /*
             for _, extractor in ientitylist(Shared.GetEntitiesWithClassname("Extractor")) do
                        if  extractor:GetIsBuilt() and GetIsUnitActive(extractor) then
                        self.setupExtTresScale = self.setupExtTresScale + 1
                        end
              end
-             
+    */         
 end
  
 function Imaginator:OnSiegeOpen()

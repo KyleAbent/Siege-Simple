@@ -1,3 +1,7 @@
+Sentry.kFov = 360
+Sentry.kMaxPitch = 180 
+Sentry.kMaxYaw = Sentry.kFov / 2
+
 function Sentry:GetFov()
     return 360
 end
