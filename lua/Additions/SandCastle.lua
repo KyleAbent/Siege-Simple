@@ -202,7 +202,7 @@ function SandCastle:OnUpdate(deltatime)
            self:CountSTimer() 
            else
            
-           if not self.timelastArcHIT or self.timelastArcHIT + math.random(8,12) <= Shared.GetTime() then
+           if  GetImaginator():GetMarineEnabled() and not self.timelastArcHIT or self.timelastArcHIT + math.random(8,12) <= Shared.GetTime() then
                self:ARCHitSiegeRoom()
                self.timelastArcHIT = Shared.GetTime()
             end
