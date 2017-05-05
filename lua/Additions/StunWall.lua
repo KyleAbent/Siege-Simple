@@ -7,7 +7,7 @@ function StunWall:OnInitialized()
 BoneWall.OnInitialized(self)
 
 local function GetLifeSpan(self)
-return 3
+return 1
 end
 local function TimeUp(self)
     self:Kill()

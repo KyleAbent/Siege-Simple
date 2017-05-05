@@ -3,10 +3,6 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
---Kyle 'Avoca' Abent
-class 'MACSiege' (MAC)
-MACSiege.kMapName = "macsiege"
-
 local networkVars = 
 
 {
@@ -18,49 +14,40 @@ MAC.kWeldRate = 1
 
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
-function MACSiege:OnCreate()
-MAC.OnCreate(self)
+local origcreate = MAC.OnCreate
+function MAC:OnCreate()
+origcreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
 end
 function MAC:GetIsBuilt()
  return self:GetIsAlive()
 end
-function MACSiege:OnInitialized()
-self:SetTechId(kTechId.MAC)
+local originit = MAC.OnInitialized
+function MAC:OnInitialized()
 InitMixin(self, LevelsMixin)
 if Server then ExploitCheck(self) end
-MAC.OnInitialized(self)
+originit(self)
 end
-        function MACSiege:GetTechId()
-         return kTechId.MAC
-end
-    function MACSiege:GetMaxLevel()
+    function MAC:GetMaxLevel()
     return kMacMaxLevel
     end
-    function MACSiege:GetAddXPAmount()
+    function MAC:GetAddXPAmount()
     return 0.05 * 0.05
     end
 
-function MACSiege:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.MAC
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
+local origupdate = MAC.OnUpdate
+function MAC:OnUpdate(deltaTime)
+
+origupdate(self, deltaTime)
+
+if self.welding or self.constructing then self:AddXP(self:GetAddXPAmount()) end
+
 end
 
 
-
-
  
-Shared.LinkClassToMap("MACSiege", MACSiege.kMapName, networkVars)
+Shared.LinkClassToMap("MAC", MAC.kMapName, networkVars)
 class 'DropMAC' (MAC)
 DropMAC.kMapName = "dropmac"
 

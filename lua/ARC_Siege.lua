@@ -1,13 +1,21 @@
 
+Script.Load("lua/ResearchMixin.lua")
+Script.Load("lua/RecycleMixin.lua")
 
 local networkVars =
 {
    lastWand = "private time",
 }
+AddMixinNetworkVars(ResearchMixin, networkVars)
+AddMixinNetworkVars(RecycleMixin, networkVars)
+
 local origcreate = ARC.OnCreate
 function ARC:OnCreate()
 origcreate(self)
 self.lastWand = 0
+    InitMixin(self, ResearchMixin)
+    InitMixin(self, RecycleMixin)
+     self.startsBuilt = not self:isa("ARCCredit")
 end
 if Server then
 
@@ -134,6 +142,15 @@ local function GetIsInRadius(self)
      end
   
 end
+local function MoveAccordingly(self)
+        if GetSiegeDoorOpen() then 
+          -- Print("Apparently siege is open")
+           MoveToHives(self) 
+          else
+         --   Print("Siege aint open")
+             MoveToPowers(self)
+           end
+end
 function ARC:SpecificRules()
 --Print("Siegearc SpecificRules")
 local moving = self.mode == ARC.kMode.Moving     
@@ -171,11 +188,7 @@ local shouldundeploy = attacking and not inradius and not moving
          GiveUnDeploy(self)
        else --should move
        --Print("GiveMove")
-          if GetSiegeDoorOpen() then 
-           MoveToHives(self) 
-          else
-             MoveToPowers(self)
-           end
+          MoveAccordingly(self)
        end
        
    elseif shouldattack then
@@ -203,66 +216,15 @@ end
 
 end
 
-Shared.LinkClassToMap("ARC", ARC.kMapName, networkVars)
-
-Script.Load("lua/ResearchMixin.lua")
-Script.Load("lua/RecycleMixin.lua")
-
-
-class 'ARCSiege' (ARC)
-ARCSiege.kMapName = "arcsiege"
-
-local networkVars = 
-
-{
-
-}
-AddMixinNetworkVars(ResearchMixin, networkVars)
-AddMixinNetworkVars(RecycleMixin, networkVars)
-function ARCSiege:OnCreate()
-ARC.OnCreate(self)
-    InitMixin(self, ResearchMixin)
-    InitMixin(self, RecycleMixin)
-     self.startsBuilt = not self:isa("ARCCredit")
-end
-function ARCSiege:GetIsBuilt()
+function ARC:GetIsBuilt()
  return self:GetIsAlive()
 end
-function ARCSiege:OnInitialized()
-self:SetTechId(kTechId.ARC)
-ARC.OnInitialized(self)
-    /*
-      if Server then
-        self.targetSelector = TargetSelector():Init(
-                self,
-                ARC.kFireRange,
-                false, 
-                { kMarineStaticTargets, kMarineMobileTargets },
-                { self.FilterTarget(self) },
-                { function(target)  
-                local AimingAt = Shared.GetEntity(self.targetedEntity) 
-               if AimingAt then return target == AimingAt else return target:isa("Hive") end end })
-        end
-     */           
-end
-        function ARCSiege:GetTechId()
-         return kTechId.ARC
-end
-function ARCSiege:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.ARC
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
 
-    
+Shared.LinkClassToMap("ARC", ARC.kMapName, networkVars)
+
+
+
+ 
 
 /*
 local function DoNotEraseTarget(self)
@@ -294,5 +256,4 @@ end//server
     */
     
    
-Shared.LinkClassToMap("ARCSiege", ARCSiege.kMapName, networkVars)
 

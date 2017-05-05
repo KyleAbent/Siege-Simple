@@ -3,8 +3,7 @@ local networkVars =
    noComm = "private boolean",
 }
 function Cyst:CheckYoselfFoo()
-local team2Commander = GetGamerules().team2:GetCommander() 
-self.noComm = GetImaginator():GetAlienEnabled() and not team2Commander
+self.noComm = GetImaginator():GetAlienEnabled() 
 return true
 end
 local origcreate = Cyst.OnCreate

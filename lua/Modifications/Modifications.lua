@@ -235,10 +235,6 @@ SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
 
 SetCachedTechData(kTechId.DropExosuit, kTechDataBuildRequiresMethod, GetCheckExoDropLimit)
 
-SetCachedTechData(kTechId.RoboticsFactory, kTechDataMapName, RoboSiege.kMapName)
-
-SetCachedTechData(kTechId.MAC, kTechDataMapName, MACSiege.kMapName)
-SetCachedTechData(kTechId.ARC, kTechDataMapName, ARCSiege.kMapName)
 
 
 ---Hacks------------
@@ -440,7 +436,7 @@ end
 
 local function CorrodeOnInfestation(self)
 
-    if self:GetMaxArmor() == 0 then
+    if self:GetMaxArmor() == 0 or not GetFrontDoorOpen() then
         return false
     end
 

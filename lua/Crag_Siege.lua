@@ -8,9 +8,10 @@ end
 function Crag:GetMinRangeAC()
 return CragAutoCCMR 
 end
-function Crag:GetUnitNameOverride(viewer)
+function Crag:GetUnitNameOverride(viewer) --Triggerhappy stoner
     local unitName = GetDisplayName(self)   
-    unitName = string.format(Locale.ResolveString("Crag (%sS %sB)"), self:GetCragsInRange(), self:GetBonusAmt() )
+    --unitName = string.format(Locale.ResolveString("Crag (+%sS 0%)"), self:GetCragsInRange()) --, self:GetBonusAmt() )
+    unitName = "Crag (+"..self:GetCragsInRange().."0% heal)" --, self:GetBonusAmt() )
 return unitName
 end
 local origbuttons = Crag.GetTechButtons

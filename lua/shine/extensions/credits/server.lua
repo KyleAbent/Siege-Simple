@@ -66,7 +66,7 @@ end
 
 function Plugin:BecauseFuckSpammingCommanders(player)
 if not GetGamerules():GetGameStarted() then return end
-local CreditCost = 1
+local CreditCost = 10
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
@@ -89,7 +89,7 @@ if not GetGamerules():GetGameStarted() then return end
 end
  function Plugin:SpawnIt(player, entity)
  if not player or not player:GetIsAlive() then return end
- local CreditCost = 1
+ local CreditCost = 10
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
@@ -185,7 +185,7 @@ local entities = {}
        entitycount = entitycount + 1  
     end
        if entitycount <= 99 then return false end
-       return false 
+       return false --EH?
 end
  /*
 function Plugin:LoadBadges()
@@ -237,7 +237,7 @@ if Points ~= nil and Points ~= 0 and Player and not Shared.GetCheatsEnabled() th
  local client = Player:GetClient()
  if not client then return end
          
-    local addamount = Points/(10/self.Config.kCreditMultiplier)      
+    local addamount = Points * self.Config.kCreditMultiplier     
  local controlling = client:GetControllingPlayer()
  
          if Player:GetTeamNumber() == 1 then
@@ -719,7 +719,7 @@ local function TeamOneBuyRules(self, Client, Player, String)
 local mapnameof = nil
 local delay = 12
 local reqpathing = false
-local CreditCost = 1
+local CreditCost = 10
 local reqground = false
 local limit = 3
 local techid = nil
@@ -727,60 +727,60 @@ local techid = nil
 if String == "Scan" then
 mapnameof = Scan.kMapName
 techid = kTechId.Scan
-delay = 8
+delay = 10
 elseif String == "Medpack" then
 mapnameof = MedPack.kMapName
 techid = kTechId.MedPack
-delay = 16
+delay = 10
 elseif String == "Observatory"  then
 mapnameof = Observatory.kMapName
 techid = kTechId.Observatory
-CreditCost = 10
+CreditCost = 100
 elseif String == "Armory"  then
-CreditCost = 12
+CreditCost = 120
 mapnameof = Armory.kMapName
 techid = kTechId.Armory
 elseif String == "Sentry"  then
 mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
 limit = 2
-CreditCost = 8
+CreditCost = 80
 elseif String == "BackupBattery"  then
 mapnameof = SentryBattery.kMapName
 techid = kTechId.SentryBattery
 limit = 1
-CreditCost = 6
+CreditCost = 60
 elseif String == "BackupLight"  then
 mapnameof = BackupLight.kMapName
 techid = kTechId.BackupLight
 limit = 2
-CreditCost = 6
+CreditCost = 40
 elseif String == "PhaseGate" then
-CreditCost = 15
+CreditCost = 150
 limit = 2
 mapnameof = PhaseGate.kMapName
 techid = kTechId.PhaseGate
 elseif String == "InfantryPortal" then
 mapnameof = InfantryPortal.kMapName
 techid = kTechId.InfantryPortal
-CreditCost = 15
+CreditCost = 150
 elseif  String == "RoboticsFactory" then
-mapnameof = RoboSiege.kMapName
+mapnameof = RoboticsFactory.kMapName
 techid = kTechId.RoboticsFactory
-CreditCost = 10
+CreditCost = 100
 elseif String == "Mac" then
 techid = kTechId.MAC
-CreditCost = 4
-mapnameof = MACCredit.kMapName
-limit = 2
+CreditCost = 40
+mapnameof = MACCredit.kMapName --can be networkvar instead
+limit = 20
 elseif String == "Arc" then 
 techid = kTechId.ARC
-CreditCost = 20
-mapnameof = ARCCredit.kMapName
+CreditCost = 200
+mapnameof = ARCCredit.kMapName --can be networkvar instead
 limit = 1
 elseif String == "Extractor" then 
 techid = kTechId.Extractor
-CreditCost = 500
+CreditCost = 5000
 mapnameof = Extractor.kMapName
 limit = 1
 elseif string == nil then
@@ -796,54 +796,54 @@ local mapnameof = nil
 local delay = 12
 local reqpathing = false
 local reqground = false
-local CreditCost = 2
+local CreditCost = 20
 local limit = 3
 local techid = nil
 
 
 if String == "NutrientMist" then 
-CreditCost = 1
+CreditCost = 10
 mapnameof = NutrientMist.kMapName
 reqground = true
 elseif String == "Contamination"  then
-CreditCost = 1
+CreditCost = 10
 mapnameof = Contamination.kMapName    
 techid = kTechId.Contamination
 elseif String == "EnzymeCloud" then
-CreditCost = 1.5
+CreditCost = 15
 mapnameof = EnzymeCloud.kMapName
 elseif String == "Hallucination" then
-CreditCost = 1.75
+CreditCost = 15
 reqpathing = false
  mapnameof = HallucinationCloud.kMapName
 
 elseif String == "Shade" then
-CreditCost = 10
+CreditCost = 100
 mapnameof = Shade.kMapName
 techid = kTechId.Shade
 elseif String == "Crag" then
-CreditCost = 10
+CreditCost = 100
 mapnameof = Crag.kMapName
 techid = kTechId.Crag
 elseif String == "Whip" then
-CreditCost = 10
+CreditCost = 100
 mapnameof = Whip.kMapName
 techid = kTechId.Whip
 elseif String == "Shift" then
-CreditCost = 10
+CreditCost = 100
 mapnameof = Shift.kMapName
 techid = kTechId.Shift
 elseif String == "Hydra" then
-CreditCost = 1
+CreditCost = 25
 mapnameof = HydraSiege.kMapName
 techid = kTechId.Hydra
 elseif String == "SaltyEgg" then
-CreditCost = 15
+CreditCost = 75
 mapnameof = PoopEgg.kMapName
 techid = kTechId.Egg
 limit = 5
 elseif String == "Harvester" then
-CreditCost = 500
+CreditCost = 5000
 mapnameof = Harvester.kMapName
 techid = kTechId.Harvester
 limit = 1
@@ -907,13 +907,13 @@ if not Player then return end
    
 
  
-    if String  == "Mines" then cost = 1.5 mapname = LayMines.kMapName
-   elseif String == "Welder" then cost = 1 mapname = Welder.kMapName
-   elseif String == "HeavyMachineGun" then cost = 5 mapname = HeavyMachineGun.kMapName
-    elseif String  == "Shotgun" then cost = 2 mapname = Shotgun.kMapName 
-   elseif String == "FlameThrower" then mapname = Flamethrower.kMapName cost = 3
-   elseif String == "GrenadeLauncher" then mapname =  GrenadeLauncher.kMapName cost = 3 
-   elseif String == "ConcGrenade" then cost = 2 mapname = ConcGrenadeThrower.kMapName
+    if String  == "Mines" then cost = 15 mapname = LayMines.kMapName
+   elseif String == "Welder" then cost = 10 mapname = Welder.kMapName
+   elseif String == "HeavyMachineGun" then cost = 50 mapname = HeavyMachineGun.kMapName
+    elseif String  == "Shotgun" then cost = 20 mapname = Shotgun.kMapName 
+   elseif String == "FlameThrower" then  cost = 30 mapname = Flamethrower.kMapName 
+   elseif String == "GrenadeLauncher" then cost = 30 mapname =   GrenadeLauncher.kMapName 
+   elseif String == "ConcGrenade" then cost = 10 mapname = ConcGrenadeThrower.kMapName
    elseif String == "JediConcGrenade" then cost = 5 mapname = JediConcGrenadeThrower.kMapName
    end
    
@@ -935,7 +935,7 @@ BuyWPCommand:AddParam{ Type = "string" }
 
 local function BuyCustom(Client, String)
 local Player = Client:GetControllingPlayer()
-local cost = 4
+local cost = 40
 local delayafter = 8
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
       local exit, nearhive, count = FindPlayerTunnels(Player)
@@ -963,32 +963,32 @@ local delayafter = 8
 local cost = 1
 if not Player then return end
 
- if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 8 
-  elseif String == "RailGun" and not Player:isa("Exo") then cost = 29 delayafter = 25   
-  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 30  delayafter = 25 
-  elseif String == "Welder" and not Player:isa("Exo") then  cost = 25  delayafter = 15 
-   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 27  delayafter = 15 
-  elseif String == "Gorge" then cost = 9 
-  elseif String == "Lerk" then  cost = 12 
-  elseif String == "Fade" then cost = 20 
-  elseif String == "Onos" then cost = 25 
+ if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 80 
+  elseif String == "RailGun" and not Player:isa("Exo") then cost = 290 delayafter = 25   
+  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 300  delayafter = 25 
+  elseif String == "Welder" and not Player:isa("Exo") then  cost = 250  delayafter = 15 
+   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 270  delayafter = 15 
+  elseif String == "Gorge" then cost = 90
+  elseif String == "Lerk" then  cost = 120 
+  elseif String == "Fade" then cost = 200
+  elseif String == "Onos" then cost = 250
   end
   
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
  
             --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
          if Player:GetTeamNumber() == 1 then
-              if cost == 8 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 30 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 29 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
-             elseif cost == 25 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
-             elseif cost == 27 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
+              if cost == 80 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
+             elseif cost == 300 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == 290 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == 250 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
+             elseif cost == 270 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 9 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
-              elseif cost == 12  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
-              elseif cost == 20 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
-              elseif cost == 25 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
+              if cost == 90 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
+              elseif cost == 120  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
+              elseif cost == 200 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
+              elseif cost == 250 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
               end
          end
    
@@ -1012,7 +1012,7 @@ local NextUse = self.BuyUsersTimer[Client]
 local reqpathing = true
 local reqground = true
 if not Player then return end
-local CreditCost = 1
+local CreditCost = 10
 local techid = nil
 
 if Player:GetTeamNumber() == 1 then 
@@ -1048,14 +1048,21 @@ CreditsCommand:AddParam{ Type = "clients" }
 local function SetSalt(Client, Targets, Number, Display, Double) --TriggerHappyStoner
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
-if Double == true then Number = Number * kCreditMultiplier end
 self.CreditUsers[ Player:GetClient() ] = Number
 Shine.ScreenText.SetText("Salt", string.format("%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ), Player:GetClient())
    if Display == true then
-   self:NotifyGeneric( nil, "set %s salt to %s (%s)", true, Number, Player:GetName(), self:GetPlayerSaltInfo(Player:GetClient()))
+   self:NotifyGeneric( nil, "set %s's  salt to %s", true, Player:GetName(), Number )
    end
 end
 end
+
+
+local SetSaltCommand = self:BindCommand("sh_setsalt", "setsalt", SetSalt)
+SetSaltCommand:Help("sh_setsalt <player> <number> <display>")
+SetSaltCommand:AddParam{ Type = "clients" }
+SetSaltCommand:AddParam{ Type = "number" }
+SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = true }
+SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = false }
 
 local function AddSalt(Client, Targets, Number, Display, Double)
 

@@ -1,4 +1,3 @@
-Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ConstructMixin.lua")
 
 
@@ -8,7 +7,6 @@ MACCredit.kMapName = "maccredit"
 
 local networkVars = {} --fuckbitchz
 AddMixinNetworkVars(ConstructMixin, networkVars)
-AddMixinNetworkVars(LevelsMixin, networkVars)
 local origmac  = MAC.OnCreate
 function MACCredit:OnCreate()
 
@@ -20,7 +18,6 @@ InitMixin(self, ConstructMixin)
 end
 function MACCredit:OnInitialized()
 MAC.OnInitialized(self)
-InitMixin(self, LevelsMixin)
 end
     function MACCredit:GetMaxLevel()
     return kDefaultLvl
@@ -47,11 +44,5 @@ local nearestplayer = GetNearest(self:GetOrigin(), "Marine", 1, function(ent) re
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-function MACSiege:OnUpdate(deltaTime)
 
-MAC.OnUpdate(self, deltaTime)
-
-if self.welding or self.constructing then self:AddXP(self:GetAddXPAmount()) end
-
-end
     Shared.LinkClassToMap("MACCredit", MACCredit.kMapName, networkVars)

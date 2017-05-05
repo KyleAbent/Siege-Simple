@@ -28,7 +28,7 @@ kUmbraGrenadeModifer = 0.70
 --kNumBabblerEggsPerGorge = 3
 kRebirthHpBuffTriggered = 1.10
 kRebirthHpBuffNew = 1.10
-kOnocideDamage = 779
+kOnocideDamage = 693
 kPrimalScreamROFIncrease = .3
 kVortexLifeSpan = 8
 kCommVortexCoolDown = 18
@@ -50,7 +50,6 @@ kOnosEggCost = 90 --default 100
 kBabblerDamage = 9 --default 8 
 kExosuitDropCost = 35 -- default 50
 kHeavyMachineGunDropCost = 25 --default = 40
-kOnosCost = 57 --default 62
 kSentryBuildTime = 4 --default 3
 kPlayerHallucinationNumFraction = 0.38 --default 0.34
 

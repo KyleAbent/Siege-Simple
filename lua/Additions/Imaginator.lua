@@ -58,14 +58,9 @@ function Imaginator:OnCreate()
    self:SetUpdates(true)
   -- self.setupExtTresScale = 0
 end
-function Imaginator:GetMarineEnabled()
-local boolean = self.marineenabled
-Print("Imaginator GetMarineEnabled is %s", boolean)
-return boolean
-
-end
 function Imaginator:GetAlienEnabled()
-local boolean = self.alienenabled
+local team2Commander = GetGamerules().team2:GetCommander()
+local boolean = self.alienenabled and not team2Commander
 return boolean
 end
 function Imaginator:OnInitialized()
@@ -74,9 +69,15 @@ end
 function Imaginator:GetIsMapEntity()
 return true
 end
-function Imaginator:GetIsMarineEnabled()
-if self.marineenabled then return true end
-return false
+function Imaginator:GetMarineEnabled()
+local team1Commander = GetTeamHasCommander(1)
+local boolean = self.marineenabled and not team1Commander
+return boolean
+end
+function Imaginator:GetAlienEnabled()
+local team2Commander = GetTeamHasCommander(2)
+local boolean = self.alienenabled and not team2Commander
+return boolean
 end
 function Imaginator:OnUpdate(deltatime)
    
@@ -95,8 +96,8 @@ function Imaginator:OnUpdate(deltatime)
          end
          
          if not  self.timelastOnOffSwitch or self.timelastOnOffSwitch + 2 <= Shared.GetTime() then
-           local team1Commander = GetGamerules().team2:GetCommander()
-           local team2Commander = GetGamerules().team2:GetCommander()
+           local team1Commander = GetTeamHasCommander(1)
+           local team2Commander = GetTeamHasCommander(2)
           self.timelastOnOffSwitch = Shared.GetTime()
           self.marineEnabled = not team1Commander
           self.alienEnabled = not team2Commander
@@ -178,10 +179,10 @@ local function PowerPointStuff(who, self)
 local location = GetLocationForPoint(who:GetOrigin())
 local powerpoint =  location and GetPowerPointForLocation(location.name)
       if powerpoint ~= nil then 
-              if self.marineenabled   and ( powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() ) then 
+              if self:GetMarineEnabled()   and ( powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() ) then 
                 return 1
               end
-             if  self.alienenabled  and ( powerpoint:GetIsDisabled() )  then
+             if  self:GetAlienEnabled()  and ( powerpoint:GetIsDisabled() )  then
                   return 2
                end
      end
@@ -204,9 +205,9 @@ local function Touch(who, where, what, number)
          end
 end
 local function Envision(self,who, which)
-   if which == 1 and self.marineenabled then
+   if which == 1 and self:GetMarineEnabled() then
      Touch(who, who:GetOrigin(), kTechId.Extractor, 1)
-   elseif which == 2 and self.alienenabled then
+   elseif which == 2 and self:GetAlienEnabled() then
      Touch(who, who:GetOrigin(), kTechId.Harvester, 2)
     end
 end
@@ -230,20 +231,15 @@ function Imaginator:Automations()
       
               return true
 end
-function Imaginator:GetMarineEnabled()
-return self.marineenabled
-end
-function Imaginator:GetAlienEnabled()
-return self.alienenabled
-end
+
 function Imaginator:Imaginations() 
   local gamestarted = not  GetGameInfoEntity():GetWarmUpActive()
   
-            if gamestarted and self.marineenabled  then 
+            if gamestarted and self:GetMarineEnabled()  then 
               self:MarineConstructs()
            end
             
-            if gamestarted  and self.alienenabled then
+            if gamestarted  and self:GetAlienEnabled() then
               self:AlienConstructs(false)
            end
            
@@ -252,7 +248,7 @@ end
 function Imaginator:CystTimer()
   local gamestarted = false 
    if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true end
-              if gamestarted  and self.alienenabled then --and not team2Commander) then
+              if gamestarted  and self:GetAlienEnabled() then --and not team2Commander) then
               self:AlienConstructs(true)
            end
               return true
@@ -567,7 +563,7 @@ end
 function Imaginator:MarineConstructs()
        for i = 1, 2 do
          local success = self:ActualFormulaMarine()
-         if success == true then return self.marineenabled end
+         if success == true then return self:GetMarineEnabled() end
        end
        
     --   BuildArcsMacs()
