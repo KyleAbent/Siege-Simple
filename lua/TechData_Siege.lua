@@ -14,6 +14,7 @@ Script.Load("lua/MAC_Siege.lua")
 Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
 Script.Load("lua/Additions/ExoFlamer.lua")
+Script.Load("lua/Additions/ConcGrenade.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -76,6 +77,14 @@ end
 local kSiege_TechData =
 {   
 
+
+             { [kTechDataId] = kTechId.ConcGrenade,
+        [kTechDataCostKey] = 5,
+        [kTechDataDisplayName] = "Conc Grenade", 
+        [kTechDataMapName] = "ConcGrenadeThrower",         
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Team Fortress Classics"},
+      
              { [kTechDataId] = kTechId.JumpPack,
         [kTechDataCostKey] = kJumpPackCost,
         [kTechDataDisplayName] = "Jump Pack", 

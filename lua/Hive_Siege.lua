@@ -23,7 +23,9 @@ function Hive:OnConstructionComplete()
    if GetResearcher():GetAlienEnabled() then
    self.bioMassLevel = 3
    UpdateTypeOfHive(self)
-   end
+   else
+   self.bioMassLevel = 1
+    end
    
 end
 

@@ -3,6 +3,11 @@ Script.Load("lua/bots/CommonActions.lua")
 Script.Load("lua/bots/BrainSenses.lua")
 
 local kUpgrades = {
+    kTechId.Crush,
+    kTechId.Carapace,
+    kTechId.Regeneration,
+    kTechId.Redemption,
+    
     kTechId.Rebirth,
         
     kTechId.Hunger,
@@ -12,83 +17,15 @@ local kUpgrades = {
     kTechId.Aura,
     kTechId.Focus,
     
+    kTechId.Silence,
     kTechId.Celerity,
-}
-
-local kEvolutions = {
-    kTechId.Gorge,
-    kTechId.Lerk,
-    kTechId.Fade,
-    kTechId.Onos
+    kTechId.Adrenaline,
 }
 
 ------------------------------------------
 --  More urgent == should really attack it ASAP
 ------------------------------------------
-local function GetAttackUrgency(bot, mem)
 
-    -- See if we know whether if it is alive or not
-    local ent = Shared.GetEntity(mem.entId)
-    if not HasMixin(ent, "Live") or not ent:GetIsAlive() then
-        return 0.0
-    end
-    
-    local botPos = bot:GetPlayer():GetOrigin()
-    local targetPos = ent:GetOrigin()
-    local distance = botPos:GetDistance(targetPos)
-
-    if mem.btype == kMinimapBlipType.PowerPoint then
-        local powerPoint = ent
-        if powerPoint ~= nil and powerPoint:GetIsSocketed() then
-            return 0.75
-        else
-            return 0
-        end    
-    end
-        
-    local immediateThreats = {
-        [kMinimapBlipType.Marine] = true,
-        [kMinimapBlipType.JetpackMarine] = true,
-        [kMinimapBlipType.Exo] = true,    
-        [kMinimapBlipType.Sentry] = true
-    }
-    
-    if distance < 15 and immediateThreats[mem.btype] then
-        -- Attack the nearest immediate threat (urgency will be 1.1 - 2)
-        return 1 + 1 / math.max(distance, 1)
-    end
-    
-    -- No immediate threat - load balance!
-    local numOthers = bot.brain.teamBrain:GetNumAssignedTo( mem,
-            function(otherId)
-                if otherId ~= bot:GetPlayer():GetId() then
-                    return true
-                end
-                return false
-            end)
-
-    --Other urgencies do not rank anything here higher than 1!
-    local urgencies = {
-        [kMinimapBlipType.ARC] =                numOthers >= 2 and 0.4 or 0.9,
-        [kMinimapBlipType.CommandStation] =     numOthers >= 4 and 0.3 or 0.75,
-        [kMinimapBlipType.PhaseGate] =          numOthers >= 2 and 0.2 or 0.9,
-        [kMinimapBlipType.Observatory] =        numOthers >= 2 and 0.2 or 0.8,
-        [kMinimapBlipType.Extractor] =          numOthers >= 2 and 0.2 or 0.7,
-        [kMinimapBlipType.InfantryPortal] =     numOthers >= 2 and 0.2 or 0.6,
-        [kMinimapBlipType.PrototypeLab] =       numOthers >= 1 and 0.2 or 0.55,
-        [kMinimapBlipType.Armory] =             numOthers >= 2 and 0.2 or 0.5,
-        [kMinimapBlipType.RoboticsFactory] =    numOthers >= 2 and 0.2 or 0.5,
-        [kMinimapBlipType.ArmsLab] =            numOthers >= 3 and 0.2 or 0.6,
-        [kMinimapBlipType.MAC] =                numOthers >= 1 and 0.2 or 0.4,
-    }
-
-    if urgencies[ mem.btype ] ~= nil then
-        return urgencies[ mem.btype ]
-    end
-
-    return 0.0
-    
-end
 
 
 local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
@@ -101,53 +38,44 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
     bot:GetMotion():SetDesiredMoveTarget( marinePos )
     
     local distance = eyePos:GetDistance(marinePos)
-    if distance < 2.5 then
+    if distance < 18 and GetBotCanSeeTarget( bot:GetPlayer(), bestTarget ) then
         doFire = true
-    end
-    
-  --  if bestTarget:isa("Player") and distance <=  kXenocideRange and GetHasTech(bot, kTechId.Xenocide)  then
-  --      bot:GiveItem(Xenocide.XenocideLeap)
-  --      bot:SetActiveWeapon(XenocideLeap.kMapName)  
-  --  end
-    
-    if distance >=  kXenocideRange and GetHasTech(bot, kTechId.Leap)  then
-       move.commands = AddMoveCommand( move.commands, Move.SecondaryAttack )
     end
                 
     if doFire then
-        local target = bestTarget:GetEngagementPoint()
 
-        if bestTarget:isa("Player") then
-             -- Attacking a player
-             target = target + Vector( math.random(), math.random(), math.random() ) * 0.3
-            if bot:GetPlayer():GetIsOnGround() and bestTarget:isa("Player") then
-                move.commands = AddMoveCommand( move.commands, Move.Jump )
-            end
-        else
-            -- Attacking a structure
-            if GetDistanceToTouch(eyePos, bestTarget) < 1 then
-                -- Stop running at the structure when close enough
-                bot:GetMotion():SetDesiredMoveTarget(nil)
-            end
+        bot:GetMotion():SetDesiredViewTarget( bestTarget:GetEngagementPoint() )
+        
+        if distance > 3 then
+            move.commands = AddMoveCommand( move.commands, Move.SecondaryAttack )
+        else    
+            move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
         end
 
-        bot:GetMotion():SetDesiredViewTarget( target )
-        move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
-    else
-        bot:GetMotion():SetDesiredViewTarget( nil )
+        -- Attacking a structure
+        if GetDistanceToTouch(eyePos, bestTarget) < 8 then
+            -- Stop running at the structure when close enough
+            bot:GetMotion():SetDesiredMoveTarget(nil)
+        end
 
-        -- Occasionally jump
-        if math.random() < 0.1 and bot:GetPlayer():GetIsOnGround() then
-            move.commands = AddMoveCommand( move.commands, Move.Jump )
-            if distance < 15 then
-                -- When approaching, try to jump sideways
-                bot.timeOfJump = Shared.GetTime()
-                bot.jumpOffset = nil
-            end    
-        end        
     end
     
-    if bot.timeOfJump ~= nil and Shared.GetTime() - bot.timeOfJump < 0.5 then
+    -- Occasionally jump
+    if math.random() < 0.1 and bot:GetPlayer():GetIsOnGround() then
+    
+        move.commands = AddMoveCommand( move.commands, Move.Jump )
+
+        -- When approaching, try to jump sideways
+        bot.timeOfJump = Shared.GetTime()
+        bot.jumpOffset = nil
+
+    end 
+    
+    if not bot:GetPlayer():GetIsOnGround() and bot.timeOfJump and bot.timeOfJump + 0.15 < Shared.GetTime() then
+        move.commands = AddMoveCommand( move.commands, Move.Jump )
+    end    
+    
+    if bot.timeOfJump ~= nil and Shared.GetTime() - bot.timeOfJump < 0.3 then
         
         if bot.jumpOffset == nil then
             
@@ -163,6 +91,7 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
         end
         
         bot:GetMotion():SetDesiredMoveDirection( bot.jumpOffset )
+        
     end    
     
 end
@@ -194,59 +123,105 @@ end
 -- along with a closure to perform the action
 -- The order they are listed matters - actions near the beginning of the list get priority.
 ------------------------------------------
-kSkulkBrainActions =
+kLerkBrainActions =
 {
     
     ------------------------------------------
-    --  
+    --
     ------------------------------------------
     function(bot, brain)
         return { name = "debug idle", weight = 0.001,
                 perform = function(move)
                     bot:GetMotion():SetDesiredMoveTarget(nil)
                     -- there is nothing obvious to do.. figure something out
-                    -- like go to the marines, or defend 
+                    -- like go to the marines, or defend
                 end }
     end,
 
     ------------------------------------------
-    --  
+    --
     ------------------------------------------
     CreateExploreAction( 0.01, function(pos, targetPos, bot, brain, move)
+    
+                if math.random() < 0.1 and bot:GetPlayer():GetIsOnGround() then
+                
+                    move.commands = AddMoveCommand( move.commands, Move.Jump )
+
+                    -- When approaching, try to jump sideways
+                    bot.timeOfJump = Shared.GetTime()
+                    bot.jumpOffset = nil
+           
+                end 
+    
+                if not bot:GetPlayer():GetIsOnGround() and bot.timeOfJump and bot.timeOfJump + 0.3 < Shared.GetTime() then
+                    move.commands = AddMoveCommand( move.commands, Move.Jump )
+                    
+                    if bot.timeOfJump + 3 > Shared.GetTime() then
+                        bot.timeOfJump = Shared.GetTime()
+                    end    
+                    
+                end 
+    
                 bot:GetMotion():SetDesiredMoveTarget(targetPos)
                 bot:GetMotion():SetDesiredViewTarget(nil)
                 end ),
+
+    function(bot, brain)
+        local weight = 0
+        local player = bot:GetPlayer()
+
+        if player:GetVelocity():GetLength() < 5 and (bot.timeOfJump or 0) + 2 < Shared.GetTime() then
+            weight = 15
+            bot.timeOfJump = Shared.GetTime()
+        end
+
+        return { name = "flap", weight = weight,
+            perform = function(move)
+                move.commands = AddMoveCommand( move.commands, Move.Jump )
+            end }
+    end,
+    ------------------------------------------
+    --
+    ------------------------------------------
+    function(bot, brain)
+
+        local name = "primalTeam"
+        local botty = bot:GetPlayer()
+        local weight = 0 
+        
+         local aliens = GetEntitiesWithinRange("Alien", botty:GetOrigin(), 20)
+         
+           if #aliens >= 1 and GetHasTech(bot, kTechId.PrimalScream)  then
+                 weight = math.random(1,100)
+           end
+          
+         return { name = name, weight = weight,
+            perform = function(move)
+               botty:GiveItem(PrimalScream.kMapName)
+               botty:SetActiveWeapon(PrimalScream.kMapName)  
+               move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
+              botty:SetActiveWeapon(LerkBite.kMapName) 
+            end }
+
+    end,
     
-    ------------------------------------------
-    --  
-    ------------------------------------------
     function(bot, brain)
         local name = "evolve"
 
         local weight = 0.0
         local player = bot:GetPlayer()
-
-        if not player.isHallucination and not bot.lifeformEvolution then
-            local pick = math.random(1, #kEvolutions)
-            bot.lifeformEvolution = kEvolutions[pick]
-        end
-
-        local allowedToBuy = player:GetIsAllowedToBuy()
-        local ginfo = GetGameInfoEntity()
-        if ginfo and ginfo:GetWarmUpActive() then allowedToBuy = false end
-
         local s = brain:GetSenses()
         local res = player:GetPersonalResources()
-        
+
         local distanceToNearestThreat = s:Get("nearestThreat").distance
         local desiredUpgrades = {}
-        
-        if allowedToBuy and
-           (distanceToNearestThreat == nil or distanceToNearestThreat > 15) and 
-           (player.GetIsInCombat == nil or not player:GetIsInCombat()) then
-            
-            -- Safe enough to try to evolve            
-            
+
+        if player:GetIsAllowedToBuy() and
+                (distanceToNearestThreat == nil or distanceToNearestThreat > 15) and
+                (player.GetIsInCombat == nil or not player:GetIsInCombat()) then
+
+            -- Safe enough to try to evolve
+
             local existingUpgrades = player:GetUpgrades()
 
             local avaibleUpgrades = player.lifeformUpgrades
@@ -254,18 +229,16 @@ kSkulkBrainActions =
             if not avaibleUpgrades then
                 avaibleUpgrades = {}
 
-                if bot.lifeformEvolution then
-                    table.insert(avaibleUpgrades, bot.lifeformEvolution)
-                end
-
                 for i = 0, 2 do
                     table.insert(avaibleUpgrades, kUpgrades[math.random(1,3) + i * 3])
                 end
 
+                if player.lifeformEvolution then
+                    table.insert(avaibleUpgrades, player.lifeformEvolution)
+                end
+
                 player.lifeformUpgrades = avaibleUpgrades
             end
-
-            local evolvingId = kTechId.Skulk
 
             for i = 1, #avaibleUpgrades do
                 local techId = avaibleUpgrades[i]
@@ -275,16 +248,9 @@ kSkulkBrainActions =
                 local cost = 0
                 if techNode ~= nil then
                     isAvailable = techNode:GetAvailable(player, techId, false)
-                    if isAvailable then
-                        if LookupTechData(techId, kTechDataGestateName) then
-                            cost = GetCostForTech(techId)
-                            evolvingId = techId
-                        else
-                            cost = LookupTechData(techId, kTechDataUpgradeCost, 0)
-                        end
-                    end
+                    cost = LookupTechData(techId, kTechDataGestateName) and GetCostForTech(techId) or LookupTechData(kTechId.Lerk, kTechDataUpgradeCost, 0)
                 end
-                
+
                 if not player:GetHasUpgrade(techId) and isAvailable and res - cost > 0 and
                         GetIsUpgradeAllowed(player, techId, existingUpgrades) and
                         GetIsUpgradeAllowed(player, techId, desiredUpgrades) then
@@ -292,50 +258,21 @@ kSkulkBrainActions =
                     table.insert(desiredUpgrades, techId)
                 end
             end
-            
-            if #desiredUpgrades > 0 then
+
+            if  #desiredUpgrades > 0 then
                 weight = 100.0
-            end                                
-        end
-        
-        return { name = name, weight = weight,
-            perform = function(move)
-                player:ProcessBuyAction( desiredUpgrades )
-            end }
-    
-    end,
-
-    --[[
-    --Save hives under attack
-     ]]
-    function(bot, brain)
-        local skulk = bot:GetPlayer()
-        local teamNumber = skulk:GetTeamNumber()
-
-        local hiveUnderAttack
-        bot.hiveprotector = bot.hiveprotector or math.random()
-        if bot.hiveprotector > 0.5 then
-            for _, hive in ipairs(GetEntitiesForTeam("Hive", teamNumber)) do
-                if hive:GetHealthScalar() <= 0.4 then
-                    hiveUnderAttack = hive
-                    break
-                end
             end
         end
 
-        local weight = hiveUnderAttack and 1.1 or 0
-        local name = "hiveunderattack"
-
         return { name = name, weight = weight,
             perform = function(move)
-                bot:GetMotion():SetDesiredMoveTarget(hiveUnderAttack and hiveUnderAttack:GetOrigin())
-                bot:GetMotion():SetDesiredViewTarget(nil)
+                player:ProcessBuyAction( desiredUpgrades )
             end }
 
     end,
 
     ------------------------------------------
-    --  
+    --
     ------------------------------------------
     function(bot, brain)
         local name = "attack"
@@ -349,13 +286,10 @@ kSkulkBrainActions =
         if not nearestMarine and nearestnonMarine then bestMem = nearestnonMarine end
         
         if nearestMarine then bestMem = nearestMarine end
-        
-        local weapon = skulk:GetActiveWeapon()
-        local canAttack = weapon ~= nil and weapon:isa("BiteLeap")
-
+       
         local weight = 0.0
 
-        if canAttack and bestMem ~= nil then
+        if bestMem ~= nil then
 
             local dist = 0.0
             if bestMem ~= nil then
@@ -374,7 +308,7 @@ kSkulkBrainActions =
     end,    
 
     ------------------------------------------
-    --  
+    --
     ------------------------------------------
     function(bot, brain)
         local name = "pheromone"
@@ -445,7 +379,7 @@ kSkulkBrainActions =
     end,
 
     ------------------------------------------
-    --  
+    --
     ------------------------------------------
     function(bot, brain)
         local name = "order"
@@ -476,18 +410,86 @@ kSkulkBrainActions =
 
                         bot:GetMotion():SetDesiredMoveTarget( order:GetLocation() )
                         bot:GetMotion():SetDesiredViewTarget( nil )
+                        
+                        if math.random() < 0.1 and bot:GetPlayer():GetIsOnGround() then
+                        
+                            move.commands = AddMoveCommand( move.commands, Move.Jump )
+
+                            -- When approaching, try to jump sideways
+                            bot.timeOfJump = Shared.GetTime()
+                            bot.jumpOffset = nil
+                   
+                        end 
+            
+                        if not bot:GetPlayer():GetIsOnGround() and bot.timeOfJump and bot.timeOfJump + 0.3 < Shared.GetTime() then
+                            move.commands = AddMoveCommand( move.commands, Move.Jump )
+                            
+                            if bot.timeOfJump + 3 > Shared.GetTime() then
+                                bot.timeOfJump = Shared.GetTime()
+                            end    
+                            
+                        end
 
                     end
                 end
             end }
-    end,    
+    end,
+
+    function(bot, brain)
+
+        local name = "retreat"
+        local player = bot:GetPlayer()
+        local sdb = brain:GetSenses()
+
+        local hive = sdb:Get("nearestHive")
+        local hiveDist = hive and player:GetOrigin():GetDistance(hive:GetOrigin()) or 0
+        local healthFraction = sdb:Get("healthFraction")
+
+        -- If we are pretty close to the hive, stay with it a bit longer to encourage full-healing, etc.
+        -- so pretend our situation is more dire than it is
+        if hiveDist < 4.0 and healthFraction < 0.9 then
+            healthFraction = healthFraction / 3.0
+        end
+
+        local weight = 0.0
+
+        if hive then
+
+            weight = EvalLPF( healthFraction, {
+                { 0.0, 25.0 },
+                { 0.6, 0.0 },
+                { 1.0, 0.0 }
+            })
+        end
+
+        return { name = name, weight = weight,
+            perform = function(move)
+                if hive then
+
+                    -- we are retreating, unassign ourselves from anything else, e.g. attack targets
+                    brain.teamBrain:UnassignBot(bot)
+
+                    local touchDist = GetDistanceToTouch( player:GetEyePos(), hive )
+                    if touchDist > 1.5 then
+                        bot:GetMotion():SetDesiredMoveTarget( hive:GetEngagementPoint() )
+                        bot:GetMotion():SetDesiredViewTarget( nil )
+                    else
+                        -- sit and wait to heal
+                        bot:GetMotion():SetDesiredViewTarget( hive:GetEngagementPoint() )
+                        bot:GetMotion():SetDesiredMoveTarget( nil )
+                    end
+                end
+
+            end }
+
+    end,
 
 }
 
 ------------------------------------------
---  
+--
 ------------------------------------------
-function CreateSkulkBrainSenses()
+function CreateLerkBrainSenses()
 
     local s = BrainSenses()
     s:Initialize()
@@ -509,6 +511,33 @@ function CreateSkulkBrainSenses()
                     end
                 end)                
         end)
+
+    s:Add("nearestHive", function(db)
+        local player = db.bot:GetPlayer()
+        local playerPos = player:GetOrigin()
+
+        local hives = GetEntitiesForTeam("Hive", player:GetTeamNumber())
+
+        local builtHives = {}
+
+        -- retreat only to built hives
+        for _, hive in ipairs(hives) do
+
+            if hive:GetIsBuilt() and hive:GetIsAlive() then
+                table.insert(builtHives, hive)
+            end
+
+        end
+
+        Shared.SortEntitiesByDistance(playerPos, builtHives)
+
+        return builtHives[1]
+    end)
+
+    s:Add("healthFraction", function(db)
+        local player = db.bot:GetPlayer()
+        return player:GetHealthFraction()
+    end)
 
     s:Add("nearestThreat", function(db)
             local allThreats = db:Get("allThreats")

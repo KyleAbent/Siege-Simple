@@ -51,7 +51,8 @@ local kSiege_TechIds =
     'DualWelderExosuit',
     'DualFlamerExosuit',
     'LerkBileBomb',
-    'JumpPack'
+    'JumpPack',
+    'ConcGrenade',
 
 
     

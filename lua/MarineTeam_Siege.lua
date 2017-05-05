@@ -20,6 +20,7 @@ function MarineTeam:InitTechTree()
     self.techTree:AddBuyNode(kTechId.DualWelderExosuit, kTechId.ExosuitTech, kTechId.None)
     self.techTree:AddBuyNode(kTechId.DualFlamerExosuit, kTechId.ExosuitTech, kTechId.None)
    self.techTree:AddTargetedBuyNode(kTechId.JumpPack, kTechId.JetpackTech, kTechId.None)
+  self.techTree:AddTargetedBuyNode(kTechId.ConcGrenade, kTechId.GrenadeTech, kTechId.None)
     
     
     self.techTree:SetComplete()

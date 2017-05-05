@@ -28,6 +28,10 @@ function RepositioningMixin:OnOrderComplete(currentOrder)
           self:AddTimedCallback(RepositioningMixin.Check, 4)
     end
 end
+function RepositioningMixin:OnTeleportEnd()
+  if Server then ExploitCheck(self) end
+  self:Check()
+end    
 function RepositioningMixin:Check()
 
     if self:isa("ARC") then self:CheckArc() return false end

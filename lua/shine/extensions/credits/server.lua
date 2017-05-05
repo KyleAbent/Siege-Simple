@@ -913,7 +913,7 @@ if not Player then return end
     elseif String  == "Shotgun" then cost = 2 mapname = Shotgun.kMapName 
    elseif String == "FlameThrower" then mapname = Flamethrower.kMapName cost = 3
    elseif String == "GrenadeLauncher" then mapname =  GrenadeLauncher.kMapName cost = 3 
-   elseif String == "OffensiveConcGrenade" then cost = 100 mapname = ConcGrenadeThrower.kMapName
+   elseif String == "ConcGrenade" then cost = 2 mapname = ConcGrenadeThrower.kMapName
    elseif String == "JediConcGrenade" then cost = 5 mapname = JediConcGrenadeThrower.kMapName
    end
    
@@ -1044,6 +1044,18 @@ end
 local CreditsCommand = self:BindCommand("sh_salt", "salt", Salt, true, false)
 CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
+
+local function SetSalt(Client, Targets, Number, Display, Double) --TriggerHappyStoner
+for i = 1, #Targets do
+local Player = Targets[ i ]:GetControllingPlayer()
+if Double == true then Number = Number * kCreditMultiplier end
+self.CreditUsers[ Player:GetClient() ] = Number
+Shine.ScreenText.SetText("Salt", string.format("%s Salt", self:GetPlayerSaltInfo(Player:GetClient()) ), Player:GetClient())
+   if Display == true then
+   self:NotifyGeneric( nil, "set %s salt to %s (%s)", true, Number, Player:GetName(), self:GetPlayerSaltInfo(Player:GetClient()))
+   end
+end
+end
 
 local function AddSalt(Client, Targets, Number, Display, Double)
 

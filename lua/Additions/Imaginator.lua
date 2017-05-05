@@ -21,18 +21,7 @@ local networkVars =
 }
 
 
-local function GetHasActiveObsInRange(where)
 
-            local obs = GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
-            if #obs == 0 then return false end
-            for i = 1, #obs do
-             local ent = obs[i]
-             if GetIsUnitActive(ent) then return true end
-            end
-            
-            return false  
-                
-end
 local function GetHasPGInRoom(where)
 
             local pgs = GetEntitiesForTeamWithinRange("PhaseGate", 1, where, 999999)
@@ -336,7 +325,7 @@ local function GetAlienCostScalar(self,cost)
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
     return math.min(toReturn, cost)--Don't punish for more.
   else
-  return cost / 2
+  return cost / 1.7
   end
   
 end
@@ -381,7 +370,7 @@ local ips = GetEntitiesForTeamWithinRange("InfantryPortal", 1, who:GetOrigin(), 
       
 
             for index, ent in ipairs(ips) do
-              if ent:GetIsPowered() and not GetIsACreditStructure(ent) then
+              if ent:GetIsPowered() or not ent:GetIsBuilt() and not GetIsACreditStructure(ent) then
                   count = count + 1
                end   
            end
@@ -578,7 +567,7 @@ end
 function Imaginator:MarineConstructs()
        for i = 1, 2 do
          local success = self:ActualFormulaMarine()
-         if success == true then return true end
+         if success == true then return self.marineenabled end
        end
        
     --   BuildArcsMacs()
@@ -1322,7 +1311,7 @@ local entity = nil
                          -- if tospawn == kTechId.NutrientMist then minrange = NutrientMist.kSearchRange end
                           if range >=  minrange then
                             entity = CreateEntityForTeam(tospawn, randomspawn, 2)
-                            --cost = GetAlienCostScalar(self, cost)
+                            cost = GetAlienCostScalar(self, cost)
                           if gamestarted then entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost) end
                           end
                           success = true

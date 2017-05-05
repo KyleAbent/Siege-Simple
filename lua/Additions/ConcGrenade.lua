@@ -77,14 +77,21 @@ if Server then
         local owner = self:GetOwner() --Print("owner is %s", owner)
        -- Print("Derp3")
     for _, player in ipairs(GetEntitiesWithinRange("Player", self:GetOrigin(), 8)) do
-          --Stop fade blink / stop lerk glide?
-          if  player:GetTeamNumber() == 2 then 
-            -- player:SetElectrified(4)
-     if player.DisableGroundMove then player:DisableGroundMove(0.3) end
-                  if player.SlapPlayer then player:SlapPlayer() end
+          if  player:GetTeamNumber() == 2 or player == owner then 
+            player:DisableGroundMove(0.5)
+            local selforigin = self:GetOrigin()
+                  selforigin.y = selforigin.y - 1
+            local toPlayer = player:GetEyePos() - selforigin
+            local strength = Clamp( 16 - self:GetDistance(player) - 1, 1, 16)
+            local velocity = GetNormalizedVector(toPlayer) * strength
+            local direction = player:GetOrigin() - selforigin
+            direction:Normalize()
+            local targetVelocity = direction  * strength
+            targetVelocity.y = targetVelocity.y * strength
+            player:SetVelocity(targetVelocity)
           end
-    end
           DestroyEntity(self)
+      end
    end
 end
 

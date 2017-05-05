@@ -50,7 +50,7 @@ end)
 
 
 Shine.VoteMenu:AddPage ("SpendWeapons", function( self )
-
+        self:AddSideButton( "ConcGrenade(2)", function() Shared.ConsoleCommand ("sh_buywp ConcGrenade")  end)
         self:AddSideButton( "Mines(1.5)", function() Shared.ConsoleCommand ("sh_buywp Mines")  end)
         self:AddSideButton( "HeavyMachineGun(5)", function() Shared.ConsoleCommand ("sh_buywp HeavyMachineGun")  end)
         self:AddSideButton( "Shotgun(2)", function() Shared.ConsoleCommand ("sh_buywp Shotgun")  end)

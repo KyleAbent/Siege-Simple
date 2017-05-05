@@ -14,13 +14,16 @@ if Server then
 
  function ARC:CreateScan()
     local origin = self:GetOrigin()
-        if GetIsInSiege(self) then
+    local isSiege = GetIsInSiege(self)
+        if isSiege then
           local hive =  GetNearest(origin, "Hive", 2)
            if hive then
               origin = hive:GetOrigin()
            end
         end
+        if not GetHasActiveObsInRange(self:GetOrigin() ) or isSiege then 
         local scan = CreateEntity(Scan.kMapName, origin, 1)
+        end
  end
  function ARC:Instruct()
      self:SpecificRules()
@@ -95,9 +98,10 @@ local siegepower = GetPowerPointForLocation(siegelocation.name)
 local hasSiegeTP, tpLocation = FindSiegeTP(self)
 local where = FindArcHiveSpawn(siegepower:GetOrigin()) 
                        --Some maps have a TP rather than path, so go to tp then teleport to siege :P.
-                       if hasSiegeTP then
+                       if hasSiegeTP and tpLocation then
                            if self:GetDistance(tpLocation) <= 4 then
                               self:SetOrigin( where ) -- h4x
+                              self:SetMode(ARC.kMode.Stationary)
                               return true
                            else
                               where = tpLocation

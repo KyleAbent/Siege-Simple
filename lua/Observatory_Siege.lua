@@ -153,7 +153,7 @@ end
 function Observatory:PerformAdvancedBeacon()
 
     self.distressBeaconSound:Stop()
-    
+    self.lastbeacon = Shared.GetTime()
     local anyPlayerWasBeaconed = false
     local successfullPositions = {}
     local successfullExoPositions = {}
@@ -308,10 +308,6 @@ end
     local duration =  ( kObsAdvBeaconPowerOff - (self.level/100) * kObsAdvBeaconPowerOff)
     return (self.lastbeacon + duration) > Shared.GetTime()
 end
-    function Observatory:PerformAdvancedBeacon()
-       Observatory.PerformAdvancedBeacon(self)
-       self.lastbeacon = Shared.GetTime()
-    end
     local function GetHasSentryBatteryInRadius(self)
       local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
           for index, battery in ipairs(backupbattery) do

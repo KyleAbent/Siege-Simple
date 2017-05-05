@@ -19,7 +19,7 @@ local table = {}
 
 table = origbuttons(self, techId)
 
- table[3] = kTechId.CragUmbra
+ table[4] = kTechId.CragUmbra
  
  return table
 

@@ -1,5 +1,17 @@
 --Kyle 'Avoca' Abent
 local kExtents = Vector(0.4, 0.5, 0.4) -- 0.5 to account for pathing being too high/too low making it hard to palce tunnels
+ function GetHasActiveObsInRange(where)
+
+            local obs = GetEntitiesForTeamWithinRange("Observatory", 1, where, kScanRadius)
+            if #obs == 0 then return false end
+            for i = 1, #obs do
+             local ent = obs[i]
+             if GetIsUnitActive(ent) then return true end
+            end
+            
+            return false  
+                
+end
 function isPathable(position)
 --Gorgetunnelability local function
 
@@ -148,6 +160,7 @@ end
 end
 function GetAllLocationsWithSameName(origin)
 local location = GetLocationForPoint(origin)
+if not location then return end
 local locations = {}
 local name = location.name
  for _, location in ientitylist(Shared.GetEntitiesWithClassname("Location")) do

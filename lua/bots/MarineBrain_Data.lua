@@ -120,7 +120,8 @@ local function PerformAttackEntity( eyePos, target, lastSeenPos, bot, brain, mov
     -- Avoid doing expensive vis check if we are too far
     -- TODO we should cache this, because we probably already did the vis check when evaluating its urgency
     local hasClearShot = dist < 20.0 and GetBotCanSeeTarget( bot:GetPlayer(), target )
-
+    local hasFlamethrower = bot:GetPlayer():GetWeapon( Flamethrower.kMapName ) ~= nil
+    local range = not hasFlamethrower and 10 or 2
     if not hasClearShot then
 
         -- just keep moving along the path to find it
@@ -136,8 +137,8 @@ local function PerformAttackEntity( eyePos, target, lastSeenPos, bot, brain, mov
         elseif dist > 15.0 then
             -- move towards it while firing
             bot:GetMotion():SetDesiredMoveTarget( aimPos )
-            doFire = true
-        elseif dist < 10.0 then
+            doFire = not hasFlamethrower
+        elseif dist < range then
             -- too close - back away while firing
             bot:GetMotion():SetDesiredMoveTarget( nil )
             bot:GetMotion():SetDesiredMoveDirection( -( aimPos-eyePos ) )
