@@ -111,14 +111,30 @@ if not GetGamerules():GetGameStarted() then return end
 end
  
 
-
+ --self.CreditData.Users[Client:GetUserId() ] = {credits = self:GetPlayerSaltInfo(Client), name = Client:GetControllingPlayer():GetName() }
+            
 function Plugin:GenereateTotalCreditAmount()
+local salt = 0
+
+
+    for variant, data in pairs(self.CreditData.Users) do
+       salt = salt + self.CreditData.Users[variant].credits
+    end
+    local count = table.Count(self.CreditData.Users)
+
+   self:NotifyGeneric( nil, "Salt Stats: %s users and %s salt", true, count, salt )
+   
+end
+
+function Plugin:AdjustSalt()
 local credits = 0
 Print("%s users", table.Count(self.CreditData.Users))
-for i = 1, table.Count(self.CreditData.Users) do
-    local table = self.CreditData.Users.credits
-    credits = credits + table
-end
+
+    for variant, data in pairs(self.CreditData.Users) do
+       self.CreditData.Users[variant].credits = self.CreditData.Users[variant].credits * 10
+       credits = credits + self.CreditData.Users[variant].credits
+    end
+    self:SaveAllCredits(false)
 Print("%s salt",credits)
 end
 
@@ -333,7 +349,7 @@ end
  
  end
  function Plugin:GiveCommCredits()
- local salt = 10 * self.Config.kCreditMultiplier
+ local salt = 100 * self.Config.kCreditMultiplier
    if self.Config.kCreditMultiplier == 1 then
  self:NotifySalt( nil, "%s Salt for each commander", true, salt)
  elseif self.Config.kCreditMultiplier == 2 then
@@ -529,7 +545,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                   if Player then
                  // self:SaveCredits(Player:GetClient())
                      if Player:GetTeamNumber() == 1 or Player:GetTeamNumber() == 2 then
-                    Shine.ScreenText.Add( 80, {X = 0.40, Y = 0.15,Text = "Total Salt Mined:".. math.round((Player:GetScore() / 10 + ConditionalValue(Player:GetTeamNumber() == 1, self.marinebonus, self.alienbonus)), 2), Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
+                    Shine.ScreenText.Add( 80, {X = 0.40, Y = 0.15,Text = "Total Salt Mined:".. math.round((Player:GetScore()  + ConditionalValue(Player:GetTeamNumber() == 1, self.marinebonus, self.alienbonus)), 2), Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
                     Shine.ScreenText.Add( 81, {X = 0.40, Y = 0.20,Text = "Total Salt Spent:".. self.PlayerSpentAmount[Player:GetClient()], Duration = 120,R = math.random(0,255), G = math.random(0,255), B = math.random(0,255),Alignment = 0,Size = 4,FadeIn = 0,}, Player )
                      end
                   end
@@ -1046,6 +1062,10 @@ CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
 
 local function SetSalt(Client, Targets, Number, Display, Double) --TriggerHappyStoner
+
+
+
+
 for i = 1, #Targets do
 local Player = Targets[ i ]:GetControllingPlayer()
 self.CreditUsers[ Player:GetClient() ] = Number
@@ -1054,6 +1074,7 @@ Shine.ScreenText.SetText("Salt", string.format("%s Salt", self:GetPlayerSaltInfo
    self:NotifyGeneric( nil, "set %s's  salt to %s", true, Player:GetName(), Number )
    end
 end
+
 end
 
 
@@ -1063,6 +1084,16 @@ SetSaltCommand:AddParam{ Type = "clients" }
 SetSaltCommand:AddParam{ Type = "number" }
 SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = true }
 SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = false }
+
+
+local function GetSalt(Client)
+
+ self:GenereateTotalCreditAmount()
+end
+
+
+local GetSaltCommand = self:BindCommand("sh_getsalt", "getsalt", GetSalt)
+GetSaltCommand:Help("sh_getsalt - pasts amount of users and salt.")
 
 local function AddSalt(Client, Targets, Number, Display, Double)
 

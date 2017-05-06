@@ -1,6 +1,7 @@
 function Armory:GetMinRangeAC()
 return ArmoryAutoCCMR 
 end
+/*
 local origlist = Armory.GetItemList
 function Armory:GetItemList(forPlayer)
     
@@ -18,6 +19,7 @@ function Armory:GetItemList(forPlayer)
     return list
     
 end
+*/
 function Armory:GetShouldResupplyPlayer(player)
     if not player:GetIsAlive() then
         return false

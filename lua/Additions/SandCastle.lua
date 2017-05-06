@@ -24,9 +24,9 @@ local networkVars =
    siegeOpened = "boolean",
 }
 function SandCastle:TimerValues()
- --  if kSiegeTimer == nil then kSiegeTimer = 960 end
-  -- if kFrontTimer == nil then kFrontTimer = 330 end
-  -- if kPrimaryTimer == nil then kPrimaryTimer = 0 end
+   if kSiegeTimer == nil then kSiegeTimer = 960 end
+   if kFrontTimer == nil then kFrontTimer = 330 end
+   if kPrimaryTimer == nil then kPrimaryTimer = 0 end
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
    self.siegeOpened = false

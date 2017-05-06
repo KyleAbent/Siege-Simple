@@ -122,6 +122,9 @@ local function PerformAttackEntity( eyePos, target, lastSeenPos, bot, brain, mov
     local hasClearShot = dist < 20.0 and GetBotCanSeeTarget( bot:GetPlayer(), target )
     local hasFlamethrower = bot:GetPlayer():GetWeapon( Flamethrower.kMapName ) ~= nil
     local range = not hasFlamethrower and 10 or 2
+    
+
+    
     if not hasClearShot then
 
         -- just keep moving along the path to find it
@@ -155,6 +158,10 @@ local function PerformAttackEntity( eyePos, target, lastSeenPos, bot, brain, mov
         
     end
 
+    if hasFlamethrower then
+       move.commands = AddMoveCommand( move.commands, Move.SecondaryAttack )
+    end
+    
     if doFire then
         move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
     else

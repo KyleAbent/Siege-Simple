@@ -274,7 +274,7 @@ local function changeColorsBack()
 end
 
 local function FindPosition(location, searchEnt, teamnum)
-  if #location == 0  then return end
+  if not location or #location == 0  then return end
   local origin = nil
   local where = {}
     for i = 1, #location do
@@ -321,7 +321,7 @@ local function GetAlienCostScalar(self,cost)
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
     return math.min(toReturn, cost)--Don't punish for more.
   else
-  return cost / 1.7
+  return cost / 2
   end
   
 end
@@ -1398,7 +1398,7 @@ local randomlychosen = table.random(tospawn)
 
 
 local cost = LookupTechData(randomlychosen, kTechDataCostKey)
-
+      cost = GetAlienCostScalar(self, cost)
 TresSpawn(who, cost, randomlychosen)
 
 
@@ -1454,7 +1454,7 @@ if  table.count(tospawn) == 0 then return end
 local randomlychosen = table.random(tospawn)
 
 local cost = LookupTechData(randomlychosen, kTechDataCostKey)
-
+      cost = GetAlienCostScalar(self, cost)
 TresSpawn(who, cost, randomlychosen)
 self:AdditionalSpawns(who)
 
@@ -1479,6 +1479,7 @@ local hive = nil
    
    if #shades <= 2 then 
         local cost = LookupTechData(kTechId.Shade, kTechDataCostKey)
+              cost = GetAlienCostScalar(self, cost)
         if TresCheck(2, cost) then
                local origin = FindFreeSpace(hive:GetOrigin(), 2, 14) --not too far else shadeink not hit hive!
                local shade = CreateEntity(Shade.kMapName, origin,  2)
