@@ -349,6 +349,7 @@ end
  
  end
  function Plugin:GiveCommCredits()
+   self:GenereateTotalCreditAmount()
  local salt = 100 * self.Config.kCreditMultiplier
    if self.Config.kCreditMultiplier == 1 then
  self:NotifySalt( nil, "%s Salt for each commander", true, salt)
