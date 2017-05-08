@@ -83,9 +83,6 @@ function BreakableDoor:OnUpdate(deltatime)  --Add in scan for arcs and macs to o
   end
   
 end
-function BreakableDoor:GetCanTakeDamageOverride()
-    return true
-end
 function BreakableDoor:GetReceivesStructuralDamage()
     return true
 end
@@ -182,9 +179,6 @@ function BreakableDoor:GetShowHitIndicator()
 end
 function BreakableDoor:GetSendDeathMessageOverride()
     return false
-end
-function BreakableDoor:GetCanTakeDamageOverride()
-    return true
 end
 
 
