@@ -81,6 +81,14 @@ local function PerformMove( marinePos, targetPos, bot, brain, move )
         brain.lastGateId = nil
 
     end
+    
+    local breakable = GetEntitiesWithinRange( "BreakableDoor", marinePos, 2, true )
+    --local exosuit = GetEntitiesWithinRange( "ExoSuit", marinePos, 2, true )
+    
+    if breakable then --or exosuit then
+         move.commands = AddMoveCommand( move.commands, Move.Use )
+    end
+
 end
 
 ------------------------------------------

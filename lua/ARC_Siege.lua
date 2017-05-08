@@ -31,6 +31,7 @@ if Server then
         end
         if not GetHasActiveObsInRange(self:GetOrigin() ) or isSiege then 
         local scan = CreateEntity(Scan.kMapName, origin, 1)
+        if scan then return true else return false end
         end
  end
  function ARC:Instruct()

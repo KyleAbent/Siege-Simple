@@ -15,6 +15,7 @@ local networkVars =
   lastrobo = "private time",
   lastink = "private time",
   lasthealwave = "private time",
+  lastScan = "private time",
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
   --setupExtTresScale = "private integer (0 to 20)"
@@ -57,6 +58,7 @@ function Imaginator:OnCreate()
    self.lasthealwave = 0
    self:SetUpdates(true)
   -- self.setupExtTresScale = 0
+  self.lastScan = 0
 end
 function Imaginator:GetAlienEnabled()
 local team2Commander = GetGamerules().team2:GetCommander()
@@ -281,15 +283,18 @@ local function FindPosition(location, searchEnt, teamnum)
     local location = location[i]   
       local ents = location:GetEntitiesInTrigger()
       local potential = InsideLocation(ents, teamnum)
-      if potential ~= nil then  table.insert(where, potential) end 
+      if potential ~= nil then  table.insert(where, potential ) end 
   end
      for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Construct", teamnum, searchEnt:GetOrigin(), 24) ) do
        if  GetLocationForPoint(entity:GetOrigin()) ==  GetLocationForPoint(searchEnt:GetOrigin()) then
-          table.insert(where, entity:GetOrigin())
+          table.insert(where, entity:GetOrigin() )
        end
      end
   if #where == 0 then return nil end
-  return table.random(where)
+  local random = table.random(where)
+  local actualWhere = FindFreeSpace(random)
+  if random == actualWhere then return nil end -- ugh
+  return actualWhere
 
 end
 local function GetRange(who, where)
@@ -828,10 +833,13 @@ local function ManageRoboticFactories(self)
 
       if GetSetupConcluded() and ArcCount>= 1 and TresCheck(1,3) then --because if they scan, they stop :x and fire
       local randomarc = table.random(ARCS)
-      --   if not GetHasActiveObsInRange(randomarc:GetOrigin()) then
-          randomarc:CreateScan()
-          randomarc:GetTeam():SetTeamResources(randomarc:GetTeam():GetTeamResources() - 3)
-       -- end
+         if GetIsTimeUp(self.lastScan, math.random(4, 16)) or GetSiegeDoorOpen() then
+          local hasScanned = randomarc:CreateScan() 
+           if hasScanned then
+           randomarc:GetTeam():SetTeamResources(randomarc:GetTeam():GetTeamResources() - 3)
+           self.lastScan = Shared.GetTime() 
+          end
+        end
       end
       
 

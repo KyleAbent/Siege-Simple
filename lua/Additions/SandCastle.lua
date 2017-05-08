@@ -20,6 +20,7 @@ local networkVars =
 {
    SiegeTimer = "float",
    FrontTimer = "float",
+   PrimaryTimer = "float",
    frontOpened = "boolean",
    siegeOpened = "boolean",
 }
@@ -27,6 +28,7 @@ function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
    if kFrontTimer == nil then kFrontTimer = 330 end
    if kPrimaryTimer == nil then kPrimaryTimer = 0 end
+   self.PrimaryTimer = kPrimaryTimer
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
    self.siegeOpened = false
@@ -210,7 +212,7 @@ function SandCastle:OnUpdate(deltatime)
           end
           
           
-      if self. PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
+      if self.PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
         self.timeLastAutomations = Shared.GetTime()
          end
   
