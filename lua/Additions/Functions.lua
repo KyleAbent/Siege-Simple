@@ -297,6 +297,11 @@ function GetIsInSiege(who)
 if string.find(GetLocationName(who), "siege") or string.find(GetLocationName(who), "Siege") then return true end
 return false
 end
+function GetWhereIsSiege(where)
+local location = GetLocationForPoint(where)
+if string.find(location.name, "siege") or string.find(location.name, "Siege") then return true end
+return false
+end
 local function GetLocationNameWhere(where)
         local location = GetLocationForPoint(where)
         local locationName = location and location:GetName() or ""

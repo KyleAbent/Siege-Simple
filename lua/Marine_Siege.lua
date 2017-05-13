@@ -1,8 +1,17 @@
+Script.Load("lua/GlowMixin.lua")
 local networkVars =
 {
    hasjumppack = "private boolean",
    lastjump = "private time",
 }
+
+AddMixinNetworkVars(GlowMixin, networkVars)
+
+local originit = Marine.OnInitialized
+function Marine:OnInitialized()
+    originit(self)
+    InitMixin(self, GlowMixin)
+end
 
 local origcreate = Marine.OnCreate
 function Marine:OnCreate()

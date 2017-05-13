@@ -193,6 +193,7 @@ local function WhoIsQualified(who, self)
    return PowerPointStuff(who, self)
 end
 local function Touch(who, where, what, number)
+   if not GetSiegeDoorOpen() and GetWhereIsSiege(where) then return end
  local tower = CreateEntityForTeam(what, where, number, nil)
          if tower then
             who:SetAttached(tower)

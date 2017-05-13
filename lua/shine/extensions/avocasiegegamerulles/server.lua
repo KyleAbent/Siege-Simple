@@ -132,6 +132,10 @@ local function NewHpdateGestation(self)
            
             
            if  GetHasRebirthUpgrade(newPlayer) then
+               if self.triggeredrebirth then
+                  newPlayer:SetHealth(newPlayer:GetHealth() * 0.7)
+                  newPlayer:SetArmor(newPlayer:GetArmor() * 0.7)
+               end
           newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
           newPlayer.lastredeemorrebirthtime = Shared.GetTime()
            end

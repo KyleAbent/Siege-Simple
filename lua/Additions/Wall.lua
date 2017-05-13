@@ -1,0 +1,86 @@
+Script.Load("lua/ScriptActor.lua")
+Script.Load("lua/SelectableMixin.lua")
+Script.Load("lua/LiveMixin.lua")
+Script.Load("lua/TeamMixin.lua")
+Script.Load("lua/ConstructMixin.lua")
+Script.Load("lua/EntityChangeMixin.lua")
+Script.Load("lua/ResearchMixin.lua")
+Script.Load("lua/RecycleMixin.lua")
+Script.Load("lua/CombatMixin.lua")
+Script.Load("lua/WeldableMixin.lua")
+Script.Load("lua/UnitStatusMixin.lua")
+Script.Load("lua/GhostStructureMixin.lua")
+
+class 'Wall' (ScriptActor) 
+Wall.kMapName = "wall"
+Wall.kModelName = PrecacheAsset("models/props/eclipse/eclipse_wallmods_n_03.model")
+
+local networkVars = { }
+
+
+
+AddMixinNetworkVars(BaseModelMixin, networkVars)
+AddMixinNetworkVars(ModelMixin, networkVars)
+AddMixinNetworkVars(LiveMixin, networkVars)
+AddMixinNetworkVars(TeamMixin, networkVars)
+AddMixinNetworkVars(ConstructMixin, networkVars)
+AddMixinNetworkVars(ResearchMixin, networkVars)
+AddMixinNetworkVars(RecycleMixin, networkVars)
+AddMixinNetworkVars(CombatMixin, networkVars)
+AddMixinNetworkVars(SelectableMixin, networkVars)
+AddMixinNetworkVars(GhostStructureMixin, networkVars)
+
+
+
+
+
+
+function Wall:OnCreate()
+
+    ScriptActor.OnCreate(self)
+    
+    InitMixin(self, BaseModelMixin)
+    InitMixin(self, ModelMixin)
+    InitMixin(self, LiveMixin)
+    InitMixin(self, TeamMixin)
+    InitMixin(self, ConstructMixin)
+    InitMixin(self, EntityChangeMixin)
+    InitMixin(self, ResearchMixin)
+    InitMixin(self, RecycleMixin)
+    InitMixin(self, CombatMixin)
+    InitMixin(self, SelectableMixin)
+    InitMixin(self, GhostStructureMixin)
+
+    self:SetPhysicsType(PhysicsType.Kinematic) --?
+    self:SetPhysicsGroup(PhysicsGroup.BigStructuresGroup)
+    
+   
+
+end
+
+function Wall:OnInitialized()
+    Shared.PrecacheModel(Wall.kModelName) 
+    ScriptActor.OnInitialized(self)
+    self:SetModel(Wall.kModelName)
+    if Client then
+       InitMixin(self, UnitStatusMixin)
+    end
+end
+
+function Wall:GetReceivesStructuralDamage()
+    return true
+end
+function Wall:GetHealthbarOffset()
+    return 0.25
+end 
+if Server then
+
+    function Wall:OnKill()
+
+        self:TriggerEffects("death")
+        DestroyEntity(self)
+    
+    end
+
+end
+Shared.LinkClassToMap("Wall", Wall.kMapName, networkVars)

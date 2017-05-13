@@ -9,6 +9,7 @@ function MarineTeam:InitTechTree()
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
     self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
+     self.techTree:AddBuildNode(kTechId.Wall,     kTechId.None, kTechId.None)
     self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
     -- self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
      self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.None) 
@@ -21,6 +22,7 @@ function MarineTeam:InitTechTree()
     self.techTree:AddBuyNode(kTechId.DualFlamerExosuit, kTechId.ExosuitTech, kTechId.None)
    self.techTree:AddTargetedBuyNode(kTechId.JumpPack, kTechId.JetpackTech, kTechId.None)
   self.techTree:AddTargetedBuyNode(kTechId.ConcGrenade, kTechId.GrenadeTech, kTechId.None)
+      self.techTree:AddUpgradeNode(kTechId.ElectrifyStructure,  kTechId.None)
     
     
     self.techTree:SetComplete()

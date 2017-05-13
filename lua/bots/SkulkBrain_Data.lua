@@ -105,10 +105,11 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
         doFire = true
     end
     
-  --  if bestTarget:isa("Player") and distance <=  kXenocideRange and GetHasTech(bot, kTechId.Xenocide)  then
-  --      bot:GiveItem(Xenocide.XenocideLeap)
-  --      bot:SetActiveWeapon(XenocideLeap.kMapName)  
-  --  end
+    if bestTarget:isa("Player") and distance <=  kXenocideRange and GetHasTech(bot, kTechId.Xenocide)  then
+        bot:GiveItem(XenocideLeap.kMapName)
+        bot:SetActiveWeapon(XenocideLeap.kMapName)  
+        move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
+    end
     
     if distance >=  kXenocideRange and GetHasTech(bot, kTechId.Leap)  then
        move.commands = AddMoveCommand( move.commands, Move.SecondaryAttack )

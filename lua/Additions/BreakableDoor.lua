@@ -65,7 +65,7 @@ function BreakableDoor:OnInitialized()
         end
         
 end
-function BreakableDoor:GetCanTakeDamageOverride()
+function BreakableDoor:GetCanTakeDamage()
     if self.health == 0 then 
     return false
     else

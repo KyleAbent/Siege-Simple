@@ -1,3 +1,4 @@
+kHeavyMachineGunCost = 20
 --kXenocideDamageType = kDamageType.Structural
 kSwipeDamageType = kDamageType.Normal
 kGoreDamage = 100

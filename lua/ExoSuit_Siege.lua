@@ -1,3 +1,10 @@
+Script.Load("lua/GlowMixin.lua")
+
+local networkVars = {}
+
+AddMixinNetworkVars(GlowMixin, networkVars)
+
+
 local function HealSelf(self)
 
 
@@ -19,10 +26,35 @@ local function HealSelf(self)
     
 end
 
+local function SetColor(self)
+ 
+self.color = 1
+   if self.layout == "WelderWelder"  then
+       self.color = 1
+       Print("1")
+   elseif self.layout == "FlamerFlamer" then
+    self.color = 2
+    Print("2")
+   elseif self.layout == "MinigunMinigun" then
+  self.color = 3
+  Print("3")
+   elseif self.layout == "RailgunRailgun" then
+    self.color = 4
+  Print("4")
+    end
+     Print("color is %s", self.color)
+     self:GlowColor(self.color, 120)
+     
+    return false
+end
 local oninit = Exosuit.OnInitialized
-    function Exosuit:PerformEject()
+    function Exosuit:OnInitialized()
+    InitMixin(self, GlowMixin)
     oninit(self)
      self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+     
+    -- self:AddTimedCallback(function() SetColor(self) return false end, 4)         
+    
     end
    if Server then
 

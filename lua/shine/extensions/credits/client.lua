@@ -48,11 +48,19 @@ Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
         self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
 
+Shine.VoteMenu:AddPage ("SpendGlow", function( self )
+        self:AddSideButton( "Purple(5)", function() Shared.ConsoleCommand ("sh_buyglow Purple")  end)
+        self:AddSideButton( "Green(5)", function() Shared.ConsoleCommand ("sh_buyglow Green")  end)
+        self:AddSideButton( "Gold(5)", function() Shared.ConsoleCommand ("sh_buyglow Gold")  end)
+      --  self:AddSideButton( "Red(5)", function() Shared.ConsoleCommand ("sh_buyglow Red")  end)
+
+        self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
+end)
 
 Shine.VoteMenu:AddPage ("SpendWeapons", function( self )
         self:AddSideButton( "ConcGrenade(10)", function() Shared.ConsoleCommand ("sh_buywp ConcGrenade")  end)
         self:AddSideButton( "Mines(15)", function() Shared.ConsoleCommand ("sh_buywp Mines")  end)
-        self:AddSideButton( "HeavyMachineGun(50)", function() Shared.ConsoleCommand ("sh_buywp HeavyMachineGun")  end)
+        self:AddSideButton( "HeavyMachineGun(35)", function() Shared.ConsoleCommand ("sh_buywp HeavyMachineGun")  end)
         self:AddSideButton( "Shotgun(20)", function() Shared.ConsoleCommand ("sh_buywp Shotgun")  end)
         self:AddSideButton( "FlameThrower(30)", function() Shared.ConsoleCommand ("sh_buywp FlameThrower")  end)
         self:AddSideButton( "GrenadeLauncher(30)", function() Shared.ConsoleCommand ("sh_buywp GrenadeLauncher")  end)
@@ -118,7 +126,13 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
      self:AddSideButton( "Structures", function() self:SetPage( "SpendStructures" ) end)
              --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
                self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
+               
+     if player:GetTeamNumber() == 1 then 
+        self:AddSideButton( "Glow", function() self:SetPage( "SpendGlow" ) end)
+      end  
+     
      self:AddBottomButton( "Back", function()self:SetPage("Main")end)
+     
 end)
 
 

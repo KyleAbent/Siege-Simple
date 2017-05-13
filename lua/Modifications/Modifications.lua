@@ -188,6 +188,19 @@ if Server then
  -- return false
   end
   */
+  
+  function GetCheckWallLimit(techId, origin, normal, commander)
+    local num = 0
+
+        
+       for _, cc in ipairs(GetEntitiesWithinRange("Wall", origin, 9999)) do
+        
+                num = num + 1
+            
+    end
+    
+    return num < 16
+end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
     local num = 0
 
@@ -220,6 +233,10 @@ local function GetCheckExoDropLimit(techId, origin, normal, commander)
     
     return num < 10
 end
+
+SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
+SetCachedTechData(kTechId.Wall, kTechDataBuildMethodFailedMessage, "16 Wall max")
+
 SetCachedTechData(kTechId.Door, kTechDataModel, BreakableDoor.kModelName)
 SetCachedTechData(kTechId.DropExosuit, kTechDataBuildMethodFailedMessage, "Trying to crash the server?")
 
@@ -328,7 +345,7 @@ if Client then
         local player = Client.GetLocalPlayer()
         local now = Shared.GetTime()
         
-       if   ( self:isa("SiegeDoor") and self:GetIsLocked() ) then
+       if   ( self:isa("SiegeDoor") and self:GetIsLocked() ) or self:isa("TunnelEntrance") then
         visible = true
         end
         

@@ -277,6 +277,8 @@ function Alien:TriggerRebirth()
                newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
                newPlayer:SetGestationData(upgradeManager:GetUpgrades(), newLifeFormTechId, 10, 10) //Skulk to X 
                newPlayer.gestationTime = self:GetRebirthLength()
+               newPlayer.lastredeemorrebirthtime = Shared.GetTime()
+               newPlayer.triggeredrebirth = true
                
                //Spawn protective boneshield    
                 success = true

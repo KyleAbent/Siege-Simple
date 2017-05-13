@@ -15,6 +15,7 @@ Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
 Script.Load("lua/Additions/ExoFlamer.lua")
 Script.Load("lua/Additions/ConcGrenade.lua")
+Script.Load("lua/Additions/Wall.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -76,6 +77,14 @@ end
 
 local kSiege_TechData =
 {   
+
+        { [kTechDataId] = kTechId.ElectrifyStructure, 
+[kTechDataCostKey] = 5,  
+[kTechIDShowEnables] = false,        
+  [kTechDataResearchTimeKey] = 10, 
+ [kTechDataHotkey] = Move.U, 
+[kTechDataDisplayName] = "ElectrifyStructure", 
+[kTechDataTooltipInfo] =  "ElectrifyStructure 2"},
 
 
              { [kTechDataId] = kTechId.ConcGrenade,
@@ -173,6 +182,19 @@ local kSiege_TechData =
 [kStructureAttachId] = { kTechId.RoboticsFactory, kTechId.ARCRoboticsFactory },
 [kStructureAttachRequiresPower] = true },
 
+
+ { [kTechDataId] = kTechId.Wall,  
+ [kTechDataMapName] = Wall.kMapName, 
+[kTechDataDisplayName] = "Wall", 
+[kTechIDShowEnables] = false, 
+[kTechDataTooltipInfo] =  "Build Them!", 
+[kTechDataModel] = Wall.kModelName, 
+            [kTechDataBuildTime] = 2,
+             [kTechDataMaxHealth] = 2000,
+[kTechDataCostKey] = 5, 
+ [kTechDataSpecifyOrientation] = true,
+[kTechDataSupply] = 0},
+
  { [kTechDataId] = kTechId.AcidRocket,        
   [kTechDataCategory] = kTechId.Fade,   
      [kTechDataMapName] = AcidRocket.kMapName,  
@@ -208,6 +230,40 @@ local kSiege_TechData =
      [kTechDataCooldown] = kCragUmbraCooldown, 
      [kTechDataCostKey] = kCragUmbraCost,  
 [kTechDataTooltipInfo] = "CRAG_UMBRA_TOOLTIP"},
+
+
+            { [kTechDataId] = kTechId.WhipExplode,
+         [kTechDataDisplayName] = "WhipExplode",
+      --[kVisualRange] = Crag.kHealRadius, 
+     [kTechDataCooldown] = 16, 
+     [kTechDataCostKey] = 2,  
+[kTechDataTooltipInfo] = "WhipExplode"},
+
+
+
+            { [kTechDataId] = kTechId.TunnelTeleport,
+         [kTechDataDisplayName] = "TunnelTeleport",
+      --[kVisualRange] = Crag.kHealRadius, 
+     [kTechDataCooldown] = 8, 
+     [kTechDataCostKey] = 2,  
+[kTechDataTooltipInfo] = "TunnelTeleport"},
+
+            { [kTechDataId] = kTechId.ShiftEnzyme,
+         [kTechDataDisplayName] = "ShiftEnzyme",
+      --[kVisualRange] = Crag.kHealRadius, 
+     [kTechDataCooldown] = 8, 
+     [kTechDataCostKey] = 2,  
+[kTechDataTooltipInfo] = "ShiftEnzyme"},
+
+            { [kTechDataId] = kTechId.ShadeHallucination,
+         [kTechDataDisplayName] = "ShadeHallucination",
+      --[kVisualRange] = Crag.kHealRadius, 
+     [kTechDataCooldown] = 8, 
+     [kTechDataCostKey] = 2,  
+[kTechDataTooltipInfo] = "ShadeHallucination"},
+
+
+
 
 
   { [kTechDataId] = kTechId.CommTunnel,  
@@ -284,7 +340,7 @@ local kSiege_TechData =
 
         { [kTechDataId] = kTechId.StructureBeacon, 
         [kTechDataCooldown] = kStructureBeaconCoolDown, 
-         [kTechDataTooltipInfo] = "Structures move approximately at the placed Egg Beacon", 
+         [kTechDataTooltipInfo] = "Structures move approximately at the placed location", 
         [kTechDataGhostModelClass] = "AlienGhostModel",   
             [kTechDataMapName] = StructureBeacon.kMapName,        
                  [kTechDataDisplayName] = "Structure Beacon",  [kTechDataCostKey] = kStructureBeaconCost,   

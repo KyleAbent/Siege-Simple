@@ -83,7 +83,7 @@ local function PerformMove( marinePos, targetPos, bot, brain, move )
     end
     
     local breakable = GetEntitiesWithinRange( "BreakableDoor", marinePos, 2, true )
-    --local exosuit = GetEntitiesWithinRange( "ExoSuit", marinePos, 2, true )
+    local exosuit = GetEntitiesWithinRange( "ExoSuit", marinePos, 3, true )
     
     if breakable then --or exosuit then
          move.commands = AddMoveCommand( move.commands, Move.Use )
@@ -581,8 +581,8 @@ kMarineBrainActions =
 
             local targetId = order:GetParam()
             local target = Shared.GetEntity(targetId)
-
-            if target ~= ni and ( order:GetType() == kTechId.Construct or order:GetType() == kTechId.Build ) then
+            local isExo = marine:isa("Exo")
+            if not isExo and target ~= ni and ( order:GetType() == kTechId.Construct or order:GetType() == kTechId.Build ) then
 
                 -- Because construct orders are often given by the auto-system, do not necessarily obey them
                 -- Load-balance them
@@ -673,14 +673,15 @@ kMarineBrainActions =
         local name = "retreat"
         local marine = bot:GetPlayer()
         local sdb = brain:GetSenses()
-
+         
+        local isExo = marine:isa("Exo")
         local armory = sdb:Get("nearestArmory").armory
         local armoryDist = sdb:Get("nearestArmory").distance
         local minFraction = math.min( sdb:Get("healthFraction"), sdb:Get("ammoFraction") )
 
         -- If we are pretty close to the armory, stay with it a bit longer to encourage full-healing, etc.
         -- so pretend our situation is more dire than it is
-        if armory ~= nil and armoryDist < 4.0 and minFraction < 0.8 then
+        if not isExo and armory ~= nil and armoryDist < 4.0 and minFraction < 0.8 then
             if brain.debug then
                 Print("close to armory, being less risky")
             end

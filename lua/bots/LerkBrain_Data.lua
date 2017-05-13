@@ -37,6 +37,21 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
     local doFire = false
     bot:GetMotion():SetDesiredMoveTarget( marinePos )
     
+    
+    local aliens = GetEntitiesWithinRange("Alien", botty:GetOrigin(), 20)
+    
+         if #aliens >= 1 and GetHasTech(bot, kTechId.PrimalScream)  then
+                 weight = math.random(1,100)
+           end
+           
+           if weight >= 70 then
+               botty:GiveItem(PrimalScream.kMapName)
+               botty:SetActiveWeapon(PrimalScream.kMapName)  
+               move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
+              botty:SetActiveWeapon(LerkBite.kMapName) 
+           end
+           
+    
     local distance = eyePos:GetDistance(marinePos)
     if distance < 18 and GetBotCanSeeTarget( bot:GetPlayer(), bestTarget ) then
         doFire = true
@@ -183,27 +198,6 @@ kLerkBrainActions =
     ------------------------------------------
     --
     ------------------------------------------
-    function(bot, brain)
-
-        local name = "primalTeam"
-        local botty = bot:GetPlayer()
-        local weight = 0 
-        
-         local aliens = GetEntitiesWithinRange("Alien", botty:GetOrigin(), 20)
-         
-           if #aliens >= 1 and GetHasTech(bot, kTechId.PrimalScream)  then
-                 weight = math.random(1,100)
-           end
-          
-         return { name = name, weight = weight,
-            perform = function(move)
-               botty:GiveItem(PrimalScream.kMapName)
-               botty:SetActiveWeapon(PrimalScream.kMapName)  
-               move.commands = AddMoveCommand( move.commands, Move.PrimaryAttack )
-              botty:SetActiveWeapon(LerkBite.kMapName) 
-            end }
-
-    end,
     
     function(bot, brain)
         local name = "evolve"

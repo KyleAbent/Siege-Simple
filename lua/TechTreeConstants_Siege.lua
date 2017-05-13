@@ -53,6 +53,12 @@ local kSiege_TechIds =
     'LerkBileBomb',
     'JumpPack',
     'ConcGrenade',
+    'WhipExplode',
+    'ShiftEnzyme',
+    'ShadeHallucination',
+    'Wall',
+    'TunnelTeleport',
+    'ElectrifyStructure',
 
 
     

@@ -21,6 +21,12 @@ function AlienTeam:InitTechTree()
     
  self.techTree:AddBuildNode(kTechId.CommVortex, kTechId.ShadeHive)
  self.techTree:AddActivation(kTechId.CragUmbra, kTechId.CragHive, kTechId.None) 
+ self.techTree:AddActivation(kTechId.WhipExplode, kTechId.BioMassNine, kTechId.None) 
+ self.techTree:AddActivation(kTechId.ShiftEnzyme, kTechId.BioMassNine, kTechId.None) 
+ self.techTree:AddActivation(kTechId.ShadeHallucination, kTechId.BioMassNine, kTechId.None) 
+ self.techTree:AddTargetedActivation(kTechId.TunnelTeleport, kTechId.ShiftHive, kTechId.None) 
+ 
+  
    
 self.techTree:AddBuildNode(kTechId.EggBeacon, kTechId.CragHive)
 self.techTree:AddBuildNode(kTechId.CommTunnel, kTechId.None)

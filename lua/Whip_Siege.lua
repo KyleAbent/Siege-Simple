@@ -19,6 +19,46 @@ function Whip:GetMinRangeAC()
 return WhipAutoCCMR       
 end
 
+local origbuttons = Whip.GetTechButtons
+function Whip:GetTechButtons(techId)
+local table = {}
+
+table = origbuttons(self, techId)
+
+ table[4] = kTechId.WhipExplode
+ 
+ return table
+
+end
+
+local origact = Whip.PerformActivation
+function Whip:PerformActivation(techId, position, normal, commander)
+origact(self, techId, position, normal, commander)
+
+local success  = false
+   if  techId == kTechId.WhipExplode then
+    success = self:TriggerExplode()
+end
+
+return success, true
+
+end
+
+function Whip:TriggerExplode()
+
+                self:TriggerEffects("xenocide", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
+                local hitEntities = GetEntitiesWithMixinForTeamWithinRange( "Live", 1, self:GetOrigin(), kXenocideRange )
+                local count = #GetEntitiesWithinRange("Whip", self:GetOrigin(), kXenocideRange)
+              --   Print("Coount is %s", count)
+                local scalar = Clamp(self:GetHealthScalar() / count, 0.25, 1)
+              --   Print("Scalar is %s", scalar)
+                local damage = kXenocideDamage * scalar
+               --  Print ("Damage is %s", damage)
+                RadiusDamage(hitEntities, self:GetOrigin(), kXenocideRange, damage, self)
+                self:Kill()
+                   return true
+end
+
 if Server then
 
 function Whip:TryAttack(selector)

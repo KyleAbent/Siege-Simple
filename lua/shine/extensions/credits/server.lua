@@ -93,6 +93,7 @@ end
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
+if Client:GetIsVirtual() then return end
 if self:GetPlayerSaltInfo(Client) < CreditCost then
 self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, CreditCost, self:GetPlayerSaltInfo(Client))
 return
@@ -926,7 +927,7 @@ if not Player then return end
  
     if String  == "Mines" then cost = 15 mapname = LayMines.kMapName
    elseif String == "Welder" then cost = 10 mapname = Welder.kMapName
-   elseif String == "HeavyMachineGun" then cost = 50 mapname = HeavyMachineGun.kMapName
+   elseif String == "HeavyMachineGun" then cost = 35 mapname = HeavyMachineGun.kMapName
     elseif String  == "Shotgun" then cost = 20 mapname = Shotgun.kMapName 
    elseif String == "FlameThrower" then  cost = 30 mapname = Flamethrower.kMapName 
    elseif String == "GrenadeLauncher" then cost = 30 mapname =   GrenadeLauncher.kMapName 
@@ -1019,6 +1020,46 @@ local BuyClassCommand = self:BindCommand("sh_buyclass", "buyclass", BuyClass, tr
 BuyClassCommand:Help("sh_buyclass <class name>")
 BuyClassCommand:AddParam{ Type = "string" }
 
+
+local function BuyGlow(Client, String)
+
+local Player = Client:GetControllingPlayer()
+local delayafter = 8 
+local cost = 5
+local color = 1
+if not Player then return end
+
+if Player:GetIsGlowing() then
+self:NotifySalt( Client, "You're already glowing. Wait until you cease to glow.", true)
+ return
+end
+
+ if String == "Purple" then color = 1 
+  elseif String == "Green" then color = 2
+  elseif String == "Gold" then color = 3
+  elseif String == "Red" then color = 4
+  end
+  
+ if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
+            --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
+         if Player:GetTeamNumber() == 1 then
+              if color == 1 then DeductBuy(self, Player, cost, delayafter)    Player:GlowColor(color, 120)
+             elseif color == 2 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
+             elseif color == 3 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
+             elseif color == 4 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
+             end
+         elseif Player:GetTeamNumber() == 2 then
+         end
+   
+
+ 
+   
+end
+
+
+local BuyGlowCommand = self:BindCommand("sh_buyglow", "buyglow", BuyGlow, true)
+BuyGlowCommand:Help("sh_buyglow <color number> ")
+BuyGlowCommand:AddParam{ Type = "string" }
 
 local function Buy(Client, String)
 

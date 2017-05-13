@@ -2,11 +2,13 @@ Script.Load("lua/StunMixin.lua")
 Script.Load("lua/PhaseGateUserMixin.lua")
 Script.Load("lua/Mixins/LadderMoveMixin.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
+Script.Load("lua/GlowMixin.lua")
 
 local networkVars = {     isLockedEjecting = "private boolean", }
 AddMixinNetworkVars(StunMixin, networkVars)
 AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
 AddMixinNetworkVars(LadderMoveMixin, networkVars)
+AddMixinNetworkVars(GlowMixin, networkVars)
 
 local kDualWelderModelName = PrecacheAsset("models/marine/exosuit/exosuit_rr.model")
 local kDualWelderAnimationGraph = PrecacheAsset("models/marine/exosuit/exosuit_rr.animation_graph")
@@ -49,7 +51,7 @@ local oninit = Exo.OnInitialized
 function Exo:OnInitialized()
 
 oninit(self)
-
+    InitMixin(self, GlowMixin)
     InitMixin(self, StunMixin)
    self:SetTechId(kTechId.Exo)
    self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
