@@ -17,9 +17,9 @@ end
 
 local origact = Shade.PerformActivation
 function Shade:PerformActivation(techId, position, normal, commander)
-origact(self, techId, position, normal, commander)
+local success = origact(self, techId, position, normal, commander)
 
-local success  = false
+
    if  techId == kTechId.ShadeHallucination then
     success = self:TriggerHallucination()
 end

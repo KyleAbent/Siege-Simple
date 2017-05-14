@@ -48,6 +48,8 @@ end
 
  
 Shared.LinkClassToMap("MAC", MAC.kMapName, networkVars)
+
+Script.Load("lua/ConstructMixin.lua")
 class 'DropMAC' (MAC)
 DropMAC.kMapName = "dropmac"
 
@@ -57,18 +59,12 @@ local networkVars =
 
 
 }
-AddMixinNetworkVars(ResearchMixin, networkVars)
-AddMixinNetworkVars(RecycleMixin, networkVars)
 function DropMAC:OnCreate()
 MAC.OnCreate(self)
-    InitMixin(self, ResearchMixin)
-    InitMixin(self, RecycleMixin)
 end
 
 function DropMAC:OnInitialized()
 MAC.OnInitialized(self)
-self:SetTechId(kTechId.MAC)
-InitMixin(self, LevelsMixin)
 if Server then ExploitCheck(self) end
 end
         function DropMAC:GetTechId()
@@ -80,6 +76,12 @@ end
     function DropMAC:GetAddXPAmount()
     return 0.05 * 0.05
     end
+
+
+function DropMAC:GetCurrentOrder()
+ if not self:GetIsBuilt() then return end --Print ("Not Built") return end
+return OrdersMixin.GetCurrentOrder(self)
+end
 
 function DropMAC:OnGetMapBlipInfo()
     local success = false
@@ -94,13 +96,6 @@ function DropMAC:OnGetMapBlipInfo()
     
     return success, blipType, blipTeam, isAttacked, false --isParasited
 end
-
-
-function DropMAC:GetCurrentOrder()
- if not self:GetIsBuilt() then return end --Print ("Not Built") return end
-return OrdersMixin.GetCurrentOrder(self)
-end
-
 
 
 function DropMAC:OnUpdate(deltaTime)

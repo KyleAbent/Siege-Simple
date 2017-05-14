@@ -92,7 +92,7 @@ if interesting ~= nil then table.insert(choices,interesting) end
             --  end     
               
                for index, arc in ientitylist(Shared.GetEntitiesWithClassname("ARC")) do
-                      table.insert(choices, arc)
+                      if arc.mode == ARC.kMode.Moving then table.insert(choices, arc) end
               end 
              for index, contam in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
                   table.insert(choices, contam) 

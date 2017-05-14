@@ -10,10 +10,11 @@ Script.Load("lua/CombatMixin.lua")
 Script.Load("lua/WeldableMixin.lua")
 Script.Load("lua/UnitStatusMixin.lua")
 Script.Load("lua/GhostStructureMixin.lua")
+Script.Load("lua/PointGiverMixin.lua")
 
 class 'Wall' (ScriptActor) 
 Wall.kMapName = "wall"
-Wall.kModelName = PrecacheAsset("models/props/eclipse/eclipse_wallmods_n_03.model")
+Wall.kModelName = PrecacheAsset("models/props/docking/docking_showerwalls_str.model")
 
 local networkVars = { }
 
@@ -50,6 +51,7 @@ function Wall:OnCreate()
     InitMixin(self, CombatMixin)
     InitMixin(self, SelectableMixin)
     InitMixin(self, GhostStructureMixin)
+    InitMixin(self, PointGiverMixin)
 
     self:SetPhysicsType(PhysicsType.Kinematic) --?
     self:SetPhysicsGroup(PhysicsGroup.BigStructuresGroup)

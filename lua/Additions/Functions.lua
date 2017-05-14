@@ -320,7 +320,7 @@ if GetSiegeDoorOpen() then return end
   
   if not GetFrontDoorOpen() then 
       
-      if who:isa("Cyst") and not GetImaginator():GetAlienEnabled() then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
+      if who:isa("Cyst") or who:isa("Clog") and not GetImaginator():GetAlienEnabled() then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12   end)
      elseif who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4   end)

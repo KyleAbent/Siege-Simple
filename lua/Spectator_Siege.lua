@@ -89,7 +89,7 @@ function AvocaSpectator:OverrideInput(input)
                       input.move.z = input.move.z + 0.5
                       local ymove = 0
                       local myY = self:GetOrigin().y
-                      local urY = target:GetOrigin().y - 0.25
+                      local urY = target:GetOrigin().y 
                       local difference =  urY - myY
                             if difference == 0 then
                                 ymove = difference

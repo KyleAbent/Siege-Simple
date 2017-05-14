@@ -9,9 +9,9 @@ function Shift:GetTechButtons(techId)
 local table = {}
 
 table = origbuttons(self, techId)
-
+  if techId ~= kTechId.ShiftEcho then
  table[4] = kTechId.ShiftEnzyme
- 
+  end
  return table
 
 end

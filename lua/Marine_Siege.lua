@@ -78,6 +78,9 @@ local origdata = Marine.CopyPlayerDataFrom
 function Marine:CopyPlayerDataFrom(player)
  origdata(self, player)
 self.hasjumppack = player.hasjumppack
+self.Glowing = player.Glowing
+self.Color = player.Color
+self.timeofStartGlow = player.timeofStartGlow
 end
 
 /*

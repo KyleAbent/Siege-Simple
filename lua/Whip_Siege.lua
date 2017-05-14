@@ -50,7 +50,7 @@ function Whip:TriggerExplode()
                 local hitEntities = GetEntitiesWithMixinForTeamWithinRange( "Live", 1, self:GetOrigin(), kXenocideRange )
                 local count = #GetEntitiesWithinRange("Whip", self:GetOrigin(), kXenocideRange)
               --   Print("Coount is %s", count)
-                local scalar = Clamp(self:GetHealthScalar() / count, 0.25, 1)
+                local scalar = Clamp(self:GetHealthScalar() / count, 0.20, 1)
               --   Print("Scalar is %s", scalar)
                 local damage = kXenocideDamage * scalar
                --  Print ("Damage is %s", damage)

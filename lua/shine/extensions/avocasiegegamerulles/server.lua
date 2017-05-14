@@ -297,7 +297,7 @@ end
 
 Shine.Hook.SetupClassHook( "Alien", "TriggerRedeemCountDown", "OnRedemedHook", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRebirthCountDown", "TriggerRebirthCountDown", "PassivePre" )
-Shine.Hook.SetupClassHook( "Player", "NotifyShineBallGiven", "OnBallGiven", "PassivePre" )
+Shine.Hook.SetupClassHook( "Marine", "CopyPlayerDataFrom", "HookGlow", "PassivePost" )
 
 
 Plugin.Version = "1.0"

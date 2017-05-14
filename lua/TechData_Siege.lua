@@ -189,10 +189,11 @@ local kSiege_TechData =
 [kTechIDShowEnables] = false, 
 [kTechDataTooltipInfo] =  "Build Them!", 
 [kTechDataModel] = Wall.kModelName, 
-            [kTechDataBuildTime] = 2,
+            [kTechDataBuildTime] = 12,
              [kTechDataMaxHealth] = 2000,
-[kTechDataCostKey] = 5, 
+[kTechDataCostKey] = 20, 
  [kTechDataSpecifyOrientation] = true,
+  [kTechDataPointValue] = 3,
 [kTechDataSupply] = 0},
 
  { [kTechDataId] = kTechId.AcidRocket,        
@@ -236,7 +237,7 @@ local kSiege_TechData =
          [kTechDataDisplayName] = "WhipExplode",
       --[kVisualRange] = Crag.kHealRadius, 
      [kTechDataCooldown] = 16, 
-     [kTechDataCostKey] = 2,  
+     [kTechDataCostKey] = 7,  
 [kTechDataTooltipInfo] = "WhipExplode"},
 
 

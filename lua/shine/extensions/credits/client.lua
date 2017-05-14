@@ -20,6 +20,7 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
     self:AddSideButton( "PhaseGate(150)", function() Shared.ConsoleCommand ("sh_buy PhaseGate")  end)
     self:AddSideButton( "InfantryPortal(150)", function() Shared.ConsoleCommand ("sh_buy InfantryPortal")  end)
     self:AddSideButton( "RoboticsFactory(100)", function() Shared.ConsoleCommand ("sh_buy RoboticsFactory")  end)
+    self:AddSideButton( "Wall(100)", function() Shared.ConsoleCommand ("sh_buy Wall")  end)
    // self:AddSideButton( "LowerSupplyLimit(5)", function() Shared.ConsoleCommand ("sh_buy LowerSupplyLimit")  end)
     elseif player:GetTeamNumber() == 2 then
     self:AddSideButton( "Hydra(25)", function() Shared.ConsoleCommand ("sh_buy Hydra")  end)
