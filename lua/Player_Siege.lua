@@ -69,14 +69,13 @@ self.modelsize = player.modelsize
 self.hasjumppack = player.hasjumppack
 self.Glowing = player.Glowing
 self.Color = player.Color
-self.timeofStartGlow = player.timeofStartGlow 
  if self.Glowing then
-      self:GlowColor(self.Color, self.timeofStartGlow)
+  self:AddTimedCallback(function() self:GlowColor(self.Color, 120)  return false end, 4)      
  end
-self.hasfirebullets = player.hasfirebullets 
-self.hasresupply = player.hasresupply 
-self.heavyarmor = player.heavyarmor 
-self.nanoarmor = player.nanoarmor 
+--self.hasfirebullets = player.hasfirebullets 
+--self.hasresupply = player.hasresupply 
+--self.heavyarmor = player.heavyarmor 
+--self.nanoarmor = player.nanoarmor 
 end
 
 

@@ -198,9 +198,13 @@ function Marine:CopyPlayerDataFrom(player)
  
   if player:isa("Marine") then
 self.hasjumppack = player.hasjumppack
+
 self.Glowing = player.Glowing
 self.Color = player.Color
-self.timeofStartGlow = player.timeofStartGlow 
+ if self.Glowing then
+  self:AddTimedCallback(function() self:GlowColor(self.Color, 120)  return false end, 4)      
+ end
+
 self.hasfirebullets = player.hasfirebullets 
 self.hasresupply = player.hasresupply 
 self.heavyarmor = player.heavyarmor 
