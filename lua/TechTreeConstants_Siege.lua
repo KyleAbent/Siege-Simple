@@ -63,6 +63,7 @@ local kSiege_TechIds =
     'Resupply',
     'FireBullets',
     'RegenArmor',
+    'DamageResistance',
 
 
     

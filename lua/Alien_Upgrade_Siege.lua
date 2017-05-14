@@ -21,7 +21,9 @@ function GetHasRebirthUpgrade(callingEntity)
     return HasUpgrade(callingEntity, kTechId.Rebirth) //or callingEntity.RTDRedemption
 end
 
-
+function GetHasDamageResistanceUpgrade(callingEntity)
+    return HasUpgrade(callingEntity, kTechId.DamageResistance) //or callingEntity.RTDRedemption
+end
 function GetHasThickenedSkinUpgrade(callingEntity)
     return HasUpgrade(callingEntity, kTechId.ThickenedSkin) //or callingEntity.RTDRedemption
 end

@@ -155,6 +155,13 @@ local kSiege_TechData =
  --[kTechDataDamageType] = kWelderDamageType,
  [kTechDataCostKey] = kWelderCost  },
 
+                { [kTechDataId] = kTechId.DamageResistance, 
+       [kTechDataCategory] = kTechId.ShiftHiveTwo,  
+        [kTechDataDisplayName] = "Damage Resistance", 
+      [kTechDataSponitorCode] = "A",  
+      [kTechDataCostKey] = kDamageResistanceCost,
+     [kTechDataTooltipInfo] = "15% damage resistance", },
+     
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 

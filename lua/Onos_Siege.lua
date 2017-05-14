@@ -76,7 +76,7 @@ end
 function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil  then
-    
+     -- Print("Derp 2")
        local damageReduct = 1
        
         if self:GetIsBoneShieldActive() then
@@ -87,7 +87,7 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
         elseif self:GetIsCharging()  then  
         damageReduct =  0.7
         end
-        
+        if GetHasDamageResistanceUpgrade(self) then damageReduct = damageReduct * 0.85 end
         if damageReduct ~= 1 then
         damageTable.damage = damageTable.damage * damageReduct
         end

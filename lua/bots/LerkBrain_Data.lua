@@ -38,8 +38,8 @@ local function PerformAttackEntity( eyePos, bestTarget, bot, brain, move )
     bot:GetMotion():SetDesiredMoveTarget( marinePos )
     
     
-    local aliens = GetEntitiesWithinRange("Alien", bot:GetOrigin(), 20)
-    
+    local aliens = GetEntitiesWithinRange("Alien", eyePos, 20)
+    local weight = 0
          if #aliens >= 1 and GetHasTech(bot, kTechId.PrimalScream)  then
                  weight = math.random(1,100)
            end
