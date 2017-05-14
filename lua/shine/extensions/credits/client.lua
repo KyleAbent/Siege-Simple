@@ -49,6 +49,27 @@ Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
         self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)
 
+Shine.VoteMenu:AddPage ("SpendUpgrades", function( self )
+        local player = Client.GetLocalPlayer()
+        
+        if not player:GetHasResupply() then
+        self:AddSideButton( "Resupply(10)", function() Shared.ConsoleCommand ("sh_buyupgrade Resupply")  end)
+        end
+        
+        if not player:GetHasHeavyArmor() then
+        self:AddSideButton( "HeavyArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade HeavyArmor")  end)
+        end
+        if not player:GetHasNanoArmor() then
+        self:AddSideButton( "RegenArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade RegenArmor")  end)
+        end
+        
+        if not player:GetHasFireBullets() then
+        self:AddSideButton( "FireBullets(10)", function() Shared.ConsoleCommand ("sh_buyupgrade FireBullets")  end)
+        end
+
+        self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
+end)
+
 Shine.VoteMenu:AddPage ("SpendGlow", function( self )
         self:AddSideButton( "Purple(5)", function() Shared.ConsoleCommand ("sh_buyglow Purple")  end)
         self:AddSideButton( "Green(5)", function() Shared.ConsoleCommand ("sh_buyglow Green")  end)
@@ -128,6 +149,10 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
              --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
                self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
                
+       if player:GetTeamNumber() == 1 then 
+        self:AddSideButton( "Upgrades(Armslab)", function() self:SetPage( "SpendUpgrades" ) end)
+      end  
+             
      if player:GetTeamNumber() == 1 then 
         self:AddSideButton( "Glow", function() self:SetPage( "SpendGlow" ) end)
       end  

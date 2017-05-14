@@ -294,7 +294,7 @@ local function UpdateCertainHealing(self)
     end
     
 end
-
+Shine.Hook.SetupClassHook( "Marine", "AdjustDisplayRessuply", "ShowResupply", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRedeemCountDown", "OnRedemedHook", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRebirthCountDown", "TriggerRebirthCountDown", "PassivePre" )
 Shine.Hook.SetupClassHook( "Marine", "CopyPlayerDataFrom", "HookGlow", "PassivePost" )
@@ -516,6 +516,11 @@ function Plugin:GiveCyst(Player)
              ent:SetConstructionComplete()
 end
 
+  function Plugin:ShowResupply(player, left, has) 
+            local herp = player:GetClient()
+            local derp = herp:GetControllingPlayer()
+            Shine.ScreenText.Add( 50, {X = 0.20, Y = 0.90,Text =  string.format( "Resupplies left: %s ", has ),Duration = 4 or 0,R = 255, G = 0, B = 0,Alignment = 0,Size = 1,FadeIn = 0,}, player ) 
+ end
   function Plugin:OnRedemedHook(player) 
             local herp = player:GetClient()
             local derp = herp:GetControllingPlayer()

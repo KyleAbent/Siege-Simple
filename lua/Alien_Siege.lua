@@ -94,14 +94,15 @@ end
 function Alien:GetRedemptionCoolDown()
 return 0
 end
-function Alien:UpdateArmorAmountManual(carapaceLevel)
+function Alien:UpdateArmorAmountManual()
     local teamInfo = GetTeamInfoEntity(2)
           if teamInfo then
+      local carapaceLevel = GetShellLevel(self:GetTeamNumber())  
       local bioMassLevel = teamInfo:GetBioMassLevel()
- --default, just manual. Outdated if modified... 
     local level = GetHasCarapaceUpgrade(self) and carapaceLevel or 0
+         --    Print("carapaceLevel is %s", carapaceLevel)
     local newMaxArmor = (level / 3) * (self:GetArmorFullyUpgradedAmount() - self:GetBaseArmor()) + self:GetBaseArmor()
-
+         --  Print("newMaxArmor is %s", newMaxArmor)
     if newMaxArmor ~= self.maxArmor then
 
         local armorPercent = self.maxArmor > 0 and self.armor/self.maxArmor or 0
@@ -112,18 +113,26 @@ function Alien:UpdateArmorAmountManual(carapaceLevel)
     end
   return false
 end
+local function GetThickenedSkinHP(self, bioMassLevel, newMaxHealth)
 
+local amt = self:GetHealthPerBioMass() * bioMassLevel
+     -- Print("amt is %s", amt)
+      amt = Clamp(amt, 1, 100) + newMaxHealth
+     -- Print("amt is %s", amt)
+      return amt
+end
 function Alien:UpdateHealthAmountManual(bioMassLevel, maxLevel)
     local teamInfo = GetTeamInfoEntity(2)
           if teamInfo then
       local bioMassLevel = teamInfo:GetBioMassLevel()
- ---default w/ mod of thick skin. I know this is not perfect because the orig can be modified and make this one outdated. But im not worried. 
     local level = math.max(0, bioMassLevel - 1)
     local newMaxHealth = self:GetBaseHealth() + level * self:GetHealthPerBioMass()
-    newMaxHealth =  ConditionalValue(self:GetHasUpgrade(kTechId.ThickenedSkin), newMaxHealth * 1.10, newMaxHealth)
+    newMaxHealth =  ConditionalValue(self:GetHasUpgrade(kTechId.ThickenedSkin), GetThickenedSkinHP(self, bioMassLevel, newMaxHealth) , newMaxHealth)
    -- Print(" newMaxHealth is %s", newMaxHealth)
+       if newMaxHealth ~= self.maxHealth  then
         self:AdjustMaxHealth(newMaxHealth)
         self:SetMaxHealth(newMaxHealth)
+        end
     end
    return false
 end

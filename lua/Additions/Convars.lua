@@ -1,3 +1,9 @@
+kResupplyCost = 5
+kHeavyArmorCost = 5
+kFireBulletsCost = 7
+kNanoArmorCost = 4
+
+
 kJumpPackCost = 5
 ArmoryAutoCCMR =  16
 PGAutoCCMRMax = 54

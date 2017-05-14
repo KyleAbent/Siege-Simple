@@ -12,8 +12,8 @@ kFadeCost = 40
 kOnosCost = 65
 
 
-kSkulkUpgradeCost = 0
-kGorgeUpgradeCost = 0
+kSkulkUpgradeCost = 1
+kGorgeUpgradeCost = 1
 kLerkUpgradeCost = 1
 kFadeUpgradeCost = 1
 kOnosUpgradeCost = 1

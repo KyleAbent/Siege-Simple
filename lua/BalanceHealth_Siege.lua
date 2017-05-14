@@ -4,8 +4,13 @@ kExosuitArmorPerUpgradeLevel = 20
  kExosuitArmor = 360
 
 
+kGorgeArmorFullyUpgradedAmount = 150 -- default 100
+kSkulkArmorFullyUpgradedAmount = 46 -- default 30
+kLerkArmorFullyUpgradedAmount = 115 -- default 60
+kFadeArmorFullyUpgradedAmount = 175 -- default 100
+kOnosArmorFullyUpgradedAmount = 865 --default 650
 kFadeArmor = 104 --30% increase from 80
-kFadeArmorFullyUpgradedAmount = 156 --30% increase from 120
+
 
 kSentryBatteryHealth = 780 --30% increase from 600
 kSentryBatteryArmor = 230 --30% increase from 200

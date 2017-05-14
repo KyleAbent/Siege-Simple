@@ -78,6 +78,32 @@ end
 local kSiege_TechData =
 {   
 
+             { [kTechDataId] = kTechId.RegenArmor,
+        [kTechDataCostKey] = kNanoArmorCost,
+        [kTechDataDisplayName] = "Nano (Regen) Armor", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Heals armor over time!"},
+
+             { [kTechDataId] = kTechId.FireBullets,
+        [kTechDataCostKey] = kFireBulletsCost,
+        [kTechDataDisplayName] = "Fire Bullets", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Sets Structures & Players On Fire via bullets!"},
+
+
+                             { [kTechDataId] = kTechId.HeavyArmor,   
+       [kTechDataTooltipInfo] = "Heavy Armor", 
+          [kTechDataDisplayName] = "Heavy Armor",  
+     [kTechDataCostKey] = kHeavyArmorCost, },
+     
+             { [kTechDataId] = kTechId.Resupply,
+        [kTechDataCostKey] = kResupplyCost,
+        [kTechDataDisplayName] = "Resupply", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Checks every 10 seconds to see if you need a medpack/ammopack, and gives you either one or both. Spawns only five times then you need to rebuy it."},
+
+
+
         { [kTechDataId] = kTechId.ElectrifyStructure, 
 [kTechDataCostKey] = 5,  
 [kTechIDShowEnables] = false,        
@@ -134,7 +160,7 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Thickened Skin", 
       [kTechDataSponitorCode] = "A",  
       [kTechDataCostKey] = kThickenedSkinCost,
-     [kTechDataTooltipInfo] = "+10% max hp", },
+     [kTechDataTooltipInfo] = "Another layer of +hp for each biomass level", },
      
                      { [kTechDataId] = kTechId.Hunger, 
        [kTechDataCategory] = kTechId.CragHiveTwo,   

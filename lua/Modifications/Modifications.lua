@@ -1,3 +1,21 @@
+
+function ConstructMixin:GetTotalConstructionTime()
+    local time = LookupTechData(self:GetTechId(), kTechDataBuildTime, kDefaultBuildTime)
+   -- Print("time is %s", time)
+    if not GetSetupConcluded() then time = time * 0.7 end
+    -- Print("time is %s", time)
+    return time
+end
+
+function GetIsCloseToMenuStructure(player)
+    
+    local ptlabs = GetEntitiesForTeamWithinRange("PrototypeLab", player:GetTeamNumber(), player:GetOrigin(), PrototypeLab.kResupplyUseRange)
+    local armories = GetEntitiesForTeamWithinRange("Armory", player:GetTeamNumber(), player:GetOrigin(), Armory.kResupplyUseRange)
+    local armslabs = GetEntitiesForTeamWithinRange("ArmsLab", player:GetTeamNumber(), player:GetOrigin(), 2.5)
+    return (ptlabs and #ptlabs > 0) or (armories and #armories > 0) or (armslabs and #armslabs >0)
+
+end
+
 function Shell:GetMinRangeAC()
 return  9999   
 end

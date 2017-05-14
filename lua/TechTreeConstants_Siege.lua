@@ -59,6 +59,10 @@ local kSiege_TechIds =
     'Wall',
     'TunnelTeleport',
     'ElectrifyStructure',
+    'HeavyArmor',
+    'Resupply',
+    'FireBullets',
+    'RegenArmor',
 
 
     

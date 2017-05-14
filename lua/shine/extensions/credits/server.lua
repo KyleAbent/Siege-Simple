@@ -1065,6 +1065,31 @@ local BuyGlowCommand = self:BindCommand("sh_buyglow", "buyglow", BuyGlow, true)
 BuyGlowCommand:Help("sh_buyglow <color number> ")
 BuyGlowCommand:AddParam{ Type = "string" }
 
+local function BuyUpgrade(Client, String)
+
+local Player = Client:GetControllingPlayer()
+local delayafter = 8 
+local cost = 10
+local color = 1
+if not Player then return end
+
+ if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
+  
+ if String == "Resupply" then DeductBuy(self, Player, cost, delayafter)  Player.hasresupply = true
+  elseif String == "HeavyArmor" then DeductBuy(self, Player, cost, delayafter) Player.heavyarmor = true
+  elseif String == "FireBullets" then DeductBuy(self, Player, cost, delayafter) Player.hasfirebullets = true
+  elseif String == "RegenArmor" then DeductBuy(self, Player, cost, delayafter) Player.nanoarmor = true
+  end
+  
+   
+end
+
+
+local BuyUpgradeCommand = self:BindCommand("sh_buyupgrade", "buyupgrade", BuyUpgrade, true)
+BuyUpgradeCommand:Help("sh_buyupgrade <string> ")
+BuyUpgradeCommand:AddParam{ Type = "string" }
+
+
 local function Buy(Client, String)
 
 local Player = Client:GetControllingPlayer()

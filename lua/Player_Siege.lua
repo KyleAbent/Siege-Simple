@@ -65,6 +65,21 @@ origcopydata(self, player)
 self.gravity = player.gravity
 self.modelsize = player.modelsize
 
+  if player:GetTeamNumber() == 1 then
+self.hasjumppack = player.hasjumppack
+self.Glowing = player.Glowing
+self.Color = player.Color
+self.timeofStartGlow = player.timeofStartGlow 
+ if self.Glowing then
+      self:GlowColor(self.Color, self.timeofStartGlow)
+ end
+self.hasfirebullets = player.hasfirebullets 
+self.hasresupply = player.hasresupply 
+self.heavyarmor = player.heavyarmor 
+self.nanoarmor = player.nanoarmor 
+end
+
+
 
 end
 
