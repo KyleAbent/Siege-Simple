@@ -1068,8 +1068,8 @@ BuyGlowCommand:AddParam{ Type = "string" }
 local function BuyUpgrade(Client, String)
 
 local Player = Client:GetControllingPlayer()
-local delayafter = 8 
-local cost = 10
+local delayafter = 1
+local cost = 5
 local color = 1
 if not Player then return end
 

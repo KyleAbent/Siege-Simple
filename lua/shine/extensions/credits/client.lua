@@ -53,18 +53,18 @@ Shine.VoteMenu:AddPage ("SpendUpgrades", function( self )
         local player = Client.GetLocalPlayer()
         
         if player.GetHasResupply and not player:GetHasResupply() then
-        self:AddSideButton( "Resupply(10)", function() Shared.ConsoleCommand ("sh_buyupgrade Resupply")  end)
+        self:AddSideButton( "Resupply(5)", function() Shared.ConsoleCommand ("sh_buyupgrade Resupply")  end)
         end
         
         if player.GetHasHeavyArmor and not player:GetHasHeavyArmor() then
-        self:AddSideButton( "HeavyArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade HeavyArmor")  end)
+        self:AddSideButton( "HeavyArmor(5)", function() Shared.ConsoleCommand ("sh_buyupgrade HeavyArmor")  end)
         end
         if player.GetHasNanoArmor and not player:GetHasNanoArmor() then
-        self:AddSideButton( "RegenArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade RegenArmor")  end)
+        self:AddSideButton( "RegenArmor(5)", function() Shared.ConsoleCommand ("sh_buyupgrade RegenArmor")  end)
         end
         
         if player.GetHasFireBullets and not player:GetHasFireBullets() then
-        self:AddSideButton( "FireBullets(10)", function() Shared.ConsoleCommand ("sh_buyupgrade FireBullets")  end)
+        self:AddSideButton( "FireBullets(5)", function() Shared.ConsoleCommand ("sh_buyupgrade FireBullets")  end)
         end
 
         self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 

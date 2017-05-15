@@ -1,6 +1,6 @@
 kResupplyCost = 5
 kHeavyArmorCost = 5
-kFireBulletsCost = 10
+kFireBulletsCost = 5
 kNanoArmorCost = 4
 
 
