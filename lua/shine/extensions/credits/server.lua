@@ -824,7 +824,7 @@ local techid = nil
 
 
 if String == "NutrientMist" then 
-CreditCost = 10
+CreditCost = 5
 mapnameof = NutrientMist.kMapName
 reqground = true
 elseif String == "Contamination"  then
@@ -844,7 +844,7 @@ CreditCost = 100
 mapnameof = Shade.kMapName
 techid = kTechId.Shade
 elseif String == "Crag" then
-CreditCost = 100
+CreditCost = 80
 mapnameof = Crag.kMapName
 techid = kTechId.Crag
 elseif String == "Whip" then

@@ -140,43 +140,6 @@ end
 
 function RepositioningMixin:FindBetterPosition(yaw, baseYaw, calls)
 
-    -- limit recursion depth by 3 calls, otherwise we could have some big problems...
-    if calls > 2 then
-        return baseYaw
-    end
-    
-    self:_AdjustRepositioningHeight()
-    
-    local angles = self:GetAngles()
-    angles.yaw = yaw + baseYaw
-    
-    local coords = angles:GetCoords(self:GetOrigin())
-    local startPoint = self:GetOrigin()
-    local endPoint = startPoint + coords.zAxis * 10
-    
-    local trace = Shared.TraceRay(startPoint, endPoint, CollisionRep.Move, PhysicsMask.AllButPCs, EntityFilterMixinAndSelf(self, "Repositioning"))
-    
-    local validPos = false
-    
-    if trace.fraction ~= 1 then
-        endPoint = trace.endPoint + coords.zAxis * -0.5
-    end
-    
-    if (endPoint - startPoint):GetLength() >= self:GetRepositioningDistance() then
-        endPoint = startPoint + coords.zAxis * self:GetRepositioningDistance()
-        validPos = true
-    end
-    
-    if validPos then
-        validPos = Pathing.GetIsFlagSet(endPoint, kDefaultExtents, Pathing.PolyFlag_Walk)
-    end
-    
-    if validPos then
-        self.targetPos = endPoint
-    else
-        baseYaw = self:FindBetterPosition(yaw, baseYaw + math.pi/2, calls + 1)
-    end
-    
     return baseYaw
 
 end

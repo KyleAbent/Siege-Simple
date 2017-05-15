@@ -27,7 +27,7 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
     self:AddSideButton( "Egg(75)", function() Shared.ConsoleCommand ("sh_buy SaltyEgg")  end)
     --self:AddSideButton( "Drifter(5)", function() Shared.ConsoleCommand ("sh_buy Drifter")  end)
     self:AddSideButton( "Shade(100)", function() Shared.ConsoleCommand ("sh_buy Shade")  end)
-    self:AddSideButton( "Crag(100)", function() Shared.ConsoleCommand ("sh_buy Crag")  end)
+    self:AddSideButton( "Crag(80)", function() Shared.ConsoleCommand ("sh_buy Crag")  end)
     self:AddSideButton( "Whip(100)", function() Shared.ConsoleCommand ("sh_buy Whip")  end)
     self:AddSideButton( "Shift(100)", function() Shared.ConsoleCommand ("sh_buy Shift")  end)
    -- self:AddSideButton( "Clog(2)", function() Shared.ConsoleCommand ("sh_buy Clog")  end)
@@ -52,18 +52,18 @@ end)
 Shine.VoteMenu:AddPage ("SpendUpgrades", function( self )
         local player = Client.GetLocalPlayer()
         
-        if not player:GetHasResupply() then
+        if player.GetHasResupply and not player:GetHasResupply() then
         self:AddSideButton( "Resupply(10)", function() Shared.ConsoleCommand ("sh_buyupgrade Resupply")  end)
         end
         
-        if not player:GetHasHeavyArmor() then
+        if player.GetHasHeavyArmor and not player:GetHasHeavyArmor() then
         self:AddSideButton( "HeavyArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade HeavyArmor")  end)
         end
-        if not player:GetHasNanoArmor() then
+        if player.GetHasNanoArmor and not player:GetHasNanoArmor() then
         self:AddSideButton( "RegenArmor(10)", function() Shared.ConsoleCommand ("sh_buyupgrade RegenArmor")  end)
         end
         
-        if not player:GetHasFireBullets() then
+        if player.GetHasFireBullets and not player:GetHasFireBullets() then
         self:AddSideButton( "FireBullets(10)", function() Shared.ConsoleCommand ("sh_buyupgrade FireBullets")  end)
         end
 
@@ -124,7 +124,7 @@ Shine.VoteMenu:AddPage ("SpendCommAbilities", function( self )
                   self:AddSideButton ("Scan(10)", function()Shared.ConsoleCommand ("sh_buy Scan")end)
                   self:AddSideButton ("Medpack(10)", function()Shared.ConsoleCommand ("sh_buy Medpack")end)
            else
-       self:AddSideButton ("NutrientMist(10)", function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
+       self:AddSideButton ("NutrientMist(5)", function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
        self:AddSideButton( "EnzymeCloud(15)", function() Shared.ConsoleCommand ("sh_buy EnzymeCloud")  end)
        self:AddSideButton( "Ink(20)", function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
        self:AddSideButton( "Hallucination(15)", function() Shared.ConsoleCommand ("sh_buy Hallucination")  end)
