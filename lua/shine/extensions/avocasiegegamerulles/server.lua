@@ -2,7 +2,7 @@
 local Shine = Shine
 local Plugin = Plugin
 
-local kAutoCommTimer = 20--math.random(120,300)
+local kAutoCommTimer = 120
 
 
 local OldBurnSporesAndUmbra
@@ -310,7 +310,7 @@ return true
 end
 
 function Plugin:MapPostLoad()
-      --self:StartAutoCommTimer()
+      self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
       Server.CreateEntity(Researcher.kMapName)
@@ -427,10 +427,10 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    end
    
 else
-                      --   self:CreateTimer( 27, 1,  self.autoCommTime, function() 
-                      --   if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
-                      --    Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
-                      --  end)
+                   --      self:CreateTimer( 27, 1,  self.autoCommTime, function() 
+                   --      if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
+                   --       Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                   --     end)
 
 end
 
@@ -452,6 +452,11 @@ function Plugin:SetGameState( Gamerules, State, OldState )
  Shine.ScreenText.End(1) 
  Shine.ScreenText.End(2)
  Shine.ScreenText.End(3)
+  
+                        for i = 1, 10 do
+                        Shared.ConsoleCommand("removebot")
+                       end
+                       
   end 
   
            if State == kGameState.Countdown then
@@ -462,19 +467,26 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                 --GetImaginator():OnPreGame()
              --GetResearcher():OnPreGame()
              GetSandCastle():OnPreGame()
-    --        self:StartAutoCommTimer()
+            self:StartAutoCommTimer()
           end
           
     
 end
 function Plugin:StartAutoCommTimer()
 self.autoCommTime = kAutoCommTimer
-
+local gameRules = GetGamerules()
+local NumPlayers = #Shine.GetAllPlayers()
                     self:SimpleTimer( self.autoCommTime, function() 
-                    if GetGamerules():GetGameStarted()  then return end
-                        for i = 1, 10 do
-          Shared.ConsoleCommand("addbot")
-         end
+                    if gameRules:GetGameStarted() or NumPlayers > 10 then return end
+
+                    
+                    if NumPlayers <= 10 then
+                    
+                        for i = 1, 10 - NumPlayers do
+                        Shared.ConsoleCommand("addbot")
+                       end
+                       
+                   end
          Shared.ConsoleCommand("sh_randomrr")
             Shared.ConsoleCommand("sh_forceroundstart")
             Shared.ConsoleCommand("sh_imaginator 1 true")
@@ -489,16 +501,17 @@ self.autoCommTime = kAutoCommTimer
   self.autoCommTime = Clamp(self.autoCommTime - 1, 0, kAutoCommTimer)
  end)
 
-              local Players = Shine.GetAllPlayers()
-              for i = 1, #Players do
-              local Player = Players[ i ]
-                  if Player then
+
                          self:CreateTimer( 84, 1,  -1, function() 
                          if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 84 ) end
-                          Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                         
+                            if  self.autoCommTime <=10 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
+                            or  self.autoCommTime == 110 then
+                            self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10", true, self.autoCommTime)
+                         -- Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                         end
+                         
                         end)
-         end
-         end
              
 
 end
@@ -507,6 +520,9 @@ Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, F
 end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Admin Abuse]",  255, 0, 0, String, Format, ... )
+end
+function Plugin:NotifyAutoComm( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[AutoComm]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:NotifyMods( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Moderator Chat]",  255, 0, 0, String, Format, ... )
