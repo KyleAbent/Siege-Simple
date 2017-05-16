@@ -1001,10 +1001,10 @@ if not Player then return end
             --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
          if Player:GetTeamNumber() == 1 then
               if cost == 80 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 300 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 290 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
-             elseif cost == 250 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
-             elseif cost == 270 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
+             elseif cost == 200 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == 190 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == 150 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
+             elseif cost == 170 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 90 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  

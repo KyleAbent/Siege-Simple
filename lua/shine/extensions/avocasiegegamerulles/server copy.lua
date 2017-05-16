@@ -2,7 +2,7 @@
 local Shine = Shine
 local Plugin = Plugin
 
-local kAutoCommTimer = 120
+local kAutoCommTimer = 20
 
 
 local OldBurnSporesAndUmbra
@@ -394,8 +394,8 @@ function Plugin:ClientDisconnect(Client)
  
         if GetGamerules():GetGameStarted() and GetImaginator():GetAlienEanbled() or GetImaginator():GetMarineEnabled() then
  
-        local playercount = #Shine.GetAllPlayers()
-        local  humancount = #Shine.GetHumanPlayerCount()
+        local players, playercount = Shine.GetAllPlayers()
+        local humans, humancount = Shine.GetHumanPlayerCount()
         local bots = math.abs(humancount - playercount)
 
          if (NumPlayers<10 and bots <10) then 
@@ -480,18 +480,14 @@ function Plugin:SetGameState( Gamerules, State, OldState )
  Shine.ScreenText.End(1) 
  Shine.ScreenText.End(2)
  Shine.ScreenText.End(3)
-
-
-                       
-  end 
-    if State ==  kGameState.Team1Won  or State ==  kGameState.Team2Won   then
-    
-                       for i = 1, 10 do
+  
+                        for i = 1, 10 do
                         Shared.ConsoleCommand("removebot")
                        end
                        
-
-           elseif State == kGameState.Countdown then
+  end 
+  
+           if State == kGameState.Countdown then
              GetSandCastle():OnRoundStart()
              GetImaginator():OnRoundStart()
              -- GetResearcher():OnRoundStart()
@@ -506,10 +502,10 @@ function Plugin:SetGameState( Gamerules, State, OldState )
 end
 function Plugin:StartAutoCommTimer()
 self.autoCommTime = kAutoCommTimer
+local gameRules = GetGamerules()
 
                     self:SimpleTimer( self.autoCommTime, function() 
-                    local  numplayers = #Shine.GetAllPlayers()
-                    local gameRules = GetGamerules()
+                    local players, numplayers = Shine.GetAllPlayers()
                     if gameRules:GetGameStarted() or numplayers > 10 then return end
                     if numplayers <= 10 then
                         for i = 1, 10 - numplayers do
