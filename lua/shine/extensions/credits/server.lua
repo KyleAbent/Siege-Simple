@@ -797,7 +797,7 @@ mapnameof = MACCredit.kMapName --can be networkvar instead
 limit = 20
 elseif String == "Arc" then 
 techid = kTechId.ARC
-CreditCost = 200
+CreditCost = 110
 mapnameof = ARCCredit.kMapName --can be networkvar instead
 limit = 1
 elseif String == "Extractor" then 
@@ -929,8 +929,8 @@ if not Player then return end
    
 
  
-    if String  == "Mines" then cost = 15 mapname = LayMines.kMapName
-   elseif String == "Welder" then cost = 10 mapname = Welder.kMapName
+    if String  == "Mines" then cost = 10 mapname = LayMines.kMapName
+   elseif String == "Welder" then cost = 6 mapname = Welder.kMapName
    elseif String == "HeavyMachineGun" then cost = 35 mapname = HeavyMachineGun.kMapName
     elseif String  == "Shotgun" then cost = 20 mapname = Shotgun.kMapName 
    elseif String == "FlameThrower" then  cost = 30 mapname = Flamethrower.kMapName 
@@ -986,14 +986,14 @@ local cost = 1
 if not Player then return end
 
  if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 80 
-  elseif String == "RailGun" and not Player:isa("Exo") then cost = 290 delayafter = 25   
-  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 300  delayafter = 25 
-  elseif String == "Welder" and not Player:isa("Exo") then  cost = 250  delayafter = 15 
-   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 270  delayafter = 15 
+  elseif String == "RailGun" and not Player:isa("Exo") then cost = 190 delayafter = 25   
+  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 200  delayafter = 25 
+  elseif String == "Welder" and not Player:isa("Exo") then  cost = 150  delayafter = 15 
+   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 170  delayafter = 15 
   elseif String == "Gorge" then cost = 90
   elseif String == "Lerk" then  cost = 120 
-  elseif String == "Fade" then cost = 200
-  elseif String == "Onos" then cost = 250
+  elseif String == "Fade" then cost = 150
+  elseif String == "Onos" then cost = 180
   end
   
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end

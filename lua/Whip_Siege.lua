@@ -49,10 +49,11 @@ function Whip:TriggerExplode()
                 self:TriggerEffects("xenocide", {effecthostcoords = Coords.GetTranslation(self:GetOrigin())})
                 local hitEntities = GetEntitiesWithMixinForTeamWithinRange( "Live", 1, self:GetOrigin(), kXenocideRange )
                 local count = #GetEntitiesWithinRange("Whip", self:GetOrigin(), kXenocideRange)
+                      count = Clamp(count, 1, 4)
               --   Print("Coount is %s", count)
-                local scalar = Clamp(self:GetHealthScalar() / count, 0.20, 1)
+                local scalar = Clamp(self:GetHealthScalar() / count, 0.30, 1)
               --   Print("Scalar is %s", scalar)
-                local damage = kXenocideDamage * scalar
+                local damage = ( kXenocideDamage + 25 ) * scalar
                --  Print ("Damage is %s", damage)
                 RadiusDamage(hitEntities, self:GetOrigin(), kXenocideRange, damage, self)
                 self:Kill()
