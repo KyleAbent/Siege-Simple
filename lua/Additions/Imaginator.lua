@@ -1397,7 +1397,7 @@ function Imaginator:ActualAlienFormula(cystonly)
 --Print("AutoBuildConstructs")
 ManageDrifters() 
 local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
-if hivecount < 3 then return end -- build hives first ya newb
+if hivecount < 3 and not GetSandCastle():GetSDBoolean() then return end -- build hives first ya newb
 local randomspawn = nil
 local spawnArea = GetAlienSpawnLocation() 
 local tospawn, cost, gamestarted = GetAlienSpawnList(self, cystonly)
