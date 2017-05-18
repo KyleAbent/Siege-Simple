@@ -121,7 +121,8 @@ function Marine:OnProcessMove(input)
             if self.nanoarmor then
             
                 if not self.lastCheck or Shared.GetTime() > self.lastCheck + 1 then
-                  self:SetArmor(self:GetArmor() + 1, true) 
+                  local amt = ConditionalValue(self:GetIsInCombat(), 1, 2)
+                  self:SetArmor(self:GetArmor() + amt, true) 
                   self.lastCheck = Shared.GetTime()
                end
             

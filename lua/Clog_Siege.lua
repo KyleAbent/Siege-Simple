@@ -7,6 +7,10 @@ function Clog:GetMinRangeAC()
 return  kCystRedeployRange * .7      
 end
 
+function Clog:GetIsSighted()
+return true    
+end
+
 local originit = Clog.OnInitialized
 function Clog:OnInitialized()
      originit(self)

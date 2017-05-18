@@ -83,3 +83,15 @@ end
    -- Print("InfantryPortalAvoca GetSpawnTime Is: (level bonus is %s, roundbonus is %s)", levelbonus, roundbonus)
     return Clamp(total, 6, kMarineRespawnTime)
 end
+if Server then
+
+local origfree = InfantryPortal.FillQueueIfFree
+function InfantryPortal:FillQueueIfFree()
+
+  if GetSandCastle():GetSDBoolean() then return end
+  
+  origfree(self)
+
+end
+
+end

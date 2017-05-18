@@ -108,7 +108,7 @@ local hasSiegeTP, tpLocation = FindSiegeTP(self)
 local where = FindArcHiveSpawn(siegepower:GetOrigin()) 
                        --Some maps have a TP rather than path, so go to tp then teleport to siege :P.
                        if hasSiegeTP and tpLocation then
-                           if self:GetDistance(tpLocation) <= 4 then
+                           if where and self:GetDistance(tpLocation) <= 4 then
                               self:SetOrigin( where ) -- h4x
                               self:SetMode(ARC.kMode.Stationary)
                               return true

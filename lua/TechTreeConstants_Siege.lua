@@ -64,6 +64,8 @@ local kSiege_TechIds =
     'FireBullets',
     'RegenArmor',
     'DamageResistance',
+    'PGchannelOne',
+    'PGchannelTwo',
 
 
     

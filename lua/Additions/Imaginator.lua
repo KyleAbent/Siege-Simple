@@ -81,9 +81,96 @@ local team2Commander = GetTeamHasCommander(2)
 local boolean = self.alienenabled and not team2Commander
 return boolean
 end
+local function NotBeingResearched(techId, who)   
+
+ if techId ==  kTechId.AdvancedArmoryUpgrade or techId == kTechId.UpgradeRoboticsFactory then return true end
+  
+     for _, structure in ientitylist(Shared.GetEntitiesWithClassname( string.format("%s", who:GetClassName()) )) do
+         if structure:GetIsResearching() and structure:GetClassName() == who:GetClassName() and structure:GetResearchingId() == techId then return false end
+     end
+    return true
+end
+local function ResearchEachTechButton(who)
+local techIds = who:GetTechButtons() or {}
+                       for _, techId in ipairs(techIds) do
+                     if techId ~= kTechId.None then
+                        if who:GetCanResearch(techId) then
+                          local tree = GetTechTree(who:GetTeamNumber())
+                         local techNode = tree:GetTechNode(techId)
+                          assert(techNode ~= nil)
+                          
+                            if tree:GetTechAvailable(techId) then
+                             local cost = 0--LookupTechData(techId, kTechDataCostKey) * 
+                                if  NotBeingResearched(techId, who) and TresCheck(1,cost) then 
+                                  who:SetResearching(techNode, who)
+                                  break -- Because having 2 armslabs research at same time voids without break. So lower timer 16 to 4
+                                --  who:GetTeam():SetTeamResources(who:GetTeam():GetTeamResources() - cost)
+                                 end
+                             end
+                         end
+                      end
+                  end
+end
+local function HiveResearch(who)
+if not who or GetGameInfoEntity():GetWarmUpActive() then return true end
+if who:GetIsResearching() then return true end
+local tree = who:GetTeam():GetTechTree()
+local technodes = {}
+
+    for _, node in pairs(tree.nodeList) do
+           local canRes = tree:GetHasTech(node:GetPrereq1()) and tree:GetHasTech(node:GetPrereq2())
+           local cost = math.random(1,4) --node.cost
+         if canRes and TresCheck(2, cost) and node:GetIsResearch() and node:GetCanResearch() then
+                who:GetTeam():SetTeamResources(who:GetTeam():GetTeamResources() - cost)
+                node:SetResearched(true)
+                tree:SetTechNodeChanged(node, string.format("hasTech = %s", ToString(true)))
+         end
+    
+    end              
+                  return true
+
+
+end
+function Imaginator:UpdateHivesManually()
+       local  hivecount = 0
+       local isSetup = not GetSetupConcluded()
+       local hasOneBuilt = false
+                 for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
+                  
+                     if hive:GetIsBuilt() then 
+                         hivecount = hivecount + 1 
+                         hasOneBuilt = true
+                         if not isSetup or hivecount == 3 then
+                         HiveResearch(hive) 
+                         end
+                     end
+               end
+          
+          
+      if not GetSandCastle():GetSDBoolean() and hasOneBuilt and hivecount < 3 and TresCheck(2,40) then
+          for _, techpoint in ientitylist(Shared.GetEntitiesWithClassname("TechPoint")) do
+             if techpoint:GetAttached() == nil then 
+               local hive =  techpoint:SpawnCommandStructure(2) 
+                  if hive then hive:GetTeam():SetTeamResources(hive:GetTeam():GetTeamResources() - 40) break end
+             end
+          end
+     end
+     return true
+end
 function Imaginator:OnUpdate(deltatime)
    
    if Server then
+   
+  
+           
+         if not  self.timelastOnOffSwitch or self.timelastOnOffSwitch + 2 <= Shared.GetTime() then
+           local team1Commander = GetTeamHasCommander(1)
+           local team2Commander = GetTeamHasCommander(2)
+          self.timelastOnOffSwitch = Shared.GetTime()
+          self.marineEnabled = not team1Commander
+          self.alienEnabled = not team2Commander
+         end
+         
                  if not  self.timeLastAutomations or self.timeLastAutomations + 8 <= Shared.GetTime() then
                  self.timeLastAutomations = Shared.GetTime()
         self:Automations()
@@ -97,15 +184,24 @@ function Imaginator:OnUpdate(deltatime)
          self:CystTimer()
          end
          
-         if not  self.timelastOnOffSwitch or self.timelastOnOffSwitch + 2 <= Shared.GetTime() then
-           local team1Commander = GetTeamHasCommander(1)
-           local team2Commander = GetTeamHasCommander(2)
-          self.timelastOnOffSwitch = Shared.GetTime()
-          self.marineEnabled = not team1Commander
-          self.alienEnabled = not team2Commander
-         end
+         if not self.timeLastAutomations or self.timeLastAutomations + math.random(4,8) <= Shared.GetTime() then
          
-         end
+         local gamestarted = GetGamerules():GetGameState() == kGameState.Started 
+               if gamestarted and self.marineenabled then
+                   for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
+                      if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable)  end
+                   end
+                end
+                
+              if gamestarted and self.alienenabled then  self:UpdateHivesManually()  end 
+             self.timeLastAutomations = Shared.GetTime()
+             return true
+         end      
+    
+         
+         
+         
+   end //Server
    
 end
 function Imaginator:OnPreGame()
@@ -136,6 +232,12 @@ function Imaginator:SetImagination(boolean, team)
   self.marineenabled = boolean
   elseif team == 2 then
   self.alienenabled = boolean
+        if boolean == true then
+                 for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
+                      UpdateTypeOfHive(hive)
+                      hive.bioMassLevel = 3
+               end
+        end
   end
 
 
@@ -534,7 +636,7 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true H
       --table.insert(tospawn, kTechId.InfantryPortal)
       --end
       
-      if CommandStation < 3 then
+      if not GetSandCastle():GetSDBoolean() and CommandStation < 3 then
       table.insert(tospawn, kTechId.CommandStation)
       end
       
@@ -1472,7 +1574,7 @@ self:AdditionalSpawns(who)
 return who:GetIsAlive() and not who:GetIsDestroyed()
 
 end
-function Imaginator:suchasShades()
+function Imaginator:CragShadeWall()
 --Cache would be nice
 
 local hive = nil
@@ -1498,12 +1600,27 @@ local hive = nil
    end
    
    
+   local crags = GetEntitiesWithinRange( "Crag", hive:GetOrigin(), Crag.kHealRadius )
+   
+   if #crags <= 3 then 
+        local cost = LookupTechData(kTechId.Crag, kTechDataCostKey)
+              cost = GetAlienCostScalar(self, cost)
+        if TresCheck(2, cost) then
+               local origin = FindFreeSpace(hive:GetOrigin(), 2, Crag.kHealRadius) --not too far else healwave not hit hive!
+               local crag = CreateEntity(Crag.kMapName, origin,  2)
+               crag:GetTeam():SetTeamResources(crag:GetTeam():GetTeamResources() - cost)
+        end
+   end
+   
+   
+   
+   
 return false
 end
 function Imaginator:EnsureSiegeWall()
 local delay = math.random(4,16)
 
-   self:AddTimedCallback(Imaginator.suchasShades, delay)
+   self:AddTimedCallback(Imaginator.CragShadeWall, delay)
 
 
 return true

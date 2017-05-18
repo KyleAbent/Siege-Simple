@@ -26,8 +26,7 @@ table = origbuttons(self, techId)
 
 end
 
-if Server then
-
+-- --Server mismatches client for networkvar and grasping material, so try not if server then.
 
 function Extractor:OnResearchComplete(researchId)
 
@@ -35,13 +34,11 @@ function Extractor:OnResearchComplete(researchId)
 
 
        self:ElectrifyStructure()
-       --Server mismatches client for networkvar and grasping material
+      
         
     end
     
 end
 
-
-end
 
 Shared.LinkClassToMap("Extractor", Extractor.kMapName, addonNetworkVars)

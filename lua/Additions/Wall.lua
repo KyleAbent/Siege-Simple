@@ -11,10 +11,12 @@ Script.Load("lua/WeldableMixin.lua")
 Script.Load("lua/UnitStatusMixin.lua")
 Script.Load("lua/GhostStructureMixin.lua")
 Script.Load("lua/PointGiverMixin.lua")
+Script.Load("lua/ObstacleMixin.lua")
+Script.Load("lua/WeldableMixin.lua")
 
 class 'Wall' (ScriptActor) 
 Wall.kMapName = "wall"
-Wall.kModelName = PrecacheAsset("models/props/docking/docking_showerwalls_str.model")
+Wall.kModelName = PrecacheAsset("models/props/eclipse/eclipse_wallmods01_03.model")
 
 local networkVars = { }
 
@@ -30,7 +32,7 @@ AddMixinNetworkVars(RecycleMixin, networkVars)
 AddMixinNetworkVars(CombatMixin, networkVars)
 AddMixinNetworkVars(SelectableMixin, networkVars)
 AddMixinNetworkVars(GhostStructureMixin, networkVars)
-
+AddMixinNetworkVars(ObstacleMixin, networkVars)
 
 
 
@@ -63,6 +65,7 @@ end
 function Wall:OnInitialized()
     Shared.PrecacheModel(Wall.kModelName) 
     ScriptActor.OnInitialized(self)
+    InitMixin(self, WeldableMixin)
     self:SetModel(Wall.kModelName)
     if Client then
        InitMixin(self, UnitStatusMixin)

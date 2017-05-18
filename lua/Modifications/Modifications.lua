@@ -220,6 +220,7 @@ if Server then
     return num < 16
 end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
+  if GetSandCastle():GetSDBoolean() then return false end
     local num = 0
 
         
@@ -233,6 +234,7 @@ function GetCheckCommandStationLimit(techId, origin, normal, commander)
 end
 end
 local function GetHiveReq(techId, origin, normal, commander)
+  if GetSandCastle():GetSDBoolean() then return false end
     local num = 0
 
          for _, cc in ipairs(GetEntitiesWithinRange("CommandStation", origin, 2)) do

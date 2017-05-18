@@ -1,9 +1,42 @@
 --Kyle 'Avoca' Abent
+Script.Load("lua/Additions/SandCastle.lua") -- to load sandcastle hook opensiege onopensiege otherwise wont hook
 local Shine = Shine
 local Plugin = Plugin
 
-local kAutoCommTimer = 120
+local kAutoCommTimer = 180
 
+local OldGetDestinationGate
+
+local function NewGetDestinationGate(self)
+
+    // Find next phase gate to teleport to
+    local phaseGates = {}    
+    for index, phaseGate in ipairs( GetEntitiesForTeam("PhaseGate", self:GetTeamNumber()) ) do
+        if GetIsUnitActive(phaseGate) and phaseGate.channel == self.channel then
+            table.insert(phaseGates, phaseGate)
+        end
+    end    
+    
+    if table.count(phaseGates) < 2 then
+        return nil
+    end
+    
+    // Find our index and add 1
+    local index = table.find(phaseGates, self)
+    if (index ~= nil) then
+    
+        local nextIndex = ConditionalValue(index == table.count(phaseGates), 1, index + 1)
+        ASSERT(nextIndex >= 1)
+        ASSERT(nextIndex <= table.count(phaseGates))
+        return phaseGates[nextIndex]
+        
+    end
+    
+    return nil
+    
+end
+
+OldGetDestinationGate = Shine.Hook.ReplaceLocalFunction( PhaseGate.Update, "GetDestinationGate", NewGetDestinationGate )
 
 local OldBurnSporesAndUmbra
 
@@ -294,10 +327,48 @@ local function UpdateCertainHealing(self)
     end
     
 end
+local function AddSuddenDeathTimer(who)
+      local NowToSuddendeath = (kTimeAfterSiegeOpeningToEnableSuddenDeath) - (Shared.GetTime() - GetSandCastle():GetSDTimer() )
+      local SuddenDeathLength =  math.ceil( Shared.GetTime() +  NowToSuddendeath - Shared.GetTime() )
+      Print("SuddenDeathLength is %s", SuddenDeathLength)
+	  Shine.ScreenText.Add( 81, {X = 0.40, Y = 0.95,Text = "Sudden Death activates in %s",Duration = SuddenDeathLength,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, who )
+end
+  function Plugin:OnOpenSiegeDoors() 
+  if not GetGamerules():GetGameStarted()  then return end
+         Print("Shine open siege doors 1")
+                local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player then
+                  Print("Shine open siege doors 2")
+                  AddSuddenDeathTimer(Player)
+                  end
+               end
+  end
+local function AddSDEnabledDisplay(who)
+	  Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, who )
+end
+    function Plugin:OnEnableSD() 
+      if not GetGamerules():GetGameStarted()  then return end
+         Print("Shine open siege doors 1")
+                local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player then
+                  Print("Shine open siege doors 2")
+                  AddSDEnabledDisplay(Player)
+                  end
+               end
+  end
+  
+Shine.Hook.SetupClassHook( "SandCastle", "OpenSiegeDoors", "OnOpenSiegeDoors", "PassivePost" )
+
+Shine.Hook.SetupClassHook( "SandCastle", "EnableSD", "OnEnableSD", "PassivePre" )
+
+
 Shine.Hook.SetupClassHook( "Marine", "AdjustDisplayRessuply", "ShowResupply", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRedeemCountDown", "OnRedemedHook", "PassivePre" )
 Shine.Hook.SetupClassHook( "Alien", "TriggerRebirthCountDown", "TriggerRebirthCountDown", "PassivePre" )
-Shine.Hook.SetupClassHook( "Marine", "CopyPlayerDataFrom", "HookGlow", "PassivePost" )
 
 
 Plugin.Version = "1.0"
@@ -305,25 +376,16 @@ Plugin.Version = "1.0"
 function Plugin:Initialise()
 self.Enabled = true
 self:CreateCommands()
-self.autoCommTime = kAutoCommTimer
+self.AutoCCtimer = false
 return true
 end
 
 function Plugin:MapPostLoad()
-      self:StartAutoCommTimer()
+      --self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
-      Server.CreateEntity(Researcher.kMapName)
 end
 
-local function GetSandCastle() --it washed away
-    local entityList = Shared.GetEntitiesWithClassname("SandCastle")
-    if entityList:GetSize() > 0 then
-                 local sandcastle = entityList:GetEntityAtIndex(0) 
-                 return sandcastle
-    end    
-    return nil
-end
 local function AddFrontTimer(who)
     local Client = who
     local NowToFront = GetSandCastle():GetFrontLength() - (Shared.GetTime() - GetGamerules():GetGameStartTime())
@@ -392,7 +454,7 @@ end
 function Plugin:ClientDisconnect(Client)
  if Client:GetIsVirtual() then return end
  
-        if GetGamerules():GetGameStarted() and GetImaginator():GetAlienEanbled() or GetImaginator():GetMarineEnabled() then
+        if GetGamerules():GetGameStarted() and GetImaginator():GetAlienEnabled() or GetImaginator():GetMarineEnabled() then
  
         local playercount = #Shine.GetAllPlayers()
         local  humancount = #Shine.GetHumanPlayerCount()
@@ -454,6 +516,14 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
          AddPrimaryTimer(Client)
    end
    
+    if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) >  kSiegeTimer  then
+         AddSuddenDeathTimer(Client)
+   end
+   
+   if GetSandCastle():GetSDBoolean() then
+   Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
+   end
+   
 else
                    --      self:CreateTimer( 27, 1,  self.autoCommTime, function() 
                    --      if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
@@ -467,7 +537,7 @@ local function OpenAllBreakableDoors()
  for _, door in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do 
            door.open = true
        door.timeOfDestruction = Shared.GetTime() 
-       door:SetHealth(door:GetHealth() - 50)
+       door:SetHealth(door:GetHealth() - 10)
  end
 end
 function Plugin:SetGameState( Gamerules, State, OldState )
@@ -494,18 +564,28 @@ function Plugin:SetGameState( Gamerules, State, OldState )
            elseif State == kGameState.Countdown then
              GetSandCastle():OnRoundStart()
              GetImaginator():OnRoundStart()
-             -- GetResearcher():OnRoundStart()
        elseif State == kGameState.NotStarted then
                 --GetImaginator():OnPreGame()
-             --GetResearcher():OnPreGame()
              GetSandCastle():OnPreGame()
-            self:StartAutoCommTimer()
+           -- self:StartAutoCommTimer()
+             self.autoCommTime = kAutoCommTimer
+             self.AutoCCtimer = false
           end
           
     
 end
+function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force, ShineForce )
+   -- Print("1 self.AutoCCtimer is %s", self.AutoCCtimer)
+	if ShineForce or self.AutoCCtimer == true  then return end
+    local  numplayers = #Shine.GetAllPlayers()
+	if numplayers<=10 and not Gamerules:GetGameStarted() and NewTeam == 1 or NewTeam == 2  then
+	   -- Print("2 self.AutoCCtimer is %s", self.AutoCCtimer)
+	      self.AutoCCtimer = true
+	        self:StartAutoCommTimer()
+	     self:NotifyAutoComm( nil, "AutoComm Timer Activated (Player joining team and playercount <= 10). %s seconds left ~ say /extend to extend the timer", true, self.autoCommTime)
+	end
+end
 function Plugin:StartAutoCommTimer()
-self.autoCommTime = kAutoCommTimer
 
                     self:SimpleTimer( self.autoCommTime, function() 
                     local  numplayers = #Shine.GetAllPlayers()
@@ -520,9 +600,7 @@ self.autoCommTime = kAutoCommTimer
            Shared.ConsoleCommand("sh_randomrr")
            Shared.ConsoleCommand("sh_forceroundstart")
            Shared.ConsoleCommand("sh_imaginator 1 true")
-           Shared.ConsoleCommand("sh_researcher 1 true")
            Shared.ConsoleCommand("sh_imaginator 2 true")
-           Shared.ConsoleCommand("sh_researcher 2 true")
                  end)
                  
  
@@ -533,11 +611,12 @@ self.autoCommTime = kAutoCommTimer
 
 
                          self:CreateTimer( 84, 1,  -1, function() 
-                         if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 84 ) end
+                         local  numplayers = #Shine.GetAllPlayers()
+                         if GetGamerules():GetGameStarted() or numplayers>= 10 then Plugin:DestroyTimer( 84 ) end
                          
                             if  self.autoCommTime <=10 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
-                            or  self.autoCommTime == 110 then
-                            self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10", true, self.autoCommTime)
+                            or  self.autoCommTime == 120 or  self.autoCommTime == 150 then
+                            self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10. say /extend to extend the timer", true, self.autoCommTime)
                          -- Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                          end
                          
@@ -964,11 +1043,7 @@ ChatCommand:AddParam{ Type = "string" }
 ChatCommand:Help( "for mods to talk in private. Only mods can see and use this chat." )
 
 
-local function OpenSiegeDoors()
-   for index, sandcastle in ientitylist(Shared.GetEntitiesWithClassname("SandCastle")) do
-              sandcastle:OpenSiegeDoors(true)
-      end 
-end
+
 local function Cyst( Client, Targets )
      for i = 1, #Targets do
      local Player = Targets[ i ]:GetControllingPlayer()
@@ -982,25 +1057,6 @@ local CystCommand = self:BindCommand( "sh_cyst", "cyst", Cyst )
 CystCommand:AddParam{ Type = "clients" }
 CystCommand:Help( "<player> Give cyst to player(s)" )
 
-
-local function Researcher( Client, Number, Boolean )
-
-if Number == 1 then 
-GetResearcher().marineenabled = Boolean
-elseif Number == 2 then
-GetResearcher():SetAlienEnabled(Boolean)
-end
-
-
-  
-   self:NotifyGeneric( nil, "%s Researcher set to %s (No Comm Required)", true, Number, Boolean)
-  
-end
-
-local ResearcherCommand = self:BindCommand( "sh_researcher", "researcher", Researcher )
-ResearcherCommand:Help( "sh_researcher - <team> - true/false - Automated Research system (No comm required) " )
-ResearcherCommand:AddParam{ Type = "team" }
-ResearcherCommand:AddParam{ Type = "boolean" }
 
 local function Imaginator( Client, Number, Boolean )
 GetImaginator():SetImagination(Boolean, Number)
@@ -1047,8 +1103,9 @@ local Gamerules = GetGamerules()
        OpenPrimaryDoors()
        Shine.ScreenText.End(3)
      elseif String == "Siege" or String == "siege" then
-        OpenSiegeDoors()
+       GetSandCastle():OpenSiegeDoors()
          Shine.ScreenText.End(2) 
+        -- self:OnOpenSiegeDoors()
      elseif String == "Breakable" or String == "breakable" then
         OpenBreakableDoors()
     end  --
@@ -1067,9 +1124,7 @@ local function TestFilm( Client )
          Shared.ConsoleCommand("sh_randomrr")
             Shared.ConsoleCommand("sh_forceroundstart")
             Shared.ConsoleCommand("sh_imaginator 1 true")
-           Shared.ConsoleCommand("sh_researcher 1 true")
           Shared.ConsoleCommand("sh_imaginator 2 true")
-           Shared.ConsoleCommand("sh_researcher 2 true")
 
   
    self:NotifyGeneric( nil, "%s Test Film ", true)
@@ -1077,7 +1132,7 @@ local function TestFilm( Client )
 end
 
 local TestFilmCommand = self:BindCommand( "sh_testfilm", "testfilm", TestFilm )
-TestFilmCommand:Help( "sh_testfilm adds bots forces round and enables imaginator researcher  " )
+TestFilmCommand:Help( "sh_testfilm adds bots forces round and enables imaginator  " )
 
 
 local function AutoComm( Client )
@@ -1087,9 +1142,7 @@ local function AutoComm( Client )
             Shared.ConsoleCommand("sh_forceroundstart")
            end
             Shared.ConsoleCommand("sh_imaginator 1 true")
-           Shared.ConsoleCommand("sh_researcher 1 true")
           Shared.ConsoleCommand("sh_imaginator 2 true")
-           Shared.ConsoleCommand("sh_researcher 2 true")
 
   
    self:NotifyGeneric( nil, "%s Enabled Auto Comm", true)
@@ -1098,6 +1151,46 @@ end
 
 local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )
 AutoCommCommand:Help( "sh_testfilm forces autocomm (disables if human comm) and forces round to start  " )
+
+
+
+
+local function ExtendAutoComm( Client )
+   local Player = Client:GetControllingPlayer()
+   if not self.lastExtend or Shared.GetTime() > self.lastExtend + 90 then
+      self.autoCommTime = self.autoCommTime + 60
+      self:NotifyAutoComm( nil, "%s Extended AutoComm by 60s. Now at %s seconds left", true, Player:GetName(), self.autoCommTime )
+      self.lastExtend = Shared.GetTime()
+     self.nextUse = Shared.GetTime() + 90
+      else
+      self:NotifyAutoComm( Player, "%s seconds until extension allowed", true, string.TimeToString( self.nextUse - Shared.GetTime() ) )
+   end
+  
+ 
+  
+end
+
+local ExtendAutoCommCommand = self:BindCommand( "sh_extend", "extend", ExtendAutoComm, true )
+ExtendAutoCommCommand:Help( "sh_extend forces autocomm (disables if human comm) and forces round to start  " )
+
+
+
+local function BringAll( Client )
+    self:NotifyGeneric( nil, "Brought everyone to one locaiton/area", true)
+    
+        local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player and not Player:isa("Commander") and not Player:isa("Spectator") then
+                       local where = FindFreeSpace(Client:GetControllingPlayer():GetOrigin())
+                       Player:SetOrigin(where)
+                  end
+              end
+end
+
+local BringAllCommand = self:BindCommand( "sh_bringall", "bringall", BringAll )
+BringAllCommand:Help( "sh_bringall - teleports everyone to the same spot" )
+
 
 
 

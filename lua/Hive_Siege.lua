@@ -1,3 +1,10 @@
+
+function Hive:GetCanBeHealedOverride()
+    return not GetSandCastle():GetSDBoolean() and self:GetIsAlive()
+end
+function Hive:GetAddConstructHealth()
+return not  GetSandCastle():GetSDBoolean()
+end
 local orighive = Hive.GetTechAllowed
 function Hive:GetTechAllowed(techId, techNode, player)
 
@@ -20,7 +27,7 @@ local orig_Hive_OnConstructionComplete = Hive.OnConstructionComplete
 function Hive:OnConstructionComplete()
 
 
-   if GetResearcher():GetAlienEnabled() then
+   if GetImaginator():GetAlienEnabled() then
    self.bioMassLevel = 3
    UpdateTypeOfHive(self)
    else

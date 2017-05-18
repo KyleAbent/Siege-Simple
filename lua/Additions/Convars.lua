@@ -1,3 +1,4 @@
+kTimeAfterSiegeOpeningToEnableSuddenDeath = 900 --900
 kResupplyCost = 5
 kHeavyArmorCost = 5
 kFireBulletsCost = 5

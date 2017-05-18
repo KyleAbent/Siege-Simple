@@ -11,7 +11,9 @@ ElectrifyMixin.networkVars =
 }
 
 function ElectrifyMixin:__initmixin()
-        self.commElectrified = false    
+      if Server then
+        self.commElectrified = false   
+      end 
 end
 
 local function ClearCommElectrify(self, destroySound)
@@ -45,7 +47,7 @@ end
 
 function ElectrifyMixin:GetIsElectrified()
   local boolean = self:GetIsPowered() and self.commElectrified
-    Print("GetIsElectrified is %s",boolean )
+    --Print("GetIsElectrified is %s",boolean )
     return boolean
 end
 
@@ -54,7 +56,7 @@ local function UpdateElectrifiedEffects(self)
 
     assert(Client)
     
-    if self:GetIsAlive() then
+    if self:GetIsElectrified() and self:GetIsAlive() then
         self:_CreateEffect()
     else
         self:_RemoveEffect() 
@@ -63,13 +65,12 @@ local function UpdateElectrifiedEffects(self)
 end
 
 local function SharedUpdate(self)
-
     if Server then
     
         if not self:GetIsElectrified() then
             return
         end
-       
+        
     elseif Client and not Shared.GetIsRunningPrediction() then
         UpdateElectrifiedEffects(self)
     end
@@ -79,6 +80,23 @@ end
 
 function ElectrifyMixin:OnProcessMove(input)   
     SharedUpdate(self)
+end
+function ElectrifyMixin:OnUpdate(deltaTime)
+     if Server then
+     
+     
+      if not self.LastDamage or Shared.GetTime() > self.LastDamage + 4 and self:GetIsElectrified() then  
+                      for _, entity in ipairs(GetEntitiesForTeamWithinRange("Player", 2, self:GetOrigin(), 3)) do
+                           if entity:GetIsAlive() and not entity:isa("Commander") then 
+                             local damage = math.random(5, 15)
+                             entity:TakeDamage(damage, nil, nil, nil, nil, damage /2, damage, kDamageType.Normal)
+                           end
+                      end        
+                self.LastDamage = Shared.GetTime()
+         end
+    
+   end
+
 end
 --Great for some reason the onupdate deleted where it had the damage rules
 if Client then

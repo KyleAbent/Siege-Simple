@@ -345,8 +345,9 @@ end
 function Alien:RedemAlienToHive()
      if self:GetEligableForRebirth() then
         self:TeleportToHive()
-        --virtual error
-          local client = self:GetClient():GetControllingPlayer()
+          local client = self:GetClient()
+          if client.GetIsVirtual and client:GetIsVirtual() then return end
+          client = client:GetControllingPlayer()
          if client and self.OnRedeem then self:OnRedeem(client) end
         self.lastredeemorrebirthtime = Shared:GetTime()
      end

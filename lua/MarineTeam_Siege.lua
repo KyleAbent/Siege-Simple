@@ -1,3 +1,11 @@
+local orig_MarineTeam_GetHasAbilityToRespawn = MarineTeam.GetHasAbilityToRespawn
+
+function MarineTeam:GetHasAbilityToRespawn()
+   local orig = orig_MarineTeam_GetHasAbilityToRespawn(self)
+   if GetSandCastle():GetSDBoolean() then return false end
+   return orig
+end
+
 local orig_MarineTeam_InitTechTree = MarineTeam.InitTechTree
 function MarineTeam:InitTechTree()
     local orig_PlayingTeam_InitTechTree = PlayingTeam.InitTechTree
@@ -28,6 +36,11 @@ function MarineTeam:InitTechTree()
        self.techTree:AddTargetedBuyNode(kTechId.HeavyArmor,            kTechId.None,         kTechId.None) 
        self.techTree:AddTargetedBuyNode(kTechId.FireBullets,            kTechId.None,         kTechId.None) 
        self.techTree:AddTargetedBuyNode(kTechId.RegenArmor,            kTechId.None,         kTechId.None) 
+       
+       
+       
+    self.techTree:AddActivation(kTechId.PGchannelOne,           kTechId.None)  
+    self.techTree:AddActivation(kTechId.PGchannelTwo,           kTechId.None) 
     
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree

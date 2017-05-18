@@ -78,6 +78,22 @@ end
 local kSiege_TechData =
 {   
 
+                                { [kTechDataId] = kTechId.PGchannelOne,  
+          [kTechDataBuildTime] = 0.1,   
+        [kTechDataDisplayName] = "Channel 1", 
+         [kTechDataHotkey] = Move.B, 
+       [kTechDataCostKey] = 0,
+       [kTechDataCooldown] = 1,
+        [kTechDataTooltipInfo] =  "Change Frequencies"},
+        
+                                        { [kTechDataId] = kTechId.PGchannelTwo,  
+          [kTechDataBuildTime] = 0.1,   
+        [kTechDataDisplayName] = "Channel 2", 
+         [kTechDataHotkey] = Move.B, 
+       [kTechDataCostKey] = 0,
+       [kTechDataCooldown] = 1,
+        [kTechDataTooltipInfo] =  "Change Frequencies"},
+
              { [kTechDataId] = kTechId.RegenArmor,
         [kTechDataCostKey] = kNanoArmorCost,
         [kTechDataDisplayName] = "Nano (Regen) Armor", 
@@ -222,9 +238,9 @@ local kSiege_TechData =
 [kTechIDShowEnables] = false, 
 [kTechDataTooltipInfo] =  "Build Them!", 
 [kTechDataModel] = Wall.kModelName, 
-            [kTechDataBuildTime] = 12,
+            [kTechDataBuildTime] = 14,
              [kTechDataMaxHealth] = 2000,
-[kTechDataCostKey] = 20, 
+[kTechDataCostKey] = 10, 
  [kTechDataSpecifyOrientation] = true,
   [kTechDataPointValue] = 3,
 [kTechDataSupply] = 0},

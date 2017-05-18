@@ -1,3 +1,16 @@
+local orig_AlienTeam_GetHasAbilityToRespawn = AlienTeam.GetHasAbilityToRespawn
+function AlienTeam:GetHasAbilityToRespawn()
+   local orig = orig_AlienTeam_GetHasAbilityToRespawn(self)
+   if GetSandCastle():GetSDBoolean() then return false end
+   return orig
+end
+
+local orig_ = AlienTeam.AssignPlayerToEgg
+function AlienTeam:AssignPlayerToEgg(player, enemyTeamPosition)
+ if GetSandCastle():GetSDBoolean() then return false end
+orig_(self, player, enemyTeamPosition)
+
+end
 function AlienTeam:GetHive()
     for _, hive in ipairs(GetEntitiesForTeam("Hive", 2)) do
         if hive:GetIsBuilt() then

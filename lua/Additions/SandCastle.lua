@@ -23,6 +23,8 @@ local networkVars =
    PrimaryTimer = "float",
    frontOpened = "boolean",
    siegeOpened = "boolean",
+   isSuddenDeath = "boolean",
+   sdTimer = "time",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -33,6 +35,8 @@ function SandCastle:TimerValues()
    self.FrontTimer = kFrontTimer
    self.siegeOpened = false
    self.frontOpened = false
+   self.isSuddenDeath = false
+   self.sdTimer = 0
 end
 
 function SandCastle:OnReset() 
@@ -64,6 +68,10 @@ end
 function SandCastle:SetSiegeOpenBoolean(option)
  self.siegeOpened = option
 end
+function SandCastle:GetSDBoolean()
+  --Print("Sandcastle sd is %s", self.isSuddenDeath)
+ return self.isSuddenDeath 
+end
 function SandCastle:GetSiegeOpenBoolean()
   //Print("Sandcastle siege open is %s", self.siegeOpened)
  return self.siegeOpened 
@@ -89,6 +97,7 @@ end
 end
 function SandCastle:OpenSiegeDoors()
      self.SiegeTimer = 0
+     self.sdTimer = Shared.GetTime() -- count when siege opens b/c admin sh_open
      if GetGameStarted() then GetImaginator():OnSiegeOpen() end
      -- Print("OpenSiegeDoors SandCastle")
                for index, siegedoor in ientitylist(Shared.GetEntitiesWithClassname("SiegeDoor")) do
@@ -108,8 +117,16 @@ function SandCastle:OpenSiegeDoors()
               
 end
 
+local function CloseAllBreakableDoors()
+  for _, door in ientitylist(Shared.GetEntitiesWithClassname("BreakableDoor")) do 
+           door.open = false
+           door:SetHealth(door:GetHealth() + 10)
+  end
+end
+
 function SandCastle:OpenFrontDoors()
            GetGamerules():SetDamageMultiplier(1) 
+           CloseAllBreakableDoors()
               if GetGameStarted() then GetImaginator():OnFrontOpen() end
       self.FrontTimer = 0
                for index, frontdoor in ientitylist(Shared.GetEntitiesWithClassname("FrontDoor")) do
@@ -139,6 +156,14 @@ function SandCastle:OpenPrimaryDoors()
 
 
 end
+function SandCastle:GetSDTimer()
+return self.sdTimer
+end
+function SandCastle:GetIsSD()
+           local timerstart = self.sdTimer
+           local gameLength = Shared.GetTime() - timerstart
+           return  gameLength >= (kTimeAfterSiegeOpeningToEnableSuddenDeath)
+end
 function SandCastle:GetIsSiegeOpen()
            local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
@@ -157,6 +182,15 @@ end
 function SandCastle:CountSTimer()
        if  self:GetIsSiegeOpen() then
                self:OpenSiegeDoors()
+       end
+       
+end
+function SandCastle:EnableSD()
+self.isSuddenDeath = true
+end
+function SandCastle:CountSDTimer()
+       if  self:GetIsSD() then
+             self:EnableSD()
        end
        
 end
@@ -202,6 +236,8 @@ function SandCastle:OnUpdate(deltatime)
        
            if self. SiegeTimer ~= 0 then
            self:CountSTimer() 
+           elseif self.SiegeTimer == 0 and not self.isSuddenDeath  then
+           self:CountSDTimer() 
            else
            
            if not self.timelastArcHIT or self.timelastArcHIT + math.random(8,12) <= Shared.GetTime() and  GetImaginator():GetMarineEnabled() then

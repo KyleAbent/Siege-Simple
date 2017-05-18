@@ -40,6 +40,7 @@ function GetRandomPowerOrigin()
   for _, power in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
         if power:GetIsBuilt() and not power:GetIsDisabled() then table.insert(powers,power) end
     end
+    if #powers == 0 then return end
     return table.random(powers):GetOrigin()
 end
  function GetHasCragHive()
@@ -173,14 +174,6 @@ function GetImaginator()
     if entityList:GetSize() > 0 then
                  local imaginator = entityList:GetEntityAtIndex(0) 
                  return imaginator
-    end    
-    return nil
-end
-function GetResearcher() 
-    local entityList = Shared.GetEntitiesWithClassname("Researcher")
-    if entityList:GetSize() > 0 then
-                 local researcher = entityList:GetEntityAtIndex(0) 
-                 return researcher
     end    
     return nil
 end
