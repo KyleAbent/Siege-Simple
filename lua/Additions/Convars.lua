@@ -53,8 +53,8 @@ kCragUmbraCooldown = 10
 kCragUmbraCost = 5
 kCragUmbraRadius = 12
 
-kAlienDefaultLvl = 25
-kAlienDefaultAddXp = 0.25
+kAlienDefaultLvl = 50
+kAlienDefaultAddXp = 1
 
 kDoorMoveUpVect = 40
 kAdvancedBeaconCost = 13
@@ -77,12 +77,12 @@ kPrimalScreamROF = 1
 
 kBatteryPowerRange = 4
 
-kInfantryPortalMaxLevel = 10
-kDefaultLvl = 25
-kDefaultAddXp = 0.15
-kArmoryAddXp = 0.45
+kInfantryPortalMaxLevel = 75
+kDefaultLvl = 50
+kDefaultAddXp = 1
+kArmoryAddXp = 1
 kArmoryLvl = 75
-kInfantryPortalXPGain = 0.05
+kInfantryPortalXPGain = 1
 kCommSentryPerRoom = 6
 kMacMaxLevel = 50
 

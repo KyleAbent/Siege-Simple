@@ -1,4 +1,4 @@
-
+Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
 
@@ -8,6 +8,7 @@ local networkVars =
 }
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
+AddMixinNetworkVars(LevelsMixin, networkVars)
 
 local origcreate = ARC.OnCreate
 function ARC:OnCreate()
@@ -17,9 +18,33 @@ self.lastWand = 0
     InitMixin(self, RecycleMixin)
      self.startsBuilt = not self:isa("ARCCredit")
 end
+    local originit = ARC.OnInitialized
+    function ARC:OnInitialized()
+        originit(self)
+        InitMixin(self, LevelsMixin)
+    end
+    
+    
+    function ARC:GetMaxLevel()
+    return 10
+    end
+    function ARC:GetAddXPAmount()
+    return 1
+    end
+    
+    
 if Server then
 
-
+ local origtag = ARC.OnTag
+ function ARC:OnTag(tagName)
+ 
+  origtag(self)
+   if tagName == "fire_start" then
+   self:AddXP(self:GetAddXPAmount())
+   end
+ 
+ end
+ 
  function ARC:CreateScan()
     local origin = self:GetOrigin()
     local isSiege = GetIsInSiege(self)
@@ -37,6 +62,12 @@ if Server then
  function ARC:Instruct()
      self:SpecificRules()
    return true
+end
+
+    
+function ARC:OnAddXp()
+  local dmg = kARCDamage
+  self.kAttackDamage = dmg * (self.level/100) + dmg
 end
 local function FindNewParent(who)
     local where = who:GetOrigin()

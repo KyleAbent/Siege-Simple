@@ -34,12 +34,13 @@ end
 function CommVortex:Perform()
 
     self.success = false
-
-    local entities = GetEntitiesWithMixinForTeamWithinRange("VortexAble", 1, self:GetOrigin(), CommVortex.kSearchRange)
-    
+    local boolean = GetWhereIsInSiege(self:GetOrigin())
+    local range = ConditionalValue(boolean, CommVortex.kSearchRange /2, CommVortex.kSearchRange )
+    local entities = GetEntitiesWithMixinForTeamWithinRange("VortexAble", 1, self:GetOrigin(), range)
+    local duration = ConditionalValue(boolean, 3, 6)
     for index, entity in ipairs(entities) do    
        if entity:GetCanBeVortexed() and not entity:GetIsVortexed() then
-        entity:SetVortexDuration(6)   
+        entity:SetVortexDuration(duration)   
        end 
     end
 

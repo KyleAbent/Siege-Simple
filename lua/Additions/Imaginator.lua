@@ -1577,6 +1577,8 @@ end
 function Imaginator:CragShadeWall()
 --Cache would be nice
 
+if not self.alienenabled then return end
+
 local hive = nil
 
    for index, hivey in ipairs(GetEntitiesForTeam("Hive", 2)) do

@@ -42,9 +42,9 @@ end)
 Shine.VoteMenu:AddPage ("SpendExpenive", function( self )
        local player = Client.GetLocalPlayer()
     if player:GetTeamNumber() == 1 then 
-            self:AddSideButton( "Extractor(5000)", function() Shared.ConsoleCommand ("sh_buy Extractor")  end)
+            self:AddSideButton( "Extractor(2500)", function() Shared.ConsoleCommand ("sh_buy Extractor")  end)
     elseif  player:GetTeamNumber() == 2 then
-      self:AddSideButton( "Harvester(5000)", function() Shared.ConsoleCommand ("sh_buy Harvester")  end)
+      self:AddSideButton( "Harvester(2500)", function() Shared.ConsoleCommand ("sh_buy Harvester")  end)
     end
         self:AddBottomButton( "Back", function()self:SetPage("SpendCredits")end) 
 end)

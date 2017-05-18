@@ -802,7 +802,7 @@ mapnameof = ARCCredit.kMapName --can be networkvar instead
 limit = 1
 elseif String == "Extractor" then 
 techid = kTechId.Extractor
-CreditCost = 5000
+CreditCost = 2500
 mapnameof = Extractor.kMapName
 limit = 1
 elseif string == nil then
@@ -865,7 +865,7 @@ mapnameof = PoopEgg.kMapName
 techid = kTechId.Egg
 limit = 5
 elseif String == "Harvester" then
-CreditCost = 5000
+CreditCost = 2500
 mapnameof = Harvester.kMapName
 techid = kTechId.Harvester
 limit = 1

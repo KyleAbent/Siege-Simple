@@ -149,6 +149,13 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
         origcreate(self)
         InitMixin(self, AvocaMixin)
     end
+    
+    local originit = Armory.OnInitialized
+    function Armory:OnInitialized()
+        originit(self)
+        InitMixin(self, LevelsMixin)
+    end
+
 
     function Armory:GetMaxLevel()
     return kArmoryLvl

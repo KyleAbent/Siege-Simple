@@ -1,25 +1,48 @@
-function InfantryPortal:GetMinRangeAC()
-return IPAutoCCMR  
-end
-function InfantryPortal:CheckSpaceAboveForSpawn()
+local kHoloMarineMaterialname = PrecacheAsset("cinematics/vfx_materials/marine_ip_spawn.material")
 
-    local startPoint = self:GetOrigin() 
-    local endPoint = startPoint + Vector(0.35, 0.95, 0.35)
+
+
+
+local function CreateSpinEffect(self)
+
+
+    if not self.spinCinematic then
     
-    return GetWallBetween(startPoint, endPoint, self)
+        self.spinCinematic = Client.CreateCinematic(RenderScene.Zone_Default)
+        self.spinCinematic:SetCinematic(kSpinEffect)
+        self.spinCinematic:SetCoords(self:GetCoords())
+        self.spinCinematic:SetRepeatStyle(Cinematic.Repeat_Endless)
     
-end
-
-
-local function StopSpinning(self)
-
-    self:TriggerEffects("infantry_portal_stop_spin")
-    self.timeSpinUpStarted = nil
+    end
     
+    if not self.fakeMarineModel and not self.fakeMarineMaterial then
+    
+        self.fakeMarineModel = Client.CreateRenderModel(RenderScene.Zone_Default)
+        self.fakeMarineModel:SetModel(Shared.GetModelIndex(kHoloMarineModel))
+        
+        local coords = self:GetCoords()
+        coords.origin = coords.origin + Vector(0, 0.4, 0)
+        
+        self.fakeMarineModel:SetCoords(coords)
+        self.fakeMarineModel:InstanceMaterials()
+        self.fakeMarineModel:SetMaterialParameter("hiddenAmount", 1.0)
+        
+        self.fakeMarineMaterial = AddMaterial(self.fakeMarineModel, kHoloMarineMaterialname)
+    
+    end
+    
+    if self.clientQueuedPlayerId ~= self.queuedPlayerId then
+        self.timeSpinStarted = self.queuedPlayerStartTime or Shared.GetTime()
+        self.clientQueuedPlayerId = self.queuedPlayerId
+    end
+    
+    local spawnProgress = Clamp((Shared.GetTime() - self.timeSpinStarted) / self:GetSpawnTime() , 0, 1)
+   -- Print("spawnProgress is %s", spawnProgress)
+    
+    self.fakeMarineModel:SetIsVisible(true)
+    self.fakeMarineMaterial:SetParameter("spawnProgress", spawnProgress+0.2)  
 end
-
 if Server then
-
 // Spawn player on top of IP. Returns true if it was able to, false if way was blocked.
 local function SpawnPlayer(self)
 
@@ -67,6 +90,28 @@ local function SpawnPlayer(self)
 end
 
 
+function InfantryPortal:GetMinRangeAC()
+return IPAutoCCMR  
+end
+function InfantryPortal:CheckSpaceAboveForSpawn()
+
+    local startPoint = self:GetOrigin() 
+    local endPoint = startPoint + Vector(0.35, 0.95, 0.35)
+    
+    return GetWallBetween(startPoint, endPoint, self)
+    
+end
+
+
+local function StopSpinning(self)
+
+    self:TriggerEffects("infantry_portal_stop_spin")
+    self.timeSpinUpStarted = nil
+    
+end
+
+
+
     function InfantryPortal:FinishSpawn()
     
         SpawnPlayer(self)
@@ -78,10 +123,24 @@ end
 
 
     function InfantryPortal:GetSpawnTime()
-    local roundbonus =  ( ( GetRoundLengthToSiege() / 2 ) /1) 
-    local total = roundbonus
-   -- Print("InfantryPortalAvoca GetSpawnTime Is: (level bonus is %s, roundbonus is %s)", levelbonus, roundbonus)
-    return Clamp(total, 6, kMarineRespawnTime)
+    local total =  ( kMarineRespawnTime - (GetRoundLengthToSiege()/1.5) * kMarineRespawnTime ) * 1.5
+      total = Clamp(total, 4, kMarineRespawnTime)
+    --Print("InfantryPortal GetSpawnTime Is: %s", total)
+    return total
+end
+
+if Client then
+
+
+local origupdate = InfantryPortal.OnUpdate
+
+    function InfantryPortal:OnUpdate(deltaTime)
+       origupdate(self, deltaTime)
+               local shouldSpin = GetIsUnitActive(self) and self.queuedPlayerId ~= Entity.invalidId and (self.preventSpinDuration == nil or self.preventSpinDuration == 0)
+        if shouldSpin then
+            CreateSpinEffect(self)
+            end
+    end
 end
 if Server then
 

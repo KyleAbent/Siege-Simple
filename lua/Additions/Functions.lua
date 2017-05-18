@@ -359,8 +359,7 @@ local level = 1
   if GetSiegeDoorOpen() then
    return 1
   end 
-      local roundlength =   Shared.GetTime()   - ( gameRules:GetStartTime() + kFrontTimer )
-                            --Don't count the setup duration 
+      local roundlength =   Shared.GetTime()   - ( gameRules:GetStartTime()  )
       level = math.round(roundlength/  kSiegeTimer, 2)
      -- Print("GetRoundLengthToSiege = %s", level)
        return level 

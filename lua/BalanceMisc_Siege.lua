@@ -1,5 +1,6 @@
+kARCSupply = 10
 kNumWebsPerGorge = 6
-kChargeEnergyCost = 20 --def 20
+--kChargeEnergyCost = 20 --def 20
 
 
 kLerkFlapEnergyCost = 1

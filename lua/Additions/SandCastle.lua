@@ -200,7 +200,9 @@ function SandCastle:CountPrimaryTimer()
        end
        
 end
-function SandCastle:ARCHitSiegeRoom()
+
+function SandCastle:ForAllAlienStructInSiege()
+  if not self.siegeOpened then return end
    local inside = {}
    
    for _, entity in ipairs( GetEntitiesWithMixinForTeamWithinRange("Live", 2, self:GetOrigin(), 99999)) do
@@ -213,18 +215,15 @@ function SandCastle:ARCHitSiegeRoom()
     
     for i = 1, #inside do
      local ent = inside[i]
-      local damage = math.random(100,400)
-      ent:TakeDamage(damage, nil, nil, nil, nil, damage / 2, damage,  kDamageType.Normal)
-     --ent:TriggerEffects("arc_hit_secondary")
-     
-      GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = (ent:GetCoords() )})
-      
+      ent:SetArmor(0)
+      Print("Set armor 0")
     end
     
     
 
     
 end
+
 function SandCastle:OnUpdate(deltatime)
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
@@ -240,11 +239,11 @@ function SandCastle:OnUpdate(deltatime)
            self:CountSDTimer() 
            else
            
-           if not self.timelastArcHIT or self.timelastArcHIT + math.random(8,12) <= Shared.GetTime() and  GetImaginator():GetMarineEnabled() then
-               self:ARCHitSiegeRoom()
-               self.timelastArcHIT = Shared.GetTime()
+           if not self.timelastSiegeAlienS or self.timelastSiegeAlienS + math.random(8,12) <= Shared.GetTime() then
+               self:ForAllAlienStructInSiege()
+               self.timelastSiegeAlienS = Shared.GetTime()
             end
-            
+           
           end
           
           

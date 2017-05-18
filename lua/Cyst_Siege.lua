@@ -14,6 +14,17 @@ self.noComm = false
   self:CheckYoselfFoo()
  self:AddTimedCallback(function() self:CheckYoselfFoo() end, 4)
  end
+ 
+
+
+
+end
+function Cyst:GetInfestationGrowthRate()
+    local rate = 0.2
+          rate = math.abs(0.8 * GetRoundLengthToSiege())
+          --Print("Cyst infest rate is %s", rate)
+          --Note also adjust max mature hp throughout siege?
+    return rate
 end
 function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 

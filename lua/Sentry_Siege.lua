@@ -1,3 +1,4 @@
+Script.Load("lua/Additions/LevelsMixin.lua")
 Sentry.kFov = 360
 Sentry.kMaxPitch = 180 
 Sentry.kMaxYaw = Sentry.kFov / 2
@@ -13,14 +14,37 @@ local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
+
+function Sentry:GetAddXPAmount()
+return kSentryWeldGainXp
+end
+function Sentry:GetLevelPercentage()
+return self.level / self:GetMaxLevel() * 1.8
+end
+
+    local originit = Sentry.OnInitialized
+    function Sentry:OnInitialized()
+        originit(self)
+        InitMixin(self, LevelsMixin)
+    end
     
     function Sentry:GetMaxLevel()
-    return kDefaultLvl
+    return 100
     end
     function Sentry:GetAddXPAmount()
-    return kDefaultAddXp
+    return 2
     end
 
+function Sentry:OnAdjustModelCoords(modelCoords)
+    local coords = modelCoords
+	local scale = self:GetLevelPercentage()
+       if scale >= 1 then
+        coords.xAxis = coords.xAxis * scale
+        coords.yAxis = coords.yAxis * scale
+        coords.zAxis = coords.zAxis * scale
+    end
+    return coords
+end
 
 
 Shared.LinkClassToMap("Sentry", Sentry.kMapName, networkVars)

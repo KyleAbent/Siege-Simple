@@ -5,7 +5,7 @@ LevelsMixin.type = "Levels"
 
 LevelsMixin.networkVars =
 {
-    level = "float (0 to " .. 50 .. " by .1)",
+    level = "float (0 to " .. 100 .. " by .1)",
 }
 
 LevelsMixin.expectedMixins =
@@ -31,7 +31,7 @@ end
 
   function LevelsMixin:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
-    unitName = string.format(Locale.ResolveString("%s (%s)"),self:GetClassName(),  self:GetLevel())
+   unitName = string.format(Locale.ResolveString("%s (%s)"),self:GetClassName(),  self:GetLevel())
 return unitName
 end 
 function LevelsMixin:OnHealSpray(gorge) 
