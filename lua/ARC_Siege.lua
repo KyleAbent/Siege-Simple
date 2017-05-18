@@ -26,25 +26,33 @@ end
     
     
     function ARC:GetMaxLevel()
-    return 10
+    return 30
     end
     function ARC:GetAddXPAmount()
-    return 1
+    return 0.05
     end
     
     
 if Server then
-
+/*
  local origtag = ARC.OnTag
  function ARC:OnTag(tagName)
  
-  origtag(self)
-   if tagName == "fire_start" then
+    if tagName == "fire_start" then
    self:AddXP(self:GetAddXPAmount())
    end
+   
+  origtag(self)
+
  
  end
- 
+ */
+     function ARC:OnDamageDone(doer, target)
+        if self:GetIsAlive() and doer == self then
+               self:AddXP(self:GetAddXPAmount())
+        end
+        
+    end
  function ARC:CreateScan()
     local origin = self:GetOrigin()
     local isSiege = GetIsInSiege(self)

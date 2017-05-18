@@ -187,7 +187,7 @@ local entities = {}
       if delete then
             if #entities > 0 then
             local entity = table.random(entities)
-             if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Wall.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARCCredit.kMapName  then return true end
+             if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Wall.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARC.kMapName  then return true end
                 DestroyEntity(entity)
                  self:NotifySalt( Client, "(Logic Fallacy):Deleted your old %s so you can spawn a new one.", true, mapname)
                  return false  
@@ -798,7 +798,7 @@ limit = 20
 elseif String == "Arc" then 
 techid = kTechId.ARC
 CreditCost = 110
-mapnameof = ARCCredit.kMapName --can be networkvar instead
+mapnameof = ARC.kMapName --can be networkvar instead
 limit = 1
 elseif String == "Extractor" then 
 techid = kTechId.Extractor

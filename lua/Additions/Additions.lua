@@ -13,7 +13,7 @@ Script.Load("lua/Additions/Imaginator.lua")
 --Script.Load("lua/Additions/Researcher.lua")
 
 Script.Load("lua/Additions/MAC_Credits.lua")
-Script.Load("lua/Additions/ARC_Credits.lua")
+--Script.Load("lua/Additions/ARC_Credits.lua")
 
 Script.Load("lua/Additions/CystSiege.lua")
 

@@ -21,6 +21,7 @@ function ARCCredit:OnConstructionComplete(builder)
 self:GiveOrder(kTechId.ARCDeploy, self:GetId(), self:GetOrigin(), nil, false, false)
 CreateEntity(Scan.kMapName, self:GetOrigin(), 1)
 self:AdjustMaxHealth(kARCDeployedHealth)
+self:ClearOrders()
  end
  function ARCCredit:GetDamageType()
 return kDamageType.StructuresOnly
