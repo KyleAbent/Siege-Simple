@@ -20,7 +20,9 @@ local kObservatoryTechButtons = { kTechId.Scan, kTechId.DistressBeacon, kTechId.
 kTechId.PhaseTech, kTechId.AdvancedBeacon, kTechId.None, kTechId.None }
 
 
-
+if GetSandCastle():GetSDBoolean() then
+kObservatoryTechButtons[6] = kTechId.None
+end
     
     
     if techId == kTechId.RootMenu then
