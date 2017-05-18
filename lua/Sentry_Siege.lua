@@ -29,7 +29,7 @@ end
     end
     
     function Sentry:GetMaxLevel()
-    return 100
+    return 50
     end
     function Sentry:GetAddXPAmount()
     return 2
