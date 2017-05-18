@@ -233,18 +233,18 @@ function SandCastle:OnUpdate(deltatime)
        
        if self.FrontTimer ~= 0 then self:FrontDoorTimer() end
        
-           if self. SiegeTimer ~= 0 then
+           if self.SiegeTimer ~= 0 then
            self:CountSTimer() 
            elseif self.SiegeTimer == 0 and not self.isSuddenDeath  then
            self:CountSDTimer() 
-           else
+           end
            
+
            if not self.timelastSiegeAlienS or self.timelastSiegeAlienS + math.random(8,12) <= Shared.GetTime() then
                self:ForAllAlienStructInSiege()
                self.timelastSiegeAlienS = Shared.GetTime()
             end
            
-          end
           
           
       if self.PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
