@@ -34,11 +34,13 @@ end
    unitName = string.format(Locale.ResolveString("%s (%s)"),self:GetClassName(),  self:GetLevel())
 return unitName
 end 
+/*
 function LevelsMixin:OnHealSpray(gorge) 
       local oldlevel = self.level
       self:AddXP(self:GetAddXPAmount()) --missing score for player
       if oldlevel ~= self.level then  gorge:AddScore(0.05) end --hm?
 end
+*/
 function LevelsMixin:AddXP(amount)
     --Print("add xp triggered")
      if self.OnAddXp then self:OnAddXp(amount) end
@@ -47,12 +49,12 @@ function LevelsMixin:AddXP(amount)
         xpReward = math.min(amount, self:GetMaxLevel() - self.level)
         self.level = self.level + xpReward
         
-     --if self:GetTeamNumber() == 1 then
+     if self:GetTeamNumber() == 1 then
        if Server then
         local defaultarmor = LookupTechData(self:GetTechId(), kTechDataMaxArmor) or 200
         self:AdjustMaxArmor(defaultarmor * (self.level/100) +  defaultarmor) 
        end
-    -- end
+     end
       
     return xpReward
     

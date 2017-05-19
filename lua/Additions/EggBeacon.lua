@@ -58,6 +58,7 @@ AddMixinNetworkVars(DissolveMixin, networkVars)
 AddMixinNetworkVars(FireMixin, networkVars)
 AddMixinNetworkVars(CombatMixin, networkVars)
 AddMixinNetworkVars(SelectableMixin, networkVars)
+AddMixinNetworkVars(MaturityMixin, networkVars)
 
 function AlienBeacon:OnCreate()
 
@@ -85,6 +86,7 @@ function AlienBeacon:OnCreate()
     InitMixin(self, UmbraMixin)
     InitMixin(self, DissolveMixin)
     InitMixin(self, CombatMixin)
+    InitMixin(self, MaturityMixin)
     
     if Server then
         InitMixin(self, InfestationTrackerMixin)
@@ -141,11 +143,21 @@ function AlienBeacon:GetCanSleep()
     return true
 end
 
-function AlienBeaconGetIsWallWalkingAllowed()
+function AlienBeacon:GetIsWallWalkingAllowed()
     return false
 end 
+function AlienBeacon:GetMaturityRate()
+    return kCragMaturationTime
+end
 
-function AlienBeaconGetReceivesStructuralDamage()
+function AlienBeacon:GetMatureMaxHealth()
+    return kEggBeaconMaxHealth
+end
+
+function AlienBeacon:GetMatureMaxArmor()
+    return kEggBeaconMaxArmor
+end    
+function AlienBeacon:GetReceivesStructuralDamage()
     return true
 end
 function AlienBeacon:GetIsSmallTarget()
@@ -221,7 +233,6 @@ function EggBeacon:OnConstructionComplete()
         self:AddTimedCallback(TimeUp, kLifeSpan)  
         self:DoYourBusiness()
         self:AddTimedCallback(EggBeacon.DoYourBusiness, 1)
-        if Server  then self:AdjustMaxHealth(kEggBeaconMaxHealth) self:AdjustMaxArmor(kEggBeaconMaxArmor) end
         
   end
 function EggBeacon:DoYourBusiness()

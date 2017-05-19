@@ -19,6 +19,7 @@ local networkVars =
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
   --setupExtTresScale = "private integer (0 to 20)"
+  offSwitch = "boolean",
 }
 
 
@@ -59,6 +60,7 @@ function Imaginator:OnCreate()
    self:SetUpdates(true)
   -- self.setupExtTresScale = 0
   self.lastScan = 0
+  self.offSwitch = false
 end
 function Imaginator:GetAlienEnabled()
 local team2Commander = GetGamerules().team2:GetCommander()
@@ -71,14 +73,20 @@ end
 function Imaginator:GetIsMapEntity()
 return true
 end
+function Imaginator:GetIsOff()
+return self.offSwitch
+end
+function Imaginator:ToggleOffSwitch()
+ self.offSwitch = not self.offSwitch
+end
 function Imaginator:GetMarineEnabled()
 local team1Commander = GetTeamHasCommander(1)
-local boolean = self.marineenabled and not team1Commander
+local boolean = self.marineenabled and not team1Commander and not self.offSwitch
 return boolean
 end
 function Imaginator:GetAlienEnabled()
 local team2Commander = GetTeamHasCommander(2)
-local boolean = self.alienenabled and not team2Commander
+local boolean = self.alienenabled and not team2Commander and not self.offSwitch
 return boolean
 end
 local function NotBeingResearched(techId, who)   
@@ -1577,7 +1585,7 @@ end
 function Imaginator:CragShadeWall()
 --Cache would be nice
 
-if not self.alienenabled then return end
+if not self:GetAlienEnabled() then return end
 
 local hive = nil
 

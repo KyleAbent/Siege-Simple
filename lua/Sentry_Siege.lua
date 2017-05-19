@@ -15,9 +15,6 @@ local networkVars = {}
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 
-function Sentry:GetAddXPAmount()
-return kSentryWeldGainXp
-end
 function Sentry:GetLevelPercentage()
 return self.level / self:GetMaxLevel() * 1.8
 end

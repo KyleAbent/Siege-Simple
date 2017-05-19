@@ -626,7 +626,7 @@ function Plugin:StartAutoCommTimer()
                     self:SimpleTimer( self.autoCommTime, function() 
                     local  numplayers = #Shine.GetAllPlayers()
                     local gameRules = GetGamerules()
-                    if gameRules:GetGameStarted() or numplayers > 10 then return end
+                    if self.stopped or gameRules:GetGameStarted() or numplayers > 10 then return end
                     if numplayers <= 10 then
                         for i = 1, 10 - numplayers do
                         Shared.ConsoleCommand("addbot")
@@ -641,14 +641,14 @@ function Plugin:StartAutoCommTimer()
                  
  
  self:CreateTimer( 41, 1,  self.autoCommTime, function() 
- if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 41 ) end
+ if self.stopped or GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 41 ) end
   self.autoCommTime = Clamp(self.autoCommTime - 1, 0, kAutoCommTimer)
  end)
 
 
                          self:CreateTimer( 84, 1,  -1, function() 
                          local  numplayers = #Shine.GetAllPlayers()
-                         if GetGamerules():GetGameStarted() or numplayers>= 10 then Plugin:DestroyTimer( 84 ) end
+                         if self.stopped or GetGamerules():GetGameStarted() or numplayers>= 10 then Plugin:DestroyTimer( 84 ) end
                          
                             if  self.autoCommTime <=10 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
                             or  self.autoCommTime == 120 or  self.autoCommTime == 150 then
@@ -907,6 +907,28 @@ ModelSizeCommand:AddParam{ Type = "clients" }
 ModelSizeCommand:AddParam{ Type = "number" }
 ModelSizeCommand:Help( "sh_playergravity <player> <number> works differently than ns1. kinda glitchy. respawn to reset." )
 
+
+local function TeamSize( Client, Number, NumberTwo )
+  if NumberTwo > 10 or (Number ~= 1 and Number ~= 2) then return end
+   if Number == 1 then
+    self:NotifyGeneric( nil, "Adjusted Marines team size to %s", true, NumberTwo * 100)
+    elseif Number == 2 then
+        self:NotifyGeneric( nil, "Adjusted Aliens team size to %s", true, NumberTwo * 100)
+    end
+    
+    local Players = Shine.GetAllPlayers()
+              for i = 1, #Players do
+              local Player = Players[ i ]
+                  if Player and Player:GetTeamNumber() == Number and not Player:isa("Commander") and not Player:isa("Spectator") and Player.modelsize then
+                       Player:AdjustModelSize(NumberTwo)
+                  end
+              end
+end
+local TeamSizeCommand = self:BindCommand( "sh_teamsize", "teamsize", TeamSize )
+TeamSizeCommand:AddParam{ Type = "number" }
+TeamSizeCommand:AddParam{ Type = "number" }
+TeamSizeCommand:Help( "sh_teamsize." )
+
 local function Bury( Client, Targets, Number )
 //local Giver = Client:GetControllingPlayer()
 for i = 1, #Targets do
@@ -941,28 +963,6 @@ local DestroyCommand = self:BindCommand( "sh_destroy", "destroy", Destroy )
 DestroyCommand:AddParam{ Type = "string" }
 DestroyCommand:Help( "Destroy <string> Destroys all entities with this name within 8 radius" )
 
-/*
-local function ModelSize( Client, Targets, Number, Boolean )
-  if Number > 10 then return end
-    self:NotifyGeneric( nil, "Adjusted %s players size to %s percent. HP/ARMOR bonus boolean set to: %s", true, #Targets, Number * 100)
-    for i = 1, #Targets do
-    local Player = Targets[ i ]:GetControllingPlayer()
-            if not Player:isa("Commander") and not Player:isa("Spectator") and Player.modelsize and Player:GetIsAlive() then
-             //  if not ( Player:isa("Exo") or Player:isa("Onos") and Number >= 2 ) or Number ~= 1 then Player:SetCameraDistance(Number) end
-                Player.modelsize = Number
-               local defaulthealth = LookupTechData(Player:GetTechId(), kTechDataMaxHealth, 1)
-              if Boolean == true then  Player:AdjustMaxHealth(defaulthealth * Number) end
-               if Boolean == true then Player:AdjustMaxArmor(Player:GetMaxArmor() * Number) end
-             --   self.playersize[Player:GetClient()] = Number
-             end
-     end
-end
-local ModelSizeCommand = self:BindCommand( "sh_modelsize", "modelsize", ModelSize )
-ModelSizeCommand:AddParam{ Type = "clients" }
-ModelSizeCommand:AddParam{ Type = "number" }
-ModelSizeCommand:Help( "sh_modelsize <player> <size> <true/false for health armor bonus>" )
-ModelSizeCommand:AddParam{ Type = "boolean", optional = true }
-*/
 local function ThirdPerson( Client )
 local Player = Client:GetControllingPlayer()
 if not Player or not HasMixin( Player, "CameraHolder" ) then return end
@@ -1176,30 +1176,25 @@ local function AutoComm( Client )
 
      if not GetGamerules():GetGameStarted() then
             Shared.ConsoleCommand("sh_forceroundstart")
-           end
-            Shared.ConsoleCommand("sh_imaginator 1 true")
-          Shared.ConsoleCommand("sh_imaginator 2 true")
-
-  
-   self:NotifyGeneric( nil, "%s Enabled Auto Comm", true)
-  
+            return
+     end
+      
+       GetImaginator():ToggleOffSwitch()
+       self:NotifyAutoComm( nil, "AutoComm toggle offswitch set to %s", true, GetImaginator():GetIsOff())
 end
 
 local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )
 AutoCommCommand:Help( "sh_testfilm forces autocomm (disables if human comm) and forces round to start  " )
 
-
-
 local function StopAutoComm( Client )
       local Player = Client:GetControllingPlayer()
-      if not Shine:GetUserImmunity(Client) < 10 then return end--isamod 
-      self.autoCommTime = self.autoCommTime + 9999
-      self:NotifyAutoComm( nil, "%s Stopped AutoComm time", true, Player:GetName() )
+      if Shine:GetUserImmunity(Client) < 10 then return end--isamod 
+      self.stopped = true
+      self:NotifyAutoComm( nil, "%s Stopped AutoComm pregame countdown forceroundstart (offswitch is off unless sh_autocomm is toggled during round)", true, Player:GetName() )
 end
 
 local StopAutoCommCommand = self:BindCommand( "sh_stop", "stop", StopAutoComm, true )
 StopAutoCommCommand:Help( "sh_stop stops auto comm  timer" )
-
 
 local function ExtendAutoComm( Client )
    local Player = Client:GetControllingPlayer()

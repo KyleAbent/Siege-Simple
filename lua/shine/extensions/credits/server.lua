@@ -753,59 +753,61 @@ delay = 10
 elseif String == "Observatory"  then
 mapnameof = Observatory.kMapName
 techid = kTechId.Observatory
-CreditCost = 100
+CreditCost = gCreditStructureObservatoryCost
 elseif String == "Armory"  then
-CreditCost = 120
+CreditCost = gCreditStructureArmoryCost
 mapnameof = Armory.kMapName
 techid = kTechId.Armory
 elseif String == "Wall"  then
-CreditCost = 100
+CreditCost = gCreditStructureWallCost
 mapnameof = Wall.kMapName
 techid = kTechId.Wall
-limit = 2
+limit = gCreditStructureWallLimit
 elseif String == "Sentry"  then
 mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
-limit = 2
-CreditCost = 80
+limit = gCreditStructureSentryLimit
+CreditCost = gCreditStructureSentryCost
 elseif String == "BackupBattery"  then
 mapnameof = SentryBattery.kMapName
 techid = kTechId.SentryBattery
-limit = 1
-CreditCost = 60
+limit = gCreditStructureBackUpBatteryLimit
+CreditCost = gCreditStructureBackUpBatteryCost
 elseif String == "BackupLight"  then
 mapnameof = BackupLight.kMapName
 techid = kTechId.BackupLight
-limit = 2
-CreditCost = 40
+limit = gCreditStructureBackupLightLimit
+CreditCost = gCreditStructureBackupLightCost
 elseif String == "PhaseGate" then
-CreditCost = 150
-limit = 2
+CreditCost = gCreditStructurePhaseGateCost
+limit = gCreditStructurePhaseGateLimit
 mapnameof = PhaseGate.kMapName
 techid = kTechId.PhaseGate
 elseif String == "InfantryPortal" then
 mapnameof = InfantryPortal.kMapName
 techid = kTechId.InfantryPortal
-CreditCost = 150
+CreditCost = gCreditStructureInfantryPortalCost
+limit = gCreditStructureInfantryPortalLimit
 elseif  String == "RoboticsFactory" then
 mapnameof = RoboticsFactory.kMapName
 techid = kTechId.RoboticsFactory
-CreditCost = 100
+CreditCost = gCreditStructureRoboticsFactoryCost
+limit = gCreditStructureRoboticsFactoryLimit
 elseif String == "Mac" then
 techid = kTechId.MAC
-CreditCost = 40
+CreditCost = gCreditStructureMacCost
 mapnameof = MACCredit.kMapName --can be networkvar instead
-limit = 20
+limit = gCreditStructureMacLimit
 elseif String == "Arc" then 
 techid = kTechId.ARC
-CreditCost = 110
+CreditCost = gCreditStructureArcCost
 mapnameof = ARC.kMapName --can be networkvar instead
-limit = 1
+limit = gCreditStructureArcLimit
 elseif String == "Extractor" then 
 techid = kTechId.Extractor
-CreditCost = 2500
+CreditCost = gCreditStructureExtractorCost
 mapnameof = Extractor.kMapName
-limit = 1
+limit = gCreditStructureExtractorLimit
 elseif string == nil then
 end
 
@@ -825,51 +827,60 @@ local techid = nil
 
 
 if String == "NutrientMist" then 
-CreditCost = 5
+CreditCost = gCreditAbilityCostNutrientMist
 mapnameof = NutrientMist.kMapName
 reqground = true
+delay = gCreditAbilityDelayNutrientMist
 elseif String == "Contamination"  then
-CreditCost = 10
+CreditCost = gCreditAbilityCostContamination
+delay = gCreditAbilityDelayContamination
 mapnameof = Contamination.kMapName    
 techid = kTechId.Contamination
 elseif String == "EnzymeCloud" then
-CreditCost = 15
+CreditCost = gCreditAbilityCostEnzymeCloud
 mapnameof = EnzymeCloud.kMapName
+delay = gCreditAbilityDelayEnzymeCloud
 elseif String == "Hallucination" then
-CreditCost = 15
+CreditCost =gCreditAbilityCostHallucination  
+delay = gCreditAbilityDelayHallucination
 reqpathing = false
  mapnameof = HallucinationCloud.kMapName
-
 elseif String == "Shade" then
-CreditCost = 100
+CreditCost = gCreditStructureCostShade
 mapnameof = Shade.kMapName
 techid = kTechId.Shade
+delay = gCreditStructureDelayShade
 elseif String == "Crag" then
-CreditCost = 80
+CreditCost = gCreditStructureCostCrag
 mapnameof = Crag.kMapName
 techid = kTechId.Crag
+delay = gCreditStructureDelayCrag
 elseif String == "Whip" then
-CreditCost = 100
+CreditCost = gCreditStructureCostWhip
 mapnameof = Whip.kMapName
 techid = kTechId.Whip
+delay = gCreditStructureDelayWhip
 elseif String == "Shift" then
-CreditCost = 100
+CreditCost = gCreditStructureCostShift
 mapnameof = Shift.kMapName
 techid = kTechId.Shift
+delay = gCreditStructureDelayShift
 elseif String == "Hydra" then
-CreditCost = 25
+CreditCost = gCreditStructureCostHydra
 mapnameof = HydraSiege.kMapName
 techid = kTechId.Hydra
+delay = gCreditStructureDelayHydra
 elseif String == "SaltyEgg" then
-CreditCost = 75
+CreditCost = gCreditStructureCostSaltyEgg
 mapnameof = PoopEgg.kMapName
 techid = kTechId.Egg
-limit = 5
+limit = 4
+delay = gCreditStructureDelaySaltyEgg
 elseif String == "Harvester" then
-CreditCost = 2500
+CreditCost = gCreditStructureCostHarvesterExtractor
 mapnameof = Harvester.kMapName
 techid = kTechId.Harvester
-limit = 1
+limit = gCreditStructureLimitHarvesterExtractor
 end
        
 return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid
@@ -930,14 +941,14 @@ if not Player then return end
    
 
  
-    if String  == "Mines" then cost = 10 mapname = LayMines.kMapName
-   elseif String == "Welder" then cost = 6 mapname = Welder.kMapName
-   elseif String == "HeavyMachineGun" then cost = 35 mapname = HeavyMachineGun.kMapName
-    elseif String  == "Shotgun" then cost = 20 mapname = Shotgun.kMapName 
-   elseif String == "FlameThrower" then  cost = 30 mapname = Flamethrower.kMapName 
-   elseif String == "GrenadeLauncher" then cost = 30 mapname =   GrenadeLauncher.kMapName 
-   elseif String == "ConcGrenade" then cost = 10 mapname = ConcGrenadeThrower.kMapName
-   elseif String == "JediConcGrenade" then cost = 5 mapname = JediConcGrenadeThrower.kMapName
+    if String  == "Mines" then cost = gCreditWeaponCostMines mapname = LayMines.kMapName
+   elseif String == "Welder" then cost = gCreditWeaponCostWelder mapname = Welder.kMapName
+   elseif String == "HeavyMachineGun" then cost = gCreditWeaponCostHMG mapname = HeavyMachineGun.kMapName
+    elseif String  == "Shotgun" then cost = gCreditWeaponCostShotGun mapname = Shotgun.kMapName 
+   elseif String == "FlameThrower" then  cost = gCreditWeaponCostFlameThrower mapname = Flamethrower.kMapName 
+   elseif String == "clustergrenade" then cost = gCreditWeaponCostGrenadeCluster mapname =   ClusterGrenadeThrower.kMapName
+   elseif String == "pulseGrenade" then cost = gCreditWeaponCostGrenadePulse mapname =   PulseGrenadeThrower.kMapName
+   elseif String == "gasgrenade" then cost = gCreditWeaponCostGrenadeGas mapname =   GasGrenadeThrower.kMapName
    end
    
     if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
@@ -986,32 +997,32 @@ local delayafter = 8
 local cost = 1
 if not Player then return end
 
- if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = 80 
-  elseif String == "RailGun" and not Player:isa("Exo") then cost = 190 delayafter = 25   
-  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = 200  delayafter = 25 
-  elseif String == "Welder" and not Player:isa("Exo") then  cost = 150  delayafter = 15 
-   elseif String == "Flamer" and not Player:isa("Exo") then  cost = 170  delayafter = 15 
-  elseif String == "Gorge" then cost = 90
-  elseif String == "Lerk" then  cost = 120 
-  elseif String == "Fade" then cost = 150
-  elseif String == "Onos" then cost = 180
+ if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = gCreditClassCostJetPack 
+  elseif String == "RailGun" and not Player:isa("Exo") then cost = gCreditClassCostRailGunExo delayafter = gCreditClassDelayRailGun   
+  elseif String == "MiniGun" and not Player:isa("Exo") then  cost = gCreditClassCostMiniGunExo  delayafter = gCreditClassDelayRailGun 
+  elseif String == "Welder" and not Player:isa("Exo") then  cost = gCreditClassCostWelderExo  delayafter = gCreditClassDelayRailGun 
+   elseif String == "Flamer" and not Player:isa("Exo") then  cost = gCreditClassCostFlamerExo delayafter = gCreditClassDelayRailGun 
+  elseif String == "Gorge" then cost = gCreditClassCostGorge delayafter = gCreditClassDelayGorge
+  elseif String == "Lerk" then  cost = gCreditClassCostLerk delayafter = gCreditClassDelayLerk
+  elseif String == "Fade" then cost = gCreditClassCostFade delayafter = gCreditClassDelayFade
+  elseif String == "Onos" then cost = gCreditClassCostOnos delayafter = gCreditClassDelayOnos
   end
   
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
  
             --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
          if Player:GetTeamNumber() == 1 then
-              if cost == 80 then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == 200 then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == 190 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
-             elseif cost == 150 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
-             elseif cost == 170 then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
+              if cost == gCreditClassCostJetPack then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
+             elseif cost == gCreditClassCostMiniGunExo then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == gCreditClassCostRailGunExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == gCreditClassCostWelderExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
+             elseif cost == gCreditClassCostFlamerExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
              end
          elseif Player:GetTeamNumber() == 2 then
-              if cost == 90 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
-              elseif cost == 120  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
-              elseif cost == 150 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
-              elseif cost == 180 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
+              if cost == gCreditClassCostGorge then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
+              elseif cost == gCreditClassCostLerk  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
+              elseif cost == gCreditClassCostFade then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
+              elseif cost == gCreditClassCostOnos then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
               end
          end
    

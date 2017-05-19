@@ -1,7 +1,13 @@
+Script.Load("lua/Additions/LevelsMixin.lua")
 local networkVars =
 {
    noComm = "private boolean",
 }
+
+AddMixinNetworkVars(LevelsMixin, networkVars)
+
+local kModelSizeGrowth = 1.3
+
 function Cyst:CheckYoselfFoo()
 self.noComm = GetImaginator():GetAlienEnabled() 
 return true
@@ -14,11 +20,12 @@ self.noComm = false
   self:CheckYoselfFoo()
  self:AddTimedCallback(function() self:CheckYoselfFoo() end, 4)
  end
- 
-
-
-
 end
+local originit = Cyst.OnInitialized
+function Cyst:OnInitialized()
+        originit(self)
+        InitMixin(self, LevelsMixin)
+end  
 function Cyst:GetInfestationGrowthRate()
     local rate = 0.2
           rate = Clamp(math.abs(0.8 * GetRoundLengthToSiege()), 0.2, 0.8)
@@ -45,10 +52,49 @@ local origtwo = Cyst.GetCystParentRange
 function Cyst:GetCystParentRange()
 return self.noComm and 999 or origtwo(self)
 end
+function Cyst:GetLevelPercentage()
+return self.level / self:GetMaxLevel() * kModelSizeGrowth
+end
+    function Cyst:GetMaxLevel()
+    return 100
+    end
+    function Cyst:GetAddXPAmount()
+    return 0.30
+    end
+
 
 function Cyst:GetMinRangeAC()
 return  kCystRedeployRange + 1    
 end
+
+local origmathp = Cyst.GetMatureMaxHealth
+function Cyst:GetMatureMaxHealth()
+    local orig = origmathp(self)
+    local bySiege = orig * 2
+    local val = Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
+    self.level = self:GetMaxLevel() * GetRoundLengthToSiege()
+    return val
+end 
+
+local origmatarm = Cyst.GetMatureMaxArmor
+function Cyst:GetMatureMaxArmor()
+    local orig = origmatarm(self)
+    local bySiege = orig * 2
+    return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
+end 
+
+function Cyst:OnAdjustModelCoords(modelCoords)
+    local coords = modelCoords
+	local scale = self:GetLevelPercentage()
+       if scale >= 1 then
+        coords.xAxis = coords.xAxis * scale
+        coords.yAxis = coords.yAxis * scale
+        coords.zAxis = coords.zAxis * scale
+    end
+    return coords
+end
+
+
 
 if Server then
 
@@ -62,3 +108,5 @@ local origthree = Cyst.GetIsActuallyConnected
    end
     
 end
+
+Shared.LinkClassToMap("Cyst", Cyst.kMapName, networkVars)

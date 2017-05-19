@@ -1,3 +1,129 @@
+--Credits Start
+
+--Credits Structures Marine
+gCreditStructureWallCost = 100
+gCreditStructureWallLimit = 2
+
+gCreditStructureObservatoryCost = 100
+gCreditStructureArmoryCost = 120
+gCreditStructureSentryCost = 40
+gCreditStructureSentryLimit = 2
+gCreditStructureBackUpBatteryCost = 40
+gCreditStructureBackUpBatteryLimit = 1
+
+gCreditStructureBackupLightCost = 20
+gCreditStructureBackupLightLimit = 2
+
+gCreditStructurePhaseGateCost = 150
+gCreditStructurePhaseGateLimit = 2
+gCreditStructureInfantryPortalCost = 150
+gCreditStructureInfantryPortalLimit = 3
+
+gCreditStructureRoboticsFactoryCost = 100
+gCreditStructureRoboticsFactoryLimit = 3
+
+gCreditStructureMacCost = 20
+gCreditStructureMacLimit = 2
+
+gCreditStructureArcCost = 110
+gCreditStructureArcLimit = 1
+
+gCreditStructureExtractorCost = 2500
+gCreditStructureExtractorLimit = 1
+
+
+
+--Classes Credits Cost
+gCreditClassCostJetPack = 80
+
+gCreditClassCostRailGunExo = 190
+gCreditClassCostMiniGunExo = 200
+
+gCreditClassCostWelderExo = 150
+gCreditClassCostFlamerExo = 170
+
+gCreditClassDelayJetPack = 10
+gCreditClassDelayRailGun = 15
+gCreditClassDelayMiniGun = 15
+
+gCreditClassCostSkulk = 1
+gCreditClassCostGorge = 90
+gCreditClassCostLerk = 120
+gCreditClassCostFade = 150
+gCreditClassCostOnos = 180
+
+gCreditClassDelaySkulk = 1
+gCreditClassDelayGorge = 5
+gCreditClassDelayLerk = 10
+gCreditClassDelayFade = 15
+gCreditClassDelayOnos = 20
+
+
+--Weapons Credits Cost
+gCreditWeaponCostMines = 10
+gCreditWeaponCostWelder = 6
+gCreditWeaponCostHMG = 35
+gCreditWeaponCostShotGun = 20
+gCreditWeaponCostFlameThrower = 30
+gCreditWeaponCostGrenadeLauncher = 30
+gCreditWeaponCostGrenadeGas = 2
+gCreditWeaponCostGrenadeCluster = 2
+gCreditWeaponCostGrenadePulse = 2
+
+
+
+--Alien Abilities  Credits Cost
+gCreditAbilityCostInk = 20 --1.5
+gCreditAbilityCostNutrientMist = 3
+gCreditAbilityCostHallucination = 12
+gCreditAbilityCostEnzymeCloud = 3
+gCreditAbilityCostContamination = 7
+
+
+--Alien Abilities  Credits Delay
+gCreditAbilityDelayInk = 50 --1.5
+gCreditAbilityDelayNutrientMist = 0
+gCreditAbilityDelayHallucination = 10
+gCreditAbilityDelayEnzymeCloud = 10
+gCreditAbilityDelayContamination = 10
+
+
+--Alien Structures Credits Cost
+gCreditStructureCostHydra = 6
+gCreditStructureCostSaltyEgg = 20
+gCreditStructureLimitSaltyEgg = 3
+gCreditStructureCostShade = 90
+gCreditStructureCostCrag = 90
+gCreditStructureCostWhip = 90
+gCreditStructureCostShift = 90
+gCreditStructureCostTunnelToHive = 10
+gCreditStructureCostHarvesterExtractor = 2500
+gCreditStructureLimitHarvesterExtractor = 1
+--gCreditStructureCost =
+
+--Alien Structures Credits Delay After Purchasing
+gCreditStructureDelayHydra = 1
+gCreditStructureDelaySaltyEgg = 10
+gCreditStructureDelayShade = 5
+gCreditStructureDelayCrag = 5
+gCreditStructureDelayWhip = 5
+gCreditStructureDelayShift = 8
+gCreditStructureDelayTunnelToHive = 10
+gCreditStructureDelay = 5
+gCreditStructureDelayHarvesterExtractor = 15
+--gCreditStructureDelay =
+
+--Credit Mariners Tech
+
+
+gCreditAbilityCostScan = 10
+gCreditAbilityDelayScan = 10
+
+gCreditAbilityCostMedpack = 7
+gCreditAbilityDelayMedpack = 5
+-----------------------------------
+
+
 kTimeAfterSiegeOpeningToEnableSuddenDeath = 900 --900
 kResupplyCost = 5
 kHeavyArmorCost = 5

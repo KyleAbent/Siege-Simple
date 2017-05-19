@@ -1,4 +1,6 @@
-
+function BotTeamController:NeededCommanders()
+    return 0
+end
 function ConstructMixin:GetTotalConstructionTime()
     local time = LookupTechData(self:GetTechId(), kTechDataBuildTime, kDefaultBuildTime)
    -- Print("time is %s", time)
