@@ -16,7 +16,6 @@ origcreate(self)
 self.lastWand = 0
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
-     self.startsBuilt = not self:isa("ARCCredit")
 end
     local originit = ARC.OnInitialized
     function ARC:OnInitialized()
@@ -34,6 +33,15 @@ end
     
     
 if Server then
+
+     function ARC:ActualDeploy()
+         self:GiveOrder(kTechId.ARCDeploy, self:GetId(),self:GetOrigin(), nil, true, true)
+         return false
+     end
+     
+     function ARC:DelayDeploy()
+         self:AddTimedCallback(ARC.ActualDeploy, 1)
+  end
 /*
  local origtag = ARC.OnTag
  function ARC:OnTag(tagName)

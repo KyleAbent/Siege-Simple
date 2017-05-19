@@ -26,8 +26,8 @@ ExoFlamer.kMapName = "exoflamer"
 local kConeWidth = 0.17
 local kFireRate = 1/3
 local kCoolDownRate = 0.24
-local kDualGunHeatUpRate = 0.06
-local kHeatUpRate = 0.168
+local kDualGunHeatUpRate = 0.024
+local kHeatUpRate = 0.0672
 
 
 if Client then
@@ -79,7 +79,7 @@ function ExoFlamer:OnCreate()
 	self.timeWeldStarted = 0
     self.timeLastWeld = 0
     self.loopingSoundEntId = Entity.invalidId
-	self.range = 7
+	self.range = kFlamethrowerRange
     self.heatAmount = 0
     self.overheated = false
 
@@ -298,11 +298,21 @@ local function ApplyConeDamage(self, player)
             local toEnemy = GetNormalizedVector(ent:GetModelOrigin() - eyePos)
             local health = ent:GetHealth()
             
-            self:DoDamage(kExoFlamerDamage, ent, ent:GetModelOrigin(), toEnemy)
-            
+            local attackDamage = kExoFlamerDamage
+          
+            if HasMixin( ent, "Fire" ) and HasMixin( ent, "Construct" ) then
+                    attackDamage = attackDamage * 2
+            end
+
+           self:DoDamage(attackDamage, ent, ent:GetModelOrigin(), toEnemy)
+                     
             -- Only light on fire if we successfully damaged them
             if ent:GetHealth() ~= health and HasMixin(ent, "Fire") then
                 ent:SetOnFire(player, self)
+            end
+   
+            if ent.SetElectrified then
+              ent:SetElectrified(4)
             end
             
          --   if ent.GetEnergy and ent.SetEnergy then

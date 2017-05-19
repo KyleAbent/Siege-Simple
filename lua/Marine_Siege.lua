@@ -128,6 +128,14 @@ function Marine:OnProcessMove(input)
             
             end
             
+                    if self:isa("JetpackMarine") and self.poisoned then 
+                       if not self.lastDrain or Shared.GetTime() >= self.lastDrain + 1 then
+                          self:SetFuel(self:GetFuel() - 0.05)
+                          self.lastDrain = Shared.GetTime()
+                       end
+                    
+                    end
+            
       if Server then
          if self.hasresupply then
          --  Print("Has resupply check 1")

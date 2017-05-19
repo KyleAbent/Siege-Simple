@@ -13,6 +13,7 @@ Script.Load("lua/GhostStructureMixin.lua")
 Script.Load("lua/PointGiverMixin.lua")
 Script.Load("lua/ObstacleMixin.lua")
 Script.Load("lua/WeldableMixin.lua")
+Script.Load("lua/MapBlipMixin.lua")
 
 class 'Wall' (ScriptActor) 
 Wall.kMapName = "wall"
@@ -67,13 +68,33 @@ function Wall:OnInitialized()
     ScriptActor.OnInitialized(self)
     InitMixin(self, WeldableMixin)
     self:SetModel(Wall.kModelName)
-    if Client then
+    if Server then
+    
+       if not HasMixin(self, "MapBlip") then
+            InitMixin(self, MapBlipMixin)
+        end
+    
+    elseif Client then
        InitMixin(self, UnitStatusMixin)
     end
 end
 
 function Wall:GetReceivesStructuralDamage()
     return true
+end
+function Wall:OnGetMapBlipInfo()
+
+    local success = false
+    local blipType = kMinimapBlipType.Undefined
+    local blipTeam = -1
+    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
+    local isParasited = HasMixin(self, "ParasiteAble") and self:GetIsParasited()
+    
+    
+        blipType = kMinimapBlipType.Door
+        blipTeam = self:GetTeamNumber()
+    
+    return blipType, blipTeam, isAttacked, isParasited
 end
 function Wall:GetHealthbarOffset()
     return 0.25

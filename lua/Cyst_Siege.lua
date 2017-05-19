@@ -21,7 +21,7 @@ self.noComm = false
 end
 function Cyst:GetInfestationGrowthRate()
     local rate = 0.2
-          rate = math.abs(0.8 * GetRoundLengthToSiege())
+          rate = Clamp(math.abs(0.8 * GetRoundLengthToSiege()), 0.2, 0.8)
           --Print("Cyst infest rate is %s", rate)
           --Note also adjust max mature hp throughout siege?
     return rate

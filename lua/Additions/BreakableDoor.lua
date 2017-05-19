@@ -131,7 +131,7 @@ function BreakableDoor:OnGetMapBlipInfo()
     local isParasited = HasMixin(self, "ParasiteAble") and self:GetIsParasited()
     
     
-            blipType = kMinimapBlipType.Door
+        blipType = kMinimapBlipType.Door
         blipTeam = self:GetTeamNumber()
     
     return blipType, blipTeam, isAttacked, isParasited

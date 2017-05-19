@@ -29,10 +29,10 @@ end
     end
     
     function Sentry:GetMaxLevel()
-    return 50
+    return 10
     end
     function Sentry:GetAddXPAmount()
-    return 2
+    return 0.30
     end
 
 function Sentry:OnAdjustModelCoords(modelCoords)

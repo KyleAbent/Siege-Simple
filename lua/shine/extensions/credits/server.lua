@@ -762,6 +762,7 @@ elseif String == "Wall"  then
 CreditCost = 100
 mapnameof = Wall.kMapName
 techid = kTechId.Wall
+limit = 2
 elseif String == "Sentry"  then
 mapnameof = Sentry.kMapName
 techid = kTechId.Sentry
@@ -1009,8 +1010,8 @@ if not Player then return end
          elseif Player:GetTeamNumber() == 2 then
               if cost == 90 then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
               elseif cost == 120  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
-              elseif cost == 200 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
-              elseif cost == 250 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
+              elseif cost == 150 then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
+              elseif cost == 180 then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
               end
          end
    

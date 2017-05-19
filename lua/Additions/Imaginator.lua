@@ -188,15 +188,14 @@ function Imaginator:OnUpdate(deltatime)
          if not self.timeLastResearch or self.timeLastResearch + math.random(4,8) <= Shared.GetTime() then
          
          local gamestarted = GetGamerules():GetGameState() == kGameState.Started 
-               if gamestarted and self.marineenabled then
+               if gamestarted and self:GetMarineEnabled() then
                    for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
                       if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable)  end
                    end
                 end
                 
-              if gamestarted and self.alienenabled then  self:UpdateHivesManually()  end 
+              if gamestarted and self:GetAlienEnabled() then  self:UpdateHivesManually()  end 
              self.timeLastResearch = Shared.GetTime()
-             return true
          end      
     
          

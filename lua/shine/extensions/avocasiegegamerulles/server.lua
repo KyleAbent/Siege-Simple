@@ -5,6 +5,41 @@ local Plugin = Plugin
 
 local kAutoCommTimer = 180
 
+local OldPerformAttack
+
+local function NewPerformAttack(self)
+
+    if self.targetPosition then
+    
+        self:TriggerEffects("arc_firing")    
+        -- Play big hit sound at origin
+        
+        -- don't pass triggering entity so the sound / cinematic will always be relevant for everyone
+        GetEffectManager():TriggerEffects("arc_hit_primary", {effecthostcoords = Coords.GetTranslation(self.targetPosition)})
+        
+        local hitEntities = GetEntitiesWithMixinForTeamWithinRange("Live", 2, self.targetPosition, ARC.kSplashRadius)
+
+        -- Do damage to every target in range
+        RadiusDamageAliens(hitEntities, self.targetPosition, ARC.kSplashRadius, self.kAttackDamage, self, true)
+
+        -- Play hit effect on each
+        for index, target in ipairs(hitEntities) do
+        
+            if HasMixin(target, "Effects") then
+                target:TriggerEffects("arc_hit_secondary")
+            end 
+           
+        end
+        
+    end
+    
+    -- reset target position and acquire new target
+    self.targetPosition = nil
+    self.targetedEntity = Entity.invalidId
+    
+end
+
+OldPerformAttack = Shine.Hook.ReplaceLocalFunction( ARC.OnTag, "PerformAttack", NewPerformAttack )
 
 local OldGetDestinationGate
 
@@ -1154,6 +1189,16 @@ local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )
 AutoCommCommand:Help( "sh_testfilm forces autocomm (disables if human comm) and forces round to start  " )
 
 
+
+local function StopAutoComm( Client )
+      local Player = Client:GetControllingPlayer()
+      if not Shine:GetUserImmunity(Client) < 10 then return end--isamod 
+      self.autoCommTime = self.autoCommTime + 9999
+      self:NotifyAutoComm( nil, "%s Stopped AutoComm time", true, Player:GetName() )
+end
+
+local StopAutoCommCommand = self:BindCommand( "sh_stop", "stop", StopAutoComm, true )
+StopAutoCommCommand:Help( "sh_stop stops auto comm  timer" )
 
 
 local function ExtendAutoComm( Client )

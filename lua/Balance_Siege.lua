@@ -1,3 +1,6 @@
+kCompoundFireDamageDelay = 0
+kCompundFireDamageScalar = 3.7
+
 kHeavyMachineGunCost = 20
 --kXenocideDamageType = kDamageType.Structural
 kSwipeDamageType = kDamageType.Normal

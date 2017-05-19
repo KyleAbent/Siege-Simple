@@ -208,16 +208,26 @@ if Server then
   */
   
   function GetCheckWallLimit(techId, origin, normal, commander)
-    local num = 0
-
+    local location = GetLocationForPoint(origin)
+    local locationName = location and location:GetName() or nil
+    local numInRoom = 0
+    local validRoom = false
+    
+    if locationName then
+    
+        validRoom = true
         
-       for _, cc in ipairs(GetEntitiesWithinRange("Wall", origin, 9999)) do
+        for index, wall in ientitylist(Shared.GetEntitiesWithClassname("Wall")) do
         
-                num = num + 1
+            if GetLocationForPoint(wall:GetOrigin()) == locationName then
+                numInRoom = numInRoom + 1
+            end
             
+        end
+        
     end
     
-    return num < 16
+    return validRoom and numInRoom < 6
 end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
   if GetSandCastle():GetSDBoolean() then return false end
@@ -255,7 +265,7 @@ local function GetCheckExoDropLimit(techId, origin, normal, commander)
 end
 
 SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
-SetCachedTechData(kTechId.Wall, kTechDataBuildMethodFailedMessage, "16 Wall max")
+SetCachedTechData(kTechId.Wall, kTechDataBuildMethodFailedMessage, "6 per room")
 
 SetCachedTechData(kTechId.Door, kTechDataModel, BreakableDoor.kModelName)
 SetCachedTechData(kTechId.DropExosuit, kTechDataBuildMethodFailedMessage, "Trying to crash the server?")
@@ -524,4 +534,49 @@ function CorrodeMixin:__initmixin()
         
     end
     
+end
+
+
+--Really? Not enemy only by default? IDGAF. I'm copy pasting the whole thing with the change. 
+
+
+function RadiusDamageAliens(entities, centerOrigin, radius, fullDamage, doer, ignoreLOS, fallOffFunc)
+
+    assert(HasMixin(doer, "Damage"))
+
+    -- Do damage to every target in range
+    for index, target in ipairs(entities) do
+      if target:GetTeamNumber() == 2 then
+        -- Find most representative point to hit
+        local targetOrigin = GetTargetOrigin(target)
+        
+        -- Trace line to each target to make sure it's not blocked by a wall
+        local wallBetween = false
+        local distanceFromTarget = (targetOrigin - centerOrigin):GetLength()
+        
+        if not ignoreLOS then
+            wallBetween = GetWallBetween(centerOrigin, targetOrigin, target)
+        end
+        
+        if (ignoreLOS or not wallBetween) and (distanceFromTarget <= radius) then
+        
+            -- Damage falloff
+            local distanceFraction = distanceFromTarget / radius
+            if fallOffFunc then
+                distanceFraction = fallOffFunc(distanceFraction)
+            end
+            
+            distanceFraction = Clamp(distanceFraction, 0, 1)        
+            local damage = fullDamage * (1 - distanceFraction)
+
+            local damageDirection = targetOrigin - centerOrigin
+            damageDirection:Normalize()
+            
+            -- we can't hit world geometry, so don't pass any surface params and let DamageMixin decide
+            doer:DoDamage(damage, target, target:GetOrigin(), damageDirection, "none")
+
+        end
+        
+    end
+    end
 end

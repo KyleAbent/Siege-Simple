@@ -10,7 +10,7 @@ if Server then
         
             if target:isa("Player") and target:GetIsAlive() then
                 -- Print("Derp")
-                target:SetElectrified( math.random (2, 3) )
+                if target:isa("Fade") then target:SetElectrified( math.random (2, 3) ) end
             end
             
         end
