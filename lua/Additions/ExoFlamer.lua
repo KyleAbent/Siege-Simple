@@ -311,13 +311,13 @@ local function ApplyConeDamage(self, player)
                 ent:SetOnFire(player, self)
             end
    
-            if ent.SetElectrified then
-              ent:SetElectrified(4)
-            end
+          --  if ent.SetElectrified then
+           --   ent:SetElectrified(4)
+            --end
             
-         --   if ent.GetEnergy and ent.SetEnergy then
-          --      ent:SetEnergy(ent:GetEnergy() - 0.12 * kExoFlamerDamage)
-          --  end
+            if ent.GetEnergy and ent.SetEnergy then
+                ent:SetEnergy(ent:GetEnergy() - 1)
+            end
             
             if Server and ent:isa("Alien") then
                 ent:CancelEnzyme()

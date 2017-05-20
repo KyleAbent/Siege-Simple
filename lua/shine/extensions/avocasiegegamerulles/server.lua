@@ -1,5 +1,6 @@
 --Kyle 'Avoca' Abent
 Script.Load("lua/Additions/SandCastle.lua") -- to load sandcastle hook opensiege onopensiege otherwise wont hook
+Script.Load("lua/Additions/Imaginator.lua")
 local Shine = Shine
 local Plugin = Plugin
 
@@ -1176,11 +1177,13 @@ local function AutoComm( Client )
 
      if not GetGamerules():GetGameStarted() then
             Shared.ConsoleCommand("sh_forceroundstart")
-            return
      end
-      
-       GetImaginator():ToggleOffSwitch()
-       self:NotifyAutoComm( nil, "AutoComm toggle offswitch set to %s", true, GetImaginator():GetIsOff())
+         local boolean = GetImaginator():GetAlienEnabled()
+            Shared.ConsoleCommand(string.format("sh_imaginator 2 %s", not boolean )  )
+            Shared.ConsoleCommand(string.format("sh_imaginator 1 %s", not boolean )  )
+            
+            self:NotifyAutoComm( nil, "AutoComm toggle offswitch set to %s", true, boolean)
+           
 end
 
 local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )

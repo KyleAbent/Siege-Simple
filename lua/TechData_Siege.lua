@@ -240,6 +240,7 @@ local kSiege_TechData =
 [kTechDataModel] = Wall.kModelName, 
             [kTechDataBuildTime] = 14,
              [kTechDataMaxHealth] = 2000,
+             [kTechDataMaxArmor] = 500,
 [kTechDataCostKey] = 10, 
  [kTechDataSpecifyOrientation] = true,
   [kTechDataPointValue] = 3,

@@ -28,7 +28,7 @@ end
     return 30
     end
     function ARC:GetAddXPAmount()
-    return 0.05
+    return 1
     end
     
     
