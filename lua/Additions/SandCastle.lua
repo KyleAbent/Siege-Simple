@@ -200,7 +200,7 @@ function SandCastle:CountPrimaryTimer()
        end
        
 end
-
+/*
 function SandCastle:ForAllAlienStructInSiege()
   if not self.siegeOpened then return end
    local inside = {}
@@ -223,7 +223,7 @@ function SandCastle:ForAllAlienStructInSiege()
 
     
 end
-
+*/
 function SandCastle:OnUpdate(deltatime)
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
@@ -239,12 +239,12 @@ function SandCastle:OnUpdate(deltatime)
            self:CountSDTimer() 
            end
            
-
+           /*
            if not self.timelastSiegeAlienS or self.timelastSiegeAlienS + math.random(8,12) <= Shared.GetTime() then
                self:ForAllAlienStructInSiege()
                self.timelastSiegeAlienS = Shared.GetTime()
             end
-           
+           */
           
           
       if self.PrimaryTimer ~= 0 then self:CountPrimaryTimer() end

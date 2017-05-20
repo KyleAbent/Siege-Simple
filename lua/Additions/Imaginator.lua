@@ -169,6 +169,8 @@ function Imaginator:OnUpdate(deltatime)
           self.alienEnabled = not team2Commander
          end
          
+    if self:GetMarineEnabled() or self:GetAlienEnabled() then 
+         
        if not  self.timeLastAutomations or self.timeLastAutomations + 8 <= Shared.GetTime() then
         self.timeLastAutomations = Shared.GetTime()
         self:Automations()
@@ -183,6 +185,9 @@ function Imaginator:OnUpdate(deltatime)
          self:CystTimer()
          end
          
+     end
+
+   
          if not self.timeLastResearch or self.timeLastResearch + math.random(4,8) <= Shared.GetTime() then
          
          local gamestarted = GetGamerules():GetGameState() == kGameState.Started 

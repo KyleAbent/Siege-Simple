@@ -4,7 +4,7 @@ Script.Load("lua/Additions/Imaginator.lua")
 local Shine = Shine
 local Plugin = Plugin
 
-local kAutoCommTimer = 180
+local kAutoCommTimer = 300
 
 local OldPerformAttack
 
@@ -418,7 +418,7 @@ return true
 end
 
 function Plugin:MapPostLoad()
-      --self:StartAutoCommTimer()
+      self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
 end
@@ -604,23 +604,12 @@ function Plugin:SetGameState( Gamerules, State, OldState )
        elseif State == kGameState.NotStarted then
                 --GetImaginator():OnPreGame()
              GetSandCastle():OnPreGame()
-           -- self:StartAutoCommTimer()
+            self:StartAutoCommTimer()
              self.autoCommTime = kAutoCommTimer
              self.AutoCCtimer = false
           end
           
     
-end
-function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force, ShineForce )
-   -- Print("1 self.AutoCCtimer is %s", self.AutoCCtimer)
-	if ShineForce or self.AutoCCtimer == true  then return end
-    local  numplayers = #Shine.GetAllPlayers()
-	if numplayers<=10 and not Gamerules:GetGameStarted() and NewTeam == 1 or NewTeam == 2  then
-	   -- Print("2 self.AutoCCtimer is %s", self.AutoCCtimer)
-	      self.AutoCCtimer = true
-	        self:StartAutoCommTimer()
-	     self:NotifyAutoComm( nil, "AutoComm Timer Activated (Player joining team and playercount <= 10). %s seconds left ~ say /extend to extend the timer", true, self.autoCommTime)
-	end
 end
 function Plugin:StartAutoCommTimer()
 
