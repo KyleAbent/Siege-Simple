@@ -523,18 +523,6 @@ function Plugin:ClientConfirmConnect(Client)
  
       
 if GetGamerules():GetGameStarted() then
-
-       if GetImaginator():GetAlienEanbled() or GetImaginator():GetMarineEnabled() then
-        local players, numplayers = Shine.GetAllPlayers()
-        local humans, numhumans = Shine.GetHumanPlayerCount()
-        local bots = math.abs(humans - players)
-
-         if (numplayers>10 and bots >=1) then 
-         
-                        Shared.ConsoleCommand("removebot")
-                       
-         end
-      end
          
 --local frontlength = GetSandCastle():GetFrontLength()
 --local siegelength = GetSandCastle:GetSiegeLength()
@@ -559,6 +547,18 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    if GetSandCastle():GetSDBoolean() then
    Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
    end
+   
+          if GetImaginator():GetAlienEanbled() or GetImaginator():GetMarineEnabled() then
+        local players, numplayers = Shine.GetAllPlayers()
+        local humans, numhumans = Shine.GetHumanPlayerCount()
+        local bots = math.abs(humans - players)
+
+         if (numplayers>10 and bots >=1) then 
+         
+                        Shared.ConsoleCommand("removebot")
+                       
+         end
+      end
    
 else
                    --      self:CreateTimer( 27, 1,  self.autoCommTime, function() 

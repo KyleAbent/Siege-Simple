@@ -16,7 +16,7 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 
 function Sentry:GetLevelPercentage()
-return self.level / self:GetMaxLevel() * 1.8
+return self.level / self:GetMaxLevel() * 1.3
 end
 
     local originit = Sentry.OnInitialized

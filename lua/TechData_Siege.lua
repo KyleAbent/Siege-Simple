@@ -176,7 +176,7 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Damage Resistance", 
       [kTechDataSponitorCode] = "A",  
       [kTechDataCostKey] = kDamageResistanceCost,
-     [kTechDataTooltipInfo] = "15% damage resistance", },
+     [kTechDataTooltipInfo] = "5% damage resistance", },
      
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  

@@ -14,6 +14,7 @@ ModLoader.SetupFileHook( "lua/BuildUtility.lua", "lua/BuildUtility_Siege.lua", "
 ModLoader.SetupFileHook( "lua/Weapons/Alien/Shockwave.lua", "lua/Weapons/Alien/Shockwave_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Rifle.lua", "lua/Weapons/Marine/Rifle_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/Weapons/Marine/LayMines.lua", "lua/Weapons/Marine/LayMines_Siege.lua", "post" )
 
 --ModLoader.SetupFileHook( "lua/Weapons/Alien/BileBomb.lua", "lua/Weapons/Alien/BileBomb_Siege.lua", "post" )
 

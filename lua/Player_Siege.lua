@@ -40,7 +40,7 @@ end
 function Player:AdjustModelSize(number)
 self.modelsize = number
 end
-
+/*
 local origsize = Player.OnAdjustModelCoords
 function Player:OnAdjustModelCoords(modelCoords)
      if origsize then origsize(self, modelCoords) end
@@ -53,7 +53,7 @@ function Player:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-
+*/
 if Server then
 
 local origcopydata = Player.CopyPlayerDataFrom
@@ -70,7 +70,7 @@ self.hasjumppack = player.hasjumppack
 self.Glowing = player.Glowing
 self.Color = player.Color
  if self.Glowing then
-  self:AddTimedCallback(function() self:GlowColor(self.Color, 120)  return false end, 4)      
+  self:AddTimedCallback(function() if self.GlowGlower then self:GlowColor(self.Color, 120) end return false end, 4)      
  end
 --self.hasfirebullets = player.hasfirebullets 
 --self.hasresupply = player.hasresupply 

@@ -87,7 +87,7 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
         elseif self:GetIsCharging()  then  
         damageReduct =  0.7
         end
-        if GetHasDamageResistanceUpgrade(self) then damageReduct = damageReduct * 0.85 end
+        if GetHasDamageResistanceUpgrade(self) then damageReduct = damageReduct * 0.95 end
         if damageReduct ~= 1 then
         damageTable.damage = damageTable.damage * damageReduct
         end

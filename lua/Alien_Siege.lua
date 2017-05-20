@@ -389,7 +389,7 @@ end
 
     if hitPoint ~= nil and GetHasDamageResistanceUpgrade(self) then
       --  Print("Derp 1")
-       local damageReduct = 0.85
+       local damageReduct = 0.95
         damageTable.damage = damageTable.damage * damageReduct
         
     end

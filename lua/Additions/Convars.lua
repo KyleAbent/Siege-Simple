@@ -205,7 +205,7 @@ kBatteryPowerRange = 4
 
 kInfantryPortalMaxLevel = 75
 kDefaultLvl = 50
-kDefaultAddXp = 1
+kDefaultAddXp = 0.5
 kArmoryAddXp = 1
 kArmoryLvl = 75
 kInfantryPortalXPGain = 1
