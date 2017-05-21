@@ -612,7 +612,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
     
 end
 function Plugin:StartAutoCommTimer()
-
+ self.autoCommTime = kAutoCommTimer
                     self:SimpleTimer( self.autoCommTime, function() 
                     local  numplayers = #Shine.GetAllPlayers()
                     local gameRules = GetGamerules()
