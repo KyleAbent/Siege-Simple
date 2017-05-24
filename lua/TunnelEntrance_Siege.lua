@@ -2,7 +2,7 @@ if Server then
 
     function TunnelEntrance:SuckinEntity(entity)
     
-        if entity and HasMixin(entity, "TunnelUser") and self.tunnelId then
+        if entity and entity:GetTeamNumber() == 2 and HasMixin(entity, "TunnelUser") and self.tunnelId then
         
             local tunnelEntity = Shared.GetEntity(self.tunnelId)
             if tunnelEntity then 
