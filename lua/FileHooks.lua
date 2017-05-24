@@ -5,6 +5,7 @@ ModLoader.SetupFileHook( "lua/Weapons/Marine/Minigun.lua", "lua/Weapons/Marine/M
 ModLoader.SetupFileHook( "lua/Weapons/Alien/HydraAbility.lua", "lua/Weapons/Alien/HydraAbility_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/TeamJoin.lua", "lua/TeamJoin_Siege.lua", "post" )
+ModLoader.SetupFileHook( "lua/TunnelEntrance.lua", "lua/TunnelEntrance_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/PowerPoint.lua", "lua/PowerPoint_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Infestation.lua", "lua/Infestation_Siege.lua", "post" )

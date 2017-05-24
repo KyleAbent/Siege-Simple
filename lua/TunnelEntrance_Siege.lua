@@ -1,47 +1,30 @@
-function TunnelEntrance:GetInfestationGrowthRate()
-    return ConditionalValue(not GetIsInSiege(self), 0.25, 0.09)
-end
+if Server then
 
-function TunnelEntrance:GetInfestationRadius()
-    return ConditionalValue(not GetIsInSiege(self), 7, 3.7) 
-end
-
-
-
-local origbuttons = TunnelEntrance.GetTechButtons
-function TunnelEntrance:GetTechButtons(techId)
-local table = {}
-
-table = origbuttons(self, techId)
-
- table[1] = kTechId.TunnelTeleport
- 
- return table
-
-end
-
-function TunnelEntrance:PerformActivation(techId, position, normal, commander)
-
-local success  = false
-   if  techId == kTechId.TunnelTeleport then
-    success = self:TriggerCommTeleport(position, commander)
-end
-
-return success, true
-
-end
-
-function TunnelEntrance:TriggerCommTeleport(position, commander)
-local cyst = GetEntitiesForTeamWithinRange("Cyst", 2, position, 7)
-local boolean = false
-  if #cyst >= 1 then boolean = true end 
-  
-                if GetIsPointOnInfestation(position) and boolean then
-                    self:TriggerTeleport(5, self:GetId(), position, 2)
-                    return true
-                else
-                    local message = BuildCommanderErrorMessage("Cyst && Infestation Required", position)
-                    Server.SendNetworkMessage(commander, "CommanderError", message, true)  
-                   return false
+    function TunnelEntrance:SuckinEntity(entity)
+    
+        if entity and HasMixin(entity, "TunnelUser") and self.tunnelId then
+        
+            local tunnelEntity = Shared.GetEntity(self.tunnelId)
+            if tunnelEntity then 
+            
+            local exitA = tunnelEntity:GetExitA()
+            local exitB = tunnelEntity:GetExitB()
+            local oppositeExit = ((exitA and exitA ~= self) and exitA) or ((exitB and exitB ~= self) and exitB)
+               if oppositeExit then
+             --   tunnelEntity:MovePlayerToTunnel(entity, self)
+              --  entity:SetVelocity(Vector(0, 0, 0))
+             local kExitOffset = Vector(0, 0.2, 0)
+             entity:SetOrigin( oppositeExit:GetOrigin() + kExitOffset )
+                  --Print("derp")
                 end
+                
+                if entity.OnUseGorgeTunnel then
+                    entity:OnUseGorgeTunnel()
+                end
+
+            end
+            
+        end
+    
+    end
 end

@@ -1,3 +1,4 @@
+kPlayingTeamInitialTeamRes = 200
 kCompoundFireDamageDelay = 0
 kCompundFireDamageScalar = 3.7
 
