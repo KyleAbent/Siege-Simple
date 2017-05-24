@@ -55,7 +55,7 @@ function GetCheckEggBeacon(techId, origin, normal, commander)
             
     end
     
-    return num < 1
+    return num < 1 and not GetWhereIsInSiege(origin)
     
 end
 
@@ -71,7 +71,7 @@ function GetCheckStructureBeacon(techId, origin, normal, commander)
             
     end
     
-    return num < 1
+    return num < 1 and not GetWhereIsInSiege(origin)
     
 end
 
@@ -384,7 +384,7 @@ local kSiege_TechData =
           [kTechDataHotkey] = Move.C,   
          [kTechDataBuildTime] = kEggBeaconBuildTime, 
         [kTechDataModel] = EggBeacon.kModelName,   
-           [kTechDataBuildMethodFailedMessage] = "1 at a time",
+           [kTechDataBuildMethodFailedMessage] = "1 at a time not in siege",
          [kVisualRange] = 8,
 [kTechDataMaxHealth] = kEggBeaconHealth, [kTechDataMaxArmor] = kEggBeaconArmor},
 
@@ -397,7 +397,8 @@ local kSiege_TechData =
                  [kTechDataDisplayName] = "Structure Beacon",  [kTechDataCostKey] = kStructureBeaconCost,   
             [kTechDataRequiresInfestation] = true, [kTechDataHotkey] = Move.C,   
          [kTechDataBuildTime] = kStructureBeaconBuildTime, 
-        [kTechDataModel] = StructureBeacon.kModelName,   
+        [kTechDataModel] = StructureBeacon.kModelName,  
+            [kTechDataBuildMethodFailedMessage] = "1 at a time not in siege",
          [kVisualRange] = 8,
 [kTechDataMaxHealth] = kStructureBeaconHealth, [kTechDataMaxArmor] = kStructureBeaconArmor},
 

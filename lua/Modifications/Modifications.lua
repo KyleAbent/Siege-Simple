@@ -1,3 +1,5 @@
+Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
+Script.Load("lua/DefaultOverwrites/PhysicsGroups.lua")
 function BotTeamController:NeededCommanders()
     return 0
 end
@@ -208,7 +210,9 @@ if Server then
  -- return false
   end
   */
-  
+    function GetCheckNotSiege(techId, origin, normal, commander)
+         return not GetWhereIsInSiege(origin)
+  end
   function GetCheckWallLimit(techId, origin, normal, commander)
     local location = GetLocationForPoint(origin)
     local locationName = location and location:GetName() or nil
@@ -265,6 +269,8 @@ local function GetCheckExoDropLimit(techId, origin, normal, commander)
     
     return num < 10
 end
+
+SetCachedTechData(kTechId.Contamination, kTechDataBuildRequiresMethod, GetCheckNotSiege)
 
 SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
 SetCachedTechData(kTechId.Wall, kTechDataBuildMethodFailedMessage, "6 per room")

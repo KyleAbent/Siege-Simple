@@ -71,7 +71,7 @@ if string.find(GetLocationNameWhere(where), "siege") or string.find(GetLocationN
 return false
 end
        function FindArcHiveSpawn(where)    
-        for index = 1, 8 do
+        for index = 1, 24 do
            local extents = LookupTechData(kTechId.Skulk, kTechDataMaxExtents, nil)
            local capsuleHeight, capsuleRadius = GetTraceCapsuleFromExtents(extents)  
            local spawnPoint = GetRandomSpawnForCapsule(capsuleHeight, capsuleRadius, where, .5, 48, EntityFilterAll())
@@ -89,7 +89,7 @@ end
            return spawnPoint
            end
        end
---           Print("No valid spot found for FindArcHiveSpawn")
+          Print("No valid spot found for FindArcHiveSpawn")
            return nil --FindFreeSpace(where, .5, 48)
     end
     
@@ -216,6 +216,15 @@ function GetIsRoomPowerDown(who)
  local powernode = GetPowerPointForLocation(location.name)
  if powernode and powernode:GetIsDisabled()  then return true end
  return false
+end
+function GetRandomHive() 
+   local hives = {}
+ for _, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do 
+       table.insert(hives, hive)
+end
+   if #hives == 0 then return nil end
+   
+   return table.random(hives)
 end
 function GetIsOriginInHiveRoom(point)  
  local location = GetLocationForPoint(point)
@@ -396,12 +405,13 @@ function GetSandCastle() --it washed away
     return nil
 end
 function GetRandomTechPoint()
-    local entityList = Shared.GetEntitiesWithClassname("TechPoint")
-    if entityList:GetSize() > 0 then
-                 local commandstation = entityList:GetEntityAtIndex(0) 
-                 return commandstation
-    end    
-    return nil
+       local techs = {}
+ for _, tech in ientitylist(Shared.GetEntitiesWithClassname("TechPoint")) do 
+       table.insert(techs, tech)
+end
+   if #techs == 0 then return nil end
+   
+   return table.random(techs)
 end
 function GetNearestMixin(origin, mixinType, teamNumber, filterFunc)
     assert(type(mixinType) == "string")

@@ -33,6 +33,9 @@ local function CheckPrimalScream(self)
 	self.primaled = self.primalGiveTime - Shared.GetTime() > 0
 	return self.primaled
 end
+function Alien:GetMovePhysicsMask()
+    return PhysicsMask.AlienMovement
+end
 if Server then
 function Alien:GetTierFourTechId()
     return kTechId.None

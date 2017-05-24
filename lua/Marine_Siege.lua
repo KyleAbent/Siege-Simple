@@ -53,6 +53,9 @@ end
 function Marine:GetCanBeVortexed()
     return false
 end
+function Marine:GetMovePhysicsMask()
+    return PhysicsMask.MarineMovement
+end
 function Marine:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords
 	local scale = self.heavyarmor and 1.3 or 1
