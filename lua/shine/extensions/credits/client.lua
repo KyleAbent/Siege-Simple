@@ -103,11 +103,11 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
     self:AddSideButton("RailGunExo: "..gCreditClassCostRailGunExo, function() Shared.ConsoleCommand ("sh_buyclass RailGun") end) 
     self:AddSideButton("WelderExo: "..gCreditClassCostWelderExo, function() Shared.ConsoleCommand ("sh_buyclass Welder") end) 
     self:AddSideButton("FlamerExo: "..gCreditClassCostFlamerExo, function() Shared.ConsoleCommand ("sh_buyclass Flamer") end) 
-    elseif player:GetTeamNumber() == 2 then
-		self:AddSideButton("Gorge: "..gCreditClassCostGorge, function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
-		self:AddSideButton("Lerk: "..gCreditClassCostLerk, function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
-		self:AddSideButton("Fade: "..gCreditClassCostFade, function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
-        self:AddSideButton("Onos: "..gCreditClassCostOnos, function() Shared.ConsoleCommand ("sh_buyclass Onos") end)
+  --  elseif player:GetTeamNumber() == 2 then
+	--	self:AddSideButton("Gorge: "..gCreditClassCostGorge, function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
+	--	self:AddSideButton("Lerk: "..gCreditClassCostLerk, function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
+	--	self:AddSideButton("Fade: "..gCreditClassCostFade, function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
+     --   self:AddSideButton("Onos: "..gCreditClassCostOnos, function() Shared.ConsoleCommand ("sh_buyclass Onos") end)
     end
         self:AddBottomButton( "Back", function()self:SetPage("SpendPres")end) 
 end)

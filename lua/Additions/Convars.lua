@@ -28,29 +28,29 @@ gCreditStructureMacLimit = 3
 gCreditStructureArcCost = 10
 gCreditStructureArcLimit = 2
 
-gCreditStructureExtractorCost = 900
+gCreditStructureExtractorCost = 250
 gCreditStructureExtractorLimit = 1
 
 
 
 --Classes Credits Cost
-gCreditClassCostJetPack = 15
+gCreditClassCostJetPack = 15 * 2
 
-gCreditClassCostRailGunExo = 35
-gCreditClassCostMiniGunExo = 35
+gCreditClassCostRailGunExo = 35 * 2
+gCreditClassCostMiniGunExo = 35 * 2
 
-gCreditClassCostWelderExo = 25
-gCreditClassCostFlamerExo = 30
+gCreditClassCostWelderExo = 25 * 2
+gCreditClassCostFlamerExo = 30 * 2
 
 gCreditClassDelayJetPack = 10
 gCreditClassDelayRailGun = 15
 gCreditClassDelayMiniGun = 15
 
 gCreditClassCostSkulk = 1
-gCreditClassCostGorge = 10
-gCreditClassCostLerk = 20
-gCreditClassCostFade = 40
-gCreditClassCostOnos = 65
+gCreditClassCostGorge = 10 * 2
+gCreditClassCostLerk = 20 * 2
+gCreditClassCostFade = 40 * 2 
+gCreditClassCostOnos = 65 * 2
 
 gCreditClassDelaySkulk = 1
 gCreditClassDelayGorge = 5
@@ -60,24 +60,24 @@ gCreditClassDelayOnos = 20
 
 
 --Weapons Credits Cost
-gCreditWeaponCostMines = 10
-gCreditWeaponCostWelder = 3
-gCreditWeaponCostHMG = 20
-gCreditWeaponCostShotGun = 20
-gCreditWeaponCostFlameThrower = 12
-gCreditWeaponCostGrenadeLauncher = 20
-gCreditWeaponCostGrenadeGas = 2
-gCreditWeaponCostGrenadeCluster = 2
-gCreditWeaponCostGrenadePulse = 2
+gCreditWeaponCostMines = 10 * 2 
+gCreditWeaponCostWelder = 3 * 2
+gCreditWeaponCostHMG = 20 * 2
+gCreditWeaponCostShotGun = 20 * 2
+gCreditWeaponCostFlameThrower = 12 * 2
+gCreditWeaponCostGrenadeLauncher = 20 * 2
+gCreditWeaponCostGrenadeGas = 2 * 2
+gCreditWeaponCostGrenadeCluster = 2 * 2
+gCreditWeaponCostGrenadePulse = 2 * 2
 
 
 
 --Alien Abilities  Credits Cost
-gCreditAbilityCostInk = 20 --1.5
-gCreditAbilityCostNutrientMist = 3
-gCreditAbilityCostHallucination = 12
+gCreditAbilityCostInk = 3 --1.5
+gCreditAbilityCostNutrientMist = 2
+gCreditAbilityCostHallucination = 2
 gCreditAbilityCostEnzymeCloud = 3
-gCreditAbilityCostContamination = 7
+gCreditAbilityCostContamination = 5
 
 
 --Alien Abilities  Credits Delay
@@ -97,7 +97,7 @@ gCreditStructureCostCrag = 13
 gCreditStructureCostWhip = 13
 gCreditStructureCostShift = 13
 gCreditStructureCostTunnelToHive = 10
-gCreditStructureCostHarvesterExtractor = 900
+gCreditStructureCostHarvesterExtractor = 250
 gCreditStructureLimitHarvesterExtractor = 1
 --gCreditStructureCost =
 

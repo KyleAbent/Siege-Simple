@@ -273,9 +273,6 @@ end
 
 SetCachedTechData(kTechId.Contamination, kTechDataBuildRequiresMethod, GetCheckNotSiege)
 
-SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
-SetCachedTechData(kTechId.Wall, kTechDataBuildMethodFailedMessage, "6 per room")
-
 SetCachedTechData(kTechId.Door, kTechDataModel, BreakableDoor.kModelName)
 SetCachedTechData(kTechId.DropExosuit, kTechDataBuildMethodFailedMessage, "Trying to crash the server?")
 

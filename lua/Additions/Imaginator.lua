@@ -19,6 +19,7 @@ local networkVars =
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
   --setupExtTresScale = "private integer (0 to 20)"
+  autoResearch = "boolean",
 }
 
 
@@ -59,6 +60,7 @@ function Imaginator:OnCreate()
    self:SetUpdates(true)
   -- self.setupExtTresScale = 0
   self.lastScan = 0
+  self.autoResearch = false
 end
 function Imaginator:GetAlienEnabled()
 local team2Commander = GetGamerules().team2:GetCommander()
@@ -155,6 +157,7 @@ function Imaginator:UpdateHivesManually()
      end
      return true
 end
+
 function Imaginator:OnUpdate(deltatime)
    
    if Server then
@@ -191,7 +194,7 @@ function Imaginator:OnUpdate(deltatime)
          if not self.timeLastResearch or self.timeLastResearch + math.random(4,8) <= Shared.GetTime() then
          
          local gamestarted = GetGamerules():GetGameState() == kGameState.Started 
-               if gamestarted and self:GetMarineEnabled() then
+               if gamestarted and self:GetMarineEnabled() or self:GetIsResearchEnabled() then
                    for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
                       if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable)  end
                    end
@@ -427,8 +430,8 @@ return boolean
 
 end
 local function GetAlienCostScalar(self,cost)
-return cost
-/*
+--return cost
+
   if not cost then cost = math.random(4,8) end
   if GetSetupConcluded() then
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
@@ -436,11 +439,11 @@ return cost
   else
   return cost / 2
   end
-  */
+  
 end
 local function GetMarineCostScalar(self,cost)
-return cost
- /*
+--return cost
+ 
   if not cost then cost = math.random(4,12) end
   if GetSetupConcluded() then
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
@@ -448,7 +451,7 @@ return cost
   else
   return cost / 2
   end
-  */
+  
 end
 local function OrganizedIPCheck(who, self)
 

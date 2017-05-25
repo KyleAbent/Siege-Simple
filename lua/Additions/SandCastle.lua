@@ -24,6 +24,7 @@ local networkVars =
    frontOpened = "boolean",
    siegeOpened = "boolean",
    isSuddenDeath = "boolean",
+   primaryOpened = "boolean",
    sdTimer = "time",
 }
 function SandCastle:TimerValues()
@@ -33,8 +34,10 @@ function SandCastle:TimerValues()
    self.PrimaryTimer = kPrimaryTimer
    self.SiegeTimer = kSiegeTimer
    self.FrontTimer = kFrontTimer
+   self.primaryOpened = false
    self.siegeOpened = false
    self.frontOpened = false
+   self.primaryOpened = false
    self.isSuddenDeath = false
    self.sdTimer = 0
 end
@@ -144,6 +147,7 @@ function SandCastle:OpenFrontDoors()
                self.frontOpened = true
 end
 function SandCastle:OpenPrimaryDoors()
+       self.primaryOpened = true
           GetGamerules():SetDamageMultiplier(1)
       self.PrimaryTimer = 0
                for index, Primarydoor in ientitylist(Shared.GetEntitiesWithClassname("SideDoor")) do
@@ -255,10 +259,12 @@ function SandCastle:OnUpdate(deltatime)
   end
 end
 function SandCastle:AutoConstructEligable()
+    if not self.primaryOpened then 
    for _, entity in ipairs( GetEntitiesWithMixinWithinRange("Construct", self:GetOrigin(), 99999)) do
       if not entity:isa("PowerPoint") and not entity:GetIsBuilt() and not GetIsInSiege(entity) and (entity:GetTeamNumber() == 1 and GetIsRoomPowerUp(entity) ) or entity:GetTeamNumber() == 2 then
-       entity:Construct(1)
+       entity:Construct(0.1)
       end
+    end
     end
 end
 function SandCastle:FrontDoorTimer()

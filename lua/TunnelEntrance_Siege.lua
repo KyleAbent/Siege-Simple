@@ -21,6 +21,7 @@ if Server then
                 if entity.OnUseGorgeTunnel then
                     entity:OnUseGorgeTunnel()
                 end
+                 entity:TriggerEffects("tunnel_exit_3D")
 
             end
             

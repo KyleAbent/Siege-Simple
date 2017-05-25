@@ -1,13 +1,13 @@
-kMarineInitialIndivRes = 100
-kAlienInitialIndivRes = 100
-kMaxSupply = 250
-kPlayerResPerInterval = 0.715
-kTeamResourcePerTick = 2
-kResourceTowerResourceInterval = 4
-kTeamResourcePerTick = 2
-kMaxPersonalResources = 999
-kMaxTeamResources = 999
-kPlayingTeamInitialTeamRes = 200
+kMarineInitialIndivRes = 30 -- 15
+kAlienInitialIndivRes = 30 -- 12
+kMaxSupply = 225 --200
+kPlayerResPerInterval = 0.3 -- 0.125
+--kTeamResourcePerTick = 2 -- 1
+--kResourceTowerResourceInterval = 4 -- 6
+--kTeamResourcePerTick = 2 -- 1
+kMaxPersonalResources = 200 -- 100
+--kMaxTeamResources = 200 -- 200
+kPlayingTeamInitialTeamRes = 100 -- 60
 kCompoundFireDamageDelay = 0
 kCompundFireDamageScalar = 3.7
 
