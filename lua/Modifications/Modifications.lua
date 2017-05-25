@@ -3,6 +3,7 @@ Script.Load("lua/DefaultOverwrites/PhysicsGroups.lua")
 function BotTeamController:NeededCommanders()
     return 0
 end
+/*
 function ConstructMixin:GetTotalConstructionTime()
     local time = LookupTechData(self:GetTechId(), kTechDataBuildTime, kDefaultBuildTime)
    -- Print("time is %s", time)
@@ -10,7 +11,7 @@ function ConstructMixin:GetTotalConstructionTime()
     -- Print("time is %s", time)
     return time
 end
-
+*/
 function GetIsCloseToMenuStructure(player)
     
     local ptlabs = GetEntitiesForTeamWithinRange("PrototypeLab", player:GetTeamNumber(), player:GetOrigin(), PrototypeLab.kResupplyUseRange)

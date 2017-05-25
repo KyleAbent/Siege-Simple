@@ -427,6 +427,8 @@ return boolean
 
 end
 local function GetAlienCostScalar(self,cost)
+return cost
+/*
   if not cost then cost = math.random(4,8) end
   if GetSetupConcluded() then
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
@@ -434,9 +436,11 @@ local function GetAlienCostScalar(self,cost)
   else
   return cost / 2
   end
-  
+  */
 end
 local function GetMarineCostScalar(self,cost)
+return cost
+ /*
   if not cost then cost = math.random(4,12) end
   if GetSetupConcluded() then
     local toReturn =  cost / 1.85 --(self.setupExtTresScale / self:GetMarineExtCount())
@@ -444,7 +448,7 @@ local function GetMarineCostScalar(self,cost)
   else
   return cost / 2
   end
-  
+  */
 end
 local function OrganizedIPCheck(who, self)
 

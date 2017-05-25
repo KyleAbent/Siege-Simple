@@ -1,6 +1,6 @@
 function Crag:GetCragsInRange()
       local crag = GetEntitiesWithinRange("Crag", self:GetOrigin(), Crag.kHealRadius)
-           return Clamp(#crag, 0, 3)
+           return Clamp(#crag, 0, 7)
 end
 function Crag:GetBonusAmt()
 return (self:GetCragsInRange()/10)

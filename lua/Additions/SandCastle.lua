@@ -254,10 +254,19 @@ function SandCastle:OnUpdate(deltatime)
   end
   end
 end
+function SandCastle:AutoConstructEligable()
+   for _, entity in ipairs( GetEntitiesWithMixinWithinRange("Construct", self:GetOrigin(), 99999)) do
+      if not entity:isa("PowerPoint") and not entity:GetIsBuilt() and not GetIsInSiege(entity) and (entity:GetTeamNumber() == 1 and GetIsRoomPowerUp(entity) ) or entity:GetTeamNumber() == 2 then
+       entity:Construct(1)
+      end
+    end
+end
 function SandCastle:FrontDoorTimer()
     if self:GetIsFrontOpen() then
          boolean = true
          self:OpenFrontDoors() -- Ddos!
+     else
+      self:AutoConstructEligable()
        end
 
 end

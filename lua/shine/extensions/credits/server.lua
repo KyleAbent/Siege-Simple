@@ -70,14 +70,15 @@ local CreditCost = 10
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
-if self:GetPlayerSaltInfo(Client) < CreditCost then
-self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, CreditCost, self:GetPlayerSaltInfo(Client))
+if  player:GetResources() < CreditCost then
+self:NotifySalt( Client, "%s costs %s pres, you have %s pres. Purchase invalid.", true, String, CreditCost, player:GetResources() )
 return
 end
-self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
+player:SetResources( player:GetResources() - CreditCost)
+--self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
 //self:NotifySalt( nil, "%s purchased a %s with %s credit(s)", true, Player:GetName(), String, CreditCost)
 player:GiveItem(NutrientMist.kMapName)
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
+  -- Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
    self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
      self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
 return
@@ -94,12 +95,13 @@ end
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()
 if Client:GetIsVirtual() then return end
-if self:GetPlayerSaltInfo(Client) < CreditCost then
-self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, CreditCost, self:GetPlayerSaltInfo(Client))
+if player:GetResources() < CreditCost then
+self:NotifySalt( Client, "%s costs %s pres, you have %s pres. Purchase invalid.", true, String, CreditCost, player:GetResources() )
 return
 end
-self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
+    --self.CreditUsers[ Client ] = self:GetPlayerSaltInfo(Client) - CreditCost
+  -- Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(Client) ), Client) 
+   player:SetResources( player:GetResources() - CreditCost)
    self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
      self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
 return
@@ -491,10 +493,11 @@ end
 function Plugin:DeductSaltIfNotPregame(self, who, amount, delayafter)
         --Print("DeductSaltIfNotPregame, amount is %s", amount)
  if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown() )  then
-    self.CreditUsers[ who:GetClient() ] = self:GetPlayerSaltInfo(who:GetClient()) - amount
-     self.PlayerSpentAmount[who:GetClient()] = self.PlayerSpentAmount[who:GetClient()]  + amount
+   -- self.CreditUsers[ who:GetClient() ] = self:GetPlayerSaltInfo(who:GetClient()) - amount
+      who:SetResources( who:GetResources() - amount)
+     --self.PlayerSpentAmount[who:GetClient()] = self.PlayerSpentAmount[who:GetClient()]  + amount
    self.BuyUsersTimer[who:GetClient()] = Shared.GetTime() + delayafter
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who:GetClient()) ), who) 
+  -- Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who:GetClient()) ), who) 
  else
  self:NotifySalt(who, "Pregame purchase free of charge", true) 
  end
@@ -679,7 +682,7 @@ local supply = LookupTechData(entity:GetTechId(), kTechDataSupply, nil) or 0
 whoagain:GetTeam():RemoveSupplyUsed(supply)
 end
    local delaytoadd = not GetSetupConcluded() and 4 or delayafter
-   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
+  -- Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who) ), who) 
 self.BuyUsersTimer[who] = Shared.GetTime() + delaytoadd
 --Shared.ConsoleCommand(string.format("sh_addpool %s", cost)) 
   
@@ -722,10 +725,10 @@ end
 */
 
 if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown()  )  then 
-local playeramt =  self:GetPlayerSaltInfo(Client)
+local playeramt =   Player:GetResources()
  if playeramt < cost then 
    --Print("player has %s, cost is %s", playeramt,cost)
-self:NotifySalt( Client, "%s costs %s salt, you have %s salt. Purchase invalid.", true, String, cost, self:GetPlayerSaltInfo(Client))
+self:NotifySalt( Client, "%s costs %s pres, you have %s pres. Purchase invalid.", true, String, cost, Player:GetResources() )
 return true
 end
 
