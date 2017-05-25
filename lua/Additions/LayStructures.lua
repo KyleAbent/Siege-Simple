@@ -231,7 +231,7 @@ local function DropStructure(self, player)
                 structure:SetOwner(player)
                 if HasMixin(structure, "Avoca") then structure:SetIsACreditStructure(true) end
                 if structure:isa("ARC") then structure:DelayDeploy() end
-                if structure:isa("PhaseGate") then structure.channel = 2 end
+               -- if structure:isa("PhaseGate") then structure.channel = 2 end
                 if HasMixin(structure, "Supply") then RemoveSupply(self, player, structure) end
 
                 
