@@ -261,7 +261,7 @@ end
 function SandCastle:AutoConstructEligable()
     if not self.primaryOpened then 
    for _, entity in ipairs( GetEntitiesWithMixinWithinRange("Construct", self:GetOrigin(), 99999)) do
-      if not entity:isa("PowerPoint") and not entity:GetIsBuilt() and not GetIsInSiege(entity) and (entity:GetTeamNumber() == 1 and GetIsRoomPowerUp(entity) ) or entity:GetTeamNumber() == 2 then
+      if not entity:isa("PowerPoint") and not entity:GetIsBuilt() and not GetIsInSiege(entity) and (entity:GetTeamNumber() == 1 and GetIsRoomPowerUp(entity) ) or ( entity:GetTeamNumber() == 2 and GetIsRoomPowerDown(entity) ) then
        entity:Construct(0.1)
       end
     end

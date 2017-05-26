@@ -382,17 +382,18 @@ end
                   end
                end
   end
-local function AddSDEnabledDisplay(who)
+local function AddSDEnabledDisplay(who) 
 	  Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, who )
 end
     function Plugin:OnEnableSD() 
       if not GetGamerules():GetGameStarted()  then return end
-         Print("Shine open siege doors 1")
+        for i = 1, math.random(4,8) do
+       self:NotifySuddenDeath( nil, "SuddenDeath Activated ! No more respawning! No more hive/cc healing/dropping. IF you don't like it post on forums or discord?", true)
+       end
                 local Players = Shine.GetAllPlayers()
               for i = 1, #Players do
               local Player = Players[ i ]
                   if Player then
-                  Print("Shine open siege doors 2")
                   AddSDEnabledDisplay(Player)
                   end
                end
@@ -613,10 +614,13 @@ function Plugin:SetGameState( Gamerules, State, OldState )
 end
 function Plugin:StartAutoCommTimer()
  self.autoCommTime = kAutoCommTimer
+
                     self:SimpleTimer( self.autoCommTime, function() 
+              
                     local  numplayers = #Shine.GetAllPlayers()
                     local gameRules = GetGamerules()
                     if self.stopped or gameRules:GetGameStarted() or numplayers > 10 then return end
+                     /*
                     if numplayers <= 10 then
                         for i = 1, 10 - numplayers do
                         Shared.ConsoleCommand("addbot")
@@ -627,7 +631,11 @@ function Plugin:StartAutoCommTimer()
            Shared.ConsoleCommand("sh_forceroundstart")
            Shared.ConsoleCommand("sh_imaginator 1 true")
            Shared.ConsoleCommand("sh_imaginator 2 true")
+           */
+           self:NotifyAutoComm( nil, "Usually the AutoComm timer would start here however I think it's best to leave auto enable disabled until after 5.30.17. Type sh_autocomm if you want to play. (Mod command)", true)
                  end)
+    
+
                  
  
  self:CreateTimer( 41, 1,  self.autoCommTime, function() 
@@ -642,13 +650,16 @@ function Plugin:StartAutoCommTimer()
                          
                             if  self.autoCommTime <=10 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
                             or  self.autoCommTime == 120 or  self.autoCommTime == 150 then
-                            self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10. say /extend to extend the timer", true, self.autoCommTime)
+                            self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10. say /extend to extend the timer or /stop to stop it.", true, self.autoCommTime)
                          -- Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                          end
                          
                         end)
              
 
+end
+function Plugin:NotifySuddenDeath( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[SuddenDeath]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:NotifyGiveRes( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, Format, ... )
