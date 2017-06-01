@@ -478,7 +478,7 @@ end
          -- Print(" Marine OnDamageDone 1")
         if self:GetHasFireBullets() and doer:GetParent() == self then
            --Print(" Marine OnDamageDone 2")
-            if HasMixin(target, "Fire") and target:GetIsAlive() then
+            if not target:isa("Player") and HasMixin(target, "Fire") and target:GetIsAlive() then
            -- Print(" Marine OnDamageDone 3")
                 target:SetOnFire(self)
             end

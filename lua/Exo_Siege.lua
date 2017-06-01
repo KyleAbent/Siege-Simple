@@ -127,7 +127,8 @@ function Exo:OnStun()
                 StartSoundEffectForPlayer(AlienCommander.kBoneWallSpawnSound, self)
         end
 end
-    
+
+    /*
 function Exo:EjectExo()
 
     if self:GetCanEject() then
@@ -149,5 +150,5 @@ if Server then
     
     end
 end
-
+*/
 Shared.LinkClassToMap("Exo", Exo.kMapName, networkVars)

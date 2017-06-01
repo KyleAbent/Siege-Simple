@@ -648,8 +648,8 @@ function Plugin:StartAutoCommTimer()
                          local  numplayers = #Shine.GetAllPlayers()
                          if self.stopped or GetGamerules():GetGameStarted() or numplayers>= 10 then Plugin:DestroyTimer( 84 ) end
                          
-                            if  self.autoCommTime <=10 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
-                            or  self.autoCommTime == 120 or  self.autoCommTime == 150 then
+                            if  self.autoCommTime <=10 and self.autoCommTime >= 1 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
+                            or  self.autoCommTime == 120 or  self.autoCommTime == 150 then --ugh
                             self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10. say /extend to extend the timer or /stop to stop it.", true, self.autoCommTime)
                          -- Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                          end
@@ -1178,6 +1178,7 @@ local function AutoComm( Client )
      if not GetGamerules():GetGameStarted() then
             Shared.ConsoleCommand("sh_forceroundstart")
      end
+      if Shine:GetUserImmunity(Client) < 10 then return end--isamod ?
          local boolean = GetImaginator():GetAlienEnabled()
             Shared.ConsoleCommand(string.format("sh_imaginator 2 %s", not boolean )  )
             Shared.ConsoleCommand(string.format("sh_imaginator 1 %s", not boolean )  )
@@ -1186,7 +1187,7 @@ local function AutoComm( Client )
            
 end
 
-local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm )
+local AutoCommCommand = self:BindCommand( "sh_autocomm", "autocomm", AutoComm, true )
 AutoCommCommand:Help( "sh_testfilm forces autocomm (disables if human comm) and forces round to start  " )
 
 local function StopAutoComm( Client )

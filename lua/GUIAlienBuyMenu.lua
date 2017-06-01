@@ -172,7 +172,7 @@ function GUIAlienBuyMenu:Initialize()
     self:_InitializeCorners()
     
     AlienBuy_OnOpen()
-    
+   MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)  
 end
 
 function GUIAlienBuyMenu:Uninitialize()
@@ -189,7 +189,7 @@ function GUIAlienBuyMenu:Uninitialize()
     self:_UninitializeCloseButton()
     self:_UninitializeGlowieParticles()
     self:_UninitializeCorners()
-
+    MouseTracker_SetIsVisible(false) 
 end
 
 local function CreateSlot(self, category)

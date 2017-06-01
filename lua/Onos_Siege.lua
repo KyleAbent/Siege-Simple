@@ -1,3 +1,14 @@
+--Script.Load("lua/Weapons/PredictedProjectile.lua")
+
+local origcreate = Onos.OnCreate
+function Onos:OnCreate()
+origcreate(self)
+
+--InitMixin(self, PredictedProjectileShooterMixin)
+
+end
+
+
 function Onos:GetRebirthLength()
 return 5
 end
@@ -102,7 +113,7 @@ end
 function Onos:GetIsPoopGrowing()
 
     local activeWeapon = self:GetActiveWeapon()
-    if activeWeapon and activeWeapon:isa("OnoGrow") and activeWeapon.primaryAttacking then
+    if activeWeapon and ( activeWeapon:isa("OnoGrow") ) and activeWeapon.primaryAttacking then --or activeWeapon:isa("Onocide") ) and activeWeapon.primaryAttacking then
         return true
     end    
     return false

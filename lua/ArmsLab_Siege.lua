@@ -67,7 +67,7 @@ function ArmsLab:OnUse(player, elapsedTime, useSuccessTable)
             -- Play looping "active" sound while logged in
             -- Shared.PlayPrivateSound(player, Armory.kResupplySound, player, 1.0, Vector(0, 0, 0))
             
-            MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
+         --   MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
             
             -- tell the player to show the lua menu
             player:BuyMenu(self)
