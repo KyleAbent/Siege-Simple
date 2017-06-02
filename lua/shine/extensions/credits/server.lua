@@ -1092,8 +1092,8 @@ if not Player then return end
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
   
  if String == "Resupply" then DeductBuy(self, Player, cost, delayafter)  Player.hasresupply = true
-  elseif String == "HeavyArmor" then DeductBuy(self, Player, cost, delayafter) Player.heavyarmor = true
-    elseif String == "LightArmor" then DeductBuy(self, Player, cost, delayafter) Player.lightarmor = true
+  elseif String == "HeavyArmor" then DeductBuy(self, Player, cost, delayafter) Player.heavyarmor = true Player.lightarmor = false
+    elseif String == "LightArmor" then DeductBuy(self, Player, cost, delayafter) Player.lightarmor = true Player.heavyarmor = false
   elseif String == "FireBullets" then DeductBuy(self, Player, cost, delayafter) Player.hasfirebullets = true
   elseif String == "RegenArmor" then DeductBuy(self, Player, cost, delayafter) Player.nanoarmor = true
   end

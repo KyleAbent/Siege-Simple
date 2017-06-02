@@ -257,7 +257,7 @@ function Marine:GetMaxSpeed(possible)
 
 local origspeed = origspeed(self, possible)
 
- if not self.lightarmor then
+ if not self.lightarmor or self.heavyarmor then
     --Print("Speed is %s", origspeed)
    return origspeed
   else

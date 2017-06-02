@@ -128,20 +128,20 @@ local kSiege_TechData =
       
              { [kTechDataId] = kTechId.MoonBoots,
         [kTechDataCostKey] = kMoonBootsCost,
-        [kTechDataDisplayName] = "MoonBoots", 
+        [kTechDataDisplayName] = "MoonBoots: Walk on walls (Todo: Add JPMarine Fuel concept?) ", 
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Walk on Walls!!"},
 
 
                              { [kTechDataId] = kTechId.HeavyArmor,   
        [kTechDataTooltipInfo] = "Heavy Armor", 
-          [kTechDataDisplayName] = "Heavy Armor",  
+          [kTechDataDisplayName] = "Heavy Armor: +30 armor, +30% modelsize xz",  
      [kTechDataCostKey] = kHeavyArmorCost, },
      
      
                                   { [kTechDataId] = kTechId.LightArmor,   
        [kTechDataTooltipInfo] = "Light Armor", 
-          [kTechDataDisplayName] = "Light Armor",  
+          [kTechDataDisplayName] = "Light Armor: -30 armor, +30% speed",  
      [kTechDataCostKey] = kHeavyArmorCost, },
      
      
@@ -171,14 +171,14 @@ local kSiege_TechData =
       */
              { [kTechDataId] = kTechId.JumpPack,
         [kTechDataCostKey] = kJumpPackCost,
-        [kTechDataDisplayName] = "Jump Pack", 
+        [kTechDataDisplayName] = "Jump Pack: Press DUCK + Jump at the same time.. Does not work with jetpack.", 
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Press DUCK + Jump at the same time.. Does not work with jetpack. "},
 
      
          { [kTechDataId] = kTechId.DualWelderExosuit,    
  [kTechIDShowEnables] = false,     
-  [kTechDataDisplayName] = "Dual Welders", 
+  [kTechDataDisplayName] = "Dual Exo Welders", 
 [kTechDataMapName] = "exo",         
       [kTechDataCostKey] = kDualExosuitCost - 10, 
 [kTechDataHotkey] = Move.E,
@@ -188,7 +188,7 @@ local kSiege_TechData =
 
          { [kTechDataId] = kTechId.DualFlamerExosuit,    
  [kTechIDShowEnables] = false,     
-  [kTechDataDisplayName] = "Dual flamer", 
+  [kTechDataDisplayName] = "Dual Exo Flamer", 
 [kTechDataMapName] = "exo",         
       [kTechDataCostKey] = kDualExosuitCost - 5, 
 [kTechDataHotkey] = Move.E,
