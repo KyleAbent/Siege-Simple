@@ -125,6 +125,12 @@ local kSiege_TechData =
         [kTechDataDisplayName] = "Fire Bullets", 
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Sets Structures & Players On Fire via bullets!"},
+      
+             { [kTechDataId] = kTechId.MoonBoots,
+        [kTechDataCostKey] = kMoonBootsCost,
+        [kTechDataDisplayName] = "MoonBoots", 
+        [kTechDataHotkey] = Move.Z, 
+      [kTechDataTooltipInfo] = "Walk on Walls!!"},
 
 
                              { [kTechDataId] = kTechId.HeavyArmor,   
@@ -190,14 +196,14 @@ local kSiege_TechData =
     [kTechDataModel] = LayStructures.kModelName,
  --[kTechDataDamageType] = kWelderDamageType,
  [kTechDataCostKey] = kWelderCost  },
-
+        /*
                 { [kTechDataId] = kTechId.DamageResistance, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Damage Resistance", 
       [kTechDataSponitorCode] = "A",  
       [kTechDataCostKey] = kDamageResistanceCost,
      [kTechDataTooltipInfo] = "5% damage resistance", },
-     
+     */
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 

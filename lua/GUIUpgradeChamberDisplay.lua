@@ -37,7 +37,8 @@ local kUpgradeLevelFunc =
 local kIndexToUpgrades =
 {
     {kTechId.CragHiveTwo,  kTechId.Redemption, kTechId.Rebirth, kTechId.Hunger},
-    {kTechId.ShiftHiveTwo,  kTechId.ThickenedSkin, kTechId.DamageResistance},
+   -- {kTechId.ShiftHiveTwo,  kTechId.ThickenedSkin, kTechId.DamageResistance},
+   {kTechId.ShiftHiveTwo,  kTechId.ThickenedSkin},
     { kTechId.Shell, kTechId.Crush, kTechId.Carapace, kTechId.Regeneration, },
     { kTechId.Spur, kTechId.Silence, kTechId.Celerity, kTechId.Adrenaline },
     { kTechId.Veil, kTechId.Vampirism, kTechId.Aura, kTechId.Focus },

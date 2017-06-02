@@ -1,4 +1,5 @@
 Script.Load("lua/Additions/Functions.lua")
 function Rifle:GetClipSize()
-    return kRifleClipSize + 25
+    local buff  = 75 * GetRoundLengthToSiege()
+    return Clamp(buff, kRifleClipSize, 75)
     end

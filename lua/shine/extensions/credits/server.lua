@@ -90,7 +90,7 @@ if not GetGamerules():GetGameStarted() then return end
 end
  function Plugin:SpawnIt(player, entity)
  if not player or not player:GetIsAlive() then return end
- local CreditCost = 10
+ local CreditCost = 3
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
 local Client = controlling:GetClient()

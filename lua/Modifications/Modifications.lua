@@ -233,7 +233,7 @@ if Server then
         
     end
     
-    return validRoom and numInRoom < 5
+    return validRoom and numInRoom < kWallCommLimitPerRoom
 end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
   if GetSandCastle():GetSDBoolean() then return false end

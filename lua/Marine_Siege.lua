@@ -7,7 +7,22 @@ local networkVars =
    hasresupply = "private boolean",
    heavyarmor = "private boolean",
    nanoarmor = "private boolean",
+   
+    wallboots = "private boolean",
+    wallWalking = "compensated boolean",
+    timeLastWallWalkCheck = "private compensated time",
 }
+
+
+local kNormalWallWalkFeelerSize = 0.25
+local kNormalWallWalkRange = 0.3
+local kJumpWallRange = 0.4
+local kJumpWallFeelerSize = 0.1
+local kWallJumpInterval = 0.4
+local kWallJumpForce = 5.2 // scales down the faster you are
+local kMinWallJumpForce = 0.1
+local kVerticalWallJumpForce = 4.3
+
 
 AddMixinNetworkVars(GlowMixin, networkVars)
 
@@ -15,6 +30,8 @@ local originit = Marine.OnInitialized
 function Marine:OnInitialized()
     originit(self)
     InitMixin(self, GlowMixin)
+    self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
+    self.timeLastWallJump = 0
 end
 
 local origcreate = Marine.OnCreate
@@ -29,7 +46,168 @@ function Marine:OnCreate()
         end
         self.hasjumppack  = false
          self.lastjump = 0
+         
+     self.wallboots = false
+     self.wallWalking = false
+    self.wallWalkingNormalGoal = Vector.yAxis
+    self.timeLastWallJump = 0
+       InitMixin(self, WallMovementMixin)
 end
+
+function Marine:GetCanJump()
+    local canWallJump = self:GetCanWallJump()
+    return self:GetIsOnGround() or canWallJump
+end
+function Marine:GetIsWallWalking()
+    return self.wallWalking and self.wallboots
+end
+function Marine:GetCanWallJump()
+
+    local wallWalkNormal = self:GetAverageWallWalkingNormal(kJumpWallRange, kJumpWallFeelerSize)
+    if wallWalkNormal then -- and GetHasTech(self, kTechId.BileBomb) then
+        return wallWalkNormal.y < 0.5
+    end
+    
+    return false
+
+end
+function Marine:GetIsWallWalkingPossible() 
+    return not self:GetRecentlyJumped() and not self:GetCrouching() -- and self.wallboots
+end
+function Marine:GetRecentlyWallJumped()
+    return self.timeLastWallJump + kWallJumpInterval > Shared.GetTime()
+end
+function Marine:ModifyJump(input, velocity, jumpVelocity)
+
+    if self:GetCanWallJump() then
+    
+        local direction = input.move.z == -1 and -1 or 1
+    
+        // we add the bonus in the direction the move is going
+        local viewCoords = self:GetViewAngles():GetCoords()
+        self.bonusVec = viewCoords.zAxis * direction
+        self.bonusVec.y = 0
+        self.bonusVec:Normalize()
+        
+        jumpVelocity.y = 3 + math.min(1, 1 + viewCoords.zAxis.y) * 2
+
+        local celerityMod = (GetHasCelerityUpgrade(self) and GetSpurLevel(self:GetTeamNumber()) or 0) * 0.4
+        local currentSpeed = velocity:GetLengthXZ()
+        local fraction = 1 - Clamp( currentSpeed / (11 + celerityMod), 0, 1)        
+        
+        local force = math.max(kMinWallJumpForce, (kWallJumpForce + celerityMod) * fraction)
+          
+        self.bonusVec:Scale(force)      
+
+        if not self:GetRecentlyWallJumped() then
+        
+            self.bonusVec.y = viewCoords.zAxis.y * kVerticalWallJumpForce
+            jumpVelocity:Add(self.bonusVec)
+
+        end
+        
+        self.timeLastWallJump = Shared.GetTime()
+        
+    end
+    
+end
+function Marine:GetPerformsVerticalMove()
+    return self:GetIsWallWalking()
+end
+function Marine:OverrideUpdateOnGround(onGround)
+    return onGround or self:GetIsWallWalking()
+end
+local origangles = Marine.GetDesiredAngles
+function Marine:GetDesiredAngles()
+
+   if self:GetIsWallWalking() then return self.currentWallWalkingAngles end
+       return origangles(self)
+end
+function Marine:GetIsUsingBodyYaw()
+    return not self:GetIsWallWalking()
+end
+function Marine:GetIsUsingBodyYaw()
+    return not self:GetIsWallWalking()
+end
+
+function Marine:GetAngleSmoothingMode()
+
+    if self:GetIsWallWalking() then
+        return "quatlerp"
+    else
+        return "euler"
+    end
+
+end
+function Marine:OnJump()
+
+    self.wallWalking = false
+
+    local material = self:GetMaterialBelowPlayer()    
+    local velocityLength = self:GetVelocity():GetLengthXZ()
+    
+    if velocityLength > 11 then
+        self:TriggerEffects("jump_best", {surface = material})          
+    elseif velocityLength > 8.5 then
+        self:TriggerEffects("jump_good", {surface = material})       
+    end
+
+    self:TriggerEffects("jump", {surface = material})
+    
+end
+function Marine:OnWorldCollision(normal, impactForce, newVelocity)
+
+    PROFILE("Marine:OnWorldCollision")
+
+    self.wallWalking = self:GetIsWallWalkingPossible() and normal.y < 0.5
+    
+end
+function Marine:PreUpdateMove(input, runningPrediction)
+    PROFILE("Marine:PreUpdateMove")
+    self.prevY = self:GetOrigin().y
+        if self:GetCrouching() then
+        self.wallWalking = false
+    end
+
+    if self:GetIsWallWalking() then
+
+        // Most of the time, it returns a fraction of 0, which means
+        // trace started outside the world (and no normal is returned)           
+        local goal = self:GetAverageWallWalkingNormal(kNormalWallWalkRange, kNormalWallWalkFeelerSize)
+        if goal ~= nil then 
+        
+            self.wallWalkingNormalGoal = goal
+            self.wallWalking = true
+           -- self:SetEnergy(self:GetEnergy() - kWallWalkEnergyCost)
+
+        else
+            self.wallWalking = false
+        end
+    
+    end
+    
+    if not self:GetIsWallWalking() then
+        // When not wall walking, the goal is always directly up (running on ground).
+        self.wallWalkingNormalGoal = Vector.yAxis
+    end
+    
+   
+
+  //  if self.leaping and Shared.GetTime() > self.timeOfLeap + kLeapTime then
+  //      self.leaping = false
+  //  end
+    
+    self.currentWallWalkingAngles = self:GetAnglesFromWallNormal(self.wallWalkingNormalGoal or Vector.yAxis) or self.currentWallWalkingAngles
+
+
+end
+function Marine:GetMoveSpeedIs2D()
+    return not self:GetIsWallWalking()
+end
+function Marine:GetCanStep()
+    return not self:GetIsWallWalking()
+end
+
 function Marine:OnLocationChange(locationName)
  local open = GetSiegeDoorOpen()
  //Print("siege door is open %s", open)
@@ -89,12 +267,28 @@ function Marine:GetHasFireBullets()
     return false
     end
 end
+function Marine:GetHasMoonBoots()
+    if self.wallboots then
+    return true
+    else 
+    return false
+    end
+end
 function Marine:GetHasNanoArmor()
     if self.nanoarmor then
     return true
     else 
     return false
     end
+end
+function Marine:GetHasJumpPack()
+
+if self.hasjumppack then 
+return true
+else 
+return false
+end
+
 end
 function Marine:AdjustDisplayRessuply(player, left, has) 
  return
@@ -386,38 +580,9 @@ local function GetHostSupportsTechId(forPlayer, host, techId)
     return techFound
     
 end
-function GetHostStructureFor(entity, techId)
-
-    local hostStructures = {}
-    table.copy(GetEntitiesForTeamWithinRange("Armory", entity:GetTeamNumber(), entity:GetOrigin(), Armory.kResupplyUseRange), hostStructures, true)
-    table.copy(GetEntitiesForTeamWithinRange("PrototypeLab", entity:GetTeamNumber(), entity:GetOrigin(), PrototypeLab.kResupplyUseRange), hostStructures, true)
-    table.copy(GetEntitiesForTeamWithinRange("ArmsLab", entity:GetTeamNumber(), entity:GetOrigin(), 2.5), hostStructures, true)
-    
-    if table.count(hostStructures) > 0 then
-    
-        for index, host in ipairs(hostStructures) do
-        
-            -- check at first if the structure is hostign the techId:
-            if GetHostSupportsTechId(entity,host, techId) then
-                return host
-            end
-        
-        end
-            
-    end
-    
-    return nil
-
-end
 
 
-function Marine:GetHasJumpPack()
 
-if self.hasjumppack then return true
-else return false
-end
-
-end
 local origattemptbuy = Marine.AttemptToBuy
 function Marine:AttemptToBuy(techIds)
 
@@ -442,6 +607,9 @@ function Marine:AttemptToBuy(techIds)
                 return true
                elseif techId == kTechId.RegenArmor then
                  self.nanoarmor = true
+                 return true
+               elseif techId == kTechId.MoonBoots then
+                 self.wallboots = true
                  return true
                 end
                 

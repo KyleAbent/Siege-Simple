@@ -156,7 +156,7 @@ Shine.VoteMenu:AddPage ("SpendPres", function( self )
                self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
                
        if player:GetTeamNumber() == 1 then 
-        self:AddSideButton( "Upgrades(Armslab)", function() self:SetPage( "SpendUpgrades" ) end)
+        self:AddSideButton( "Upgrades", function() self:SetPage( "SpendUpgrades" ) end)
       end  
              
      self:AddBottomButton( "Back", function()self:SetPage("Main")end)

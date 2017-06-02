@@ -1,3 +1,5 @@
+kMoonBootsCost = 200
+kWallCommLimitPerRoom = 5
 --Credits Start
 
 --Credits Structures Marine

@@ -131,8 +131,8 @@ local kSoundData =
 
     -- marine vote menu
     [kVoiceId.RequestWeld] = { Sound = "sound/NS2.fev/marine/voiceovers/weld", Function = GiveWeldOrder, Description = "REQUEST_MARINE_WELD", KeyBind = "RequestWeld", AlertTechId = kTechId.None },
-    [kVoiceId.MarineRequestMedpack] =  {  Sound = "sound/NS2.fev/marine/voiceovers/medpack", Function = BuyMedPack, Description = "Purchase Medpack(10)", KeyBind = "RequestHealth"},
-    [kVoiceId.MarineRequestAmmo] = {   Sound = "sound/NS2.fev/marine/voiceovers/ammo", Function = BuyAmmoPack, Description = "Purchase Ammopack(10)", KeyBind = "RequestAmmo"},
+    [kVoiceId.MarineRequestMedpack] =  {  Sound = "sound/NS2.fev/marine/voiceovers/medpack", Function = BuyMedPack, Description = "Purchase Medpack(3)", KeyBind = "RequestHealth"},
+    [kVoiceId.MarineRequestAmmo] = {   Sound = "sound/NS2.fev/marine/voiceovers/ammo", Function = BuyAmmoPack, Description = "Purchase Ammopack(3)", KeyBind = "RequestAmmo"},
     [kVoiceId.MarineRequestOrder] = { Sound = "sound/NS2.fev/marine/voiceovers/need_orders", Description = "REQUEST_MARINE_ORDER",  KeyBind = "RequestOrder", AlertTechId = kTechId.MarineAlertNeedOrder },
     
     [kVoiceId.MarineTaunt] = { Sound = "sound/NS2.fev/marine/voiceovers/taunt", Description = "REQUEST_MARINE_TAUNT", KeyBind = "Taunt", AlertTechId = kTechId.None },

@@ -419,7 +419,7 @@ return true
 end
 
 function Plugin:MapPostLoad()
-      self:StartAutoCommTimer()
+      --self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
 end
@@ -605,7 +605,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
        elseif State == kGameState.NotStarted then
                 --GetImaginator():OnPreGame()
              GetSandCastle():OnPreGame()
-            self:StartAutoCommTimer()
+           -- self:StartAutoCommTimer()
              self.autoCommTime = kAutoCommTimer
              self.AutoCCtimer = false
           end

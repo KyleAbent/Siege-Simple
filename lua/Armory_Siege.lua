@@ -1,25 +1,34 @@
 function Armory:GetMinRangeAC()
 return ArmoryAutoCCMR 
 end
-/*
+
 local origlist = Armory.GetItemList
 function Armory:GetItemList(forPlayer)
     
     local list = origlist(self, forPlayer)
-   
-    if self:GetTechId() == kTechId.AdvancedArmory then
-    
-    list[10] = kTechId.ConcGrenade
-     else
 
-       list[6] = kTechId.ConcGrenade
-    end
-   
+    list[7] = kTechId.Resupply
+    list[8] = kTechId.FireBullets
+    if forPlayer:GetHasResupply() then list[7] = kTechId.None end
+    if forPlayer:GetHasFireBullets() then list[8] = kTechId.None end
+
     
     return list
     
 end
-*/
+function AdvancedArmory:GetItemList(forPlayer)
+    
+    local list = origlist(self, forPlayer)
+
+    list[10] = kTechId.Resupply
+    list[11] = kTechId.FireBullets
+    if forPlayer:GetHasResupply() then list[10] = kTechId.None end
+    if forPlayer:GetHasFireBullets() then list[11] = kTechId.None end
+
+    
+    return list
+    
+end
 function Armory:GetShouldResupplyPlayer(player)
     if not player:GetIsAlive() then
         return false

@@ -386,6 +386,7 @@ function Alien:GiveLayStructure(techid, mapname)
    --  self:TellMarine(self)
   -- end
 end
+/*
     function Alien:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and GetHasDamageResistanceUpgrade(self) then
@@ -396,6 +397,7 @@ end
     end
 
 end
+*/
 if Client then
 
 local orig_Alien_UpdateClientEffects = Alien.UpdateClientEffects

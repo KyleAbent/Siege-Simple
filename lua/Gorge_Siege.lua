@@ -39,9 +39,6 @@ function Gorge:OnInitialized()
 end
 
 
-function Gorge:GetBallFlagAttatchPoint(player)
-       return kBallFlagAttachPoint
-end
 function Gorge:GetRebirthLength()
 return 3
 end
@@ -273,28 +270,7 @@ function Gorge:PreUpdateMove(input, runningPrediction)
         // When not wall walking, the goal is always directly up (running on ground).
         self.wallWalkingNormalGoal = Vector.yAxis
     end
-    
-    	if self.isriding then 
-	 	local drifter = Shared.GetEntity( self.drifterId ) 
-	 	 if drifter then
-	   //    if not drifter:GetIsAlive() then self.isriding = false self.drifterId = Entity.invalidI return end 
-	    	local offset = drifter:GetOrigin() + Vector(0,.5,0)
-	 	   self:SetOrigin(offset)
-           if not self:GetOrigin() == offset then self:SetOrigin(offset) SetMoveForHitregAnalysis(input)  end
-         else
-             local lerk = Shared.GetEntity(self.gorgeusingLerkID)
-             if lerk then
-         	       if not lerk then self.isriding = false self.gorgeusingLerkID = Entity.invalidI  self:RedemAlienToHive() return end 
-         	       local origin = lerk:GetOrigin() + Vector(0,.5,0)
-	 	           self.fullPrecisionOrigin = origin
-	 	          self:SetOrigin(origin)
-                  if not self:GetOrigin() == origin then self:SetOrigin(origin)  end
-                  SetMoveForHitregAnalysis(input)
-             end
-         end
-   end
-   
-   
+
 
   //  if self.leaping and Shared.GetTime() > self.timeOfLeap + kLeapTime then
   //      self.leaping = false

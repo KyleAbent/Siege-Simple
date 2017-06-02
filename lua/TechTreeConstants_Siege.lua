@@ -63,14 +63,14 @@ local kSiege_TechIds =
     'Resupply',
     'FireBullets',
     'RegenArmor',
-    'DamageResistance',
+--    'DamageResistance',
     'PGchannelOne',
     'PGchannelTwo',
     'ShiftCall',
     'ShiftReceive',
     'SiegeBeacon',
     'Digest',
-
+    'MoonBoots',
     
 }
 

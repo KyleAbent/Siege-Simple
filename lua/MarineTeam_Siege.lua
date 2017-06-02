@@ -40,6 +40,7 @@ function MarineTeam:InitTechTree()
        self.techTree:AddTargetedBuyNode(kTechId.HeavyArmor,            kTechId.None,         kTechId.None) 
        self.techTree:AddTargetedBuyNode(kTechId.FireBullets,            kTechId.None,         kTechId.None) 
        self.techTree:AddTargetedBuyNode(kTechId.RegenArmor,            kTechId.None,         kTechId.None) 
+       self.techTree:AddTargetedBuyNode(kTechId.MoonBoots,            kTechId.None,         kTechId.None) 
        
        
        
