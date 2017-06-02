@@ -11,8 +11,22 @@ AddMixinNetworkVars(AvocaMixin, networkVars)
 function Observatory:GetMinRangeAC()
 return ObsAutoCCMR   
 end
+/*
+function Observatory:GetTechAllowed(techId, techNode, player)
 
-
+    local allowed, canAfford = ScriptActor.GetTechAllowed(self, techId, techNode, player)
+    if techId == kTechId.SiegeBeacon then
+    allowed = allowed and GetSiegeDoorOpen() and not GetSandCastle():GetHasSiegeBeaconed() and not GetSandCastle():GetSDBoolean()
+    end
+    
+    if techId == kTechId.AdvancedBeacon then
+    allowed = allowed and not GetSandCastle():GetSDBoolean()
+    end
+    
+    return allowed, canAfford
+    
+end
+*/
 function Observatory:GetTechButtons(techId)
 
 --Right now pure overwrites because lazy
@@ -23,6 +37,11 @@ kTechId.PhaseTech, kTechId.AdvancedBeacon, kTechId.None, kTechId.None }
 if GetSandCastle():GetSDBoolean() then
 kObservatoryTechButtons[6] = kTechId.None
 end
+
+if GetSiegeDoorOpen() and not GetSandCastle():GetHasSiegeBeaconed() and not GetSandCastle():GetSDBoolean() then
+kObservatoryTechButtons[7] = kTechId.SiegeBeacon
+end
+
     
     
     if techId == kTechId.RootMenu then
@@ -54,6 +73,49 @@ function Observatory:OnVortex()
     end
     
 end
+function Observatory:GetSiegePowerOrigin()
+local siegelocation = GetSiegeLocation()
+local siegepower = GetPowerPointForLocation(siegelocation.name)
+ return siegepower:GetOrigin()
+end
+function Observatory:TriggerSiegeBeacon()
+
+    local success = false
+    
+    if not self:GetIsBeaconing() then
+
+        self.distressBeaconSound:Start()
+
+        local origin = self:GetSiegePowerOrigin()
+        
+        if origin then
+        
+            self.distressBeaconSound:SetOrigin(origin)
+
+            // Beam all faraway players back in a few seconds!
+           // self.distressBeaconTime = Shared.GetTime() + Observatory.kDistressBeaconTime
+              self.siegeBeaconTime = Shared.GetTime() + Observatory.kDistressBeaconTime
+            if Server then
+            
+                TriggerMarineBeaconEffects(self)
+                
+                local location = GetLocationForPoint(origin)
+                local locationName = location and location:GetName() or ""
+                local locationId = Shared.GetStringIndex(locationName)
+                SendTeamMessage(self:GetTeam(), kTeamMessageTypes.Beacon, locationId)
+                
+            end
+            
+            success = true
+        
+        end
+    
+    end
+    
+    return success, not success
+    
+end
+
 function Observatory:TriggerAdvancedBeacon()
 
     local success = false
@@ -152,8 +214,8 @@ local function GetPlayersToBeacon(self, toOrigin)
     
 end
 
-function Observatory:PerformAdvancedBeacon()
-
+function Observatory:PerformSiegeBeacon()
+    GetSandCastle():SetSiegeBeaconed(true)
     self.distressBeaconSound:Stop()
     self.lastbeacon = Shared.GetTime()
     local anyPlayerWasBeaconed = false
@@ -161,9 +223,18 @@ function Observatory:PerformAdvancedBeacon()
     local successfullExoPositions = {}
     local failedPlayers = {}
     
-    local distressOrigin = self:GetDistressOrigin()
+    local distressOrigin =  FindFreeSpace(self:GetSiegePowerOrigin()) 
     if distressOrigin then
     
+            // Respawn DeadPlayers
+                        for _, entity in ientitylist(Shared.GetEntitiesWithClassname("MarineSpectator")) do
+                          if entity:GetTeamNumber() == 1 and not entity:GetIsAlive() then
+                          entity:SetCameraDistance(0)
+                          entity:GetTeam():ReplaceRespawnPlayer(entity, distressOrigin)
+                          end
+                        end
+                        
+                        
         for index, player in ipairs(GetPlayersToBeacon(self, distressOrigin)) do
         
             local success, respawnPoint = RespawnPlayer(self, player, distressOrigin)
@@ -182,20 +253,81 @@ function Observatory:PerformAdvancedBeacon()
             
         end
         
-        // Respawn DeadPlayers
-     //   if Server then
-       //     local gameRules = GetGamerules()
-         //   if gameRules then
-           //    if gameRules:GetGameStarted() and not gameRules:GetIsSuddenDeath() then 
+
+            
+        
+    end
+    
+    local usePositionIndex = 1
+    local numPosition = #successfullPositions
+
+    for i = 1, #failedPlayers do
+    
+        local player = failedPlayers[i]  
+    
+        if player:isa("Exo") then        
+            player:SetOrigin(successfullExoPositions[math.random(1, #successfullExoPositions)])  
+            player:SetCameraDistance(0)      
+        else
+              
+            player:SetOrigin(distressOrigin)
+            player:SetCameraDistance(0) 
+            if player.TriggerBeaconEffects then
+                player:TriggerBeaconEffects()
+                player:SetCameraDistance(0)  
+            end
+            
+            usePositionIndex = Math.Wrap(usePositionIndex + 1, 1, numPosition)
+            
+        end    
+    
+    end
+
+    if anyPlayerWasBeaconed then
+        self:TriggerEffects("distress_beacon_complete")
+    end
+    
+end
+function Observatory:PerformAdvancedBeacon()
+
+    self.distressBeaconSound:Stop()
+    self.lastbeacon = Shared.GetTime()
+    local anyPlayerWasBeaconed = false
+    local successfullPositions = {}
+    local successfullExoPositions = {}
+    local failedPlayers = {}
+    
+    local distressOrigin = self:GetDistressOrigin()
+    if distressOrigin then
+    
+            // Respawn DeadPlayers
                         for _, entity in ientitylist(Shared.GetEntitiesWithClassname("MarineSpectator")) do
                           if entity:GetTeamNumber() == 1 and not entity:GetIsAlive() then
                           entity:SetCameraDistance(0)
-                          entity:GetTeam():ReplaceRespawnPlayer(entity)
+                          entity:GetTeam():ReplaceRespawnPlayer(entity, distressOrigin)
                           end
                         end
-             //  end
-           // end
-         // end
+                        
+                        
+        for index, player in ipairs(GetPlayersToBeacon(self, distressOrigin)) do
+        
+            local success, respawnPoint = RespawnPlayer(self, player, distressOrigin)
+            if success then
+            
+                anyPlayerWasBeaconed = true
+                if player:isa("Exo") then
+                    table.insert(successfullExoPositions, respawnPoint)
+                end
+                    
+                table.insert(successfullPositions, respawnPoint)
+                
+            else
+                table.insert(failedPlayers, player)
+            end
+            
+        end
+        
+
             
         
     end
@@ -252,6 +384,10 @@ function Observatory:OnUpdate(deltaTime)
             self:PerformAdvancedBeacon()
         
         self.advancedBeaconTime = nil
+    elseif self:GetIsSiegeBeaconing() and (Shared.GetTime() >= self.siegeBeaconTime) then
+            self:PerformSiegeBeacon()
+        
+        self.siegeBeaconTime = nil
     end
  
 end
@@ -263,6 +399,9 @@ function Observatory:PerformActivation(techId, position, normal, commander)
     
         if techId == kTechId.DistressBeacon then
             return self:TriggerDistressBeacon()
+        end
+        if techId == kTechId.SiegeBeacon then
+            return self:TriggerSiegeBeacon()
         end
         if techId == kTechId.AdvancedBeacon then
                   if not self:GetIsPowered() then
@@ -278,6 +417,9 @@ function Observatory:PerformActivation(techId, position, normal, commander)
 end
 function Observatory:GetIsAdvancedBeaconing()
     return self.advancedBeaconTime ~= nil
+end
+function Observatory:GetIsSiegeBeaconing()
+    return self.siegeBeaconTime ~= nil
 end
 if Server then
 

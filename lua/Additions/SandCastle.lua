@@ -26,6 +26,7 @@ local networkVars =
    isSuddenDeath = "boolean",
    primaryOpened = "boolean",
    sdTimer = "time",
+   siegeBeaconed = "boolean",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -40,6 +41,7 @@ function SandCastle:TimerValues()
    self.primaryOpened = false
    self.isSuddenDeath = false
    self.sdTimer = 0
+   self.siegeBeaconed = false
 end
 
 function SandCastle:OnReset() 
@@ -47,6 +49,12 @@ function SandCastle:OnReset()
 end
 function SandCastle:GetIsMapEntity()
 return true
+end
+function SandCastle:GetHasSiegeBeaconed()
+return self.siegeBeaconed
+end
+function SandCastle:SetSiegeBeaconed(boolean)
+ self.siegeBeaconed = boolean
 end
 function SandCastle:ClearAttached()
 return 

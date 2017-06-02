@@ -1,3 +1,14 @@
+Script.Load("lua/Additions/DigestMixin.lua")
+local networkVars = {}
+AddMixinNetworkVars(DigestMixin, networkVars)
+
+local origcreate = Crag.OnCreate
+function Crag:OnCreate()
+   origcreate(self)
+    InitMixin(self, DigestMixin)
+ end
+ 
+ 
 function Crag:GetCragsInRange()
       local crag = GetEntitiesWithinRange("Crag", self:GetOrigin(), Crag.kHealRadius)
            return Clamp(#crag, 0, 7)
@@ -21,6 +32,7 @@ local table = {}
 table = origbuttons(self, techId)
 
  table[4] = kTechId.CragUmbra
+ table[8] = kTechId.Digest
  
  return table
 
@@ -93,3 +105,4 @@ end
 
 
 
+Shared.LinkClassToMap("Crag", Crag.kMapName, networkVars)

@@ -57,7 +57,7 @@ function Wall:OnCreate()
     InitMixin(self, PointGiverMixin)
 
     self:SetPhysicsType(PhysicsType.Kinematic) --?
-    self:SetPhysicsGroup(PhysicsGroup.WallGroup)
+    --self:SetPhysicsGroup(PhysicsGroup.WallGroup)
     
    
 

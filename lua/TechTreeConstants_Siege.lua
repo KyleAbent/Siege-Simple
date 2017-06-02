@@ -52,7 +52,7 @@ local kSiege_TechIds =
     'DualFlamerExosuit',
     'LerkBileBomb',
     'JumpPack',
-    'ConcGrenade',
+    --'ConcGrenade',
     'WhipExplode',
     'ShiftEnzyme',
     'ShadeHallucination',
@@ -66,7 +66,10 @@ local kSiege_TechIds =
     'DamageResistance',
     'PGchannelOne',
     'PGchannelTwo',
-
+    'ShiftCall',
+    'ShiftReceive',
+    'SiegeBeacon',
+    'Digest',
 
     
 }

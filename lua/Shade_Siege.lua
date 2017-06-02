@@ -1,4 +1,14 @@
---derp
+Script.Load("lua/Additions/DigestMixin.lua")
+local networkVars = {}
+AddMixinNetworkVars(DigestMixin, networkVars)
+
+local origcreate = Shade.OnCreate
+function Shade:OnCreate()
+    origcreate(self)
+    InitMixin(self, DigestMixin)
+ end
+ 
+  
 function Shade:GetMinRangeAC()
 return ShadeAutoCCMR     
 end
@@ -10,7 +20,7 @@ local table = {}
 table = origbuttons(self, techId)
 
  table[4] = kTechId.ShadeHallucination
- 
+ table[8] = kTechId.Digest
  return table
 
 end
@@ -35,3 +45,5 @@ function Shade:TriggerHallucination()
          end
              return true      
 end
+
+Shared.LinkClassToMap("Shade", Shade.kMapName, networkVars)

@@ -1,13 +1,21 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
-
+Script.Load("lua/Additions/DigestMixin.lua")
 
 local networkVars = { salty = "private boolean" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
+AddMixinNetworkVars(DigestMixin, networkVars)
+
+local origcreate = Whip.OnCreate
+function Whip:OnCreate()
+   origcreate(self)
+    InitMixin(self, DigestMixin)
+ end
+  
 function Whip:GetInfestationRadius()
     if self.salty then
     return 1
@@ -26,7 +34,7 @@ local table = {}
 table = origbuttons(self, techId)
 
  table[4] = kTechId.WhipExplode
- 
+ table[8] = kTechId.Digest
  return table
 
 end

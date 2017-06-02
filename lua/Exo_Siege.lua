@@ -110,9 +110,7 @@ function Exo:InitWeapons()
 
     
 end
-function Exo:GetMovePhysicsMask()
-    return PhysicsMask.MarineMovement
-end
+
 function Exo:GetCanControl()
     return not self.isLockedEjecting and not self.isMoveBlocked and self:GetIsAlive() and  not self.countingDown and not self.concedeSequenceActive
 end

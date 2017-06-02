@@ -761,11 +761,11 @@ elseif String == "Armory"  then
 CreditCost = gCreditStructureArmoryCost
 mapnameof = Armory.kMapName
 techid = kTechId.Armory
-elseif String == "Wall"  then
-CreditCost = gCreditStructureWallCost
-mapnameof = Wall.kMapName
-techid = kTechId.Wall
-limit = gCreditStructureWallLimit
+--elseif String == "Wall"  then
+--CreditCost = gCreditStructureWallCost
+--mapnameof = Wall.kMapName
+--techid = kTechId.Wall
+--limit = gCreditStructureWallLimit
 elseif String == "Sentry"  then
 mapnameof = Sentry.kMapName
 techid = kTechId.Sentry

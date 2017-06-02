@@ -39,7 +39,8 @@ function AlienTeam:InitTechTree()
  self.techTree:AddActivation(kTechId.ShadeHallucination, kTechId.BioMassNine, kTechId.None) 
  self.techTree:AddTargetedActivation(kTechId.TunnelTeleport, kTechId.ShiftHive, kTechId.None) 
  
-  
+     self.techTree:AddActivation(kTechId.ShiftReceive,                kTechId.ShiftHive,          kTechId.None)
+    self.techTree:AddActivation(kTechId.ShiftCall,                kTechId.ShiftHive,          kTechId.None)
    
 self.techTree:AddBuildNode(kTechId.EggBeacon, kTechId.CragHive)
 self.techTree:AddBuildNode(kTechId.CommTunnel, kTechId.None)
@@ -60,6 +61,7 @@ self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTe
     self.techTree:AddBuyNode(kTechId.Hunger, kTechId.Shell, kTechId.None, kTechId.AllAliens)
     self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
+    self.techTree:AddUpgradeNode(kTechId.Digest, kTechId.None, kTechId.None)
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree
 end

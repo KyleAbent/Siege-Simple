@@ -104,22 +104,7 @@ local function GiveUnDeploy(who)
      who:TriggerEffects("arc_stop_charge")
      who:TriggerEffects("arc_undeploying")
 end
-local function GetSiegeLocation()
---local locations = {}
 
-local hive = nil
-
- for _, hivey in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
-    hive = hivey
- end
- local siegeloc = nil
- if hive ~= nil then
-  siegeloc = GetNearest(hive:GetOrigin(), "Location", nil, function(ent) return string.find(ent.name, "siege") or string.find(ent.name, "Siege") end)
- end
- 
-if siegeloc then return siegeloc end
- return nil
-end
 local function MoveToPowers(self)
    --Austin 
       if GetIsTimeUp(self.lastWand, math.random(8, 16) ) then

@@ -1,4 +1,20 @@
 --Kyle 'Avoca' Abent
+function GetSiegeLocation()
+--local locations = {}
+
+local hive = nil
+
+ for _, hivey in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
+    hive = hivey
+ end
+ local siegeloc = nil
+ if hive ~= nil then
+  siegeloc = GetNearest(hive:GetOrigin(), "Location", nil, function(ent) return string.find(ent.name, "siege") or string.find(ent.name, "Siege") end)
+ end
+ 
+if siegeloc then return siegeloc end
+ return nil
+end
 local kExtents = Vector(0.4, 0.5, 0.4) -- 0.5 to account for pathing being too high/too low making it hard to palce tunnels
  function GetHasActiveObsInRange(where)
 

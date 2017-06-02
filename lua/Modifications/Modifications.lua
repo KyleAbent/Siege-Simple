@@ -1,5 +1,4 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
-Script.Load("lua/DefaultOverwrites/PhysicsGroups.lua")
 function BotTeamController:NeededCommanders()
     return 0
 end
@@ -234,7 +233,7 @@ if Server then
         
     end
     
-    return validRoom and numInRoom < 6
+    return validRoom and numInRoom < 5
 end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
   if GetSandCastle():GetSDBoolean() then return false end

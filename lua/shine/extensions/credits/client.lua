@@ -20,7 +20,7 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
 		self:AddSideButton("BackupLight: "..gCreditStructureBackupLightCost, function() Shared.ConsoleCommand ("sh_buy BackupLight")  end)
 		self:AddSideButton("InfantryPortal: "..gCreditStructureInfantryPortalCost, function() Shared.ConsoleCommand ("sh_buy InfantryPortal")  end)
         self:AddSideButton("RoboticsFactory: "..gCreditStructureRoboticsFactoryCost, function() Shared.ConsoleCommand ("sh_buy RoboticsFactory") end)
-        self:AddSideButton("Wall: "..gCreditStructureWallCost, function() Shared.ConsoleCommand ("sh_buy Wall") end)    
+       -- self:AddSideButton("Wall: "..gCreditStructureWallCost, function() Shared.ConsoleCommand ("sh_buy Wall") end)    
    // self:AddSideButton( "LowerSupplyLimit(5)", function() Shared.ConsoleCommand ("sh_buy LowerSupplyLimit")  end)
     elseif player:GetTeamNumber() == 2 then
 		if player:isa("Gorge") then

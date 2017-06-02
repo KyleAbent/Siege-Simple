@@ -14,8 +14,9 @@ Script.Load("lua/MAC_Siege.lua")
 Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
 Script.Load("lua/Additions/ExoFlamer.lua")
-Script.Load("lua/Additions/ConcGrenade.lua")
+--Script.Load("lua/Additions/ConcGrenade.lua")
 Script.Load("lua/Additions/Wall.lua")
+Script.Load("lua/Additions/DigestMixin.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)
@@ -78,6 +79,25 @@ end
 local kSiege_TechData =
 {   
 
+
+        { [kTechDataId] = kTechId.Digest,   
+            [kTechDataDisplayName] = "Digest",
+ [kTechDataCostKey] = 0,   
+ [kTechIDShowEnables] = false,     
+  [kTechDataResearchTimeKey] = kRecycleTime,
+ [kTechDataHotkey] = Move.R, 
+[kTechDataTooltipInfo] =  "Try a fart or two. This mimicks marine commander Recyle to kill structure and give tres."},
+
+
+       { [kTechDataId] = kTechId.SiegeBeacon,  
+        [kTechDataBuildTime] = 0.1,   
+        [kTechDataDisplayName] = "SiegeBeacon", 
+      [kTechDataHotkey] = Move.B, 
+      [kTechDataCostKey] = kObservatoryDistressBeaconCost, 
+    [kTechDataTooltipInfo] =  "Once per game, advanced beacon located inside Siege Room rather than closest CC. Choose your timing wisely."},
+    
+    
+
                                 { [kTechDataId] = kTechId.PGchannelOne,  
           [kTechDataBuildTime] = 0.1,   
         [kTechDataDisplayName] = "Channel 1", 
@@ -128,14 +148,14 @@ local kSiege_TechData =
 [kTechDataDisplayName] = "ElectrifyStructure", 
 [kTechDataTooltipInfo] =  "ElectrifyStructure 2"},
 
-
+/*
              { [kTechDataId] = kTechId.ConcGrenade,
         [kTechDataCostKey] = 5,
         [kTechDataDisplayName] = "Conc Grenade", 
         [kTechDataMapName] = "ConcGrenadeThrower",         
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Team Fortress Classics"},
-      
+      */
              { [kTechDataId] = kTechId.JumpPack,
         [kTechDataCostKey] = kJumpPackCost,
         [kTechDataDisplayName] = "Jump Pack", 
@@ -242,7 +262,7 @@ local kSiege_TechData =
           [kTechDataBuildRequiresMethod] = GetCheckWallLimit,
            [kTechDataMaxHealth] = 2000,
              [kTechDataMaxArmor] = 0,
-             [kTechDataBuildMethodFailedMessage] = "6 per room", 
+             [kTechDataBuildMethodFailedMessage] = "limit per room reached", 
 [kTechDataCostKey] = 15, 
  [kTechDataSpecifyOrientation] = true,
   [kTechDataPointValue] = 3,
@@ -440,6 +460,19 @@ local kSiege_TechData =
        -- [kTechDataResearchTimeKey] = kPrimalScreamTimeKey, 
  [kTechDataTooltipInfo] = "+Energy to teammates, enzyme cloud"},
  
+  
+          { [kTechDataId] = kTechId.ShiftCall,    
+          [kTechDataCooldown] = 5,    
+          [kTechDataDisplayName] = "Call",       
+         [kTechDataCostKey] = 0, 
+         [kTechDataTooltipInfo] = "Everything eligable in radius will automatically teleport to a receiving shift."},
+         
+          { [kTechDataId] = kTechId.ShiftReceive,    
+          [kTechDataCooldown] = 5,    
+          [kTechDataDisplayName] = "Recieve",       
+         [kTechDataCostKey] = 0, 
+         [kTechDataTooltipInfo] = "If you have a Calling shift then this shift will receive."},
+         
     
         { [kTechDataId] = kTechId.MacSpawnOn,    
           [kTechDataCooldown] = 5,    
