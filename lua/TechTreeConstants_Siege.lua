@@ -71,6 +71,7 @@ local kSiege_TechIds =
     'SiegeBeacon',
     'Digest',
     'MoonBoots',
+    'LightArmor',
     
 }
 

@@ -11,6 +11,8 @@ local networkVars =
     wallboots = "private boolean",
     wallWalking = "compensated boolean",
     timeLastWallWalkCheck = "private compensated time",
+    
+    lightarmor = "private boolean",
 }
 
 
@@ -32,6 +34,7 @@ function Marine:OnInitialized()
     InitMixin(self, GlowMixin)
     self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
     self.timeLastWallJump = 0
+
 end
 
 local origcreate = Marine.OnCreate
@@ -52,6 +55,7 @@ function Marine:OnCreate()
     self.wallWalkingNormalGoal = Vector.yAxis
     self.timeLastWallJump = 0
        InitMixin(self, WallMovementMixin)
+     self.lightarmor = false
 end
 
 function Marine:GetCanJump()
@@ -243,9 +247,26 @@ end
 local origarmor = Marine.GetArmorAmount
 function Marine:GetArmorAmount(armorLevels)
     local orig = origarmor(self, armorLevels)
-    return orig + ConditionalValue(self.heavyarmor, 30, 0)
+          orig = orig + ConditionalValue(self.heavyarmor, 30, 0)
+          orig = orig - ConditionalValue(self.lightarmor, 30, 0)
+          return orig
 end
+local origspeed = Marine.GetMaxSpeed
 
+function Marine:GetMaxSpeed(possible)
+
+local origspeed = origspeed(self, possible)
+
+ if not self.lightarmor then
+    --Print("Speed is %s", origspeed)
+   return origspeed
+  else
+   origspeed = origspeed * 1.3
+   end
+   --Print("Speed is %s", origspeed)
+   return origspeed
+
+end
 function Marine:GetHasResupply()
     if self.hasresupply then
     return true
@@ -255,6 +276,13 @@ function Marine:GetHasResupply()
 end
 function Marine:GetHasHeavyArmor()
     if self.heavyarmor then
+    return true
+    else 
+    return false
+    end
+end
+function Marine:GetHasLightArmor()
+    if self.lightarmor then
     return true
     else 
     return false
@@ -408,11 +436,13 @@ self.Color = player.Color
   self:AddTimedCallback(function() self:GlowColor(self.Color, 120)  return false end, 4)      
  end
 
+end
+
 self.hasfirebullets = player.hasfirebullets 
 self.hasresupply = player.hasresupply 
 self.heavyarmor = player.heavyarmor 
 self.nanoarmor = player.nanoarmor 
-end
+self.lightarmor = player.lightarmor
 
 end
 
@@ -601,6 +631,7 @@ function Marine:AttemptToBuy(techIds)
                 return true
               elseif techId == kTechId.HeavyArmor then
                self.heavyarmor = true
+               self.lightarmor = false
                return true
                elseif techId == kTechId.FireBullets then
                 self.hasfirebullets = true
@@ -610,6 +641,10 @@ function Marine:AttemptToBuy(techIds)
                  return true
                elseif techId == kTechId.MoonBoots then
                  self.wallboots = true
+                 return true
+               elseif techId == kTechId.LightArmor then
+                 self.lightarmor = true
+                 self.heavyarmor = false
                  return true
                 end
                 

@@ -138,6 +138,13 @@ local kSiege_TechData =
           [kTechDataDisplayName] = "Heavy Armor",  
      [kTechDataCostKey] = kHeavyArmorCost, },
      
+     
+                                  { [kTechDataId] = kTechId.LightArmor,   
+       [kTechDataTooltipInfo] = "Light Armor", 
+          [kTechDataDisplayName] = "Light Armor",  
+     [kTechDataCostKey] = kHeavyArmorCost, },
+     
+     
              { [kTechDataId] = kTechId.Resupply,
         [kTechDataCostKey] = kResupplyCost,
         [kTechDataDisplayName] = "Resupply", 

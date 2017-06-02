@@ -58,6 +58,10 @@ Shine.VoteMenu:AddPage ("SpendUpgrades", function( self )
         self:AddSideButton( "Resupply(5)", function() Shared.ConsoleCommand ("sh_buyupgrade Resupply")  end)
         end
         
+        if player.GetHasLightArmor and not player:GetHasLightArmor() then
+        self:AddSideButton( "LightArmor(5)", function() Shared.ConsoleCommand ("sh_buyupgrade LightArmor")  end)
+        end
+        
         if player.GetHasHeavyArmor and not player:GetHasHeavyArmor() then
         self:AddSideButton( "HeavyArmor(5)", function() Shared.ConsoleCommand ("sh_buyupgrade HeavyArmor")  end)
         end
