@@ -1,39 +1,39 @@
-DigestMixin = CreateMixin(DigestMixin)
-DigestMixin.type = "Digest"
+DigestCommMixin = CreateMixin(DigestCommMixin)
+DigestCommMixin.type = "DigestComm"
 
 local kRecycleEffectDuration = 2
 
-DigestMixin.expectedCallback =
+DigestCommMixin.expectedCallback =
 {
 }
 
-DigestMixin.optionalCallbacks =
+DigestCommMixin.optionalCallbacks =
 {
     GetCanDigestOverride = "Return custom restrictions for recycling."
 }
 
-DigestMixin.expectedMixins =
+DigestCommMixin.expectedMixins =
 {
     Research = "Required for recycle progress / cancellation."
 }    
 
-DigestMixin.networkVars =
+DigestCommMixin.networkVars =
 {
     digested = "boolean"
 }
 
-function DigestMixin:__initmixin()
+function DigestCommMixin:__initmixin()
     self.digested = false
 end
 
-function DigestMixin:GetDigestActive()
+function DigestCommMixin:GetDigestActive()
     return self.researchingId == kTechId.Digest
 end
 
-function DigestMixin:OnRecycled()
+function DigestCommMixin:OnRecycled()
 end
 
-function DigestMixin:GetCanRecycle()
+function DigestCommMixin:GetCanRecycle()
 
     local canRecycle = true
     
@@ -45,7 +45,7 @@ function DigestMixin:GetCanRecycle()
 
 end
 
-function DigestMixin:OnResearchComplete(researchId)
+function DigestCommMixin:OnResearchComplete(researchId)
 
     if researchId == kTechId.Digest then
         
@@ -90,19 +90,19 @@ function DigestMixin:OnResearchComplete(researchId)
 
 end
 
-function DigestMixin:GetIsRecycled()
+function DigestCommMixin:GetIsRecycled()
     return self.digested
 end
 
-function DigestMixin:GetRecycleScalar()
+function DigestCommMixin:GetRecycleScalar()
     return self:GetHealth() / self:GetMaxHealth()
 end
 
-function DigestMixin:GetIsRecycling()
+function DigestCommMixin:GetIsRecycling()
     return self.researchingId == kTechId.Digest
 end
 
-function DigestMixin:OnResearch(researchId)
+function DigestCommMixin:OnResearch(researchId)
 
     if researchId == kTechId.Digest then        
         self:TriggerEffects("recycle_start")        
@@ -114,7 +114,7 @@ function DigestMixin:OnResearch(researchId)
 end
 
 
-function DigestMixin:OnResearchCancel(researchId)
+function DigestCommMixin:OnResearchCancel(researchId)
 
     if researchId == kTechId.Digest then
         if self.MarkBlipDirty then
@@ -125,9 +125,9 @@ function DigestMixin:OnResearchCancel(researchId)
 end
 
 
-function DigestMixin:OnUpdateRender() --key to electrifymixin ?
+function DigestCommMixin:OnUpdateRender() --key to electrifymixin ?
 
-    PROFILE("DigestMixin:OnUpdateRender")
+    PROFILE("DigestCommMixin:OnUpdateRender")
 
     if self.digested ~= self.clientRecycled then
     
@@ -151,9 +151,9 @@ function DigestMixin:OnUpdateRender() --key to electrifymixin ?
 
 end
 
-function DigestMixin:OnUpdateAnimationInput(modelMixin)
+function DigestCommMixin:OnUpdateAnimationInput(modelMixin)
 
-    PROFILE("DigestMixin:OnUpdateAnimationInput")
+    PROFILE("DigestCommMixin:OnUpdateAnimationInput")
     modelMixin:SetAnimationInput("recycling", self:GetDigestActive())
     
 end
@@ -177,10 +177,10 @@ local function SharedUpdate(self, deltaTime)
     
 end
 
-function DigestMixin:OnUpdate(deltaTime)
+function DigestCommMixin:OnUpdate(deltaTime)
     SharedUpdate(self, deltaTime)
 end
 
-function DigestMixin:OnProcessMove(input)
+function DigestCommMixin:OnProcessMove(input)
     SharedUpdate(self, input.time)
 end

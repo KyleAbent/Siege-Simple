@@ -329,6 +329,7 @@ return false
 end
 SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
 SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
+SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
 
 
 

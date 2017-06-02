@@ -1,11 +1,11 @@
-Script.Load("lua/Additions/DigestMixin.lua")
+Script.Load("lua/Additions/DigestCommMixin.lua")
 local networkVars = {}
-AddMixinNetworkVars(DigestMixin, networkVars)
+AddMixinNetworkVars(DigestCommMixin, networkVars)
 
 local origcreate = Shade.OnCreate
 function Shade:OnCreate()
     origcreate(self)
-    InitMixin(self, DigestMixin)
+    InitMixin(self, DigestCommMixin)
  end
  
   

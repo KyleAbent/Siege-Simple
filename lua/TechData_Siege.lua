@@ -16,7 +16,7 @@ Script.Load("lua/Additions/ExoWelder.lua")
 Script.Load("lua/Additions/ExoFlamer.lua")
 --Script.Load("lua/Additions/ConcGrenade.lua")
 Script.Load("lua/Additions/Wall.lua")
-Script.Load("lua/Additions/DigestMixin.lua")
+Script.Load("lua/Additions/DigestCommMixin.lua")
 
 
 function CheckCommTunnelReq(techId, origin, normal, commander)

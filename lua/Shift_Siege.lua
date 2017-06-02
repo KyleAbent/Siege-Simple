@@ -1,11 +1,11 @@
 --Kyle Abent
-Script.Load("lua/Additions/DigestMixin.lua")
+Script.Load("lua/Additions/DigestCommMixin.lua")
 local networkVars = {calling = "boolean", receiving = "boolean"} 
-AddMixinNetworkVars(DigestMixin, networkVars)
+AddMixinNetworkVars(DigestCommMixin, networkVars)
 local origcreate = Shift.OnCreate
 function Shift:OnCreate()
    origcreate(self)
-    InitMixin(self, DigestMixin)
+    InitMixin(self, DigestCommMixin)
  end
 function Shift:GetMinRangeAC()
 return ShiftAutoCCMR    

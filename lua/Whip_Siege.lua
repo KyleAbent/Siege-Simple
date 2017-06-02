@@ -1,19 +1,19 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/AvocaMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
-Script.Load("lua/Additions/DigestMixin.lua")
+Script.Load("lua/Additions/DigestCommMixin.lua")
 
 local networkVars = { salty = "private boolean" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
 AddMixinNetworkVars(AvocaMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
-AddMixinNetworkVars(DigestMixin, networkVars)
+AddMixinNetworkVars(DigestCommMixin, networkVars)
 
 local origcreate = Whip.OnCreate
 function Whip:OnCreate()
    origcreate(self)
-    InitMixin(self, DigestMixin)
+    InitMixin(self, DigestCommMixin)
  end
   
 function Whip:GetInfestationRadius()
