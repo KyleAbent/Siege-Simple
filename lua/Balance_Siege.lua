@@ -1,4 +1,4 @@
-kHeavyMachineGunDamage = 7
+--kHeavyMachineGunDamage = 7
 kMarineInitialIndivRes = 30 -- 15
 kAlienInitialIndivRes = 30 -- 12
 kMaxSupply = 225 --200

@@ -30,7 +30,7 @@ gCreditStructureMacLimit = 3
 gCreditStructureArcCost = 10
 gCreditStructureArcLimit = 2
 
-gCreditStructureExtractorCost = 250
+gCreditStructureExtractorCost = 200
 gCreditStructureExtractorLimit = 1
 
 
@@ -99,7 +99,7 @@ gCreditStructureCostCrag = 13
 gCreditStructureCostWhip = 13
 gCreditStructureCostShift = 13
 gCreditStructureCostTunnelToHive = 10
-gCreditStructureCostHarvesterExtractor = 250
+gCreditStructureCostHarvesterExtractor = 200
 gCreditStructureLimitHarvesterExtractor = 1
 --gCreditStructureCost =
 

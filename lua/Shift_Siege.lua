@@ -72,7 +72,7 @@ local receivingOrigin = nil
      local teleportAbles = GetEntitiesWithMixinForTeamWithinRange("Construct", 2, self:GetOrigin(), kEchoRange)
        if not teleportAbles then return end
          for _, teleportable in ipairs(teleportAbles) do
-             if not teleportable:isa("Hive") and self ~= teleportable and teleportable:GetIsBuilt() and not teleportable:isa("Cyst") then
+             if not teleportable:isa("Veil") and not teleportable:isa("Spur") and not teleportable:isa("Shell") and not teleportable:isa("Harvester") and not teleportable:isa("Hive") and self ~= teleportable and teleportable:GetIsBuilt() and not teleportable:isa("Cyst") then
               table.insert(eligable, teleportable)
              end
          end

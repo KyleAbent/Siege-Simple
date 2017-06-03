@@ -1,7 +1,11 @@
 -- Kyle 'Avoca' Abent
 --http://twitch.tv/kyleabent
 --https://github.com/KyleAbent/
-
+/*
+ Needs Dynamic Siege Timer based on powerpoint count? Scenario for if marines lose all but last room. I would rather
+ have Siege open in this instance than camp for 5 minutes knowing the eventual outcome.
+  
+*/
 class 'SandCastle' (ScriptActor)
 SandCastle.kMapName = "sandcastle"
 
