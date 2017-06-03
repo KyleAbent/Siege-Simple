@@ -1,12 +1,12 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 Script.Load("lua/Additions/DigestCommMixin.lua")
 
-local networkVars = { salty = "private boolean" }
+local networkVars = { }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
 AddMixinNetworkVars(DigestCommMixin, networkVars)
 
@@ -15,9 +15,23 @@ function Whip:OnCreate()
    origcreate(self)
     InitMixin(self, DigestCommMixin)
  end
-  
+ local originit = Whip.OnInitialized
+function Whip:OnInitialized()
+originit(self)
+         InitMixin(self, LevelsMixin)
+                 InitMixin(self, SaltMixin)
+           InitMixin(self, InfestationMixin)
+
+if Server then
+        local targetTypes = { kAlienStaticTargets, kAlienMobileTargets }
+        self.slapTargetSelector = TargetSelector():Init(self, Whip.kRange, true, targetTypes, { self.SlapFilter(self) })
+        self.bombardTargetSelector = TargetSelector():Init(self, Whip.kBombardRange, true, targetTypes, { self.BombFilter(self) })
+
+end
+
+end
 function Whip:GetInfestationRadius()
-    if self.salty then
+    if self:GetIsACreditStructure() then
     return 1
     else
     return 0
@@ -25,6 +39,9 @@ function Whip:GetInfestationRadius()
 end
 function Whip:GetMinRangeAC()
 return WhipAutoCCMR       
+end
+function Whip:GetCanShiftCallRec()
+ return self:GetIsBuilt()
 end
 
 local origbuttons = Whip.GetTechButtons
@@ -76,7 +93,7 @@ end
 
 function Whip:UpdateRootState()
     
-    local infested = self:GetGameEffectMask(kGameEffect.OnInfestation) or self.salty
+    local infested = self:GetGameEffectMask(kGameEffect.OnInfestation) or self:GetIsACreditStructure()
     local moveOrdered = self:GetCurrentOrder() and self:GetCurrentOrder():GetType() == kTechId.Move
     -- unroot if we have a move order or infestation recedes
     if self.rooted and (moveOrdered or not infested) then
@@ -103,21 +120,7 @@ end
     return kAlienDefaultAddXp
     end
 
-local originit = Whip.OnInitialized
-function Whip:OnInitialized()
-self:SetArtificalSalty()
-originit(self)
-         InitMixin(self, LevelsMixin)
-           InitMixin(self, InfestationMixin)
-        InitMixin(self, AvocaMixin)
-if Server then
-        local targetTypes = { kAlienStaticTargets, kAlienMobileTargets }
-        self.slapTargetSelector = TargetSelector():Init(self, Whip.kRange, true, targetTypes, { self.SlapFilter(self) })
-        self.bombardTargetSelector = TargetSelector():Init(self, Whip.kBombardRange, true, targetTypes, { self.BombFilter(self) })
 
-end
-
-end
 /*
 function Whip:OnTeleportEnd()
         local contamination = GetEntitiesWithinRange("Contamination", self:GetOrigin(), kInfestationRadius) 
@@ -156,12 +159,6 @@ function Whip:GetCanBomb(target, targetPoint)
     
 end
 
-     function Whip:SetArtificalSalty()
-         self.salty = GetImaginator():GetAlienEnabled() 
-    end
-     function Whip:SetSalty()
-         self.salty = true 
-    end
 function Whip:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then

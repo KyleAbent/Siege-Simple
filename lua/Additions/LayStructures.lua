@@ -223,14 +223,15 @@ local function DropStructure(self, player)
                 
                     if not GetIsInSiege(structure) then
                   if structure.SetConstructionComplete then  structure:SetConstructionComplete() end
-                 if not structure:isa("Hydra") and not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
+               --  if not structure:isa("Hydra") and not structure:GetGameEffectMask(kGameEffect.OnInfestation) then CreateEntity(Clog.kMapName, structure:GetOrigin(), structure:GetTeamNumber()) end
                    end --not siege
                 
                 end--teamnum 
                 end--structure
                 structure:SetOwner(player)
-                if HasMixin(structure, "Avoca") then structure:SetIsACreditStructure(true) end
+                if HasMixin(structure, "Salt") then structure:SetIsACreditStructure(true) end
                 if structure:isa("ARC") then structure:DelayDeploy() end
+                 if structure:isa("Egg") then structure:SetOrigin( structure:GetOrigin() + Vector(0, 0.25, 0) ) end
                -- if structure:isa("PhaseGate") then structure.channel = 2 end
                 if HasMixin(structure, "Supply") then RemoveSupply(self, player, structure) end
 

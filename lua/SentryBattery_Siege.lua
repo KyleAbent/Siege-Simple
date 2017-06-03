@@ -1,5 +1,17 @@
+Script.Load("lua/Additions/SaltMixin.lua")
 SentryBattery.kMarineCircleDecalName = PrecacheAsset("models/misc/circle/circle.material")
 
+local networkVars = {}
+
+AddMixinNetworkVars(SaltMixin, networkVars)
+
+
+    local originit = SentryBattery.OnInitialized
+    function SentryBattery:OnInitialized()
+        originit(self)
+        InitMixin(self, SaltMixin)
+    end
+    
 function SentryBattery:OnAdjustModelCoords(modelCoords)
     local scale = 1.15
     local coords = modelCoords
@@ -63,3 +75,5 @@ end
             Client.DestroyRenderDecal(self.ghostGuides)
     end
     end
+    
+Shared.LinkClassToMap("SentryBattery", SentryBattery.kMapName, networkVars)

@@ -330,5 +330,78 @@ end
 
 end
 
+if Client then
+    local origShowG = Gorge.GetShowGhostModel
+    function Gorge:GetShowGhostModel()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") then
+            return weapon:GetShowGhostModel()
+        end
+        
+        return origShowG(self)
+        
+    end
+     local origShowOV = Gorge.GetShowGhostModel
+    function Gorge:GetGhostModelOverride()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") and weapon.GetGhostModelName then
+            return weapon:GetGhostModelName(self)
+        end
+        return origShowOV(self)
+    end
+    local GGMT = Gorge.GetGhostModelTechId
+    function Gorge:GetGhostModelTechId()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") then
+            return weapon:GetDropStructureId()
+        end
+        
+        return GGMT(self)
+        
+    end
+    local ggmc = Gorge.GetGhostModelCoords
+    function Gorge:GetGhostModelCoords()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") then
+            return weapon:GetGhostModelCoords()
+        end
+        return ggmc(self)
+    end
+    local glcp = Gorge.GetLastClickedPosition
+    function Gorge:GetLastClickedPosition()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") then
+            return weapon.lastClickedPosition
+        end
+        return glcp(self)
+    end
+    local gipv = Gorge.GetIsPlacementValid
+    function Gorge:GetIsPlacementValid()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") then
+            return weapon:GetIsPlacementValid()
+        end
+        return gipv(self)
+    end
+    local GIGH = Gorge.GetIgnoreGhostHighlight
+    function Gorge:GetIgnoreGhostHighlight()
+    
+        local weapon = self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") and weapon.GetIgnoreGhostHighlight then
+            return weapon:GetIgnoreGhostHighlight()
+        end
+        return GIGH(self)
+    end  
+
+end
+
+
+
 
 Shared.LinkClassToMap("Gorge", Gorge.kMapName, networkVars, true)

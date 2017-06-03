@@ -1,11 +1,16 @@
 --Kyle Abent
 Script.Load("lua/Additions/DigestCommMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
 local networkVars = {calling = "boolean", receiving = "boolean"} 
 AddMixinNetworkVars(DigestCommMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
 local origcreate = Shift.OnCreate
 function Shift:OnCreate()
    origcreate(self)
     InitMixin(self, DigestCommMixin)
+        InitMixin(self, SaltMixin)
  end
 function Shift:GetMinRangeAC()
 return ShiftAutoCCMR    
@@ -16,6 +21,14 @@ function Shift:OnInitialized()
 originit(self)
 self.calling = false
 self.receiving = false
+InitMixin(self, InfestationMixin)
+end
+  function Shift:GetInfestationRadius()
+    if self:GetIsACreditStructure() then
+    return 1
+    else
+    return 0
+    end
 end
 local origbuttons = Shift.GetTechButtons
 function Shift:GetTechButtons(techId)
@@ -30,6 +43,9 @@ table = origbuttons(self, techId)
   end
  return table
 
+end
+function Shift:GetCanShiftCallRec()
+ return self:GetIsBuilt() --and not self.calling
 end
   function Shift:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
@@ -72,7 +88,7 @@ local receivingOrigin = nil
      local teleportAbles = GetEntitiesWithMixinForTeamWithinRange("Construct", 2, self:GetOrigin(), kEchoRange)
        if not teleportAbles then return end
          for _, teleportable in ipairs(teleportAbles) do
-             if not teleportable:isa("Veil") and not teleportable:isa("Spur") and not teleportable:isa("Shell") and not teleportable:isa("Harvester") and not teleportable:isa("Hive") and self ~= teleportable and teleportable:GetIsBuilt() and not teleportable:isa("Cyst") then
+             if teleportable.GetCanShiftCallRec and teleportable:GetCanShiftCallRec() and self ~= teleportable then
               table.insert(eligable, teleportable)
              end
          end

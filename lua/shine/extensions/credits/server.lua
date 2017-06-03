@@ -1,6 +1,7 @@
 /*Kyle 'Avoca' Abent Credits Season 3
 KyleAbent@gmail.com 
 */
+Script.Load("lua/Additions/SaltMixin.lua")
 local Shine = Shine
 local Plugin = Plugin
 local HTTPRequest = Shared.SendHTTPRequest
@@ -195,6 +196,13 @@ local entities = {}
                  return false  
             end
       end
+      if  entity:GetMapName() == Sentry.kMapName then
+          if not GetCheckSentryLimit(techId, Player:GetOrigin(), normal, commander) then
+                 self:NotifySalt( Client, "(Logic Fallacy):Sentry Limit per Location is reached.", true)
+                 return false  
+          end
+      end
+      
      return true
 end
 function Plugin:PregameLimit(teamnum)
@@ -406,8 +414,8 @@ end
 function Plugin:DestroyAllSaltStructFor(Client)
 //Intention: Kill Salt Structures if client f4s, otherwise 'limit' becomes nil and infinite 
 local Player = Client:GetControllingPlayer()
-        for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", Player:GetTeamNumber())) do
-        if not entity:isa("Commander") and not entity:isa("AdvancedArmory") and entity:GetOwner() == Player then entity:Kill() end 
+        for index, entity in ipairs(GetEntitiesWithMixinForTeam("Salt", Player:GetTeamNumber())) do
+        if entity:GetIsACreditStructure() and not entity:isa("Commander") and not entity:isa("AdvancedArmory") and entity:GetOwner() == Player then entity:Kill() end 
       end
     
 end
@@ -673,7 +681,7 @@ local entity = nil
            entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
            if entity.SetOwner then entity:SetOwner(whoagain) end
           if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
-              if entity:isa("PoopEgg") or entity:isa("Whip") then ent:SetSalty() end
+              if entity:isa("PoopEgg") then ent:SetSalty() end
         end
 
 

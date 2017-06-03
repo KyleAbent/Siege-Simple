@@ -1,5 +1,5 @@
-LerkSprayMixin = CreateMixin( LerkSprayMixin )
-LerkSprayMixin.type = "LerkSpray"
+LerkUmbraMixin = CreateMixin( LerkUmbraMixin )
+LerkUmbraMixin.type = "LerkUmbra"
 
 -- Players heal by base amount + percentage of max health
 local kHealPlayerPercent = 2
@@ -8,20 +8,20 @@ local kRange = 4
 local kHealCylinderWidth = 3
 
 
--- LerkSprayMixin:GetHasSecondary should completely override any existing
+-- LerkUmbraMixin:GetHasSecondary should completely override any existing
 -- GetHasSecondary function defined in the object.
-LerkSprayMixin.overrideFunctions =
+LerkUmbraMixin.overrideFunctions =
 {
     "GetHasSecondary",
     "GetSecondaryEnergyCost"
 }
 
-LerkSprayMixin.networkVars =
+LerkUmbraMixin.networkVars =
 {
     lastSecondaryAttackTime = "float"
 }
 
-function LerkSprayMixin:__initmixin()
+function LerkUmbraMixin:__initmixin()
 
     self.secondaryAttacking = false
     self.lastSecondaryAttackTime = 0
@@ -29,46 +29,69 @@ function LerkSprayMixin:__initmixin()
 
 end
 
-function LerkSprayMixin:GetHasSecondary(player)
+function LerkUmbraMixin:GetHasSecondary(player)
     return true
 end
 
-function LerkSprayMixin:GetSecondaryAttackDelay()
+function LerkUmbraMixin:GetSecondaryAttackDelay()
     return kHealsprayFireDelay
 end
 
-function LerkSprayMixin:GetSecondaryEnergyCost(player)
+function LerkUmbraMixin:GetSecondaryEnergyCost(player)
     return kHealsprayEnergyCost
 end
 
-function LerkSprayMixin:GetDeathIconIndex()
+function LerkUmbraMixin:GetDeathIconIndex()
     return kDeathMessageIcon.Spray 
 end
-
-function LerkSprayMixin:OnSecondaryAttack(player)
-
-    local enoughTimePassed = (Shared.GetTime() - self.lastSecondaryAttackTime) > self:GetSecondaryAttackDelay()
-    if player:GetSecondaryAttackLastFrame() and enoughTimePassed then
+local function CreateUmbraCloud(self, player)
     
-        if player:GetEnergy() >= self:GetSecondaryEnergyCost(player) then
-        
-            self.lastSprayAttacked = true
-            self:PerformSecondaryAttack(player)
-            
-            if self.OnHealSprayTriggered then
-                self:OnHealSprayTriggered()
-            end
-        end
-
+    local maxRange = self:GetRange()
+    
+    local trace = Shared.TraceRay(
+        player:GetEyePos(), 
+        player:GetEyePos() + player:GetViewCoords().zAxis * maxRange, 
+        CollisionRep.Damage, 
+        PhysicsMask.Bullets, 
+        EntityFilterOneAndIsa(player, "Babbler")
+    )
+    
+    local origin = player:GetModelOrigin()
+    local travelVector = trace.endPoint - origin
+    local distance = math.min( maxRange, travelVector:GetLength() )
+    local destination = GetNormalizedVector(travelVector) * distance + origin
+    local umbraCloud = CreateEntity( CragUmbra.kMapName, origin, player:GetTeamNumber() )
+    
+    umbraCloud:SetTravelDestination( destination )
+    
+    if gDebugSporesAndUmbra then
+    --TEMP - Remove once tuning / debugging of VFX, etc done
+        DebugWireSphere( destination, kUmbraRadius, kUmbraDuration, 1, 1, 0, 0.8, false )
+        DebugDrawAxes( Coords.GetTranslation( destination + trace.normal * 0.35), destination, 2, kUmbraDuration, 1 )
     end
     
 end
+function LerkUmbraMixin:OnSecondaryAttack(player)
 
-function LerkSprayMixin:PerformSecondaryAttack(player)
+        if player then  
+            
+            if Server then
+                if player:GetEnergy() >= self:GetEnergyCost() then
+                    self:TriggerEffects("umbra_attack")
+                    CreateUmbraCloud(self, player)
+                    player:DeductAbilityEnergy(self:GetEnergyCost())
+                end
+            end
+            
+        end
+    
+end
+
+function LerkUmbraMixin:PerformSecondaryAttack(player)
     self.secondaryAttacking = true
 end
 
-function LerkSprayMixin:OnSecondaryAttackEnd(player)
+function LerkUmbraMixin:OnSecondaryAttackEnd(player)
 
     Ability.OnSecondaryAttackEnd(self, player)
     
@@ -87,15 +110,15 @@ local function GetHealOrigin(self, player)
     
 end
 
-function LerkSprayMixin:GetDamageType()
+function LerkUmbraMixin:GetDamageType()
     return kHealsprayDamageType
 end
 
-function LerkSprayMixin:OnPrimaryAttack()
+function LerkUmbraMixin:OnPrimaryAttack()
     self.lastSprayAttacked = false
 end
 
-function LerkSprayMixin:GetWasSprayAttack()
+function LerkUmbraMixin:GetWasSprayAttack()
     return self.lastSprayAttacked
 end
 
@@ -260,9 +283,9 @@ local function PerformHealSpray(self, player)
     
 end
 
-function LerkSprayMixin:OnTag(tagName)
+function LerkUmbraMixin:OnTag(tagName)
 
-    PROFILE("LerkSprayMixin:OnTag")
+    PROFILE("LerkUmbraMixin:OnTag")
    local enoughTimePassed = (Shared.GetTime() - self.lastSecondaryAttackTime) > self:GetSecondaryAttackDelay()
     if self.secondaryAttacking and tagName == "heal"  and enoughTimePassed then
         
@@ -283,13 +306,20 @@ function LerkSprayMixin:OnTag(tagName)
     
 end
 
-function LerkSprayMixin:OnUpdateAnimationInput(modelMixin)
+function LerkUmbraMixin:OnUpdateAnimationInput(modelMixin)
 
-    PROFILE("LerkSprayMixin:OnUpdateAnimationInput")
+    PROFILE("LerkUmbraMixin:OnUpdateAnimationInput")
+    
 
-    local player = self:GetParent()
-    if player and self.secondaryAttacking and player:GetEnergy() >= self:GetSecondaryEnergyCost(player) or Shared.GetTime() - self.lastSecondaryAttackTime < 0.5 then
-        modelMixin:SetAnimationInput("activity", "secondary")
-    end
+    
+        
+        local activityString = "none"
+        if self.primaryAttacking or self.secondaryAttacking then
+            activityString = "primary"
+        end
+        
+        modelMixin:SetAnimationInput("activity", activityString)
+    
     
 end
+    

@@ -7,7 +7,6 @@ AddMixinNetworkVars(LevelsMixin, networkVars)
 local originit = ArmsLab.OnInitialized
     function ArmsLab:OnInitialized()
          originit(self)
-        InitMixin(self, AvocaMixin)
         InitMixin(self, LevelsMixin)
     end
         function ArmsLab:GetTechId()

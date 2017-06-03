@@ -1,6 +1,6 @@
 --Kyle 'Avoca' Abent
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 RoboticsFactory.kRolloutLength = 1
 
@@ -12,7 +12,7 @@ local networkVars =
 
 }
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 local origcreate = RoboticsFactory.OnCreate
 function RoboticsFactory:OnCreate()
 origcreate(self)
@@ -22,7 +22,7 @@ end
 local originit = RoboticsFactory.OnInitialized
 function RoboticsFactory:OnInitialized()
         InitMixin(self, LevelsMixin)
-        InitMixin(self, AvocaMixin)
+        InitMixin(self, SaltMixin)
 originit(self)
 end
 

@@ -1,14 +1,29 @@
 Script.Load("lua/Additions/DigestCommMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
 local networkVars = {}
 AddMixinNetworkVars(DigestCommMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
 
 local origcreate = Shade.OnCreate
 function Shade:OnCreate()
     origcreate(self)
     InitMixin(self, DigestCommMixin)
+        InitMixin(self, SaltMixin)
  end
- 
-  
+local originit = Shade.OnInitialized
+function Shade:OnInitialized()
+originit(self)
+InitMixin(self, InfestationMixin)
+end
+  function Shade:GetInfestationRadius()
+    if self:GetIsACreditStructure() then
+    return 1
+    else
+    return 0
+    end
+end
 function Shade:GetMinRangeAC()
 return ShadeAutoCCMR     
 end
@@ -37,7 +52,9 @@ end
 return success, true
 
 end
-
+function Shade:GetCanShiftCallRec()
+ return self:GetIsBuilt()
+end
 function Shade:TriggerHallucination()
 
          if Server then

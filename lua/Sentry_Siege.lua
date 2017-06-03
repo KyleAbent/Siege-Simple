@@ -1,4 +1,5 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 Sentry.kFov = 360
 Sentry.kMaxPitch = 180 
 Sentry.kMaxYaw = Sentry.kFov / 2
@@ -13,7 +14,9 @@ local networkVars = {}
 
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
+
+
 
 function Sentry:GetLevelPercentage()
 return self.level / self:GetMaxLevel() * 1.3
@@ -23,6 +26,7 @@ end
     function Sentry:OnInitialized()
         originit(self)
         InitMixin(self, LevelsMixin)
+        InitMixin(self, SaltMixin)
     end
     
     function Sentry:GetMaxLevel()
@@ -74,4 +78,4 @@ function Sentry:GetMinRangeAC()
 return SentryAutoCCMR     
 end
  
-
+Shared.LinkClassToMap("Sentry", Sentry.kMapName, networkVars)

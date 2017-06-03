@@ -1,5 +1,5 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = 
 
@@ -8,7 +8,7 @@ local networkVars =
 }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
     
   local origcreate = PhaseGate.OnCreate
   function PhaseGate:OnCreate()
@@ -19,7 +19,7 @@ local originit = PhaseGate.OnInitialized
     function PhaseGate:OnInitialized()
         originit(self)
         InitMixin(self, LevelsMixin)
-        InitMixin(self, AvocaMixin)
+        InitMixin(self, SaltMixin)
     end
 
 local origbuttons = PhaseGate.GetTechButtons

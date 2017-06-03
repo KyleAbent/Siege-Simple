@@ -1,6 +1,7 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars =
 {
@@ -9,6 +10,7 @@ local networkVars =
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 local origcreate = ARC.OnCreate
 function ARC:OnCreate()
@@ -16,6 +18,7 @@ origcreate(self)
 self.lastWand = 0
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
+        InitMixin(self, SaltMixin)
 end
     local originit = ARC.OnInitialized
     function ARC:OnInitialized()

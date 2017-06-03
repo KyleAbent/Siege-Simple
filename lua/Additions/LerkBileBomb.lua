@@ -48,7 +48,7 @@ function LerkBileBomb:GetEnergyCost(player)
 end
 
 function LerkBileBomb:GetHUDSlot()
-    return 6
+    return 4
 end
 
 function LerkBileBomb:GetSecondaryTechId()

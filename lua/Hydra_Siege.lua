@@ -1,11 +1,16 @@
+Script.Load("lua/Additions/SaltMixin.lua")
+
 Hydra.kSpikeSpeed = 80
 Hydra.kSpread = Math.Radians(11)
+local networkVars = {}
+
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 local originit = Hydra.OnInitialized
 function Hydra:OnInitialized()
 self.startsMature = true
 originit(self)
-
+        InitMixin(self, SaltMixin)
 if Server then
 
                self.targetSelector = TargetSelector():Init(
@@ -41,7 +46,7 @@ function Hydra:OnConstructionComplete()
     self.updateMaturity = false
 end
 
-
+Shared.LinkClassToMap("Hydra", Hydra.kMapName, networkVars) 
 
 Script.Load("lua/Additions/LevelsMixin.lua")
 

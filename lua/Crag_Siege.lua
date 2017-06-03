@@ -1,14 +1,29 @@
 Script.Load("lua/Additions/DigestCommMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/InfestationMixin.lua")
 local networkVars = {}
 AddMixinNetworkVars(DigestCommMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(InfestationMixin, networkVars)
 
 local origcreate = Crag.OnCreate
 function Crag:OnCreate()
    origcreate(self)
     InitMixin(self, DigestCommMixin)
+        InitMixin(self, SaltMixin)
  end
- 
- 
+ local originit = Crag.OnInitialized
+function Crag:OnInitialized()
+originit(self)
+InitMixin(self, InfestationMixin)
+end
+   function Crag:GetInfestationRadius()
+    if self:GetIsACreditStructure() then
+    return 1
+    else
+    return 0
+    end
+end
 function Crag:GetCragsInRange()
       local crag = GetEntitiesWithinRange("Crag", self:GetOrigin(), Crag.kHealRadius)
            return Clamp(#crag, 0, 7)
@@ -18,6 +33,9 @@ return (self:GetCragsInRange()/10)
 end
 function Crag:GetMinRangeAC()
 return CragAutoCCMR 
+end
+function Crag:GetCanShiftCallRec()
+ return self:GetIsBuilt()
 end
 function Crag:GetUnitNameOverride(viewer) --Triggerhappy stoner
     local unitName = GetDisplayName(self)   

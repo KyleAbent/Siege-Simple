@@ -1,11 +1,11 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 --Remove this from being its own class ya derp
 local networkVars = { lastbeacon = "private time" }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
     
 
 function Observatory:GetMinRangeAC()
@@ -440,7 +440,7 @@ end
     function Observatory:OnInitialized()
          originit(self)
         InitMixin(self, LevelsMixin)
-        InitMixin(self, AvocaMixin)
+        InitMixin(self, SaltMixin)
     end
     function Observatory:GetMaxLevel()
     return kDefaultLvl

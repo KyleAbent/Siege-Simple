@@ -321,7 +321,7 @@ function GetCheckSentryLimit(techId, origin, normal, commander)
         
     end
     
-    return validRoom and numInRoom < 4
+    return validRoom and numInRoom < kSentrysPerRoomSaltComm
     
 end
 function DeniedBitch()

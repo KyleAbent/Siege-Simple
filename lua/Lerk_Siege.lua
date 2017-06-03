@@ -1,6 +1,6 @@
 
---Script.Load("lua/ADditions/LerkBomb.lua")
---Script.Load("lua/Weapons/PredictedProjectile.lua")
+Script.Load("lua/Additions/LerkBileBomb.lua")
+Script.Load("lua/Weapons/PredictedProjectile.lua")
 
 local kBallFlagAttachPoint = "fxnode_bilebomb"
 
@@ -12,12 +12,16 @@ function Lerk:OnCreate()
 end
 if Server then
 
-function Lerk:GetTierFourTechId()
+function Lerk:GetTierTwoTechId()
+    return kTechId.Spores
+end
+
+function Lerk:GetTierThreeTechId()
     return kTechId.PrimalScream
 end
 
-function Lerk:GetTierFiveTechId()
-    return kTechId.None --kTechId.LerkBileBomb
+function Lerk:GetTierFourTechId()
+    return kTechId.LerkBileBomb
 end
 
 end

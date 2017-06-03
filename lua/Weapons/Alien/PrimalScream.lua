@@ -4,6 +4,7 @@
 
 Script.Load("lua/Weapons/Alien/Ability.lua")
 Script.Load("lua/Weapons/Alien/LerkBite.lua")
+Script.Load("lua/Weapons/Alien/LerkUmbraMixin.lua")
 Script.Load("lua/Weapons/ClientWeaponEffectsMixin.lua")
 
 Shared.PrecacheSurfaceShader("materials/effects/mesh_effects/view_blood.surface_shader")
@@ -32,7 +33,7 @@ local networkVars =
     lastPrimaryAttackTime = "private time"
 }
 
-AddMixinNetworkVars(SpikesMixin, networkVars)
+AddMixinNetworkVars(LerkUmbraMixin, networkVars)
 local function GetWeaponEffects()
 local toreturn = {
 
@@ -77,7 +78,7 @@ function Primal:OnCreate()
 
     Ability.OnCreate(self)
 	
-   InitMixin(self, SpikesMixin)
+   InitMixin(self, LerkUmbraMixin)
 	
     self.primaryAttacking = false
     self.lastPrimaryAttackTime = 0
@@ -88,6 +89,9 @@ function Primal:OnCreate()
 
 end
 
+function Primal:GetSecondaryTechId()
+    return kTechId.Umbra
+end
 function Primal:GetAnimationGraphName()
     return kAnimationGraph
 end
@@ -97,7 +101,7 @@ function Primal:GetEnergyCost(player)
 end
 
 function Primal:GetHUDSlot()
-    return 4
+    return 2
 end
 
 function Primal:GetAttackDelay()

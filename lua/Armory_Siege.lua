@@ -6,26 +6,17 @@ local origlist = Armory.GetItemList
 function Armory:GetItemList(forPlayer)
     
     local list = origlist(self, forPlayer)
-
-    list[7] = kTechId.Resupply
-    list[8] = kTechId.FireBullets
-    if forPlayer:GetHasResupply() then list[7] = kTechId.None end
-    if forPlayer:GetHasFireBullets() then list[8] = kTechId.None end
-
-    
-    return list
-    
-end
-function AdvancedArmory:GetItemList(forPlayer)
-    
-    local list = origlist(self, forPlayer)
-
+   if self:GetTechId() == kTechId.AdvancedArmory then
     list[10] = kTechId.Resupply
     list[11] = kTechId.FireBullets
     if forPlayer:GetHasResupply() then list[10] = kTechId.None end
     if forPlayer:GetHasFireBullets() then list[11] = kTechId.None end
-
-    
+   else
+     list[7] = kTechId.Resupply
+    list[8] = kTechId.FireBullets
+    if forPlayer:GetHasResupply() then list[7] = kTechId.None end
+    if forPlayer:GetHasFireBullets() then list[8] = kTechId.None end
+    end
     return list
     
 end
@@ -147,16 +138,16 @@ end
 
 
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/AvocaMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = {}
 
-AddMixinNetworkVars(AvocaMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars)
     local origcreate = Armory.OnCreate
     function Armory:OnCreate()
         origcreate(self)
-        InitMixin(self, AvocaMixin)
+        InitMixin(self, SaltMixin)
     end
     
     local originit = Armory.OnInitialized

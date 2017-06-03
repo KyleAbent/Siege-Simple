@@ -1,8 +1,27 @@
+Script.Load("lua/Additions/LevelsMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 local kHoloMarineMaterialname = PrecacheAsset("cinematics/vfx_materials/marine_ip_spawn.material")
 
+local networkVars = {}
+
+AddMixinNetworkVars(LevelsMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 
 
+    local originit = InfantryPortal.OnInitialized
+    function InfantryPortal:OnInitialized()
+        originit(self)
+        InitMixin(self, LevelsMixin)
+        InitMixin(self, SaltMixin)
+    end
+        function InfantryPortal:GetMaxLevel()
+    return 15
+    end
+    function InfantryPortal:GetAddXPAmount()
+    return 0.30
+    end
+    
 local function CreateSpinEffect(self)
 
 
@@ -102,7 +121,6 @@ function InfantryPortal:CheckSpaceAboveForSpawn()
     
 end
 
-
 local function StopSpinning(self)
 
     self:TriggerEffects("infantry_portal_stop_spin")
@@ -154,3 +172,4 @@ function InfantryPortal:FillQueueIfFree()
 end
 
 end
+Shared.LinkClassToMap("InfantryPortal", InfantryPortal.kMapName, networkVars)
