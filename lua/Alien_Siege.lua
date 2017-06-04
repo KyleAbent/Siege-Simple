@@ -1,4 +1,7 @@
-local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",  primaledID = "entityid",} 
+
+local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",  primaledID = "entityid",}
+
+ 
 local orig_Alien_OnCreate = Alien.OnCreate
     function Alien:SlapPlayer()
      self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
@@ -354,6 +357,14 @@ function Alien:RedemAlienToHive()
      end
         return false
 end
+function Alien:CheckGlow(Glowing, color, duration)
+     
+
+      if Glowing then
+           --  Print("durationleft is %s", duration)
+      self:AddTimedCallback(function() self:GlowColor(color, duration)  return false end, 0.5)      
+      end
+end
 local origderp = Alien.CopyPlayerDataFrom
 
 function Alien:CopyPlayerDataFrom(player)
@@ -361,6 +372,15 @@ function Alien:CopyPlayerDataFrom(player)
     if GetHasRebirthUpgrade(self) and self.canredeemorrebirth then
       self:TriggerRebirthCountDown(self:GetClient():GetControllingPlayer())
      end
+     /*
+     if player.Glowing then
+        local Glowing = player.Glowing
+        local Color = Clamp(player.Color, 1, kNumberofGlows)
+        local duration =  player.timeofStartGlow - Shared.GetTime()
+       self:CheckGlow(Glowing, Color, duration)
+     end
+     */
+
 
 end
 

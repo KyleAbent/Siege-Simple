@@ -172,9 +172,9 @@ end)
 Shine.VoteMenu:AddPage ("SpendSalt", function( self )
        local player = Client.GetLocalPlayer()
        
-    if player:GetTeamNumber() == 1 then 
+
         self:AddSideButton( "Glow", function() self:SetPage( "SpendGlow" ) end)
-      end  
+
         self:AddBottomButton( "Back", function()self:SetPage("Main")end)  
 end)
      

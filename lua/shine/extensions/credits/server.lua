@@ -36,6 +36,24 @@ Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyAmmo", "InTheButt", "Rep
 
 Shine.Hook.SetupClassHook( "DoConcedeSequence", "OnConcede", "SaveAllCredits", "pre" )
 
+Shine.Hook.SetupClassHook( "Player", "CopyPlayerDataFrom", "EnsureBeteenSpawn", "PassivePost" )
+
+function Plugin:EnsureBeteenSpawn(player, origin, angles, mapName)
+ --if not player:isa("Marine") or not player:isa("Alien") then return end
+ local client = player:GetClient()
+ if not client then return end
+ local controlling = client:GetControllingPlayer()
+ --local size = self.playersize[controlling:GetClient()]
+ local Time = Shared.GetTime()
+ local Glow = self.GlowClientsTime[controlling:GetClient()]
+
+           if Glow and Glow > Time then   
+           local color = self.GlowClientsColor[controlling:GetClient()]
+                 color = Clamp(tonumber(color), 1, 4)
+                  player:GlowColor(color, Glow - Time)    
+                end
+
+end
 function Plugin:OnoEggFilled(player)
   self:NotifySalt( player:GetClient(), "You farted.", true )
 end
@@ -60,6 +78,9 @@ self.Refunded = false
 self.PlayerSpentAmount = {}
 
 self.ShadeInkCoolDown = 0
+
+self.GlowClientsTime = {}
+self.GlowClientsColor = {} -- 2 tables rather than 1, i know.
 
 return true
 end
@@ -1054,7 +1075,7 @@ local function BuyGlow(Client, String)
 local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 5
-local color = 1
+local color = 0
 if not Player then return end
 
 if Player:GetIsGlowing() then
@@ -1069,18 +1090,12 @@ end
   end
   
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
-            --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
-         if Player:GetTeamNumber() == 1 then
-              if color == 1 then DeductBuy(self, Player, cost, delayafter)    Player:GlowColor(color, 120)
-             elseif color == 2 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
-             elseif color == 3 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
-             elseif color == 4 then DeductBuy(self, Player, cost, delayafter)  Player:GlowColor(color, 120)
-             end
-         elseif Player:GetTeamNumber() == 2 then
-         end
-   
-
- 
+            if color == 0 then return end
+            
+            DeductBuy(self, Player, cost, delayafter)  
+            Player:GlowColor(color, 300)
+            self.GlowClientsTime[Player:GetClient()] = Shared.GetTime() + 300
+            self.GlowClientsColor[Player:GetClient()] = color
    
 end
 

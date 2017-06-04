@@ -2,13 +2,31 @@ Script.Load("lua/StunMixin.lua")
 Script.Load("lua/PhaseGateUserMixin.lua")
 Script.Load("lua/Mixins/LadderMoveMixin.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
-Script.Load("lua/GlowMixin.lua")
 
-local networkVars = {     isLockedEjecting = "private boolean", }
+local networkVars = {   
+
+
+  --isLockedEjecting = "private boolean",
+
+  --  wallboots = "private boolean",
+  --  wallWalking = "compensated boolean",
+  --  timeLastWallWalkCheck = "private compensated time",
+
+ }
+  /*
+local kNormalWallWalkFeelerSize = 0.25
+local kNormalWallWalkRange = 0.3
+local kJumpWallRange = 0.4
+local kJumpWallFeelerSize = 0.1
+local kWallJumpInterval = 0.4
+local kWallJumpForce = 5.2 // scales down the faster you are
+local kMinWallJumpForce = 0.1
+local kVerticalWallJumpForce = 4.3
+*/
+
 AddMixinNetworkVars(StunMixin, networkVars)
 AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
 AddMixinNetworkVars(LadderMoveMixin, networkVars)
-AddMixinNetworkVars(GlowMixin, networkVars)
 
 local kDualWelderModelName = PrecacheAsset("models/marine/exosuit/exosuit_rr.model")
 local kDualWelderAnimationGraph = PrecacheAsset("models/marine/exosuit/exosuit_rr.animation_graph")
@@ -22,9 +40,106 @@ function Exo:OnCreate()
     origcreate(self)
     InitMixin(self, PhaseGateUserMixin)
     InitMixin(self, LadderMoveMixin)
-    self.isLockedEjecting = false
+   -- InitMixin(self, WallMovementMixin)
+    --self.isLockedEjecting = false
+  --  self.wallboots = true
+   -- self.wallWalking = false
+    self.wallWalkingNormalGoal = Vector.yAxis
+    self.timeLastWallJump = 0
+
+end
+/*
+function Exo:GetIsWallWalking()
+    return self.wallWalking and self.wallboots
+end
+function Exo:GetIsWallWalkingPossible() 
+    return true--not self:GetRecentlyJumped() and not self:GetCrouching() -- and self.wallboots
+end
+function Exo:GetPerformsVerticalMove()
+    return self:GetIsWallWalking()
+end
+function Exo:OverrideUpdateOnGround(onGround)
+    return onGround or self:GetIsWallWalking()
+end
+local origangles = Marine.GetDesiredAngles
+function Exo:GetDesiredAngles()
+
+   if self:GetIsWallWalking() then return self.currentWallWalkingAngles end
+       return origangles(self)
+end
+function Exo:GetIsUsingBodyYaw()
+    return not self:GetIsWallWalking()
+end
+function Exo:GetIsUsingBodyYaw()
+    return not self:GetIsWallWalking()
+end
+function Exo:GetAngleSmoothingMode()
+
+    if self:GetIsWallWalking() then
+        return "quatlerp"
+    else
+        return "euler"
+    end
+
+end
+function Exo:OnWorldCollision(normal, impactForce, newVelocity)
+
+    PROFILE("Exo:OnWorldCollision")
+
+    self.wallWalking = self:GetIsWallWalkingPossible() and normal.y < 0.5
+    
+end
+function Exo:PreUpdateMove(input, runningPrediction)
+    PROFILE("Exo:PreUpdateMove")
+    self.prevY = self:GetOrigin().y
+
+    if self:GetIsWallWalking() then
+
+        // Most of the time, it returns a fraction of 0, which means
+        // trace started outside the world (and no normal is returned)           
+        local goal = self:GetAverageWallWalkingNormal(kNormalWallWalkRange, kNormalWallWalkFeelerSize)
+        if goal ~= nil then 
+        
+            self.wallWalkingNormalGoal = goal
+            self.wallWalking = true
+           -- self:SetEnergy(self:GetEnergy() - kWallWalkEnergyCost)
+
+        else
+            self.wallWalking = false
+        end
+    
+    end
+    
+    if not self:GetIsWallWalking() then
+        // When not wall walking, the goal is always directly up (running on ground).
+        self.wallWalkingNormalGoal = Vector.yAxis
+    end
+    
    
 
+  //  if self.leaping and Shared.GetTime() > self.timeOfLeap + kLeapTime then
+  //      self.leaping = false
+  //  end
+    
+    self.currentWallWalkingAngles = self:GetAnglesFromWallNormal(self.wallWalkingNormalGoal or Vector.yAxis) or self.currentWallWalkingAngles
+
+
+end
+function Exo:GetMoveSpeedIs2D()
+    return not self:GetIsWallWalking()
+end
+function Exo:GetCanStep()
+    return not self:GetIsWallWalking()
+end
+*/
+function Exo:OnLocationChange(locationName)
+ local open = GetSiegeDoorOpen()
+ //Print("siege door is open %s", open)
+       if open == false then
+         if string.find(locationName, "siege") or string.find(locationName, "Siege") 
+           then self:Kill()  
+            end
+        end
 end
 local function HealSelf(self)
 
@@ -53,10 +168,11 @@ local oninit = Exo.OnInitialized
 function Exo:OnInitialized()
 
 oninit(self)
-    InitMixin(self, GlowMixin)
     InitMixin(self, StunMixin)
    self:SetTechId(kTechId.Exo)
    self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+    self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
+    self.timeLastWallJump = 0
 end
 local origmodel = Exo.InitExoModel
 

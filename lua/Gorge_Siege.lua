@@ -333,9 +333,9 @@ end
 if Client then
     local origShowG = Gorge.GetShowGhostModel
     function Gorge:GetShowGhostModel()
-    
-        local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") then
+      if self:GetTeamNumber() == 0 then return false end -- really?
+        local weapon = self.GetActiveWeapon and  self:GetActiveWeapon()
+        if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  then
             return weapon:GetShowGhostModel()
         end
         
@@ -346,7 +346,7 @@ if Client then
     function Gorge:GetGhostModelOverride()
     
         local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") and weapon.GetGhostModelName then
+        if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  and weapon.GetGhostModelName then
             return weapon:GetGhostModelName(self)
         end
         return origShowOV(self)
@@ -355,7 +355,7 @@ if Client then
     function Gorge:GetGhostModelTechId()
     
         local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") then
+        if weapon and weapon:isa("LayStructures")  then
             return weapon:GetDropStructureId()
         end
         
@@ -366,7 +366,7 @@ if Client then
     function Gorge:GetGhostModelCoords()
     
         local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") then
+        if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  then
             return weapon:GetGhostModelCoords()
         end
         return ggmc(self)
@@ -375,7 +375,7 @@ if Client then
     function Gorge:GetLastClickedPosition()
     
         local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") then
+        if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  then
             return weapon.lastClickedPosition
         end
         return glcp(self)
@@ -384,7 +384,7 @@ if Client then
     function Gorge:GetIsPlacementValid()
     
         local weapon = self:GetActiveWeapon()
-        if weapon and weapon:isa("LayStructures") then
+        if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  then
             return weapon:GetIsPlacementValid()
         end
         return gipv(self)

@@ -1,4 +1,4 @@
-Script.Load("lua/GlowMixin.lua")
+
 local networkVars =
 {
    hasjumppack = "private boolean",
@@ -26,12 +26,12 @@ local kMinWallJumpForce = 0.1
 local kVerticalWallJumpForce = 4.3
 
 
-AddMixinNetworkVars(GlowMixin, networkVars)
+
 
 local originit = Marine.OnInitialized
 function Marine:OnInitialized()
     originit(self)
-    InitMixin(self, GlowMixin)
+
     self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
     self.timeLastWallJump = 0
 
@@ -429,22 +429,25 @@ function Marine:CopyPlayerDataFrom(player)
  
   if player:isa("Marine") then
 self.hasjumppack = player.hasjumppack
-
-self.Glowing = player.Glowing
-self.Color = player.Color
- if self.Glowing then
-  self:AddTimedCallback(function() self:GlowColor(self.Color, 120)  return false end, 4)      
- end
-
-end
-
 self.hasfirebullets = player.hasfirebullets 
 self.hasresupply = player.hasresupply 
 self.heavyarmor = player.heavyarmor 
 self.nanoarmor = player.nanoarmor 
 self.lightarmor = player.lightarmor
-
 end
+    /*
+     if player.Glowing then
+        local Glowing = player.Glowing
+        local Color = Clamp(player.Color, 1, kNumberofGlows)
+        local duration =  player.timeofStartGlow - Shared.GetTime()
+
+        if Glowing then
+        self:AddTimedCallback(function() self:GlowColor(Color, duration )  return false end, 2)      
+        end
+      end
+     */   
+end
+
 
 /*
 local origcweapons = Marine.InitWeapons

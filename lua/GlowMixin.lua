@@ -59,13 +59,10 @@ GlowMixin.networkVars =
 
 function GlowMixin:__initmixin()
 
-    if Server then
-        kNumberofGlows = 4 // for rtd
+
         self.timeofStartGlow = 0
         self.Glowing = false
         self.Color = 1
-        
-    end
     
 end
 

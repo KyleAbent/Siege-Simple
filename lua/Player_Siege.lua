@@ -1,12 +1,22 @@
 --Kyle 'Avoca' Abent
+Script.Load("lua/GlowMixin.lua")
 local networkVars = {gravity = "float (-5 to 5 by 1)", modelsize = "private float (-9 to 9 by 1)",} 
-
+AddMixinNetworkVars(GlowMixin, networkVars)
 local origcreate = Player.OnCreate
 function Player:OnCreate()
    origcreate(self)
     self.gravity = 0
     self.modelsize = 1
 end
+
+local originit = Player.OnInitialized
+function Player:OnInitialized()
+    originit(self)
+    InitMixin(self, GlowMixin)
+
+end
+
+
     local origGravity = Player.ModifyGravityForce
     function Player:ModifyGravityForce(gravityTable)
     
@@ -40,7 +50,7 @@ end
 function Player:AdjustModelSize(number)
 self.modelsize = number
 end
-/*
+
 local origsize = Player.OnAdjustModelCoords
 function Player:OnAdjustModelCoords(modelCoords)
      if origsize then origsize(self, modelCoords) end
@@ -53,7 +63,7 @@ function Player:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-*/
+
 if Server then
 
 local origcopydata = Player.CopyPlayerDataFrom
@@ -65,22 +75,10 @@ origcopydata(self, player)
 self.gravity = player.gravity
 self.modelsize = player.modelsize
 
-  if player:GetTeamNumber() == 1 then
-self.hasjumppack = player.hasjumppack
-self.Glowing = player.Glowing
-self.Color = player.Color
- if self.Glowing then
-  self:AddTimedCallback(function() if self.GlowGlower then self:GlowColor(self.Color, 120) end return false end, 4)      
- end
---self.hasfirebullets = player.hasfirebullets 
---self.hasresupply = player.hasresupply 
---self.heavyarmor = player.heavyarmor 
---self.nanoarmor = player.nanoarmor 
-end
-
 
 
 end
 
 
 end
+Shared.LinkClassToMap("Player", Player.kMapName, networkVars)
