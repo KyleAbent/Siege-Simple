@@ -50,7 +50,7 @@ end
 function Player:AdjustModelSize(number)
 self.modelsize = number
 end
-
+/*
 local origsize = Player.OnAdjustModelCoords
 function Player:OnAdjustModelCoords(modelCoords)
      if origsize then origsize(self, modelCoords) end
@@ -63,7 +63,7 @@ function Player:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-
+*/
 if Server then
 
 local origcopydata = Player.CopyPlayerDataFrom

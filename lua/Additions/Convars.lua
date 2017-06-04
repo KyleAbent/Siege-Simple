@@ -1,4 +1,4 @@
-kNumberofGlows = 4 
+kNumberofGlows = 3
 kSentrysPerRoomSaltComm = 6
 kMoonBootsCost = 200
 kWallCommLimitPerRoom = 5
