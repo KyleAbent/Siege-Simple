@@ -75,7 +75,7 @@ local function PerformMove( marinePos, targetPos, bot, brain, move )
         brain.lastGateId = gate:GetId()
 
     else
-
+        --  if GetWhereIsInSiege(targetPos) and not GetSiegeDoorOpen() then Print("Trying to get into siege!") return end 
         bot:GetMotion():SetDesiredMoveTarget( targetPos )
         bot:GetMotion():SetDesiredViewTarget( nil )
         brain.lastGateId = nil

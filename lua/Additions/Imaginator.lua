@@ -1542,10 +1542,10 @@ function Imaginator:HandleIntrepid(who)
   --Still WIP braindead but good footage :P
 
 local tospawn = {}
-      local  StructureBeacon = #GetEntitiesForTeam( "StructureBeacon", who:GetCurrentInfestationRadius() )
-      local  EggBeacon = #GetEntitiesForTeam( "EggBeacon", who:GetCurrentInfestationRadius() )
-      local CommVortex = #GetEntitiesForTeam( "CommVortex", who:GetCurrentInfestationRadius() )
-      local BoneWall = #GetEntitiesForTeam( "BoneWall", who:GetCurrentInfestationRadius() )
+      local  StructureBeacon = #GetEntitiesForTeam( "StructureBeacon", 2 )
+      local  EggBeacon = #GetEntitiesForTeam( "EggBeacon", 2 )
+      local CommVortex = #GetEntitiesForTeam( "CommVortex", 2 )
+      local BoneWall = #GetEntitiesForTeam( "BoneWall", 2 )
      --local ShadeInk =  #GetEntitiesWithinRange( "ShadeInk", who:GetOrigin(), 18 )
      -- local ARC = #GetEntitiesWithinRange( "ARC", who:GetOrigin(), 18 )
       local Whip = #GetEntitiesWithinRange( "Whip", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
