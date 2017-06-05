@@ -45,7 +45,7 @@ function AlienTeam:InitTechTree()
 self.techTree:AddBuildNode(kTechId.EggBeacon, kTechId.CragHive)
 self.techTree:AddBuildNode(kTechId.CommTunnel, kTechId.None)
 self.techTree:AddBuildNode(kTechId.StructureBeacon, kTechId.ShiftHive)
-self.techTree:AddPassive(kTechId.PrimalScream,              kTechId.None, kTechId.None, kTechId.AllAliens)
+self.techTree:AddPassive(kTechId.PrimalScream,              kTechId.Spores, kTechId.None, kTechId.AllAliens)
 
 self.techTree:AddPassive(kTechId.OnoGrow,              kTechId.None, kTechId.None, kTechId.AllAliens)
 
@@ -61,7 +61,7 @@ self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTe
     self.techTree:AddBuyNode(kTechId.Hunger, kTechId.Shell, kTechId.None, kTechId.AllAliens)
     self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
-    self.techTree:AddUpgradeNode(kTechId.Digest, kTechId.None, kTechId.None)
+    self.techTree:AddUpgradeNode(kTechId.DigestComm, kTechId.None, kTechId.None)
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree
 end

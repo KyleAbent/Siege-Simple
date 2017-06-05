@@ -27,7 +27,7 @@ function DigestCommMixin:__initmixin()
 end
 
 function DigestCommMixin:GetDigestActive()
-    return self.researchingId == kTechId.Digest
+    return self.researchingId == kTechId.DigestComm
 end
 
 function DigestCommMixin:OnRecycled()
@@ -47,7 +47,7 @@ end
 
 function DigestCommMixin:OnResearchComplete(researchId)
 
-    if researchId == kTechId.Digest then
+    if researchId == kTechId.DigestComm then
         
         -- Do not display new killfeed messages during concede sequence
         if GetConcedeSequenceActive() then
@@ -99,12 +99,12 @@ function DigestCommMixin:GetRecycleScalar()
 end
 
 function DigestCommMixin:GetIsRecycling()
-    return self.researchingId == kTechId.Digest
+    return self.researchingId == kTechId.DigestComm
 end
 
 function DigestCommMixin:OnResearch(researchId)
 
-    if researchId == kTechId.Digest then        
+    if researchId == kTechId.DigestComm then        
         self:TriggerEffects("recycle_start")        
         if self.MarkBlipDirty then
             self:MarkBlipDirty()
@@ -116,7 +116,7 @@ end
 
 function DigestCommMixin:OnResearchCancel(researchId)
 
-    if researchId == kTechId.Digest then
+    if researchId == kTechId.DigestComm then
         if self.MarkBlipDirty then
             self:MarkBlipDirty()
         end
@@ -168,7 +168,7 @@ local function SharedUpdate(self, deltaTime)
                 DestroyEntity(self)
             end
         
-        elseif self.researchingId == kTechId.Digest then
+        elseif self.researchingId == kTechId.DigestComm then
             self:UpdateResearch(deltaTime)
         end
         

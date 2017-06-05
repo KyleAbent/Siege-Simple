@@ -13,14 +13,14 @@ end
 if Server then
 
 function Lerk:GetTierTwoTechId()
-    return kTechId.Spores
-end
-
-function Lerk:GetTierThreeTechId()
-    return kTechId.PrimalScream
+    return kTechId.None
 end
 
 function Lerk:GetTierFourTechId()
+    return kTechId.PrimalScream
+end
+
+function Lerk:GetTierFiveTechId()
     return kTechId.LerkBileBomb
 end
 

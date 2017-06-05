@@ -341,7 +341,7 @@ kTechIdToMaterialOffset[kTechId.AdvancedArmoryUpgrade] = 99
 
 kTechIdToMaterialOffset[kTechId.Spikes] = 106
 kTechIdToMaterialOffset[kTechId.Recycle] = 108
-kTechIdToMaterialOffset[kTechId.Digest] = 108
+kTechIdToMaterialOffset[kTechId.DigestComm] = 108
 kTechIdToMaterialOffset[kTechId.Storm] = 113
 kTechIdToMaterialOffset[kTechId.Patrol] = 120
 kTechIdToMaterialOffset[kTechId.Move] = 117

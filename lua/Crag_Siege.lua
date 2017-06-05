@@ -50,7 +50,7 @@ local table = {}
 table = origbuttons(self, techId)
 
  table[4] = kTechId.CragUmbra
- table[8] = kTechId.Digest
+ table[8] = kTechId.DigestComm
  
  return table
 

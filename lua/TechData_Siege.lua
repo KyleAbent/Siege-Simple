@@ -80,7 +80,7 @@ local kSiege_TechData =
 {   
 
 
-        { [kTechDataId] = kTechId.Digest,   
+        { [kTechDataId] = kTechId.DigestComm,   
             [kTechDataDisplayName] = "Digest",
  [kTechDataCostKey] = 0,   
  [kTechIDShowEnables] = false,     

@@ -69,7 +69,7 @@ local kSiege_TechIds =
     'ShiftCall',
     'ShiftReceive',
     'SiegeBeacon',
-    'Digest',
+    'DigestComm',
     'MoonBoots',
     'LightArmor',
     

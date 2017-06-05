@@ -40,7 +40,7 @@ gCreditStructureExtractorLimit = 1
 --Classes Credits Cost
 gCreditClassCostJetPack = 15 * 2
 
-gCreditClassCostRailGunExo = 35 * 2
+gCreditClassCostRailGunExo = 34 * 2
 gCreditClassCostMiniGunExo = 35 * 2
 
 gCreditClassCostWelderExo = 25 * 2

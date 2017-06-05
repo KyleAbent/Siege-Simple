@@ -39,7 +39,7 @@ table = origbuttons(self, techId)
  table[4] = kTechId.ShiftEnzyme
   table[6] = kTechId.ShiftCall
   table[7] = kTechId.ShiftReceive
-  table[8] = kTechId.Digest
+  table[8] = kTechId.DigestComm
   end
  return table
 
