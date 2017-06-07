@@ -78,7 +78,14 @@ function Crag:TriggerUmbra()
     return true
 end
 
-
+local origsppeed = Crag.GetMaxSpeed
+function Crag:GetMaxSpeed()
+    local speed = origsppeed(self)
+         -- Print("1 speed is %s", speed)
+          speed = Clamp( (speed * kALienCragWhipShadeShiftDynamicSpeedBpdB) * GetRoundLengthToSiege(), speed, speed * kALienCragWhipShadeShiftDynamicSpeedBpdB)   --- buff when siege is open
+          --Print("2 speed is %s", speed)
+    return speed
+end
 
 function Crag:TryHeal(target)
 

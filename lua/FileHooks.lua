@@ -12,6 +12,8 @@ ModLoader.SetupFileHook( "lua/Infestation.lua", "lua/Infestation_Siege.lua", "po
 ModLoader.SetupFileHook( "lua/BalanceMisc.lua", "lua/BalanceMisc_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Globals.lua", "lua/Globals_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Drifter.lua", "lua/Drifter_Siege.lua", "post" )
+
 --ModLoader.SetupFileHook( "lua/PhysicsGroup.lua", "lua/PhysicsGroup_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/BuildUtility.lua", "lua/BuildUtility_Siege.lua", "post" )

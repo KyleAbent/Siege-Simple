@@ -217,11 +217,11 @@ local entities = {}
                  return false  
             end
       end
+      
       if mapname == Sentry.kMapName then
-      Print("Derp")
           if not GetCheckSentryLimit(techId, Player:GetOrigin(), normal, commander) then
-                 self:NotifySalt( Client, "(Logic Fallacy):Sentry Limit per Location is reached.", true)
-                 return  true
+                 self:NotifySalt( Client, "(Logic Fallacy):%s Sentrys are allowed per location.", true, kSentrysPerRoomSaltComm)
+                 return  false
           end
       end
       

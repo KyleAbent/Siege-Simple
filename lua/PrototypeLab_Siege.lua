@@ -33,7 +33,7 @@ function PrototypeLab:GetItemList(forPlayer)
             end
             
             if forPlayer:isa("JetpackMarine") then
-                otherbuttons[1] = kTechId.None 
+                otherbuttons[6] = kTechId.None 
                 otherbuttons[9] = kTechId.None 
             end
 

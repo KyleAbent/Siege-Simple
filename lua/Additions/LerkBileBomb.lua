@@ -44,7 +44,7 @@ function LerkBileBomb:GetAnimationGraphName()
 end
 
 function LerkBileBomb:GetEnergyCost(player)
-    return kBileBombEnergyCost
+    return kBileBombEnergyCost * 0.7
 end
 
 function LerkBileBomb:GetHUDSlot()

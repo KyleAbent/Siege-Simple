@@ -92,7 +92,7 @@ if Server then
         local dotMarker = CreateEntity(DotMarker.kMapName, self:GetModelOrigin(), self:GetTeamNumber())
 		dotMarker:SetTechId(kTechId.BileBomb)
 		dotMarker:SetDamageType(kBileBombDamageType)        
-        dotMarker:SetLifeTime(kBileBombDuration * 0.4)
+        dotMarker:SetLifeTime(kBileBombDuration * 0.7)
         dotMarker:SetDamage(kBileBombDamage * 0.7 )
         dotMarker:SetRadius(kBileBombSplashRadius * 0.7)
         dotMarker:SetDamageIntervall(kBileBombDotInterval * 0.7)
