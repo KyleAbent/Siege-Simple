@@ -1,3 +1,4 @@
+kARCMinRange = 0 -- why is this even a thing??????
 --kHeavyMachineGunDamage = 7
 kMarineInitialIndivRes = 30 -- 15
 kAlienInitialIndivRes = 30 -- 12

@@ -199,32 +199,33 @@ if limitMod == true then limit = 8 end
 end
 
 function Plugin:HasLimitOf(Player, mapname, teamnumbber, limit, Client)
+
 local entitycount = 0
 local entities = {}
         for index, entity in ipairs(GetEntitiesWithMixinForTeam("Live", teamnumbber)) do
         if entity:GetMapName() == mapname and entity:GetOwner() == Player then entitycount = entitycount + 1 table.insert(entities, entity) end 
     end
     
-     //             <
-    if entitycount ~= limit then return false end
+
    local delete = GetSetupConcluded()
       if delete then
-            if #entities > 0 then
+            if #entities >= limit then
             local entity = table.random(entities)
-             if entity:GetMapName() == Sentry.kMapName or entity:GetMapName() == Wall.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARC.kMapName  then return true end
+             if mapname == Sentry.kMapName or entity:GetMapName() == Wall.kMapName or entity:GetMapName() == Observatory.kMapName or entity:GetMapName() == ARC.kMapName  then return true end
                 DestroyEntity(entity)
-                 self:NotifySalt( Client, "(Logic Fallacy):Deleted your old %s so you can spawn a new one.", true, mapname)
+                 self:NotifySalt( Client, "(Logic Fallacy, Limit Reached):Deleted your old %s so you can spawn a new one.", true, mapname)
                  return false  
             end
       end
-      if  entity:GetMapName() == Sentry.kMapName then
+      if mapname == Sentry.kMapName then
+      Print("Derp")
           if not GetCheckSentryLimit(techId, Player:GetOrigin(), normal, commander) then
                  self:NotifySalt( Client, "(Logic Fallacy):Sentry Limit per Location is reached.", true)
-                 return false  
+                 return  true
           end
       end
       
-     return true
+     return entitycount >= limit
 end
 function Plugin:PregameLimit(teamnum)
 local entitycount = 0

@@ -9,7 +9,7 @@ function Armory:GetItemList(forPlayer)
    if self:GetTechId() == kTechId.AdvancedArmory then
     list[10] = kTechId.Resupply
     list[11] = kTechId.FireBullets
-    if forPlayer:GetHasResupply() then list[10] = kTechId.None end
+
     if forPlayer:GetHasFireBullets() then list[11] = kTechId.None end
    else
      list[7] = kTechId.Resupply

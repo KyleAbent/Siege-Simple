@@ -966,7 +966,7 @@ DestroyCommand:Help( "Destroy <string> Destroys all entities with this name with
 
 local function ThirdPerson( Client )
 local Player = Client:GetControllingPlayer()
-if not Player or not HasMixin( Player, "CameraHolder" ) then return end
+--if not Player or not HasMixin( Player, "CameraHolder" ) then return end
 Player:SetCameraDistance(3) //* ConditionalValue(not Player:isa("ReadyRoomPlayer") and Player.modelsize > 1, Player.modelsize * .5, 1))
 end
 
@@ -1174,16 +1174,18 @@ TestFilmCommand:Help( "sh_testfilm adds bots forces round and enables imaginator
 
 local function AutoComm( Client )
 
-
+  if Shine:GetUserImmunity(Client) >= 10 then 
+      
      if not GetGamerules():GetGameStarted() then
             Shared.ConsoleCommand("sh_forceroundstart")
      end
-      if Shine:GetUserImmunity(Client) < 10 then return end--isamod ?
+
          local boolean = GetImaginator():GetAlienEnabled()
             Shared.ConsoleCommand(string.format("sh_imaginator 2 %s", not boolean )  )
             Shared.ConsoleCommand(string.format("sh_imaginator 1 %s", not boolean )  )
             
             self:NotifyAutoComm( nil, "AutoComm toggle offswitch set to %s", true, boolean)
+    end
            
 end
 

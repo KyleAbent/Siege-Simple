@@ -1,6 +1,6 @@
 kNumberofGlows = 3
 kSentrysPerRoomSaltComm = 6
-kMoonBootsCost = 200
+kMoonBootsCost = 10
 kWallCommLimitPerRoom = 5
 --Credits Start
 
@@ -135,7 +135,7 @@ kFireBulletsCost = 5
 kNanoArmorCost = 4
 
 
-kJumpPackCost = 5
+kJumpPackCost = 10
 ArmoryAutoCCMR =  16
 PGAutoCCMRMax = 54
 PGAutoCCMRMin = 32

@@ -427,13 +427,14 @@ local origdata = Marine.CopyPlayerDataFrom
 function Marine:CopyPlayerDataFrom(player)
  origdata(self, player)
  
-  if player:isa("Marine") then
+ if player:isa("Marine") then
 self.hasjumppack = player.hasjumppack
 self.hasfirebullets = player.hasfirebullets 
 self.hasresupply = player.hasresupply 
 self.heavyarmor = player.heavyarmor 
 self.nanoarmor = player.nanoarmor 
 self.lightarmor = player.lightarmor
+--moonboots
 end
     /*
      if player.Glowing then

@@ -6,9 +6,37 @@ origcreate(self)
 
 --InitMixin(self, PredictedProjectileShooterMixin)
 
+
+
 end
+/*
+local originit = Onos.OnInitialized 
 
+function Onos:OnInitialized()
 
+ originit(self)
+ 
+  if Server then
+     for i = 1, #self.freeAttachPoints do
+
+       
+       
+        local freeAttachPoint = self.freeAttachPoints[i]
+        if freeAttachPoint then
+            local hydra = CreateEntity(Hydra.kMapName, self:GetOrigin(), 2)
+            table.removevalue(self.freeAttachPoints, freeAttachPoint)
+            --self.attachedBabblers[hydra:GetId()] = freeAttachPoint
+            hydra:SetParent(self)
+            hydra:SetAttachPoint(freeAttachPoint)
+
+        end
+     
+     end
+  
+  end
+  
+end
+*/
 function Onos:GetRebirthLength()
 return 5
 end

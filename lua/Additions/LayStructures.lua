@@ -21,7 +21,7 @@ local kNumStructures = 1
 local networkVars =
 {
     structuresLeft = string.format("integer (0 to %d)", kNumStructures),
-    droppingStructure = "boolean",
+   -- droppingStructure = "boolean",
     techId = "string (128)",
     mapname = "string (128)",
     tellstructuretocredit = "boolean",
@@ -41,7 +41,7 @@ function LayStructures:OnCreate()
     InitMixin(self, PointGiverMixin)
     
     self.structuresLeft = kNumStructures
-    self.droppingStructure = false
+    --self.droppingStructure = false
     self.techId = kTechId.Armory
     self.mapname = Armory.kMapName
     self.originalposition = Vector(0,0,0)
@@ -114,14 +114,14 @@ end
 function LayStructures:GetHUDSlot()
     return 5
 end
-
+/*
 function LayStructures:OnTag(tagName)
 
     PROFILE("LayStructures:OnTag")
     
     ClipWeapon.OnTag(self, tagName)
     
-    if tagName == "deploy_structure" then
+    if tagName == "deploy_structure" then --
     
         local player = self:GetParent()
         if player then
@@ -142,12 +142,32 @@ function LayStructures:OnTag(tagName)
             
         end
         
-        self.droppingStructure = false
+       --self.droppingStructure = false
         
     end
     
 end
-
+*/
+function LayStructures:NoMoreDelay()
+ local player = self:GetParent()
+        if player then
+        
+            self:PerformPrimaryAttack(player)
+            
+            if self.structuresLeft == 0 then
+            
+              --  self:OnHolster(player)
+                player:RemoveWeapon(self)
+                player:SwitchWeapon(1)
+                
+                if Server then                
+                    DestroyEntity(self)
+                end
+                
+            end
+            
+        end
+end
 function LayStructures:OnPrimaryAttackEnd(player)
     self.droppingStructure = false
 end
@@ -164,10 +184,11 @@ function LayStructures:OnPrimaryAttack(player)
         if valid then
         
             if self.structuresLeft > 0 then
-                self.droppingStructure = true
+           --     self.droppingStructure = true   -- dsd
+                  self:NoMoreDelay()
             else
             
-                self.droppingStructure = false
+              --  self.droppingStructure = false
                 
                 if Client then
                     player:TriggerInvalidSound()
@@ -177,7 +198,7 @@ function LayStructures:OnPrimaryAttack(player)
             
         else
         
-            self.droppingStructure = false
+          --  self.droppingStructure = false
             
             if Client then
                 player:TriggerInvalidSound()
@@ -301,15 +322,15 @@ function LayStructures:PerformPrimaryAttack(player)
     return success
     
 end
-
+/*
 function LayStructures:OnHolster(player, previousWeaponMapName)
 
     Weapon.OnHolster(self, player, previousWeaponMapName)
     
-    self.droppingStructure = false
+   -- self.droppingStructure = false
     
 end
-
+*/
 function LayStructures:OnDraw(player, previousWeaponMapName)
 
     Weapon.OnDraw(self, player, previousWeaponMapName)
@@ -319,7 +340,7 @@ function LayStructures:OnDraw(player, previousWeaponMapName)
     self:SetAttachPoint(Weapon.kHumanAttachPoint)
     end
     
-    self.droppingStructure = false
+   -- self.droppingStructure = false
     
     self:SetModel(kHeldModelName)
     
@@ -390,7 +411,10 @@ function LayStructures:GetPositionForStructure(player)
                 end
                 
         displayOrigin = trace.endPoint 
-
+           
+           if self:GetDropStructureId() == kTechId.Sentry then
+                  isPositionValid = GetCheckSentryLimit(techId, player:GetOrigin(), normal, commander)  
+           end
           
         if GetPointBlocksAttachEntities(displayOrigin) then
             isPositionValid = false
@@ -426,7 +450,7 @@ function LayStructures:OnUpdateAnimationInput(modelMixin)
 
     PROFILE("LayStructures:OnUpdateAnimationInput")
     
-    modelMixin:SetAnimationInput("activity", ConditionalValue(self.droppingStructure, "primary", "none"))
+  --  modelMixin:SetAnimationInput("activity", ConditionalValue(self.droppingStructure, "primary", "none"))
     
 end
 

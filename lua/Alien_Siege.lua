@@ -372,6 +372,7 @@ function Alien:CopyPlayerDataFrom(player)
     if GetHasRebirthUpgrade(self) and self.canredeemorrebirth then
       self:TriggerRebirthCountDown(self:GetClient():GetControllingPlayer())
      end
+     self.primaled = player.primaled
      /*
      if player.Glowing then
         local Glowing = player.Glowing

@@ -1,4 +1,10 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
+
+function ConstructMixin:OnProcessMove(input)
+    Log("%s: Called OnProcessMove???", self:GetClassName())
+end
+
+
 function BotTeamController:NeededCommanders()
     return 0
 end
