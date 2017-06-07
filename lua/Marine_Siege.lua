@@ -428,7 +428,7 @@ function Marine:CopyPlayerDataFrom(player)
  origdata(self, player)
  
  if player:isa("Marine") then
-self.hasjumppack = player.hasjumppack
+--self.hasjumppack = player.hasjumppack
 self.hasfirebullets = player.hasfirebullets 
 self.hasresupply = player.hasresupply 
 self.heavyarmor = player.heavyarmor 

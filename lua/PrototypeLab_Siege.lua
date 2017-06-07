@@ -1,7 +1,8 @@
 --derp
 local oldfunc = PrototypeLab.GetItemList
 function PrototypeLab:GetItemList(forPlayer)
-        local  otherbuttons = { kTechId.Jetpack, kTechId.DualMinigunExosuit, kTechId.DualRailgunExosuit,  kTechId.DualWelderExosuit, kTechId.DualFlamerExosuit, kTechId.JumpPack,
+        local  otherbuttons = { kTechId.Jetpack, kTechId.DualMinigunExosuit, kTechId.DualRailgunExosuit, 
+                                kTechId.DualWelderExosuit, kTechId.DualFlamerExosuit, kTechId.JumpPack,
                                 kTechId.HeavyArmor, kTechId.LightArmor, kTechId.WallWalk, kTechId.RegenArmor}
         
           /*
@@ -48,7 +49,7 @@ function PrototypeLab:GetItemList(forPlayer)
                 end
                 
                
-           if forPlayer:GetHasNanoArmor() then otherbuttons[12] = kTechId.None end
+           if forPlayer:GetHasNanoArmor() then otherbuttons[10] = kTechId.None end
                
            return otherbuttons
 end
