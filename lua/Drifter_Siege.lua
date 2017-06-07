@@ -269,4 +269,4 @@ function Drifter:ProcessGrowOrder(moveSpeed, deltaTime)
     end
 
 end
-Shared.LinkClassToMap("Drifter", Drifter.kMapName, networkVars)
+--Shared.LinkClassToMap("Drifter", Drifter.kMapName, networkVars)
