@@ -41,22 +41,22 @@ function Fade:GetCanMetabolizeHealth()
     return GetHasTech(self, kTechId.MetabolizeHealth)
 end
 
-local kBlinkSpeed = 18 --14
-local kBlinkAcceleration = 52 --40
+local kBlinkSpeed = 16 --14
+local kBlinkAcceleration = 46 --40
 local kBlinkAddAcceleration = 1
 
 function Fade:ModifyVelocity(input, velocity, deltaTime)
 
     if self:GetIsBlinking() then
-    
         local wishDir = self:GetViewCoords().zAxis
-        local maxSpeedTable = { maxSpeed = Clamp( kBlinkSpeed * GetRoundLengthToSiege(), 14, 18) }
+        local maxSpeedTable = { maxSpeed = kBlinkSpeed }
         self:ModifyMaxSpeed(maxSpeedTable, input)  
         local prevSpeed = velocity:GetLength()
         local maxSpeed = math.max(prevSpeed, maxSpeedTable.maxSpeed)
-        local maxSpeed = math.min(25, maxSpeed)    
-        
-        velocity:Add(wishDir * Clamp(kBlinkAcceleration * GetRoundLengthToSiege(), 40, 52) * deltaTime)
+        local maxSpeed = math.min(25, maxSpeed)      
+
+       -- Print("maxSpeed is %s", maxSpeed)    
+        velocity:Add(wishDir * kBlinkAcceleration * deltaTime)
         
         if velocity:GetLength() > maxSpeed then
 
