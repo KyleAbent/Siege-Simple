@@ -1,3 +1,4 @@
+kFadeBlinkSpeedBuff = 1.15
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3
 kSentrysPerRoomSaltComm = 6

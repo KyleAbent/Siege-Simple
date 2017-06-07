@@ -41,8 +41,8 @@ function Fade:GetCanMetabolizeHealth()
     return GetHasTech(self, kTechId.MetabolizeHealth)
 end
 
-local kBlinkSpeed = 16 --14
-local kBlinkAcceleration = 46 --40
+local kBlinkSpeed = 14 * kFadeBlinkSpeedBuff
+local kBlinkAcceleration = 40 * kFadeBlinkSpeedBuff
 local kBlinkAddAcceleration = 1
 
 function Fade:ModifyVelocity(input, velocity, deltaTime)
