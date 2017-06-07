@@ -70,7 +70,7 @@ local kSiege_TechIds =
     'ShiftReceive',
     'SiegeBeacon',
     'DigestComm',
-    'MoonBoots',
+    'WallWalk',
     'LightArmor',
     
 }

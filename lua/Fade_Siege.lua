@@ -31,6 +31,7 @@ end
 function Fade:GetBallFlagAttatchPoint(player)
        return kBallFlagAttachPoint
 end
+
 function Fade:GetMaxSpeed(possible)
      local speed = origspeed(self)
   --return speed * 1.10
@@ -39,6 +40,38 @@ end
 function Fade:GetCanMetabolizeHealth()
     return GetHasTech(self, kTechId.MetabolizeHealth)
 end
+
+local kBlinkSpeed = 18 --14
+local kBlinkAcceleration = 52 --40
+local kBlinkAddAcceleration = 1
+
+function Fade:ModifyVelocity(input, velocity, deltaTime)
+
+    if self:GetIsBlinking() then
+    
+        local wishDir = self:GetViewCoords().zAxis
+        local maxSpeedTable = { maxSpeed = Clamp( kBlinkSpeed * GetRoundLengthToSiege(), 14, 18) }
+        self:ModifyMaxSpeed(maxSpeedTable, input)  
+        local prevSpeed = velocity:GetLength()
+        local maxSpeed = math.max(prevSpeed, maxSpeedTable.maxSpeed)
+        local maxSpeed = math.min(25, maxSpeed)    
+        
+        velocity:Add(wishDir * Clamp(kBlinkAcceleration * GetRoundLengthToSiege(), 40, 52) * deltaTime)
+        
+        if velocity:GetLength() > maxSpeed then
+
+            velocity:Normalize()
+            velocity:Scale(maxSpeed)
+            
+        end 
+        
+        -- additional acceleration when holding down blink to exceed max speed
+        velocity:Add(wishDir * kBlinkAddAcceleration * deltaTime)
+        
+    end
+
+end
+
 
 if Server then
 

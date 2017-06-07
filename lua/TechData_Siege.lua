@@ -126,9 +126,9 @@ local kSiege_TechData =
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Sets Structures & Players On Fire via bullets!"},
       
-             { [kTechDataId] = kTechId.MoonBoots,
-        [kTechDataCostKey] = kMoonBootsCost,
-        [kTechDataDisplayName] = "MoonBoots: Walk on walls (Todo: Add JPMarine Fuel concept?) ", 
+             { [kTechDataId] = kTechId.WallWalk,
+        [kTechDataCostKey] = kWallWalkMarineCost,
+        [kTechDataDisplayName] = "WallWalk: Walk on walls", 
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Walk on Walls!!"},
 
@@ -478,13 +478,13 @@ local kSiege_TechData =
           [kTechDataCooldown] = 5,    
           [kTechDataDisplayName] = "Call",       
          [kTechDataCostKey] = 0, 
-         [kTechDataTooltipInfo] = "Everything eligable in radius will automatically teleport to a receiving shift."},
+         [kTechDataTooltipInfo] = "Everything eligable in radius will automatically teleport to a receiving shift. If you don't have a receiving shift then the structures will echo to a contamination."},
          
           { [kTechDataId] = kTechId.ShiftReceive,    
           [kTechDataCooldown] = 5,    
           [kTechDataDisplayName] = "Recieve",       
          [kTechDataCostKey] = 0, 
-         [kTechDataTooltipInfo] = "If you have a Calling shift then this shift will receive."},
+         [kTechDataTooltipInfo] = "If you have a Calling shift then this shift will receive. If you don't have a receiving shift then the calling shift will echo to contamination."},
          
     
         { [kTechDataId] = kTechId.MacSpawnOn,    

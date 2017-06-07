@@ -2,7 +2,7 @@
 local oldfunc = PrototypeLab.GetItemList
 function PrototypeLab:GetItemList(forPlayer)
         local  otherbuttons = { kTechId.Jetpack, kTechId.DualMinigunExosuit, kTechId.DualRailgunExosuit,  kTechId.DualWelderExosuit, kTechId.DualFlamerExosuit, kTechId.JumpPack,
-                                kTechId.HeavyArmor, kTechId.LightArmor, kTechId.MoonBoots, kTechId.RegenArmor}
+                                kTechId.HeavyArmor, kTechId.LightArmor, kTechId.WallWalk, kTechId.RegenArmor}
         
           /*
              6 = jumppack
@@ -22,7 +22,7 @@ function PrototypeLab:GetItemList(forPlayer)
                 otherbuttons[9] = kTechId.None 
            end
            
-            if forPlayer:GetHasMoonBoots() then
+            if forPlayer:GetHasWallWalk() then
                 otherbuttons[1] = kTechId.None 
                 otherbuttons[2] = kTechId.None 
                 otherbuttons[3] = kTechId.None 

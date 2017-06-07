@@ -34,9 +34,9 @@ local origsppeed = Shift.GetMaxSpeed
 function Shift:GetMaxSpeed()
     local speed = origsppeed(self)
           --Print("1 speed is %s", speed)
-          speed = Clamp( (speed * kALienCragWhipShadeShiftDynamicSpeedBpdB) * GetRoundLengthToSiege(), speed, speed * kALienCragWhipShadeShiftDynamicSpeedBpdB)   --- buff when siege is open
+      --    speed = Clamp( (speed * kALienCragWhipShadeShiftDynamicSpeedBpdB) * GetRoundLengthToSiege(), speed, speed * kALienCragWhipShadeShiftDynamicSpeedBpdB)   --- buff when siege is open
           --Print("2 speed is %s", speed)
-    return speed
+    return speed * 1.25
 end
 local origbuttons = Shift.GetTechButtons
 function Shift:GetTechButtons(techId)
@@ -87,8 +87,16 @@ end
 function Shift:CheckForAndActOn() -- Insta Teleport with 0 tres cost OP? Add limit? Time Delay? if 12 then take 3 at a time?
  --Print("Calling 3")
 local receivingOrigin = nil
+
       for _, entity in ientitylist(Shared.GetEntitiesWithClassname("Shift")) do
             if entity.receiving then receivingOrigin = entity:GetOrigin() break end --Print("Calling 4") break  end
+      end
+      if not receivingOrigin then
+      
+     for _, entity in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
+           receivingOrigin = entity:GetOrigin() break --Print("Calling 4") break  end
+      end
+
       end
  if not receivingOrigin then return end
     --Print("Calling 5")

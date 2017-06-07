@@ -295,7 +295,7 @@ function Marine:GetHasFireBullets()
     return false
     end
 end
-function Marine:GetHasMoonBoots()
+function Marine:GetHasWallWalk()
     if self.wallboots then
     return true
     else 
@@ -450,21 +450,23 @@ end
 end
 
 
-/*
+
 local origcweapons = Marine.InitWeapons
 
 
 function Marine:InitWeapons()
 
+
+
 origcweapons(self)
 
- if not GetGameStarted() or self:GetDarwinMode() then
-    -- Print("Giving item")
-     self:GiveItem(JediConcGrenadeThrower.kMapName, true)
- end
 
+self:GiveItem(Welder.kMapName)
+
+    self:SetActiveWeapon(Rifle.kMapName)
+    self:SetQuickSwitchTarget(Pistol.kMapName)
 end
-*/
+
 function Marine:GiveLayStructure(techid, mapname)
   --  if not self:GetHasLayStructure() then
            local laystructure = self:GiveItem(LayStructures.kMapName)
@@ -643,7 +645,7 @@ function Marine:AttemptToBuy(techIds)
                elseif techId == kTechId.RegenArmor then
                  self.nanoarmor = true
                  return true
-               elseif techId == kTechId.MoonBoots then
+               elseif techId == kTechId.WallWalk then
                  self.wallboots = true
                  return true
                elseif techId == kTechId.LightArmor then

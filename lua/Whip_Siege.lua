@@ -41,9 +41,9 @@ local origsppeed = Whip.GetMaxSpeed
 function Whip:GetMaxSpeed()
     local speed = origsppeed(self)
           --Print("1 speed is %s", speed)
-          speed = Clamp( (speed * kALienCragWhipShadeShiftDynamicSpeedBpdB) * GetRoundLengthToSiege(), speed, speed * kALienCragWhipShadeShiftDynamicSpeedBpdB)   --- buff when siege is open
+      --    speed = Clamp( (speed * kALienCragWhipShadeShiftDynamicSpeedBpdB) * GetRoundLengthToSiege(), speed, speed * kALienCragWhipShadeShiftDynamicSpeedBpdB)   --- buff when siege is open
           --Print("2 speed is %s", speed)
-    return speed
+    return speed * 1.25
 end
 function Whip:GetMinRangeAC()
 return WhipAutoCCMR       
@@ -92,7 +92,9 @@ function Whip:TriggerExplode()
                 self:Kill()
                    return true
 end
-
+function Whip:GetShouldBeInfested()
+    return self:GetIsACreditStructure() or GetImaginator():GetAlienEnabled() 
+end
 if Server then
 
 function Whip:TryAttack(selector)
@@ -101,7 +103,7 @@ end
 
 function Whip:UpdateRootState()
     
-    local infested = self:GetGameEffectMask(kGameEffect.OnInfestation) or self:GetIsACreditStructure()
+    local infested = self:GetGameEffectMask(kGameEffect.OnInfestation) or self:GetShouldBeInfested()
     local moveOrdered = self:GetCurrentOrder() and self:GetCurrentOrder():GetType() == kTechId.Move
     -- unroot if we have a move order or infestation recedes
     if self.rooted and (moveOrdered or not infested) then

@@ -3,6 +3,7 @@ Script.Load("lua/Additions/SaltMixin.lua")
 Sentry.kFov = 360
 Sentry.kMaxPitch = 180 
 Sentry.kMaxYaw = Sentry.kFov / 2
+Sentry.kTargetAcquireTime = 0.45
 
 function Sentry:GetFov()
     return 360
