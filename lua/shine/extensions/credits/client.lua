@@ -26,7 +26,8 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
 		if player:isa("Gorge") then
 		self:AddTopButton("Tunnel@Hive: "..gCreditStructureCostTunnelToHive, function() Shared.ConsoleCommand ("sh_buycustom TunnelEntrance")  end)
         end
-
+		--self:AddSideButton("PetDrifter: "..gCreditStructureCostPetDrifter, function() Shared.ConsoleCommand ("sh_buy PetDrifter")  end)
+		self:AddSideButton("Drifter: "..gCreditStructureCostPerDrifter, function() Shared.ConsoleCommand ("sh_buy Drifter")  end)
 		self:AddSideButton("Hydra: "..gCreditStructureCostHydra, function() Shared.ConsoleCommand ("sh_buy Hydra")  end)
 		self:AddSideButton("SaltyEgg: "..gCreditStructureCostSaltyEgg, function() Shared.ConsoleCommand ("sh_buy SaltyEgg")  end)
 		--self:AddSideButton("Drifter: "..gCreditStructureCostDrifter, function() Shared.ConsoleCommand ("sh_buy Drifter")  end)

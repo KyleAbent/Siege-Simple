@@ -1,4 +1,34 @@
 --All this just to make drifters stack, rediculous.
+/*
+local networkVars =
+{
+   isPet = "boolean",
+}
+
+local origcreate = Drifter.OnCreate
+function Drifter:OnCreate()
+origcreate(self)
+self.isPet = false
+end
+
+  function Drifter:GetUnitNameOverride(viewer)
+    local unitName = GetDisplayName(self)   
+      if self.isPet then
+   unitName = string.format(Locale.ResolveString("%s (Pet)"), unitName)
+     end
+return unitName
+end 
+local origupdate = Drifter.OnUpdate
+
+function Drifter:OnUpdate(deltaTime)
+ 
+         if not  self.timelastPet or self.timelastPet + 8 <= Shared.GetTime() then
+        self.timelastPet = Shared.GetTime()
+        GetImaginator():ManagePetDrifter(self)
+        end
+       origupdate(self, deltaTime)  
+end
+*/
 local kDetectInterval = 0.5
 local kDetectRange = 1.5
 local kDrifterConstructSound = PrecacheAsset("sound/NS2.fev/alien/drifter/drift")
@@ -239,3 +269,4 @@ function Drifter:ProcessGrowOrder(moveSpeed, deltaTime)
     end
 
 end
+Shared.LinkClassToMap("Drifter", Drifter.kMapName, networkVars)

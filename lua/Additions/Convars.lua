@@ -1,3 +1,5 @@
+gCreditStructureCostPetDrifter = 5
+gCreditStructureCostPerDrifter = 5
 kFadeBlinkSpeedBuff = 1.15
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3

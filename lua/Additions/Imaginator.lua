@@ -731,33 +731,6 @@ local function  isPayload(where, who)
             
     
 end
-local function IsBeingGrown(self, target)
-
-    if target.hasDrifterEnzyme then
-        return true
-    end
-
-    for _, drifter in ipairs(GetEntitiesForTeam("Drifter", target:GetTeamNumber())) do
-    
-        if self ~= drifter then
-        
-            local order = drifter:GetCurrentOrder()
-            if order and order:GetType() == kTechId.Grow then
-            
-                local growTarget = Shared.GetEntity(order:GetParam())
-                if growTarget == target then
-                    return true
-                end
-            
-            end
-        
-        end
-    
-    end
-
-    return false
-
-end
 local function GetDrifterBuff()
  local buffs = {}
  if GetHasShadeHive()  then table.insert(buffs,kTechId.Hallucinate) end
@@ -767,7 +740,7 @@ local function GetDrifterBuff()
 end
 local function GiveDrifterOrder(who, where)
 
-local structure =  GetNearestMixin(who:GetOrigin(), "Construct", 2, function(ent) return not ent:GetIsBuilt() and not IsBeingGrown(who, ent) and (not ent.GetCanAutoBuild or ent:GetCanAutoBuild()) and not (GetIsInSiege(ent) and not GetSiegeDoorOpen() )  end)
+local structure =  GetNearestMixin(who:GetOrigin(), "Construct", 2, function(ent) return not ent:GetIsBuilt() and (not ent.GetCanAutoBuild or ent:GetCanAutoBuild()) and not (GetIsInSiege(ent) and not GetSiegeDoorOpen() )  end)
 local player =  GetNearest(who:GetOrigin(), "Alien", 2, function(ent) return ent:GetIsInCombat() and ent:GetIsAlive() end) 
     
     local target = nil
@@ -823,7 +796,26 @@ local hive = nil
    end
    
 end
+local function GiveDrifterOrderPets(who)
 
+
+local player = who:GetOwner()
+Print("Derp")
+if not player then who:Kill() return end
+    
+    if GetFrontDoorOpen() and player then
+        local chance = math.random(1,100)
+        local boolean = chance >= 70
+        if boolean then
+        who:GiveOrder(GetDrifterBuff(), player:GetId(), player:GetOrigin(), nil, false, false)
+        return
+        end
+    end
+    
+end
+function Imaginator:ManagePetDrifter(who)
+            GiveDrifterOrderPets(who)
+end
 local function GiveConstructOrder(who, where)
 
 local random = {}
@@ -1402,7 +1394,7 @@ local function FakeCyst(where)
 end
 function Imaginator:ActualAlienFormula(cystonly)
 --Print("AutoBuildConstructs")
-ManageDrifters() 
+ ManageDrifters() 
 local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
 if hivecount < 3 and not GetSandCastle():GetSDBoolean() then return end -- build hives first ya newb
 local randomspawn = nil

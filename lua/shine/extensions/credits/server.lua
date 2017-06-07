@@ -703,7 +703,8 @@ local entity = nil
            entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
            if entity.SetOwner then entity:SetOwner(whoagain) end
           if entity.SetConstructionComplete then  entity:SetConstructionComplete() end
-              if entity:isa("PoopEgg") then ent:SetSalty() end
+             
+             
         end
 
 
@@ -909,6 +910,13 @@ mapnameof = PoopEgg.kMapName
 techid = kTechId.Egg
 limit = 4
 delay = gCreditStructureDelaySaltyEgg
+--elseif String == "PetDrifter" then
+elseif String == "Drifter" then
+CreditCost = gCreditStructureCostPetDrifter
+mapnameof = Drifter.kMapName
+techid = kTechId.Drifter
+limit = 2
+delay = 4
 elseif String == "Harvester" then
 CreditCost = gCreditStructureCostHarvesterExtractor
 mapnameof = Harvester.kMapName

@@ -42,6 +42,15 @@ end
 function Hydra:UpdateMaturity()
 return false
 end
+function Hydra:OnDamageDone(doer, target)
+
+    if doer and doer == self and target.SetParasited then
+
+        target:SetParasited(nil)
+    
+    end
+
+end
 function Hydra:OnConstructionComplete()
     self.updateMaturity = false
 end

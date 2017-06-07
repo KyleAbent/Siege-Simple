@@ -255,6 +255,8 @@ local function DropStructure(self, player)
                  if structure:isa("Egg") then structure:SetOrigin( structure:GetOrigin() + Vector(0, 0.25, 0) ) end
                -- if structure:isa("PhaseGate") then structure.channel = 2 end
                 if HasMixin(structure, "Supply") then RemoveSupply(self, player, structure) end
+                 if structure:isa("PoopEgg") then structure:SetSalty() end
+                --  if structure:isa("Drifter") then structure.isPet = true  end
 
                 
                 // Check for space
