@@ -289,11 +289,6 @@ function ExoWelder:GetRepairRate(repairedEntity)
     
 end
 
-
-function ExoWelder:GetShowDamageIndicator()
-    return true
-end
-
 function ExoWelder:GetDamageType()
     return kWelderDamageType
 end

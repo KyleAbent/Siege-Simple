@@ -56,6 +56,24 @@ local oninit = Exosuit.OnInitialized
     -- self:AddTimedCallback(function() SetColor(self) return false end, 4)         
     
     end
+/*
+  function Exosuit:GetUnitNameOverride(viewer)
+  
+  local unitName = GetDisplayName(self)   
+     if self.layout == "WelderWelder"  then
+        unitName = string.format(Locale.ResolveString("WelderWelder"))
+   elseif self.layout == "FlamerFlamer" then
+          unitName = string.format(Locale.ResolveString("FlamerFlamer"))
+   elseif self.layout == "MinigunMinigun" then
+          unitName = string.format(Locale.ResolveString("MinigunMinigun"))
+   elseif self.layout == "RailgunRailgun" then
+          unitName = string.format(Locale.ResolveString("RailgunRailgun"))
+    end
+
+   return unitName
+   end 
+*/
+
    if Server then
 
 

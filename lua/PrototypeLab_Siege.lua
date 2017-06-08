@@ -65,3 +65,7 @@ table = origbuttons(self, techId)
  return table
 
 end
+
+function PrototypeLab:GetMinRangeAC()
+return ProtoAutoCCMR      
+end

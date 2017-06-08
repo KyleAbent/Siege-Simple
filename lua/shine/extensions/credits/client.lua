@@ -177,7 +177,7 @@ Shine.VoteMenu:AddPage ("SpendSalt", function( self )
        local player = Client.GetLocalPlayer()
             self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilitiesSalt" ) end)
     if player:GetTeamNumber() == 1 then 
-        self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeaponSalts" ) end)
+        self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeaponsSalt" ) end)
       end  
 
 
@@ -199,9 +199,9 @@ end)
      
      
 Shine.VoteMenu:EditPage( "Main", function( self ) 
-self:AddSideButton( "Pres", function() Shared.ConsoleCommand ("sh_presorsalttoggle") self:SetPage( "SpendPres" ) end)
 self:AddSideButton( "Disco", function() Shared.ConsoleCommand ("sh_disco")  end)
---self:AddSideButton( "Salt", function() Shared.ConsoleCommand ("sh_presorsalttoggle")  self:SetPage( "SpendSalt" ) end)
+self:AddSideButton( "Pres", function() Shared.ConsoleCommand ("sh_presorsalttoggle") self:SetPage( "SpendPres" ) end)
+self:AddSideButton( "Salt", function() Shared.ConsoleCommand ("sh_presorsalttoggle")  self:SetPage( "SpendSalt" ) end)
 end)
 
 

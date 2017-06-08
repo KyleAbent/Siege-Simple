@@ -389,7 +389,7 @@ end
 end //server
 
 function Alien:GetHasLayStructure()
-        local weapon = self:GetWeaponInHUDSlot(6)
+        local weapon = self:GetWeaponInHUDSlot(5)
         local builder = false
     if (weapon) then
             builder = true

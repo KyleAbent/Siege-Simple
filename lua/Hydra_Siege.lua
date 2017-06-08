@@ -1,16 +1,18 @@
 Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/LevelsMixin.lua")
 
 Hydra.kSpikeSpeed = 80
 Hydra.kSpread = Math.Radians(11)
 local networkVars = {}
 
 AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(LevelsMixin, networkVars) --would explain it
 
 local originit = Hydra.OnInitialized
 function Hydra:OnInitialized()
-self.startsMature = true
 originit(self)
         InitMixin(self, SaltMixin)
+        InitMixin(self, LevelsMixin)
 if Server then
 
                self.targetSelector = TargetSelector():Init(
@@ -39,9 +41,7 @@ function Hydra:GetCanFireAtTargetActual(target, targetPoint)
     return true
     
 end
-function Hydra:UpdateMaturity()
-return false
-end
+
 function Hydra:OnDamageDone(doer, target)
 
     if doer and doer == self and target.SetParasited then
@@ -51,52 +51,15 @@ function Hydra:OnDamageDone(doer, target)
     end
 
 end
-function Hydra:OnConstructionComplete()
-    self.updateMaturity = false
-end
 
-Shared.LinkClassToMap("Hydra", Hydra.kMapName, networkVars) 
-
-Script.Load("lua/Additions/LevelsMixin.lua")
-
-class 'HydraSiege' (Hydra)
-HydraSiege.kMapName = "hydrasiege"
-
-local networkVars = {}
-AddMixinNetworkVars(LevelsMixin, networkVars) --would explain it
-function HydraSiege:OnInitialized()
- Hydra.OnInitialized(self)
-   InitMixin(self, LevelsMixin)
-   self:SetTechId(kTechId.Hydra) --Set Parent???
-   self.level = 1 //div by 0 
-end
-
-
-        function HydraSiege:GetTechId()
-         return kTechId.Hydra
-    end
-   function HydraSiege:OnGetMapBlipInfo()
-    local success = false
-    local blipType = kMinimapBlipType.Undefined
-    local blipTeam = -1
-    local isAttacked = HasMixin(self, "Combat") and self:GetIsInCombat()
-    blipType = kMinimapBlipType.Hydra
-     blipTeam = self:GetTeamNumber()
-    if blipType ~= 0 then
-        success = true
-    end
-    
-    return success, blipType, blipTeam, isAttacked, false --isParasited
-end
-
-    function HydraSiege:OnAddXp(amount)
+    function Hydra:OnAddXp(amount)
         self:AdjustMaxHealth(kHydraHealth * (self.level/100) + kHydraHealth) 
     end
     
-function HydraSiege:GetLevelPercentage()
+function Hydra:GetLevelPercentage()
 return self.level / self:GetMaxLevel() * 1.3
 end
-function HydraSiege:OnAdjustModelCoords(modelCoords)
+function Hydra:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords
 	local scale = self:GetLevelPercentage()
        if scale >= 1 then
@@ -108,10 +71,10 @@ function HydraSiege:OnAdjustModelCoords(modelCoords)
 end
     
     
-    function HydraSiege:GetMaxLevel()
+    function Hydra:GetMaxLevel()
     return kAlienDefaultLvl
     end
-    function HydraSiege:GetAddXPAmount()
+    function Hydra:GetAddXPAmount()
     return self:GetMaxLevel() / math.random(8,16) 
     end
     
@@ -158,7 +121,7 @@ end
     
 end
 
-function HydraSiege:AttackTarget()
+function Hydra:AttackTarget()
 
     self:TriggerUncloak()
     
@@ -171,8 +134,10 @@ function HydraSiege:AttackTarget()
 end
 
     
-    end
-Shared.LinkClassToMap("HydraSiege", HydraSiege.kMapName, networkVars) 
+end
+    
+    
+Shared.LinkClassToMap("Hydra", Hydra.kMapName, networkVars) 
 
 
 

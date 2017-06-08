@@ -1,4 +1,4 @@
-kPrestoSaltMul = 1.3
+kPrestoSaltMul = 2
 gCreditStructureCostPetDrifter = 5
 gCreditStructureCostPerDrifter = 5
 kFadeBlinkSpeedBuff = 1.15
@@ -83,9 +83,9 @@ gCreditWeaponCostGrenadePulse = 2 * 2
 
 --Alien Abilities  Credits Cost
 gCreditAbilityCostInk = 3 --1.5
-gCreditAbilityCostNutrientMist = 2
-gCreditAbilityCostHallucination = 2
-gCreditAbilityCostEnzymeCloud = 3
+gCreditAbilityCostNutrientMist = 1
+gCreditAbilityCostHallucination = 4
+gCreditAbilityCostEnzymeCloud = 4
 gCreditAbilityCostContamination = 5
 
 

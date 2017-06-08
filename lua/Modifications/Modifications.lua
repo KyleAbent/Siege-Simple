@@ -302,7 +302,7 @@ SetCachedTechData(kTechId.DropExosuit, kTechDataBuildRequiresMethod, GetCheckExo
 
 ---Hacks------------
 
-SetCachedTechData(kTechId.Hydra, kTechDataMapName,HydraSiege.kMapName)
+
 
 
 
@@ -597,3 +597,200 @@ function RadiusDamageAliens(entities, centerOrigin, radius, fullDamage, doer, ig
     end
     end
 end
+
+
+
+local function GetMaturityRate(self)
+
+    if self.GetMaturityRate then
+        return self:GetMaturityRate()
+    end
+    
+    return kDefaultMaturityRate
+    
+end
+
+if Server then
+  
+    function MaturityMixin:OnMaturityUpdate(deltaTime)
+        
+        PROFILE("MaturityMixin:OnMaturityUpdate")
+        
+        if not self:GetIsMature() then
+               self.matureFraction = 1
+               self.finalMatureFraction = 1
+               self:UpdateMaturity()
+            if self.OnMaturityComplete then
+                self:OnMaturityComplete()
+            end
+        end
+        
+        -- to prevent too much network spam from happening we update only every second the max health
+        if self:isa("Cyst") and (self.timeMaturityLastUpdate + 8 < Shared.GetTime()) then
+        
+            self:ArtificialLeveling()
+            self.timeMaturityLastUpdate = Shared.GetTime()
+            
+        end
+        
+        return true
+        
+    end
+
+end
+
+
+
+if Server then
+	
+	local function RewardAchievement(player, name)
+
+	end
+	
+	function AchievementReceiverMixin:CheckWeldedPowerNodes()
+
+	end
+
+	function AchievementReceiverMixin:CheckWeldedPlayers()
+
+	end
+
+	function AchievementReceiverMixin:CheckBuildResTowers()
+
+	end
+
+	function AchievementReceiverMixin:CheckKilledResTowers()
+
+	end
+
+	function AchievementReceiverMixin:CheckDefendedResTowers()
+
+	end
+
+	function AchievementReceiverMixin:CheckFollowedOrders()
+
+	end
+
+	function AchievementReceiverMixin:CheckParasitedPlayers()
+
+	end
+
+	function AchievementReceiverMixin:CheckStructureDamageDealt()
+
+	end
+
+	function AchievementReceiverMixin:CheckPlayerDamageDealt()
+
+	end
+
+	function AchievementReceiverMixin:CheckDestroyedRessources()
+
+	end
+
+	function AchievementReceiverMixin:OnPhaseGateEntry()
+		
+	end
+
+	function AchievementReceiverMixin:OnUseGorgeTunnel()
+
+	end
+
+	function AchievementReceiverMixin:AddWeldedPowerNodes()
+
+	end
+
+	function AchievementReceiverMixin:AddWeldedPlayers()
+
+	end
+
+	function AchievementReceiverMixin:AddBuildResTowers()
+
+	end
+
+	function AchievementReceiverMixin:AddKilledResTowers()
+
+	end
+
+	function AchievementReceiverMixin:AddDefendedResTowers()
+
+	end
+
+	function AchievementReceiverMixin:AddParsitedPlayers()
+	end
+
+	function AchievementReceiverMixin:AddStructureDamageDealt(amount)
+	end
+
+	function AchievementReceiverMixin:AddPlayerDamageDealt(amount)
+	end
+
+	function AchievementReceiverMixin:AddDestroyedRessources(amount)
+	end
+
+	function AchievementReceiverMixin:CompletedCurrentOrder()
+	end
+
+	function AchievementReceiverMixin:ResetScores()
+
+	end
+
+	function AchievementReceiverMixin:CopyPlayerDataFrom(player)
+	end
+
+end
+
+if Client then
+
+	function AchievementReceiverMixin:GetMaxPlayer()
+	end
+
+	function AchievementReceiverMixin:OnUpdatePlayer(deltaTime)
+    end
+end
+
+if Server then
+
+	function AchievementGiverMixin:PreUpdateMove(input, runningPrediction)
+
+	end
+
+	function AchievementGiverMixin:OnTaunt()
+
+	end
+
+	function AchievementGiverMixin:OnAddHealth()
+
+	end
+
+	function AchievementGiverMixin:OnCommanderStructureLogout(hive)
+	
+	end
+
+	function AchievementGiverMixin:SetGestationData(techIds, previousTechId, healthScalar, armorScalar)
+
+	end
+
+	function AchievementGiverMixin:SetParasited(fromPlayer)
+
+	end
+
+	function AchievementGiverMixin:OnWeldTarget(target)
+
+	end
+
+	function AchievementGiverMixin:OnConstruct(builder, newFraction, oldFraction)
+
+	end
+
+	function AchievementGiverMixin:OnConstructionComplete(builder)
+
+	end
+
+	function AchievementGiverMixin:OnTakeDamage(damage, attacker, doer, point, direction, damageType, preventAlert)
+
+	end
+
+	function AchievementGiverMixin:PreOnKill(attacker, doer, point, direction)
+     end
+end
+

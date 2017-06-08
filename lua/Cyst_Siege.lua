@@ -82,7 +82,10 @@ function Cyst:GetMatureMaxArmor()
     local bySiege = orig * 2
     return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
 end 
-
+function Cyst:ArtificialLeveling()
+  self:AdjustMaxHealth(self:GetMatureMaxHealth())
+  self:AdjustMaxArmor(self:GetMatureMaxArmor())
+end
 function Cyst:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords
 	local scale = self:GetLevelPercentage()

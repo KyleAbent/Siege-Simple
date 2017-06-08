@@ -12,7 +12,7 @@ kOnosArmorFullyUpgradedAmount = 865 --default 650
 kFadeArmor = 104 --30% increase from 80
 
 
-kPowerPointHealth  = kPowerPointHealth * 1.10
+--kPowerPointHealth  = kPowerPointHealth * 1.10 <- UPG
 kSentryBatteryHealth = 780 --30% increase from 600
 kSentryBatteryArmor = 230 --30% increase from 200
 

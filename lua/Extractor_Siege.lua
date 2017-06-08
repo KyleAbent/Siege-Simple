@@ -1,8 +1,10 @@
 Script.Load("lua/ElectrifyMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = {}
 
 AddMixinNetworkVars(ElectrifyMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 local orig = Extractor.OnInitialized
 function Extractor:OnInitialized()
@@ -41,4 +43,4 @@ function Extractor:OnResearchComplete(researchId)
 end
 
 
-Shared.LinkClassToMap("Extractor", Extractor.kMapName, addonNetworkVars)
+Shared.LinkClassToMap("Extractor", Extractor.kMapName, networkVars)
