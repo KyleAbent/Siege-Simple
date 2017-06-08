@@ -128,7 +128,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 return
                 end
                 
-             if doer and doer:isa("XenocideLeap") then
+             if doer and doer:isa("XenocideLeap") and Server then
               CreateEntity(Rupture.kMapName, point, 2)
              end
              
