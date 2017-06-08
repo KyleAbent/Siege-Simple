@@ -1,3 +1,4 @@
+kPrestoSaltMul = 1.3
 gCreditStructureCostPetDrifter = 5
 gCreditStructureCostPerDrifter = 5
 kFadeBlinkSpeedBuff = 1.15

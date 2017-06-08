@@ -972,6 +972,20 @@ end
 
 local ThirdPersonCommand = self:BindCommand( "sh_thirdperson", { "thirdperson", "3rdperson" }, ThirdPerson, true)
 ThirdPersonCommand:Help( "Triggers third person view" )
+
+local function Disco( Client )
+     if Shine:GetUserImmunity(Client) >= 10 then 
+     local Player = Client:GetControllingPlayer()
+     GetSandCastle():ToggleDisco()
+     self:NotifyGeneric( nil, "Disco: %s", true, GetSandCastle():GetIsDisco())  
+     else
+     self:NotifyGeneric( Client, "You can't handle the Disco.", true)  
+     end 
+end
+
+local DiscoCommand = self:BindCommand( "sh_disco", "disco", Disco, true)
+--DiscoCommand:Help( "" )
+
 	
 local function FirstPerson( Client )
 local Player = Client:GetControllingPlayer()

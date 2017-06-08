@@ -31,6 +31,7 @@ local networkVars =
    primaryOpened = "boolean",
    sdTimer = "time",
    siegeBeaconed = "boolean",
+   isDisco = "boolean",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -47,6 +48,7 @@ function SandCastle:TimerValues()
    self.sdTimer = 0
    self.siegeBeaconed = false
    self.powerlighth = nil
+   self.isDisco = false
 end
 
 function SandCastle:OnReset() 
@@ -54,6 +56,12 @@ function SandCastle:OnReset()
 end
 function SandCastle:GetIsMapEntity()
 return true
+end
+function SandCastle:GetIsDisco()
+return self.isDisco
+end
+function SandCastle:ToggleDisco()
+ self.isDisco = not self.isDisco
 end
 function SandCastle:GetHasSiegeBeaconed()
 return self.siegeBeaconed
@@ -269,12 +277,13 @@ end
 
 function SandCastle:OnUpdate(deltatime)
 
-  
+       if self:GetIsDisco() then
          if not self.timelastDisco or self.timelastDisco + math.random(16, 24) <= Shared.GetTime() then
              self:PerformDisco()
            --   Print("DiscoLights 1")
              self.timelastDisco = Shared.GetTime()
          end
+        end
          
          
   if Server then

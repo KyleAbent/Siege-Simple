@@ -200,6 +200,7 @@ end)
      
 Shine.VoteMenu:EditPage( "Main", function( self ) 
 self:AddSideButton( "Pres", function() Shared.ConsoleCommand ("sh_presorsalttoggle") self:SetPage( "SpendPres" ) end)
+self:AddSideButton( "Disco", function() Shared.ConsoleCommand ("sh_disco")  end)
 --self:AddSideButton( "Salt", function() Shared.ConsoleCommand ("sh_presorsalttoggle")  self:SetPage( "SpendSalt" ) end)
 end)
 
