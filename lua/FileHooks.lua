@@ -14,6 +14,8 @@ ModLoader.SetupFileHook( "lua/Globals.lua", "lua/Globals_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Drifter.lua", "lua/Drifter_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/PowerPointLightHandler.lua", "lua/PowerPointLightHandler_Siege.lua", "post" )
+
 ModLoader.SetupFileHook( "lua/EvolutionChamber.lua", "lua/EvolutionChamber_Siege.lua", "post" )
 
 --ModLoader.SetupFileHook( "lua/PhysicsGroup.lua", "lua/PhysicsGroup_Siege.lua", "post" )

@@ -69,7 +69,7 @@ self.marinecredits = 0
 self.aliencredits = 0
 self.marinebonus = 0
 self.alienbonus = 0
-
+self.SaltyPlayers = {} --To toggle spending between pres and salt in an easy way....
 self.UserStartOfRoundCredits = {}
 self.MarineTotalSpent = 0
 self.AlienTotalSpent = 0
@@ -85,7 +85,9 @@ self.GlowClientsColor = {} -- 2 tables rather than 1, i know.
 return true
 end
 
-
+local function GetIsSaltPurchase(self)
+ return false
+end
 function Plugin:BecauseFuckSpammingCommanders(player)
 if not GetGamerules():GetGameStarted() then return end
 local CreditCost = 10
@@ -520,11 +522,17 @@ function Plugin:SaveAllCredits()
                  
 
 end
-function Plugin:DeductSaltIfNotPregame(self, who, amount, delayafter)
+function Plugin:DeductSaltIfNotPregame(self, who, amount, delayafter, isSalt)
         --Print("DeductSaltIfNotPregame, amount is %s", amount)
+        Print("Derp 1")
  if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown() )  then
-   -- self.CreditUsers[ who:GetClient() ] = self:GetPlayerSaltInfo(who:GetClient()) - amount
-      who:SetResources( who:GetResources() - amount)
+     if isSalt == true then
+      Print("Derp 2")
+         self.CreditUsers[ who:GetClient() ] = self:GetPlayerSaltInfo(who:GetClient()) - ( amount * kPrestoSaltMul )
+    else
+          Print("Derp 3")
+         who:SetResources( who:GetResources() - amount )
+    end
      --self.PlayerSpentAmount[who:GetClient()] = self.PlayerSpentAmount[who:GetClient()]  + amount
    self.BuyUsersTimer[who:GetClient()] = Shared.GetTime() + delayafter
   -- Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerSaltInfo(who:GetClient()) ), who) 
@@ -620,6 +628,9 @@ end
 function Plugin:NotifySalt( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Salt]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
+function Plugin:NotifyPres( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Pres]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
+end
 function Plugin:NotifySaltDC( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Double Salt Weekend]",  math.random(0,255), math.random(0,255), math.random(0,255), String, Format, ... )
 end
@@ -638,7 +649,7 @@ local function GetIsAlienInSiege(Player)
     end
     return false
  end
-local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid)
+local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground,reqpathing, setowner, delayafter, mapname,limitof, techid, isSalt)
    local autobuild = false 
    local success = false
 
@@ -691,7 +702,7 @@ end
  end
  
 
-self:DeductSaltIfNotPregame(self, whoagain, cost, delayafter)
+self:DeductSaltIfNotPregame(self, whoagain, cost, delayafter, isSalt)
 
 
 local entity = nil 
@@ -757,9 +768,14 @@ end
 
 if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown()  )  then 
 local playeramt =   Player:GetResources()
+
+    if isPres and playeramt < (cost * kPrestoSaltMul ) then 
+   self:NotifySalt( Client, "%s costs %s salt, you have %s pres. Purchase invalid.", true, String, cost, self:GetPlayerSaltInfo(Client) )
+    end
+    
  if playeramt < cost then 
    --Print("player has %s, cost is %s", playeramt,cost)
-self:NotifySalt( Client, "%s costs %s pres, you have %s pres. Purchase invalid.", true, String, cost, Player:GetResources() )
+self:NotifyPres( Client, "%s costs %s pres, you have %s pres. Purchase invalid.", true, String, cost, Player:GetResources() )
 return true
 end
 
@@ -775,6 +791,7 @@ local CreditCost = 10
 local reqground = false
 local limit = 3
 local techid = nil
+local isSalt = self.SaltyPlayers[Client]
 
 if String == "Scan" then
 mapnameof = Scan.kMapName
@@ -845,7 +862,7 @@ limit = gCreditStructureExtractorLimit
 elseif string == nil then
 end
 
-return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid
+return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, isSalt
 
 end
 
@@ -858,6 +875,7 @@ local reqground = false
 local CreditCost = 20
 local limit = 3
 local techid = nil
+local isSalt = GetIsSaltPurchase(self)
 
 
 if String == "NutrientMist" then 
@@ -924,11 +942,11 @@ techid = kTechId.Harvester
 limit = gCreditStructureLimitHarvesterExtractor
 end
        
-return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid
+return mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, isSalt
 
 end
-local function DeductBuy(self, who, cost, delayafter)
-  return self:DeductSaltIfNotPregame(self, who, cost, delayafter)
+local function DeductBuy(self, who, cost, delayafter, isSalt)
+  return self:DeductSaltIfNotPregame(self, who, cost, delayafter, isSalt)
 end
 function Plugin:CreateCommands()
 
@@ -956,7 +974,7 @@ end
    
     if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
    
-      self:DeductSaltIfNotPregame(self, Player, cost, delayafter)
+      self:DeductSaltIfNotPregame(self, Player, cost, delayafter, isSalt)
 
 
  
@@ -996,7 +1014,7 @@ if not Player then return end
     if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
     
     
-     self:DeductSaltIfNotPregame(self, Player, cost, delayafter)
+     self:DeductSaltIfNotPregame(self, Player, cost, delayafter, isSalt)
 
  
   Player:GiveItem(mapname)
@@ -1013,6 +1031,7 @@ local function BuyCustom(Client, String)
 local Player = Client:GetControllingPlayer()
 local cost = 40
 local delayafter = 8
+local isSalt = GetIsSaltPurchase(self)
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
       local exit, nearhive, count = FindPlayerTunnels(Player)
               if not exit then
@@ -1024,7 +1043,7 @@ local delayafter = 8
              end
      if String == "TunnelEntrance" and Player:isa("Gorge") then
        GorgeWantsEasyEntrance(Player, exit, nearhive)
-       DeductBuy(self, Player, cost, delayafter)
+       DeductBuy(self, Player, cost, delayafter, isSalt)
      end
 end
 
@@ -1037,6 +1056,7 @@ local function BuyClass(Client, String)
 local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 1
+local isSalt = GetIsSaltPurchase(self)
 if not Player then return end
 
  if String == "JetPack" and not Player:isa("Exo") and not Player:isa("JetPack") then cost = gCreditClassCostJetPack 
@@ -1054,19 +1074,21 @@ if not Player then return end
  
             --Messy, could be re-written to only require activation once of string = X then call DeductBuy @ end
          if Player:GetTeamNumber() == 1 then
-              if cost == gCreditClassCostJetPack then DeductBuy(self, Player, cost, delayafter)   Player:GiveJetpack()
-             elseif cost == gCreditClassCostMiniGunExo then DeductBuy(self, Player, cost, delayafter)  Player:GiveDualExo(Player:GetOrigin())
-             elseif cost == gCreditClassCostRailGunExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualRailgunExo(Player:GetOrigin())
-             elseif cost == gCreditClassCostWelderExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualWelder(Player:GetOrigin())
-             elseif cost == gCreditClassCostFlamerExo then DeductBuy(self, Player, cost, delayafter) Player:GiveDualFlamer(Player:GetOrigin())
-             end
+              if cost == gCreditClassCostJetPack then  Player:GiveJetpack()
+             elseif cost == gCreditClassCostMiniGunExo then Player:GiveDualExo(Player:GetOrigin())
+             elseif cost == gCreditClassCostRailGunExo then  Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif cost == gCreditClassCostWelderExo then  Player:GiveDualWelder(Player:GetOrigin())
+             elseif cost == gCreditClassCostFlamerExo then Player:GiveDualFlamer(Player:GetOrigin())
+             end 
          elseif Player:GetTeamNumber() == 2 then
-              if cost == gCreditClassCostGorge then DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Gorge)  
-              elseif cost == gCreditClassCostLerk  then   DeductBuy(self, Player, cost, delayafter)  Player:CreditBuy(kTechId.Lerk)
-              elseif cost == gCreditClassCostFade then  DeductBuy(self, Player, cost, delayafter)   Player:CreditBuy(kTechId.Fade)
-              elseif cost == gCreditClassCostOnos then  DeductBuy(self, Player, cost, delayafter) Player:CreditBuy(kTechId.Onos) 
+              if cost == gCreditClassCostGorge then Player:CreditBuy(kTechId.Gorge)  
+              elseif cost == gCreditClassCostLerk  then  Player:CreditBuy(kTechId.Lerk)
+              elseif cost == gCreditClassCostFade then  Player:CreditBuy(kTechId.Fade)
+              elseif cost == gCreditClassCostOnos then Player:CreditBuy(kTechId.Onos) 
               end
          end
+         
+          DeductBuy(self, Player, cost, delayafter, isSalt)
    
 
  
@@ -1085,6 +1107,7 @@ local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 5
 local color = 0
+local isSalt = GetIsSaltPurchase(self)
 if not Player then return end
 
 if Player:GetIsGlowing() then
@@ -1101,7 +1124,7 @@ end
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
             if color == 0 then return end
             
-            DeductBuy(self, Player, cost, delayafter)  
+            DeductBuy(self, Player, cost, delayafter, isSalt)  
             Player:GlowColor(color, 300)
             self.GlowClientsTime[Player:GetClient()] = Shared.GetTime() + 300
             self.GlowClientsColor[Player:GetClient()] = color
@@ -1119,17 +1142,18 @@ local Player = Client:GetControllingPlayer()
 local delayafter = 1
 local cost = 5
 local color = 1
+local isSalt = GetIsSaltPurchase(self)
 if not Player then return end
 
  if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
   
- if String == "Resupply" then DeductBuy(self, Player, cost, delayafter)  Player.hasresupply = true
-  elseif String == "HeavyArmor" then DeductBuy(self, Player, cost, delayafter) Player.heavyarmor = true Player.lightarmor = false
-    elseif String == "LightArmor" then DeductBuy(self, Player, cost, delayafter) Player.lightarmor = true Player.heavyarmor = false
-  elseif String == "FireBullets" then DeductBuy(self, Player, cost, delayafter) Player.hasfirebullets = true
-  elseif String == "RegenArmor" then DeductBuy(self, Player, cost, delayafter) Player.nanoarmor = true
+ if String == "Resupply" then   Player.hasresupply = true
+  elseif String == "HeavyArmor" then  Player.heavyarmor = true Player.lightarmor = false
+    elseif String == "LightArmor" then  Player.lightarmor = true Player.heavyarmor = false
+  elseif String == "FireBullets" then  Player.hasfirebullets = true
+  elseif String == "RegenArmor" then  Player.nanoarmor = true
   end
-  
+  DeductBuy(self, Player, cost, delayafter, isSalt)
    
 end
 
@@ -1150,16 +1174,17 @@ local reqground = true
 if not Player then return end
 local CreditCost = 10
 local techid = nil
+local isSalt = false --GetIsSaltPurchase(self)
 
 if Player:GetTeamNumber() == 1 then 
-  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid = TeamOneBuyRules(self, Client, Player, String)
+  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, isSalt = TeamOneBuyRules(self, Client, Player, String)
 elseif Player:GetTeamNumber() == 2 then
 reqground = false
-  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid  = TeamTwoBuyRules(self, Client, Player, String)
+  mapnameof, delay, reqground, reqpathing, CreditCost, limit, techid, isSalt  = TeamTwoBuyRules(self, Client, Player, String)
 end // end of team numbers
 
 if mapnameof and ( not FirstCheckRulesHere(self, Client, Player, String, CreditCost, true ) == true ) then
- PerformBuy(self, Client, String, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String) 
+ PerformBuy(self, Client, String, Player, CreditCost, true, reqground,reqpathing, true, delay, mapnameof, limit, techid, String, isSalt) 
 end
 
 end

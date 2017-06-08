@@ -67,18 +67,18 @@ function Cyst:GetMinRangeAC()
 return  kCystRedeployRange + 1    
 end
 
-local origmathp = Cyst.GetMatureMaxHealth
+--local origmathp = Cyst.GetMatureMaxHealth
 function Cyst:GetMatureMaxHealth()
-    local orig = origmathp(self)
+    local orig = kMatureCystHealth
     local bySiege = orig * 2
     local val = Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
     self.level = self:GetMaxLevel() * GetRoundLengthToSiege()
     return val
 end 
 
-local origmatarm = Cyst.GetMatureMaxArmor
+--local origmatarm = Cyst.GetMatureMaxArmor
 function Cyst:GetMatureMaxArmor()
-    local orig = origmatarm(self)
+    local orig = kMatureCystArmor
     local bySiege = orig * 2
     return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
 end 

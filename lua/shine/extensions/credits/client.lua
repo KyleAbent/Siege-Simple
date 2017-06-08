@@ -155,12 +155,13 @@ Shine.VoteMenu:AddPage ("SpendPres", function( self )
 
     
 
-     self:AddSideButton( "Classes", function() self:SetPage( "SpendClasses" ) end) 
+
      self:AddSideButton( "Structures", function() self:SetPage( "SpendStructures" ) end)
              --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
                self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
                
        if player:GetTeamNumber() == 1 then 
+            self:AddSideButton( "Classes", function() self:SetPage( "SpendClasses" ) end) 
         self:AddSideButton( "Upgrades", function() self:SetPage( "SpendUpgrades" ) end)
       end  
              
@@ -169,20 +170,37 @@ Shine.VoteMenu:AddPage ("SpendPres", function( self )
 end)
 
 
-
+Script.Load("lua/shine/extensions/credits/client_salt_menu.lua")
 Shine.VoteMenu:AddPage ("SpendSalt", function( self )
        local player = Client.GetLocalPlayer()
        
+       local player = Client.GetLocalPlayer()
+            self:AddSideButton( "CommAbilities", function() self:SetPage( "SpendCommAbilitiesSalt" ) end)
+    if player:GetTeamNumber() == 1 then 
+        self:AddSideButton( "Weapons", function() self:SetPage( "SpendWeaponSalts" ) end)
+      end  
 
-        self:AddSideButton( "Glow", function() self:SetPage( "SpendGlow" ) end)
+
+    
+
+     self:AddSideButton( "Classes", function() self:SetPage( "SpendClassesSalt" ) end) 
+     self:AddSideButton( "Structures", function() self:SetPage( "SpendStructuresSalt" ) end)
+             --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
+               self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpeniveSalt" ) end)
+               
+       if player:GetTeamNumber() == 1 then 
+        self:AddSideButton( "Upgrades", function() self:SetPage( "SpendUpgradesSalt" ) end)
+      end  
+      
+        self:AddSideButton( "Glow", function() self:SetPage( "SpendGlowSalt" ) end)
 
         self:AddBottomButton( "Back", function()self:SetPage("Main")end)  
 end)
      
      
 Shine.VoteMenu:EditPage( "Main", function( self ) 
-self:AddSideButton( "Pres", function() self:SetPage( "SpendPres" ) end)
-self:AddSideButton( "Salt", function() self:SetPage( "SpendSalt" ) end)
+self:AddSideButton( "Pres", function() Shared.ConsoleCommand ("sh_presorsalttoggle") self:SetPage( "SpendPres" ) end)
+--self:AddSideButton( "Salt", function() Shared.ConsoleCommand ("sh_presorsalttoggle")  self:SetPage( "SpendSalt" ) end)
 end)
 
 

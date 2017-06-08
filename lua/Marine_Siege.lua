@@ -460,11 +460,11 @@ function Marine:InitWeapons()
 
 origcweapons(self)
 
-
-self:GiveItem(Welder.kMapName)
-
+   if GetSiegeDoorOpen() then
+    self:GiveItem(Welder.kMapName)
     self:SetActiveWeapon(Rifle.kMapName)
     self:SetQuickSwitchTarget(Pistol.kMapName)
+    end
 end
 
 function Marine:GiveLayStructure(techid, mapname)

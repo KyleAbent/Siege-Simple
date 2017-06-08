@@ -220,8 +220,9 @@ function Onocide:ExplodeYo()
                 player.spawnReductionTime = 4
                 
                 player:SetBypassRagdoll(true)
-
+                if Server then CreateEntity(Rupture.kMapName, player:GetOrigin(), 2) end
                 player:Kill()
+               
                 
                 if self.XenocideSoundName then
                     self.XenocideSoundName:Stop()

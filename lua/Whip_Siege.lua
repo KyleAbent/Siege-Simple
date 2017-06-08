@@ -179,7 +179,44 @@ function Whip:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
     end
 
 end
+if Server then
 
+function Whip:CreateFTAtAttachPointandFlickIt()
+
+    local bombStart = self:GetAttachPointOrigin("Whip_Ball")
+    local flamethrower = CreateEntity(Flamethrower.kMapName, bombStart + Vector(0,1,0), 1)
+end             
+                    
+local slap = Whip.SlapTarget
+function Whip:SlapTarget(target)
+
+    if target and self.slapping then //
+        if not self:GetIsOnFire() and self.slapTargetSelector:ValidateTarget(target) then //
+         if target:isa("Marine") or target:isa("JetpackMarine") then //
+          local client = target:GetClient()
+          if not client then return end
+          local controlling = client:GetControllingPlayer()
+            if controlling:GetWeaponInHUDSlot(1) ~= nil and controlling:GetWeaponInHUDSlot(1):isa("Flamethrower") then //
+                local roll = math.random(1,100)
+                if roll <=30 then //
+                  DestroyEntity(controlling:GetWeaponInHUDSlot(1))
+                     if controlling:GetWeaponInHUDSlot(2) ~= nil then //
+                      controlling:SwitchWeapon(2)
+                      else
+                          controlling:SwitchWeapon(3)
+                      end     //
+                       self:CreateFTAtAttachPointandFlickIt()
+                end //
+             end //
+         end    //                    
+        end //
+    end //
+    
+    slap(self, target)
+    
+end
+
+end
 Shared.LinkClassToMap("Whip", Whip.kMapName, networkVars)
 
     

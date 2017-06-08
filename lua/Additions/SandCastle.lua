@@ -46,6 +46,7 @@ function SandCastle:TimerValues()
    self.isSuddenDeath = false
    self.sdTimer = 0
    self.siegeBeaconed = false
+   self.powerlighth = nil
 end
 
 function SandCastle:OnReset() 
@@ -240,10 +241,47 @@ function SandCastle:ForAllAlienStructInSiege()
     
 end
 */
+function SandCastle:ResetLight()
+if not self.powerlighth then return false end 
+self.powerlighth:RestoreColorDerp()
+return false
+end
+function SandCastle:PerformDisco()
+self.powerlighth = nil
+local powerpoints = {}
+      for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+        --handler.powerPoint
+        if powerpoint:GetIsBuilt() and powerpoint.lightHandler then
+        table.insert(powerpoints, powerpoint.lightHandler)
+        end
+    end
+    
+    if #powerpoints == 0 then return end
+    
+    local power = table.random(powerpoints)
+        if not power then return end
+        self.powerlighth = power
+        self.powerlighth:DiscoLights()
+       -- Print("DiscoLights 2")
+         self:AddTimedCallback( SandCastle.ResetLight, math.random(8, 16) )
+    
+end
+
 function SandCastle:OnUpdate(deltatime)
+
+  
+         if not self.timelastDisco or self.timelastDisco + math.random(16, 24) <= Shared.GetTime() then
+             self:PerformDisco()
+           --   Print("DiscoLights 1")
+             self.timelastDisco = Shared.GetTime()
+         end
+         
+         
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
   if gamestarted then 
+
+         
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
        
        
