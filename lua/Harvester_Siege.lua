@@ -10,4 +10,4 @@ function Harvester:OnCreate()
  end
 
 
-Shared.LinkClassToMap("Extractor", Extractor.kMapName, networkVars)
+Shared.LinkClassToMap("Harvester", Harvester.kMapName, networkVars)
