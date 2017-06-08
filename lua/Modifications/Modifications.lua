@@ -127,6 +127,11 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 self:TriggerRebirth()
                 return
                 end
+                
+             if doer and doer:isa("XenocideLeap") then
+              CreateEntity(Rupture.kMapName, point, 2)
+             end
+             
             end
             
             --Hunger
