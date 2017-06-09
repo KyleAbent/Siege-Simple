@@ -372,7 +372,7 @@ local function AddSuddenDeathTimer(who)
 end
   function Plugin:OnOpenSiegeDoors() 
   if not GetGamerules():GetGameStarted()  then return end
-   if GetImaginator():GetAlienEnabled() and GetImaginator():GetMarineEnabled() then GetImaginator():ToggleSDAllowed(true) end
+   if GetImaginator():GetAlienEnabled() and GetImaginator():GetMarineEnabled() then SandCastle():ToggleSDAllowed(true) end
    if not GetImaginator():GetSDAllowed() then return end
          Print("Shine open siege doors 1")
                 local Players = Shine.GetAllPlayers()
@@ -495,7 +495,7 @@ end
 function Plugin:ClientDisconnect(Client)
  if Client:GetIsVirtual() then return end
  
-        if GetGamerules():GetGameStarted() and GetImaginator():GetSDAllowed() then
+        if GetGamerules():GetGameStarted() and GetSandCastle():GetSDAllowed() then
  
         local playercount = #Shine.GetAllPlayers()
         local  humancount = #Shine.GetHumanPlayerCount()
