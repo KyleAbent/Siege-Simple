@@ -1307,7 +1307,6 @@ end
 
 local SaveCreditsCommand = self:BindCommand("sh_savecredits", "savecredits", SaveCreditsCmd)
 SaveCreditsCommand:Help("sh_savecredits saves all credits online")
-
+*/
 end
 
-*/

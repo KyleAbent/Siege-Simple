@@ -5,6 +5,10 @@ function AlienTeam:GetHasAbilityToRespawn()
    return orig
 end
 
+function AlienTeam:GetMaxBioMassLevel()
+    return 12
+end
+
 local orig_ = AlienTeam.AssignPlayerToEgg
 function AlienTeam:AssignPlayerToEgg(player, enemyTeamPosition)
  if GetSandCastle():GetSDBoolean() then return false end
@@ -59,7 +63,7 @@ self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTe
  self.techTree:AddBuyNode(kTechId.Rebirth, kTechId.Shell, kTechId.None, kTechId.AllAliens)
    self.techTree:AddBuyNode(kTechId.Redemption, kTechId.Shell, kTechId.None, kTechId.AllAliens)
     self.techTree:AddBuyNode(kTechId.Hunger, kTechId.Shell, kTechId.None, kTechId.AllAliens)
-    self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
+  --  self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     self.techTree:AddUpgradeNode(kTechId.DigestComm, kTechId.None, kTechId.None)
     self.techTree:SetComplete()

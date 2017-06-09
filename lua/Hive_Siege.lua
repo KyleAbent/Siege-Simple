@@ -17,8 +17,17 @@ function Hive:GetTechAllowed(techId, techNode, player)
     
 end
 
+local origbuttons = Hive.GetTechButtons
+function Hive:GetTechButtons(techId)
 
+local buttons = origbuttons(self, techId)
 
+    if self.bioMassLevel == 3 then
+        buttons[2] = kTechId.ResearchBioMassThree
+    end
+    
+    return buttons
+end
 
 if Server then
 

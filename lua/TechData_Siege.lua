@@ -211,13 +211,14 @@ local kSiege_TechData =
       [kTechDataCostKey] = kDamageResistanceCost,
      [kTechDataTooltipInfo] = "5% damage resistance", },
      */
+     /*
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 
       [kTechDataSponitorCode] = "A",  
       [kTechDataCostKey] = kThickenedSkinCost,
      [kTechDataTooltipInfo] = "Another layer of +hp for each biomass level", },
-     
+     */
                      { [kTechDataId] = kTechId.Hunger, 
        [kTechDataCategory] = kTechId.CragHiveTwo,   
         [kTechDataDisplayName] = "Hunger", 

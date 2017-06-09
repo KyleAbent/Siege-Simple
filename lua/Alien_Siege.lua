@@ -117,6 +117,7 @@ function Alien:UpdateArmorAmountManual()
     end
   return false
 end
+/*
 local function GetThickenedSkinHP(self, bioMassLevel, newMaxHealth)
 
 local amt = self:GetHealthPerBioMass() * bioMassLevel
@@ -125,14 +126,16 @@ local amt = self:GetHealthPerBioMass() * bioMassLevel
      -- Print("amt is %s", amt)
       return amt
 end
+*/
 function Alien:UpdateHealthAmountManual(bioMassLevel, maxLevel)
     local teamInfo = GetTeamInfoEntity(2)
           if teamInfo then
       local bioMassLevel = teamInfo:GetBioMassLevel()
     local level = math.max(0, bioMassLevel - 1)
     local newMaxHealth = self:GetBaseHealth() + level * self:GetHealthPerBioMass()
-    newMaxHealth =  ConditionalValue(self:GetHasUpgrade(kTechId.ThickenedSkin), GetThickenedSkinHP(self, bioMassLevel, newMaxHealth) , newMaxHealth)
+   -- newMaxHealth =  ConditionalValue(self:GetHasUpgrade(kTechId.ThickenedSkin), GetThickenedSkinHP(self, bioMassLevel, newMaxHealth) , newMaxHealth)
    -- Print(" newMaxHealth is %s", newMaxHealth)
+      --Clamp max hp for onos lower if <=6 or <= 12 players??? idk.
        if newMaxHealth ~= self.maxHealth  then
         self:AdjustMaxHealth(newMaxHealth)
         self:SetMaxHealth(newMaxHealth)
