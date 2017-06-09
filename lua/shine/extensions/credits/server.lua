@@ -1277,7 +1277,7 @@ end
 
 local GetSaltCommand = self:BindCommand("sh_getsalt", "getsalt", GetSalt)
 GetSaltCommand:Help("sh_getsalt - pasts amount of users and salt.")
-
+/*
 local function AddSalt(Client, Targets, Number, Display, Double)
 
   
@@ -1309,3 +1309,5 @@ local SaveCreditsCommand = self:BindCommand("sh_savecredits", "savecredits", Sav
 SaveCreditsCommand:Help("sh_savecredits saves all credits online")
 
 end
+
+*/
