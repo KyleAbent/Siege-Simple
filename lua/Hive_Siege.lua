@@ -26,6 +26,7 @@ local buttons = origbuttons(self, techId)
         buttons[2] = kTechId.ResearchBioMassThree
     end
     
+     buttons[3] = kTechId.WhipStealFT
     return buttons
 end
 

@@ -190,7 +190,7 @@ end
 local slap = Whip.SlapTarget
 function Whip:SlapTarget(target)
 
-    if target and self.slapping then //
+    if GetHasTech(self, kTechId.WhipStealFT ) and target and self.slapping then //
         if not self:GetIsOnFire() and self.slapTargetSelector:ValidateTarget(target) then //
          if target:isa("Marine") or target:isa("JetpackMarine") then //
           local client = target:GetClient()

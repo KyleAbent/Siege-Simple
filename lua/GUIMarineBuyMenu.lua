@@ -12,7 +12,7 @@ Script.Load("lua/GUIAnimatedScript.lua")
 
 class 'GUIMarineBuyMenu' (GUIAnimatedScript)
 
-GUIMarineBuyMenu.kBuyMenuTexture = "marine_buy_textures.dds" --"ui/custombuy.dds"
+GUIMarineBuyMenu.kBuyMenuTexture = "ui/marine_buy_textures.dds" --"ui/custombuy.dds"
 GUIMarineBuyMenu.kBuyHUDTexture = "ui/marine_buy_icons.dds"
 GUIMarineBuyMenu.kRepeatingBackground = "ui/menu/grid.dds"
 GUIMarineBuyMenu.kContentBgTexture = "ui/menu/repeating_bg.dds"

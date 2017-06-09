@@ -79,7 +79,17 @@ end
 local kSiege_TechData =
 {   
 
+   { [kTechDataId] = kTechId.WhipStealFT, 
+[kTechDataBioMass] = 9, 
+[kTechDataCostKey] = kResearchWhipStealFT, 
+[kTechDataResearchTimeKey] = kWhipStealFTTime, 
+[kTechDataDisplayName] = "Whip Steal Flamethrower", 
+[kTechDataTooltipInfo] = "1 in 30 chance of stealing flamethrower on slap"},
 
+       -- { [kTechDataId] = kTechId.BioMassTen, [kTechDataDisplayName] = "Biomass 9" },
+        --{ [kTechDataId] = kTechId.BioMassEleven, [kTechDataDisplayName] = "Biomass 11" },
+       -- { [kTechDataId] = kTechId.BioMassTwelve, [kTechDataDisplayName] = "Biomass 12" },
+        
         { [kTechDataId] = kTechId.DigestComm,   
             [kTechDataDisplayName] = "Digest",
  [kTechDataCostKey] = 0,   
