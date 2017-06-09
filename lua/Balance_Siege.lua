@@ -1,8 +1,3 @@
-kHeavyRifleCost = 30
-kHeavyRifleDamageType = kDamageType.Normal
-kHeavyRifleClipSize = 150
-kHeavyRifleTechResearchCost = 20
-
 kARCMinRange = 0 -- why is this even a thing??????
 --kHeavyMachineGunDamage = 7
 kMarineInitialIndivRes = 50 -- 15

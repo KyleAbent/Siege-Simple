@@ -1,6 +1,3 @@
-WhipStealFT = 10
-kWhipStealFTTime = 20
-
 kPrestoSaltMul = 10
 kPresToSaltMultWeapons = 7
 kPresToStructureMult = 8

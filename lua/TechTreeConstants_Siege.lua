@@ -72,10 +72,6 @@ local kSiege_TechIds =
     'DigestComm',
     'WallWalk',
     'LightArmor',
-    'WhipStealFT',
- --   'BioMassTen',
- --   'BioMassEleven',
- --   'BioMassTwelve',
     
 }
 

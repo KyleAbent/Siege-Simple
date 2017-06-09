@@ -1,5 +1,3 @@
---Rewiring to add biomass 10,11,12. .. is messy.
-
 local orig_AlienTeam_GetHasAbilityToRespawn = AlienTeam.GetHasAbilityToRespawn
 function AlienTeam:GetHasAbilityToRespawn()
    local orig = orig_AlienTeam_GetHasAbilityToRespawn(self)
@@ -67,7 +65,6 @@ self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTe
     self.techTree:AddBuyNode(kTechId.Hunger, kTechId.Shell, kTechId.None, kTechId.AllAliens)
   --  self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
-        self.techTree:AddResearchNode(kTechId.WhipStealFT,  kTechId.BioMassNine) 
     self.techTree:AddUpgradeNode(kTechId.DigestComm, kTechId.None, kTechId.None)
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree

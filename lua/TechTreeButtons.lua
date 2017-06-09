@@ -303,7 +303,6 @@ kTechIdToMaterialOffset[kTechId.ShotgunTech] = 85
 kTechIdToMaterialOffset[kTechId.Shotgun] = 85
 kTechIdToMaterialOffset[kTechId.DropShotgun] = 85
 kTechIdToMaterialOffset[kTechId.FlamethrowerTech] = 86
-kTechIdToMaterialOffset[kTechId.WhipStealFT] = 86
 kTechIdToMaterialOffset[kTechId.FlamethrowerRangeTech] = 155
 kTechIdToMaterialOffset[kTechId.DualFlamerExosuit] = 155
 kTechIdToMaterialOffset[kTechId.Flamethrower] = 86

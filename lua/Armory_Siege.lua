@@ -7,9 +7,8 @@ function Armory:GetItemList(forPlayer)
     
     local list = origlist(self, forPlayer)
    if self:GetTechId() == kTechId.AdvancedArmory then
-    list[10] = kTechId.HeavyRifle
-    list[11] = kTechId.Resupply
-    list[12] = kTechId.FireBullets
+    list[10] = kTechId.Resupply
+    list[11] = kTechId.FireBullets
 
     if forPlayer:GetHasFireBullets() then list[11] = kTechId.None end
    else
@@ -20,15 +19,6 @@ function Armory:GetItemList(forPlayer)
     end
     return list
     
-end
-local origbuttons = Armory.GetTechButtons
-function Armory:GetTechButtons(techId)
-
-local buttons = origbuttons(self, techId)
-    
-     buttons[6] = kTechId.FlamethrowerRangeTech
-     buttons[7] = kTechId.HeavyRifleTech
-    return buttons
 end
 function Armory:GetShouldResupplyPlayer(player)
     if not player:GetIsAlive() then
