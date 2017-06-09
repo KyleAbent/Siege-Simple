@@ -372,6 +372,8 @@ local function AddSuddenDeathTimer(who)
 end
   function Plugin:OnOpenSiegeDoors() 
   if not GetGamerules():GetGameStarted()  then return end
+   if GetImaginator():GetAlienEnabled() and GetImaginator():GetMarineEnabled() then GetImaginator():ToggleSDAllowed(true) end
+   if not GetImaginator():GetSDAllowed() then return end
          Print("Shine open siege doors 1")
                 local Players = Shine.GetAllPlayers()
               for i = 1, #Players do
@@ -383,10 +385,11 @@ end
                end
   end
 local function AddSDEnabledDisplay(who) 
-	  Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, who )
+	  Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, who )
 end
     function Plugin:OnEnableSD() 
       if not GetGamerules():GetGameStarted()  then return end
+         if not GetImaginator():GetSDAllowed() then return end
         for i = 1, math.random(4,8) do
        self:NotifySuddenDeath( nil, "SuddenDeath Activated ! No more respawning! No more hive/cc healing/dropping. IF you don't like it post on forums or discord?", true)
        end
@@ -492,7 +495,7 @@ end
 function Plugin:ClientDisconnect(Client)
  if Client:GetIsVirtual() then return end
  
-        if GetGamerules():GetGameStarted() and GetImaginator():GetAlienEnabled() or GetImaginator():GetMarineEnabled() then
+        if GetGamerules():GetGameStarted() and GetImaginator():GetSDAllowed() then
  
         local playercount = #Shine.GetAllPlayers()
         local  humancount = #Shine.GetHumanPlayerCount()
@@ -543,14 +546,16 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    end
    
     if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) >  kSiegeTimer  then
+       if GetImaginator():GetSDAllowed()  then
          AddSuddenDeathTimer(Client)
+       end 
    end
    
    if GetSandCastle():GetSDBoolean() then
    Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
    end
    
-          if GetImaginator():GetAlienEanbled() or GetImaginator():GetMarineEnabled() then
+          if GetImaginator():GetSDAllowed()  then
         local players, numplayers = Shine.GetAllPlayers()
         local humans, numhumans = Shine.GetHumanPlayerCount()
         local bots = math.abs(humans - players)
@@ -974,7 +979,7 @@ local ThirdPersonCommand = self:BindCommand( "sh_thirdperson", { "thirdperson", 
 ThirdPersonCommand:Help( "Triggers third person view" )
 
 local function Disco( Client )
-     if Shine:GetUserImmunity(Client) >= 10 then 
+     if Shine:GetUserImmunity(Client) >= 50 then 
      local Player = Client:GetControllingPlayer()
      GetSandCastle():ToggleDisco()
      self:NotifyGeneric( nil, "Disco: %s", true, GetSandCastle():GetIsDisco())  

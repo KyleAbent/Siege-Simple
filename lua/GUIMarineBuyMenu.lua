@@ -12,7 +12,7 @@ Script.Load("lua/GUIAnimatedScript.lua")
 
 class 'GUIMarineBuyMenu' (GUIAnimatedScript)
 
-GUIMarineBuyMenu.kBuyMenuTexture = "ui/marine_buy_textures.dds"
+GUIMarineBuyMenu.kBuyMenuTexture = "marine_buy_textures.dds" --"ui/custombuy.dds"
 GUIMarineBuyMenu.kBuyHUDTexture = "ui/marine_buy_icons.dds"
 GUIMarineBuyMenu.kRepeatingBackground = "ui/menu/grid.dds"
 GUIMarineBuyMenu.kContentBgTexture = "ui/menu/repeating_bg.dds"
@@ -50,6 +50,7 @@ local function GetBigIconPixelCoords(techId, researched)
         gBigIconIndex[kTechId.GrenadeLauncher] = 4
         gBigIconIndex[kTechId.Flamethrower] = 5
         gBigIconIndex[kTechId.HeavyMachineGun] = 15
+        gBigIconIndex[kTechId.RegenArmor] = 16
         gBigIconIndex[kTechId.Jetpack] = 6
         gBigIconIndex[kTechId.Exosuit] = 7
         gBigIconIndex[kTechId.Welder] = 8
@@ -58,6 +59,8 @@ local function GetBigIconPixelCoords(techId, researched)
         gBigIconIndex[kTechId.UpgradeToDualMinigun] = 10
         gBigIconIndex[kTechId.ClawRailgunExosuit] = 11
         gBigIconIndex[kTechId.DualRailgunExosuit] = 11
+        gBigIconIndex[kTechId.DualFlamerExosuit] = 11
+        gBigIconIndex[kTechId.DualWelderExosuit] = 11
         gBigIconIndex[kTechId.UpgradeToDualRailgun] = 11
         
         gBigIconIndex[kTechId.ClusterGrenade] = 12
@@ -112,6 +115,8 @@ local function GetSmallIconPixelCoordinates(itemTechId)
         gSmallIconIndex[kTechId.Welder] = 10
         gSmallIconIndex[kTechId.LayMines] = 21
         gSmallIconIndex[kTechId.DualMinigunExosuit] = 26
+        gSmallIconIndex[kTechId.DualFlamerExosuit] = 38
+        gSmallIconIndex[kTechId.DualWelderExosuit] = 38
         gSmallIconIndex[kTechId.UpgradeToDualMinigun] = 26
         gSmallIconIndex[kTechId.ClawRailgunExosuit] = 38
         gSmallIconIndex[kTechId.DualRailgunExosuit] = 38

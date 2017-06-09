@@ -1,7 +1,7 @@
 kARCMinRange = 0 -- why is this even a thing??????
 --kHeavyMachineGunDamage = 7
-kMarineInitialIndivRes = 30 -- 15
-kAlienInitialIndivRes = 30 -- 12
+kMarineInitialIndivRes = 50 -- 15
+kAlienInitialIndivRes = 50 -- 12
 kMaxSupply = 225 --200
 kPlayerResPerInterval = 0.3 -- 0.125
 --kTeamResourcePerTick = 2 -- 1

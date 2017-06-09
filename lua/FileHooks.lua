@@ -36,6 +36,8 @@ ModLoader.SetupFileHook( "lua/MarineCommander.lua", "lua/MarineCommander_Siege.l
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Railgun.lua", "lua/Weapons/Marine/Railgun_Siege.lua", "post" )
 
+ModLoader.SetupFileHook( "lua/Weapons/Marine/Axe.lua", "lua/Weapons/Marine/Axe_Siege.lua", "post" )
+
 --ModLoader.SetupFileHook( "lua/Extractor.lua", "lua/Extractor_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Weapons/Marine/ExoWeaponHolder.lua", "lua/Weapons/Marine/ExoWeaponHolder_Siege.lua", "post" )

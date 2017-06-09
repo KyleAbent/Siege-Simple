@@ -32,6 +32,7 @@ local networkVars =
    sdTimer = "time",
    siegeBeaconed = "boolean",
    isDisco = "boolean",
+   doSD = "boolean",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -49,6 +50,7 @@ function SandCastle:TimerValues()
    self.siegeBeaconed = false
    self.powerlighth = nil
    self.isDisco = false
+   self.doSD = false
 end
 
 function SandCastle:OnReset() 
@@ -56,6 +58,12 @@ function SandCastle:OnReset()
 end
 function SandCastle:GetIsMapEntity()
 return true
+end
+function SandCastle:GetSDAllowed()
+return self.doSD
+end
+function SandCastle:ToggleSDAllowed(boolean)
+ self.doSD = boolean
 end
 function SandCastle:GetIsDisco()
 return self.isDisco
@@ -214,6 +222,7 @@ function SandCastle:EnableSD()
 self.isSuddenDeath = true
 end
 function SandCastle:CountSDTimer()
+  if not self:GetSDAllowed() then return end
        if  self:GetIsSD() then
              self:EnableSD()
        end
