@@ -1,5 +1,5 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
-
+/*
 local origdamgebytype = GetDamageByType
 function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, weapon)
     
@@ -9,7 +9,7 @@ function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, w
        
         return origdamgebytype(target, attacker, doer, damage, damageType, hitPoint, weapon)
 end
-
+*/
 function ConstructMixin:OnProcessMove(input)
     Log("%s: Called OnProcessMove???", self:GetClassName())
 end
@@ -138,7 +138,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 return
                 end
                 
-             if doer and doer:isa("XenocideLeap") and Server then
+             if doer and doer:isa("XenocideLeap") and Server then --and GetHasTech(doer, kTechId.SkulkXenoRupture) and Server then
               CreateEntity(Rupture.kMapName, point, 2)
              end
              

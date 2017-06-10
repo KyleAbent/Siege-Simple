@@ -90,6 +90,16 @@ local kSiege_TechData =
         --{ [kTechDataId] = kTechId.BioMassEleven, [kTechDataDisplayName] = "Biomass 11" },
        -- { [kTechDataId] = kTechId.BioMassTwelve, [kTechDataDisplayName] = "Biomass 12" },
         
+        
+       { [kTechDataId] = kTechId.SkulkXenoRupture,   
+            [kTechDataDisplayName] = "Rupture Xenocide",
+ [kTechDataCostKey] = 10,   
+ [kTechIDShowEnables] = false,     
+  [kTechDataResearchTimeKey] = 20,
+ [kTechDataHotkey] = Move.R, 
+[kTechDataTooltipInfo] =  "Spawns Rupture on Xenocide"},
+
+
         { [kTechDataId] = kTechId.DigestComm,   
             [kTechDataDisplayName] = "Digest",
  [kTechDataCostKey] = 0,   

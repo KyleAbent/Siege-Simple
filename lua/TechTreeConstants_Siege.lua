@@ -79,6 +79,7 @@ local kSiege_TechIds =
     'PowerPointHPUPG1',
     'PowerPointHPUPG2',
     'PowerPointHPUPG3',
+    'SkulkXenoRupture',
     
 }
 

@@ -224,7 +224,7 @@ kSideTimer = 0 -- b/c maps still use this
 
 
 kPrimalScreamEnergyCost = 20
-kPrimalScreamROF = 1
+kPrimalScreamROF = 1.25
 
 kBatteryPowerRange = 4
 

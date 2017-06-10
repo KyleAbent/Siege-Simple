@@ -69,6 +69,8 @@ self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTe
     --self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
         self.techTree:AddResearchNode(kTechId.WhipStealFT,  kTechId.BioMassNine) 
     self.techTree:AddUpgradeNode(kTechId.DigestComm, kTechId.None, kTechId.None)
+    self.techTree:AddResearchNode(kTechId.SkulkXenoRupture, kTechId.BioMassNine, kTechId.None)
+    
     self.techTree:SetComplete()
     PlayingTeam.InitTechTree = orig_PlayingTeam_InitTechTree
 end

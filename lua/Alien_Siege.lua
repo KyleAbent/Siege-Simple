@@ -72,7 +72,8 @@ function Alien:OnUpdateAnimationInput(modelMixin)
     
     local attackSpeed = self:GetIsEnzymed() and kEnzymeAttackSpeed or 1
     attackSpeed = attackSpeed * ( self.electrified and kElectrifiedAttackSpeed or 1 )
-    attackSpeed = attackSpeed + ( self:GetHasPrimalScream() and kPrimalScreamROFIncrease or 0)
+    attackSpeed = attackSpeed * ( self:GetHasPrimalScream() and kPrimalScreamROFIncrease or 1)
+    --Print("attackSpeed is %s", attackSpeed)
     if self.ModifyAttackSpeed then
     
         local attackSpeedTable = { attackSpeed = attackSpeed }

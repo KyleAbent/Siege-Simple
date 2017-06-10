@@ -1,3 +1,7 @@
+
+kElectrifiedAttackSpeed = 0.70 --0.8
+kEnzymeAttackSpeed = 1.3 --1.25
+
 kARCSupply = 10
 kNumWebsPerGorge = 6
 --kChargeEnergyCost = 20 --def 20
