@@ -1,5 +1,15 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
 
+local origdamgebytype = GetDamageByType
+function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, weapon)
+    
+       if attacker:isa("Alien") and attacker.GetHasPrimalScream and attacker:GetHasPrimalScream() then
+          damage = damage * kPrimalDMGBuff 
+       end
+       
+        return origdamgebytype(target, attacker, doer, damage, damageType, hitPoint, weapon)
+end
+
 function ConstructMixin:OnProcessMove(input)
     Log("%s: Called OnProcessMove???", self:GetClassName())
 end

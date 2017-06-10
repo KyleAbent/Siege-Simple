@@ -1,4 +1,4 @@
-
+kPrimalDMGBuff = 1.05
 WhipStealFT = 10
 kWhipStealFTTime = 20
 

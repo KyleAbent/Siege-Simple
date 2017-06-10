@@ -97,7 +97,7 @@ kMucousShieldPercent = 0.25 --default 0.15
 
 kEggGenerationRate = 4 --9 --default 13
 kAlienEggsPerHive = 4 --default 3
---kAlienSpawnTime = 9 --default 10
+kAlienSpawnTime = 6 --default 10
 kHydrasPerHive = 4 --default 3
 
 

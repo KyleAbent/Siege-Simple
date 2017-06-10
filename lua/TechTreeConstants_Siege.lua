@@ -76,6 +76,9 @@ local kSiege_TechIds =
  --   'BioMassTen',
  --   'BioMassEleven',
  --   'BioMassTwelve',
+    'PowerPointHPUPG1',
+    'PowerPointHPUPG2',
+    'PowerPointHPUPG3',
     
 }
 

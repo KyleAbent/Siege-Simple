@@ -98,6 +98,31 @@ local kSiege_TechData =
  [kTechDataHotkey] = Move.R, 
 [kTechDataTooltipInfo] =  "Try a fart or two. This mimicks marine commander Recyle to kill structure and give tres."},
 
+        { [kTechDataId] = kTechId.PowerPointHPUPG1,   
+            [kTechDataDisplayName] = " default hp Tier 1 HP UPG",
+ [kTechDataCostKey] = 10,   
+ [kTechIDShowEnables] = false,     
+  [kTechDataResearchTimeKey] = 20,
+ [kTechDataHotkey] = Move.R, 
+[kTechDataTooltipInfo] =  "+10% hp"},
+
+        { [kTechDataId] = kTechId.PowerPointHPUPG2,   
+            [kTechDataDisplayName] = "Tier 2 HP UPG",
+ [kTechDataCostKey] = 20,   
+ [kTechIDShowEnables] = false,     
+  [kTechDataResearchTimeKey] = 40,
+ [kTechDataHotkey] = Move.R, 
+[kTechDataTooltipInfo] =  "default hp +20% hp"},
+
+
+        { [kTechDataId] = kTechId.PowerPointHPUPG2,   
+            [kTechDataDisplayName] = "Tier 3 HP UPG",
+ [kTechDataCostKey] = 30,   
+ [kTechIDShowEnables] = false,     
+  [kTechDataResearchTimeKey] = 40,
+ [kTechDataHotkey] = Move.R, 
+[kTechDataTooltipInfo] =   "default hp +30% hp"},
+
 
        { [kTechDataId] = kTechId.SiegeBeacon,  
         [kTechDataBuildTime] = 0.1,   
