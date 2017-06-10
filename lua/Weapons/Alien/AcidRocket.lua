@@ -40,6 +40,7 @@ function AcidRocket:GetPrimaryAttackDelay()
     local attackSpeed = parent:GetIsEnzymed() and (kAcidRocketFireDelay*0.75) or kAcidRocketFireDelay
     attackSpeed = attackSpeed + ( parent.electrified and (attackSpeed*0.8) or 0 )
     attackSpeed = attackSpeed - ( parent:GetHasPrimalScream() and attackSpeed * 0.7 or 0)
+    --Print("attackSpeed is %s", attackSpeed)
     return attackSpeed
 end
 

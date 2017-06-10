@@ -11,7 +11,7 @@ function EvolutionChamber:OnResearchComplete(researchId)
 end
 
 end
-
+/*
 local origbuttons = EvolutionChamber.GetTechButtons
 function EvolutionChamber:GetTechButtons(techId)
 
@@ -24,3 +24,4 @@ local buttons = origbuttons(self, techId)
    
 
 end
+*/
