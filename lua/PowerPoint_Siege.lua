@@ -82,6 +82,12 @@ local adj = 1
 
 end
 
+local origkill = PowerPoint.OnKill
+    function PowerPoint:OnKill(attacker, doer, point, direction)
+        origkill(self, attacker, doer, point, direction)
+         self:AdjustMaxHealth(kPowerPointHealth)
+    end
+
 end
 
 /*

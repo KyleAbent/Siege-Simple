@@ -115,7 +115,7 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] =  "default hp +20% hp"},
 
 
-        { [kTechDataId] = kTechId.PowerPointHPUPG2,   
+        { [kTechDataId] = kTechId.PowerPointHPUPG3,   
             [kTechDataDisplayName] = "Tier 3 HP UPG",
  [kTechDataCostKey] = 30,   
  [kTechIDShowEnables] = false,     
