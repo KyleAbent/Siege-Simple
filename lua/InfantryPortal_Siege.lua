@@ -21,7 +21,7 @@ AddMixinNetworkVars(SaltMixin, networkVars)
     function InfantryPortal:GetAddXPAmount()
     return 0.30
     end
-    
+    /*
 local function CreateSpinEffect(self)
 
 
@@ -108,7 +108,7 @@ local function SpawnPlayer(self)
 
 end
 
-
+*/
 function InfantryPortal:GetMinRangeAC()
 return IPAutoCCMR  
 end

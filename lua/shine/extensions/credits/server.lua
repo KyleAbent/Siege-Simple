@@ -1248,7 +1248,7 @@ end
 local CreditsCommand = self:BindCommand("sh_salt", "salt", Salt, true, false)
 CreditsCommand:Help("sh_salt <name>")
 CreditsCommand:AddParam{ Type = "clients" }
-/*
+
 local function SetSalt(Client, Targets, Number, Display, Double) --TriggerHappyStoner
 
 
@@ -1273,7 +1273,7 @@ SetSaltCommand:AddParam{ Type = "number" }
 SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = true }
 SetSaltCommand:AddParam{ Type = "boolean", Optional = true, Default = false }
 
-*/
+
 local function GetSalt(Client)
 
  self:GenereateTotalCreditAmount()
@@ -1282,7 +1282,7 @@ end
 
 local GetSaltCommand = self:BindCommand("sh_getsalt", "getsalt", GetSalt)
 GetSaltCommand:Help("sh_getsalt - pasts amount of users and salt.")
-/*
+
 local function AddSalt(Client, Targets, Number, Display, Double)
 
   
@@ -1312,6 +1312,6 @@ end
 
 local SaveCreditsCommand = self:BindCommand("sh_savecredits", "savecredits", SaveCreditsCmd)
 SaveCreditsCommand:Help("sh_savecredits saves all credits online")
-*/
+
 end
 

@@ -1,4 +1,5 @@
 kClogsPerHive = 15
+kMarineRespawnTime = 5
 
 
 kHeavyRifleCost = 30
