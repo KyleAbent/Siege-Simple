@@ -158,6 +158,7 @@ kTechIdToMaterialOffset[kTechId.ShiftEnzyme] = 42
 kTechIdToMaterialOffset[kTechId.MACEMPTech] = 43
 kTechIdToMaterialOffset[kTechId.MACEMP] = 43
 kTechIdToMaterialOffset[kTechId.Rupture] = 44
+kTechIdToMaterialOffset[kTechId.SkulkXenoRupture] = 44
 kTechIdToMaterialOffset[kTechId.RuptureTech] = 44
 kTechIdToMaterialOffset[kTechId.ShadeInk] = 45
 kTechIdToMaterialOffset[kTechId.ShiftHatch] = 46

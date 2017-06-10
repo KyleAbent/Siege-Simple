@@ -138,7 +138,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 return
                 end
                 
-             if doer and doer:isa("XenocideLeap") and Server then --and GetHasTech(doer, kTechId.SkulkXenoRupture) and Server then
+             if doer and doer:isa("XenocideLeap") and Server and GetHasTech(doer, kTechId.SkulkXenoRupture) and Server then
               CreateEntity(Rupture.kMapName, point, 2)
              end
              
