@@ -1,3 +1,4 @@
+
 WhipStealFT = 10
 kWhipStealFTTime = 20
 
@@ -81,6 +82,8 @@ gCreditClassDelayOnos = 20
 
 
 --Weapons Credits Cost
+
+gCreditWeaponCostHeavyRifle =  kHeavyRifleCost * kPresArmoryProtoEquivMult
 gCreditWeaponCostMines = kMineCost * kPresArmoryProtoEquivMult
 gCreditWeaponCostWelder = kWelderCost * kPresArmoryProtoEquivMult
 gCreditWeaponCostHMG = kHeavyMachineGunCost * kPresArmoryProtoEquivMult
@@ -96,8 +99,9 @@ gCreditWeaponCostGrenadePulse = kClusterGrenadeCost * kPresArmoryProtoEquivMult
 --Alien Abilities  Credits Cost
 gCreditAbilityCostInk = 3 --1.5
 gCreditAbilityCostNutrientMist = 1
-gCreditAbilityCostHallucination = 4
-gCreditAbilityCostEnzymeCloud = 4
+gCreditAbilityCostHallucination = 10
+gCreditAbilityCostEnzymeCloud = 10
+gCreditAbilityCostMucous = 10
 gCreditAbilityCostContamination = 5
 
 

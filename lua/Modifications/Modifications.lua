@@ -626,7 +626,7 @@ if Server then
         end
         
         -- to prevent too much network spam from happening we update only every second the max health
-        if self:isa("Cyst") and (self.timeMaturityLastUpdate + 8 < Shared.GetTime()) then
+        if self:isa("Cyst") and GetIsTimeUp(self.timeMaturityLastUpdate, 8 ) then
         
             self:ArtificialLeveling()
             self.timeMaturityLastUpdate = Shared.GetTime()

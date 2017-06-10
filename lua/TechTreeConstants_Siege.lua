@@ -43,7 +43,7 @@ local kSiege_TechIds =
     'Redemption',
     'Rebirth',
     'CragHiveTwo',
---    'ThickenedSkin',
+   'ThickenedSkin',
     'Hunger',
     'ShiftHiveTwo',
     'LayStructures',

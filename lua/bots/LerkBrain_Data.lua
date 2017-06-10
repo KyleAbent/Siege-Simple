@@ -11,7 +11,7 @@ local kUpgrades = {
     kTechId.Rebirth,
         
     kTechId.Hunger,
---    kTechId.ThickenedSkin,
+    kTechId.ThickenedSkin,
     
     kTechId.Vampirism,
     kTechId.Aura,

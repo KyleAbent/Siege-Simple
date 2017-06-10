@@ -295,7 +295,7 @@ OldUpdateBatteryState = Shine.Hook.ReplaceLocalFunction( Sentry.OnUpdate, "Updat
 OldConfused = Shine.Hook.ReplaceLocalFunction( Sentry.OnUpdate, "UpdateConfusedState", NewConfused )
 
 
-
+/*
 local OldUpdateWaveTime
 
 
@@ -324,8 +324,8 @@ local function DynamicWaveTime( self )
     
     return true
 end
-
-OldUpdateWaveTime = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateWaveTime", DynamicWaveTime )
+*/
+--OldUpdateWaveTime = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateWaveTime", DynamicWaveTime )
 
 local OldGetIsWeldedByOtherMAC
 
@@ -372,8 +372,8 @@ local function AddSuddenDeathTimer(who)
 end
   function Plugin:OnOpenSiegeDoors() 
   if not GetGamerules():GetGameStarted()  then return end
-   if GetImaginator():GetAlienEnabled() and GetImaginator():GetMarineEnabled() then SandCastle():ToggleSDAllowed(true) end
-   if not GetImaginator():GetSDAllowed() then return end
+   if GetImaginator():GetAlienEnabled() and GetImaginator():GetMarineEnabled() then GetSandCastle():ToggleSDAllowed(true) end
+   if not GetSandCastle():GetSDAllowed() then return end
          Print("Shine open siege doors 1")
                 local Players = Shine.GetAllPlayers()
               for i = 1, #Players do

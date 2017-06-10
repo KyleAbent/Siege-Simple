@@ -706,7 +706,7 @@ self:DeductSaltIfNotPregame(self, whoagain, cost, delayafter, isSalt)
 local entity = nil 
 
          if not whoagain:isa("Exo") and ( mapname ~= NutrientMist.kMapName and mapname ~= EnzymeCloud.kMapName 
-         and mapname ~= HallucinationCloud.kMapName  ) then 
+         and mapname ~= HallucinationCloud.kMapName   and mapname ~= MucousMembrane.kMapName  ) then 
           whoagain:GiveLayStructure(techid, mapname)
         else
            entity = CreateEntity(mapname, FindFreeSpace(whoagain:GetOrigin(), 1, 4), whoagain:GetTeamNumber()) 
@@ -886,6 +886,10 @@ CreditCost = gCreditAbilityCostContamination
 delay = gCreditAbilityDelayContamination
 mapnameof = Contamination.kMapName    
 techid = kTechId.Contamination
+elseif String == "Mucous" then
+CreditCost = gCreditAbilityCostMucous
+mapnameof = MucousMembrane.kMapName
+delay = gCreditAbilityDelayEnzymeCloud
 elseif String == "EnzymeCloud" then
 CreditCost = gCreditAbilityCostEnzymeCloud
 mapnameof = EnzymeCloud.kMapName
@@ -1005,6 +1009,7 @@ if isSalt then cost = cost * kPresToSaltMultWeapons end
     if String  == "Mines" then cost = gCreditWeaponCostMines mapname = LayMines.kMapName
    elseif String == "Welder" then cost = gCreditWeaponCostWelder mapname = Welder.kMapName
    elseif String == "HeavyMachineGun" then cost = gCreditWeaponCostHMG mapname = HeavyMachineGun.kMapName
+   elseif String == "HeavyRifle" then cost = gCreditWeaponCostHeavyRifle mapname = HeavyRifle.kMapName
     elseif String  == "Shotgun" then cost = gCreditWeaponCostShotGun mapname = Shotgun.kMapName 
    elseif String == "FlameThrower" then  cost = gCreditWeaponCostFlameThrower mapname = Flamethrower.kMapName 
    elseif String == "GrenadeLauncher" then  cost = gCreditWeaponCostGrenadeLauncher mapname = GrenadeLauncher.kMapName 

@@ -2,6 +2,7 @@ Script.Load("lua/Additions/LevelsMixin.lua")
 local networkVars =
 {
    noComm = "private boolean",
+   builtTime = "time",
 }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
@@ -20,6 +21,7 @@ self.noComm = false
   self:CheckYoselfFoo()
  self:AddTimedCallback(function() self:CheckYoselfFoo() end, 4)
  end
+  self.builtTime = Shared.GetTime() --though not built oncreate
 end
 local originit = Cyst.OnInitialized
 function Cyst:OnInitialized()
@@ -68,23 +70,34 @@ return  kCystRedeployRange + 1
 end
 
 --local origmathp = Cyst.GetMatureMaxHealth
-function Cyst:GetMatureMaxHealth()
+function Cyst:GetMax()
+
     local orig = kMatureCystHealth
     local bySiege = orig * 2
-    local val = Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
+    local val = Clamp(orig * (GetRoundLengthToSiege()/1) + orig, orig, bySiege)
     self.level = self:GetMaxLevel() * GetRoundLengthToSiege()
+ --  self.level = self.level * 
+ 
+    local byFive = val * 2
+    local builttime = Clamp(Shared.GetTime() -  self.builtTime, 0, 300)
+    val = Clamp(val * (builttime/300) + val, val, byFive)
+    --self.level = (self.level * 2) * builttime
+     --Print("builttime is %s, val is %s", builttime, val)
     return val
+
 end 
 
 --local origmatarm = Cyst.GetMatureMaxArmor
-function Cyst:GetMatureMaxArmor()
+function Cyst:GetMaxA()
     local orig = kMatureCystArmor
     local bySiege = orig * 2
     return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
 end 
 function Cyst:ArtificialLeveling()
-  self:AdjustMaxHealth(self:GetMatureMaxHealth())
-  self:AdjustMaxArmor(self:GetMatureMaxArmor())
+  if Server and GetIsTimeUp(self.timeMaturityLastUpdate, 8 )  then
+   self:AdjustMaxHealth(self:GetMax())
+   self:AdjustMaxArmor(self:GetMaxA())
+   end
 end
 function Cyst:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords

@@ -15,7 +15,7 @@ Shine.VoteMenu:AddPage ("SpendStructuresSalt", function( self )
    // self:AddSideButton( "LowerSupplyLimit(5)", function() Shared.ConsoleCommand ("sh_buy LowerSupplyLimit")  end)
     elseif player:GetTeamNumber() == 2 then
 		if player:isa("Gorge") then
-		self:AddTopButton("Tunnel@Hive: "..gCreditStructureCostTunnelToHive * kPresToStructureMultWeapons, function() Shared.ConsoleCommand ("sh_buycustom TunnelEntrance salt")  end)
+		self:AddTopButton("Tunnel@Hive: "..gCreditStructureCostTunnelToHive * kPresToStructureMult, function() Shared.ConsoleCommand ("sh_buycustom TunnelEntrance salt")  end)
         end
 		--self:AddSideButton("PetDrifter: "..gCreditStructureCostPetDrifter, function() Shared.ConsoleCommand ("sh_buy PetDrifter")  end)
 		self:AddSideButton("Drifter: "..gCreditStructureCostPerDrifter* kPresToStructureMult, function() Shared.ConsoleCommand ("sh_buy Drifter salt")  end)
@@ -128,6 +128,7 @@ if player:GetTeamNumber() == 1 then
 		self:AddSideButton ("Medpack: "..gCreditAbilityCostMedpack* kPrestoSaltMul, function()Shared.ConsoleCommand ("sh_buy Medpack salt")end)
 	else
 		self:AddSideButton("NutrientMist: "..gCreditAbilityCostNutrientMist* kPrestoSaltMul, function()Shared.ConsoleCommand ("sh_buy NutrientMist salt")end)
+		self:AddSideButton("Mucous: "..gCreditAbilityCostMucous * kPrestoSaltMul, function()Shared.ConsoleCommand ("sh_buy Mucous salt")end)
 		self:AddSideButton("EnzymeCloud: "..gCreditAbilityCostEnzymeCloud* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy EnzymeCloud salt")  end)
 		self:AddSideButton("Ink: "..gCreditAbilityCostInk* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
 		self:AddSideButton("Hallucination: "..gCreditAbilityCostHallucination* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy Hallucination salt")  end)

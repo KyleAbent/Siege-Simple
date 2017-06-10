@@ -97,6 +97,7 @@ Shine.VoteMenu:AddPage ("SpendWeapons", function( self )
         self:AddSideButton("Shotgun: "..gCreditWeaponCostShotGun, function() Shared.ConsoleCommand ("sh_buywp Shotgun")  end)
        -- self:AddSideButton("HeavyRifle: "..gCreditWeaponCostHMG, function() Shared.ConsoleCommand ("sh_buywp HeavyRifle")  end)
         self:AddSideButton("HeavyMachineGun: "..gCreditWeaponCostHMG, function() Shared.ConsoleCommand ("sh_buywp HeavyMachineGun")  end)
+        self:AddSideButton("HeavyRifle: "..gCreditWeaponCostHeavyRifle, function() Shared.ConsoleCommand ("sh_buywp HeavyRifle")  end)
        self:AddBottomButton("Back", function()self:SetPage("SpendPres")end)
 
 end)
@@ -135,7 +136,9 @@ if player:GetTeamNumber() == 1 then
 		self:AddSideButton ("Scan: "..gCreditAbilityCostScan, function()Shared.ConsoleCommand ("sh_buy Scan")end)
 		self:AddSideButton ("Medpack: "..gCreditAbilityCostMedpack, function()Shared.ConsoleCommand ("sh_buy Medpack")end)
 	else
+		
 		self:AddSideButton("NutrientMist: "..gCreditAbilityCostNutrientMist, function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
+		self:AddSideButton("Mucous: "..gCreditAbilityCostMucous, function()Shared.ConsoleCommand ("sh_buy Mucous")end)
 		self:AddSideButton("EnzymeCloud: "..gCreditAbilityCostEnzymeCloud, function() Shared.ConsoleCommand ("sh_buy EnzymeCloud")  end)
 		self:AddSideButton("Ink: "..gCreditAbilityCostInk, function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
 		self:AddSideButton("Hallucination: "..gCreditAbilityCostHallucination, function() Shared.ConsoleCommand ("sh_buy Hallucination")  end)

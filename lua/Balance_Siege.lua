@@ -1,3 +1,6 @@
+kClogsPerHive = 15
+
+
 kHeavyRifleCost = 30
 kHeavyRifleDamageType = kDamageType.Normal
 kHeavyRifleClipSize = 150
@@ -89,10 +92,10 @@ kFlameThrowerEnergyDamage = 2 --default 3
 kBlinkEnergyCost = 24 -- default 32
 kStartBlinkEnergyCost = 10 --default 14
 kBoneShieldArmorPerSecond = 95 --default 112
-kMucousShieldPercent = 0.20 --default 0.15
+kMucousShieldPercent = 0.25 --default 0.15
 
 
-kEggGenerationRate = 9 --default 13
+kEggGenerationRate = 4 --9 --default 13
 kAlienEggsPerHive = 4 --default 3
 --kAlienSpawnTime = 9 --default 10
 kHydrasPerHive = 4 --default 3
