@@ -90,7 +90,7 @@ Shine.VoteMenu:AddPage ("SpendWeapons", function( self )
         self:AddSideButton("FlameThrower: "..gCreditWeaponCostFlameThrower, function() Shared.ConsoleCommand ("sh_buywp FlameThrower")  end)
         self:AddSideButton("GrenadeLauncher: "..gCreditWeaponCostGrenadeLauncher, function() Shared.ConsoleCommand ("sh_buywp GrenadeLauncher")  end)
         self:AddSideButton("Shotgun: "..gCreditWeaponCostShotGun, function() Shared.ConsoleCommand ("sh_buywp Shotgun")  end)
-       -- self:AddSideButton("HeavyRifle: "..gCreditWeaponCostHMG, function() Shared.ConsoleCommand ("sh_buywp HeavyRifle")  end)
+        self:AddSideButton("HeavyRifle: "..gCreditWeaponCostHeavyRifle, function() Shared.ConsoleCommand ("sh_buywp HeavyRifle")  end)
         self:AddSideButton("HeavyMachineGun: "..gCreditWeaponCostHMG, function() Shared.ConsoleCommand ("sh_buywp HeavyMachineGun")  end)
        self:AddBottomButton("Back", function()self:SetPage("SpendCredits")end)
 

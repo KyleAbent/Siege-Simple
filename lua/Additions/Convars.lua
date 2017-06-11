@@ -87,6 +87,7 @@ gCreditWeaponCostMines = 10
 gCreditWeaponCostWelder = 6
 gCreditWeaponCostHMG = 35
 gCreditWeaponCostShotGun = 20
+gCreditWeaponCostHeavyRifle = 30
 gCreditWeaponCostFlameThrower = 30
 gCreditWeaponCostGrenadeLauncher = 30
 gCreditWeaponCostGrenadeGas = 2

@@ -919,20 +919,21 @@ if not Player then return end
  
 local Time = Shared.GetTime()
 local NextUse = self.ShadeInkCoolDown
+Print("NextUse is %s", NextUse)
 if NextUse and NextUse > Time and not Shared.GetCheatsEnabled() then
-self:NotifySalt( Client, "Team Cooldown on Ink: %s (thank Jon)", true, string.TimeToString( NextUse - Time ), String)
+self:NotifySalt( Client, "Team Cooldown on Ink: %s", true, string.TimeToString( NextUse - Time ), String)
 return true
 end
 
    
 
  
-    if String  == "Ink" then cost = 1.5 mapname = ShadeInk.kMapName
+    if String  == "Ink" then cost = gCreditAbilityCostInk mapname = ShadeInk.kMapName
    end
    
     if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
    
-      self:DeductSaltIfNotPregame(self, Player, cost, delayafter)
+      self:DeductSaltIfNotPregame(self, Player, cost, 8)
 
 
  
@@ -943,7 +944,7 @@ end
 end
 
 local TBuyCommand = self:BindCommand("sh_tbuy", "tbuy", TBuy, true)
-TBuyCommand:Help("sh_buywp <weapon name>")
+TBuyCommand:Help("sh_tbuy <team buy string>")
 TBuyCommand:AddParam{ Type = "string" }
 
 local function BuyWP(Client, String)
@@ -962,6 +963,7 @@ if not Player then return end
    elseif String == "Welder" then cost = gCreditWeaponCostWelder mapname = Welder.kMapName
    elseif String == "HeavyMachineGun" then cost = gCreditWeaponCostHMG mapname = HeavyMachineGun.kMapName
     elseif String  == "Shotgun" then cost = gCreditWeaponCostShotGun mapname = Shotgun.kMapName 
+    elseif String  == "HeavyRifle" then cost = gCreditWeaponCostHeavyRifle mapname = HeavyRifle.kMapName 
    elseif String == "FlameThrower" then  cost = gCreditWeaponCostFlameThrower mapname = Flamethrower.kMapName 
    elseif String == "GrenadeLauncher" then  cost = gCreditWeaponCostGrenadeLauncher mapname = GrenadeLauncher.kMapName 
    elseif String == "clustergrenade" then cost = gCreditWeaponCostGrenadeCluster mapname =   ClusterGrenadeThrower.kMapName
@@ -1023,7 +1025,6 @@ local function BuyClass(Client, String)
 local Player = Client:GetControllingPlayer()
 local delayafter = 8 
 local cost = 1
-local isSalt =  StringTwo == "salt"
 
 if not Player then return end
 
@@ -1043,8 +1044,8 @@ if not Player then return end
   elseif String == "OnosFast" then cost = gCreditClassCostOnos*2 delayafter = gCreditClassDelayOnos 
       
   end
-    if FirstCheckRulesHere(self, Client, Player, String, cost, false, isSalt ) == true then return end
-    DeductBuy(self, Player, cost, delayafter, isSalt)
+    if FirstCheckRulesHere(self, Client, Player, String, cost, false ) == true then return end
+    DeductBuy(self, Player, cost, delayafter)
 
          if Player:GetTeamNumber() == 1 then --ugh... messy...
               if cost == gCreditClassCostJetPack * kPresToClassesMult  then  Player:GiveJetpack()
