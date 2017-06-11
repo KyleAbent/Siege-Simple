@@ -34,7 +34,7 @@ Shine.VoteMenu:AddPage ("SpendStructures", function( self )
 		self:AddSideButton("Shift: "..gCreditStructureCostShift, function() Shared.ConsoleCommand ("sh_buy Shift")  end)
 		self:AddSideButton("Shade: "..gCreditStructureCostShade, function() Shared.ConsoleCommand ("sh_buy Shade")  end)
 		self:AddSideButton("Crag: "..gCreditStructureCostCrag, function() Shared.ConsoleCommand ("sh_buy Crag")  end)
-
+		self:AddSideButton("Drifter: "..gCreditStructureCostDrifter, function() Shared.ConsoleCommand ("sh_buy Drifter")  end)
    -- self:AddSideButton( "Clog(2)", function() Shared.ConsoleCommand ("sh_buy Clog")  end)
     //self:AddSideButton( "LowerSupplyLimit(5)", function() Shared.ConsoleCommand ("sh_buy LowerSupplyLimit")  end)
    end
@@ -95,6 +95,14 @@ Shine.VoteMenu:AddPage ("SpendWeapons", function( self )
        self:AddBottomButton("Back", function()self:SetPage("SpendCredits")end)
 
 end)
+
+Shine.VoteMenu:AddPage ("SpendnoGestation", function( self )
+		self:AddSideButton("Gorge: "..gCreditClassCostGorge*2, function() Shared.ConsoleCommand ("sh_buyclass GorgeFast")  end)
+		self:AddSideButton("Lerk: "..gCreditClassCostLerk*2, function() Shared.ConsoleCommand ("sh_buyclass LerkFast")  end)
+		self:AddSideButton("Fade: "..gCreditClassCostFade*2, function() Shared.ConsoleCommand ("sh_buyclass FadeFast")  end)
+        self:AddSideButton("Onos: "..gCreditClassCostOnos*2, function() Shared.ConsoleCommand ("sh_buyclass OnosFast") end)
+ self:AddBottomButton( "Back", function()self:SetPage("SpendClasses")end) 
+end)
 Shine.VoteMenu:AddPage ("SpendClasses", function( self )
        local player = Client.GetLocalPlayer()
     if player:GetTeamNumber() == 1 then 
@@ -104,6 +112,7 @@ Shine.VoteMenu:AddPage ("SpendClasses", function( self )
     self:AddSideButton("WelderExo: "..gCreditClassCostWelderExo, function() Shared.ConsoleCommand ("sh_buyclass Welder") end) 
     self:AddSideButton("FlamerExo: "..gCreditClassCostFlamerExo, function() Shared.ConsoleCommand ("sh_buyclass Flamer") end) 
     elseif player:GetTeamNumber() == 2 then
+        self:AddSideButton("noGestation", function()  self:SetPage("SpendnoGestation")  end)  
 		self:AddSideButton("Gorge: "..gCreditClassCostGorge, function() Shared.ConsoleCommand ("sh_buyclass Gorge")  end)
 		self:AddSideButton("Lerk: "..gCreditClassCostLerk, function() Shared.ConsoleCommand ("sh_buyclass Lerk")  end)
 		self:AddSideButton("Fade: "..gCreditClassCostFade, function() Shared.ConsoleCommand ("sh_buyclass Fade")  end)
@@ -130,6 +139,7 @@ if player:GetTeamNumber() == 1 then
 		self:AddSideButton ("Scan: "..gCreditAbilityCostScan, function()Shared.ConsoleCommand ("sh_buy Scan")end)
 		self:AddSideButton ("Medpack: "..gCreditAbilityCostMedpack, function()Shared.ConsoleCommand ("sh_buy Medpack")end)
 	else
+		self:AddSideButton("Mucous: "..gCreditAbilityCostMucous, function() Shared.ConsoleCommand ("sh_buy Mucous")  end)
 		self:AddSideButton("NutrientMist: "..gCreditAbilityCostNutrientMist, function()Shared.ConsoleCommand ("sh_buy NutrientMist")end)
 		self:AddSideButton("EnzymeCloud: "..gCreditAbilityCostEnzymeCloud, function() Shared.ConsoleCommand ("sh_buy EnzymeCloud")  end)
 		self:AddSideButton("Ink: "..gCreditAbilityCostInk, function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
@@ -152,6 +162,7 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
 
      self:AddSideButton( "Classes", function() self:SetPage( "SpendClasses" ) end) 
      self:AddSideButton( "Structures", function() self:SetPage( "SpendStructures" ) end)
+
              --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
                self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
                
@@ -161,7 +172,9 @@ Shine.VoteMenu:AddPage ("SpendCredits", function( self )
              
 
         self:AddSideButton( "Glow", function() self:SetPage( "SpendGlow" ) end)
-
+if player:isa("Onos") then 
+		self:AddSideButton("LowGrav: "..2, function() Shared.ConsoleCommand ("sh_buycustom LowGrav")  end)
+end
      
      self:AddBottomButton( "Back", function()self:SetPage("Main")end)
      

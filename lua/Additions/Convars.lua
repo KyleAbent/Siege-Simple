@@ -1,3 +1,4 @@
+gCreditStructureCostDrifter = 7 
 kPrimalDMGBuff = 1.05
 WhipStealFT = 10
 kWhipStealFTTime = 20
@@ -24,7 +25,7 @@ kWallCommLimitPerRoom = 5
 
 --Credits Structures Marine
 gCreditStructureWallCost = 100
-gCreditStructureWallLimit = 2
+gCreditStructureWallLimit = 1
 
 gCreditStructureObservatoryCost = 100
 gCreditStructureArmoryCost = 120
@@ -99,6 +100,8 @@ gCreditAbilityCostInk = 20 --1.5
 gCreditAbilityCostNutrientMist = 3
 gCreditAbilityCostHallucination = 12
 gCreditAbilityCostEnzymeCloud = 3
+gCreditAbilityCostMucous = 4
+gCreditStructureCostDrifter = 7
 gCreditAbilityCostContamination = 7
 
 
