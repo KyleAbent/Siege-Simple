@@ -884,7 +884,7 @@ techid = kTechId.Shift
 delay = gCreditStructureDelayShift
 elseif String == "Hydra" then
 CreditCost = gCreditStructureCostHydra
-mapnameof = HydraSiege.kMapName
+mapnameof = Hydra.kMapName
 techid = kTechId.Hydra
 delay = gCreditStructureDelayHydra
 elseif String == "SaltyEgg" then
