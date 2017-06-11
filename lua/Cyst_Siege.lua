@@ -94,7 +94,7 @@ function Cyst:GetMaxA()
     return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
 end 
 function Cyst:ArtificialLeveling()
-  if Server and GetIsTimeUp(self.timeMaturityLastUpdate, 8 )  then
+  if Server and GetIsTimeUp(self.timeMaturityLastUpdate, 8 )  and self:GetIsBuilt() then
    self:AdjustMaxHealth(self:GetMax())
    self:AdjustMaxArmor(self:GetMaxA())
    end
