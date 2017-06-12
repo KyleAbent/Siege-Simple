@@ -1095,8 +1095,8 @@ if not Player then return end
 
          if Player:GetTeamNumber() == 1 then --ugh... messy...
               if String == "JetPack"   then  Player:GiveJetpack()
-             elseif  String == "RailGun"   then Player:GiveDualExo(Player:GetOrigin())
-             elseif  String == "MiniGun"  then  Player:GiveDualRailgunExo(Player:GetOrigin())
+             elseif  String == "MiniGun"   then Player:GiveDualExo(Player:GetOrigin())
+             elseif  String == "RailGun"  then  Player:GiveDualRailgunExo(Player:GetOrigin())
              elseif  String == "Welder"  then  Player:GiveDualWelder(Player:GetOrigin())
              elseif  String == "Flamer"  then Player:GiveDualFlamer(Player:GetOrigin())
              end 
