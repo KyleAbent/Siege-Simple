@@ -21,9 +21,6 @@ AddMixinNetworkVars(SaltMixin, networkVars)
     function InfantryPortal:GetAddXPAmount()
     return 0.30
     end
-if Server then
-
-end
 function InfantryPortal:GetMinRangeAC()
 return IPAutoCCMR  
 end
@@ -35,10 +32,6 @@ function InfantryPortal:CheckSpaceAboveForSpawn()
     return GetWallBetween(startPoint, endPoint, self)
     
 end
-
-
-
-
 
 if Server then
 

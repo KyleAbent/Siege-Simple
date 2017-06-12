@@ -1,4 +1,3 @@
-gCreditStructureCostDrifter = 7 
 kPrimalDMGBuff = 1.05
 WhipStealFT = 10
 kWhipStealFTTime = 20
@@ -24,56 +23,56 @@ kWallCommLimitPerRoom = 5
 --Credits Start
 
 --Credits Structures Marine
-gCreditStructureWallCost = 100
-gCreditStructureWallLimit = 1
+gCreditStructureWallCost = 15
+gCreditStructureWallLimit = 2
 
-gCreditStructureObservatoryCost = 100
-gCreditStructureArmoryCost = 120
-gCreditStructureSentryCost = 40
+gCreditStructureObservatoryCost = 10
+gCreditStructureArmoryCost = 10
+gCreditStructureSentryCost = 5
 gCreditStructureSentryLimit = 2
-gCreditStructureBackUpBatteryCost = 40
+gCreditStructureBackUpBatteryCost = 10
 gCreditStructureBackUpBatteryLimit = 1
 
-gCreditStructureBackupLightCost = 20
+gCreditStructureBackupLightCost = 5
 gCreditStructureBackupLightLimit = 2
 
-gCreditStructurePhaseGateCost = 150
+gCreditStructurePhaseGateCost = 15
 gCreditStructurePhaseGateLimit = 2
-gCreditStructureInfantryPortalCost = 150
+gCreditStructureInfantryPortalCost = 20
 gCreditStructureInfantryPortalLimit = 3
 
-gCreditStructureRoboticsFactoryCost = 100
+gCreditStructureRoboticsFactoryCost = 10
 gCreditStructureRoboticsFactoryLimit = 3
 
-gCreditStructureMacCost = 20
-gCreditStructureMacLimit = 2
+gCreditStructureMacCost = 5
+gCreditStructureMacLimit = 3
 
-gCreditStructureArcCost = 110
-gCreditStructureArcLimit = 1
+gCreditStructureArcCost = 10
+gCreditStructureArcLimit = 2
 
-gCreditStructureExtractorCost = 2500
+gCreditStructureExtractorCost = 200
 gCreditStructureExtractorLimit = 1
 
 
 
 --Classes Credits Cost
-gCreditClassCostJetPack = 80
+gCreditClassCostJetPack = 15 * kPresArmoryProtoEquivMult
 
-gCreditClassCostRailGunExo = 190
-gCreditClassCostMiniGunExo = 200
+gCreditClassCostRailGunExo = 34 * kPresArmoryProtoEquivMult
+gCreditClassCostMiniGunExo = 35 * kPresArmoryProtoEquivMult
 
-gCreditClassCostWelderExo = 150
-gCreditClassCostFlamerExo = 170
+gCreditClassCostWelderExo = 25 * kPresArmoryProtoEquivMult
+gCreditClassCostFlamerExo = 30 * kPresArmoryProtoEquivMult
 
 gCreditClassDelayJetPack = 10
 gCreditClassDelayRailGun = 15
 gCreditClassDelayMiniGun = 15
 
 gCreditClassCostSkulk = 1
-gCreditClassCostGorge = 90
-gCreditClassCostLerk = 120
-gCreditClassCostFade = 150
-gCreditClassCostOnos = 180
+gCreditClassCostGorge = 10 
+gCreditClassCostLerk = 20 
+gCreditClassCostFade = 40 
+gCreditClassCostOnos = 65 
 
 gCreditClassDelaySkulk = 1
 gCreditClassDelayGorge = 5
@@ -83,27 +82,27 @@ gCreditClassDelayOnos = 20
 
 
 --Weapons Credits Cost
-gCreditWeaponCostMines = 10
-gCreditWeaponCostWelder = 6
-gCreditWeaponCostHMG = 35
-gCreditWeaponCostShotGun = 20
-gCreditWeaponCostHeavyRifle = 30
-gCreditWeaponCostFlameThrower = 30
-gCreditWeaponCostGrenadeLauncher = 30
-gCreditWeaponCostGrenadeGas = 2
-gCreditWeaponCostGrenadeCluster = 2
-gCreditWeaponCostGrenadePulse = 2
+
+gCreditWeaponCostHeavyRifle =  kHeavyRifleCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostMines = kMineCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostWelder = kWelderCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostHMG = kHeavyMachineGunCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostShotGun = kShotgunCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostFlameThrower = kFlamethrowerCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostGrenadeLauncher = kGrenadeLauncherCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostGrenadeGas = kClusterGrenadeCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostGrenadeCluster = kClusterGrenadeCost * kPresArmoryProtoEquivMult
+gCreditWeaponCostGrenadePulse = kClusterGrenadeCost * kPresArmoryProtoEquivMult
 
 
 
 --Alien Abilities  Credits Cost
-gCreditAbilityCostInk = 20 --1.5
-gCreditAbilityCostNutrientMist = 3
-gCreditAbilityCostHallucination = 12
-gCreditAbilityCostEnzymeCloud = 3
-gCreditAbilityCostMucous = 4
-gCreditStructureCostDrifter = 7
-gCreditAbilityCostContamination = 7
+gCreditAbilityCostInk = 3 --1.5
+gCreditAbilityCostNutrientMist = 1
+gCreditAbilityCostHallucination = 10
+gCreditAbilityCostEnzymeCloud = 10
+gCreditAbilityCostMucous = 10
+gCreditAbilityCostContamination = 5
 
 
 --Alien Abilities  Credits Delay
@@ -116,14 +115,14 @@ gCreditAbilityDelayContamination = 10
 
 --Alien Structures Credits Cost
 gCreditStructureCostHydra = 6
-gCreditStructureCostSaltyEgg = 20
-gCreditStructureLimitSaltyEgg = 3
-gCreditStructureCostShade = 90
-gCreditStructureCostCrag = 90
-gCreditStructureCostWhip = 90
-gCreditStructureCostShift = 90
+gCreditStructureCostSaltyEgg = 5
+gCreditStructureLimitSaltyEgg = 4
+gCreditStructureCostShade = 13
+gCreditStructureCostCrag = 13
+gCreditStructureCostWhip = 13
+gCreditStructureCostShift = 13
 gCreditStructureCostTunnelToHive = 10
-gCreditStructureCostHarvesterExtractor = 2500
+gCreditStructureCostHarvesterExtractor = 200
 gCreditStructureLimitHarvesterExtractor = 1
 --gCreditStructureCost =
 
@@ -142,12 +141,13 @@ gCreditStructureDelayHarvesterExtractor = 15
 --Credit Mariners Tech
 
 
-gCreditAbilityCostScan = 10
-gCreditAbilityDelayScan = 10
+gCreditAbilityCostScan = 3
+gCreditAbilityDelayScan = 4
 
-gCreditAbilityCostMedpack = 7
-gCreditAbilityDelayMedpack = 5
+gCreditAbilityCostMedpack = 2
+gCreditAbilityDelayMedpack = 4
 -----------------------------------
+
 
 kTimeAfterSiegeOpeningToEnableSuddenDeath = 900 --900
 kResupplyCost = 5

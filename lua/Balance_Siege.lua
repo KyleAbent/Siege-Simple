@@ -1,3 +1,7 @@
+--kMinigunDamage = 11 --10
+--kRailgunDamage = 36 --33
+--kRailgunChargeDamage = 145 --140
+
 kClogsPerHive = 15
 kMarineRespawnTime = 5
 
@@ -9,14 +13,14 @@ kHeavyRifleTechResearchCost = 20
 
 kARCMinRange = 0 -- why is this even a thing??????
 --kHeavyMachineGunDamage = 7
---kMarineInitialIndivRes = 50 -- 15
---kAlienInitialIndivRes = 50 -- 12
-kMaxSupply = 225 --200
---kPlayerResPerInterval = 0.3 -- 0.125
+kMarineInitialIndivRes = 50 -- 15
+kAlienInitialIndivRes = 50 -- 12
+--kMaxSupply = 225 --200
+kPlayerResPerInterval = 0.3 -- 0.125
 --kTeamResourcePerTick = 2 -- 1
 --kResourceTowerResourceInterval = 4 -- 6
 --kTeamResourcePerTick = 2 -- 1
---kMaxPersonalResources = 200 -- 100
+kMaxPersonalResources = 200 -- 100
 --kMaxTeamResources = 200 -- 200
 kPlayingTeamInitialTeamRes = 100 -- 60
 kCompoundFireDamageDelay = 0

@@ -72,7 +72,7 @@ function Player:CopyPlayerDataFrom(player)
 
 origcopydata(self, player)
 
---self.gravity = player.gravity Dont want it to stick with onos
+self.gravity = player.gravity
 self.modelsize = player.modelsize
 
 

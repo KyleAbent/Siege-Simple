@@ -389,7 +389,7 @@ local function AddSDEnabledDisplay(who)
 end
     function Plugin:OnEnableSD() 
       if not GetGamerules():GetGameStarted()  then return end
-         if not GetImaginator():GetSDAllowed() then return end
+         if not GetSandCastle():GetSDAllowed() then return end
         for i = 1, math.random(4,8) do
        self:NotifySuddenDeath( nil, "SuddenDeath Activated ! No more respawning! No more hive/cc healing/dropping. IF you don't like it post on forums or discord?", true)
        end
@@ -546,7 +546,7 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    end
    
     if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) >  kSiegeTimer  then
-       if GetImaginator():GetSDAllowed()  then
+       if GetSandCastle():GetSDAllowed()  then
          AddSuddenDeathTimer(Client)
        end 
    end
@@ -555,7 +555,7 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
    end
    
-          if GetImaginator():GetSDAllowed()  then
+          if GetSandCastle():GetSDAllowed()  then
         local players, numplayers = Shine.GetAllPlayers()
         local humans, numhumans = Shine.GetHumanPlayerCount()
         local bots = math.abs(humans - players)
