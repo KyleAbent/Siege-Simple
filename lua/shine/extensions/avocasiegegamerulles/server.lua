@@ -401,6 +401,21 @@ end
                   end
                end
   end
+ 
+ 
+ function Plugin:MarineProperDefense(ppcount, initial)
+ self:NotifySandCastle( nil, "Marines have the same amount (or more) of power points built as when front door opened.", true, ppcount, initial)
+  --self:NotifySandCastle( nil, "Something is wrong here. *Insert dynamic formula balance adjustment here*", true)
+ end
+ 
+  function Plugin:AliensTooMuchOffense()
+ self:NotifySandCastle( nil, "Marines have <=2 built powerpoints with 5 or more min left until siege.", true, ppcount, initial)
+ -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
+ end
+  
+Shine.Hook.SetupClassHook( "SandCastle", "MarinesStillHaveProperDefense", "MarineProperDefense", "PassivePre" )
+
+Shine.Hook.SetupClassHook( "SandCastle", "AliensAreVeryOffensive", "AliensTooMuchOffense", "PassivePre" )
   
 Shine.Hook.SetupClassHook( "SandCastle", "OpenSiegeDoors", "OnOpenSiegeDoors", "PassivePost" )
 
@@ -665,6 +680,9 @@ function Plugin:StartAutoCommTimer()
 end
 function Plugin:NotifySuddenDeath( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[SuddenDeath]",  255, 0, 0, String, Format, ... )
+end
+function Plugin:NotifySandCastle( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[SandCastle]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:NotifyGiveRes( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, Format, ... )

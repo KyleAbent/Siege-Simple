@@ -33,6 +33,7 @@ local networkVars =
    siegeBeaconed = "boolean",
    isDisco = "boolean",
    doSD = "boolean",
+   MSCPPC = "integer",
 }
 function SandCastle:TimerValues()
    if kSiegeTimer == nil then kSiegeTimer = 960 end
@@ -51,6 +52,7 @@ function SandCastle:TimerValues()
    self.powerlighth = nil
    self.isDisco = false
    self.doSD = false
+   self.MSCPPC = 0
 end
 
 function SandCastle:OnReset() 
@@ -157,6 +159,11 @@ local function CloseAllBreakableDoors()
 end
 
 function SandCastle:OpenFrontDoors()
+           self.timelastPPCount = Shared.GetTime() + 60
+        for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+             if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then self.MSCPPC = self.MSCPPC + 1 end
+        end 
+     
            GetGamerules():SetDamageMultiplier(1) 
            CloseAllBreakableDoors()
               if GetGameStarted() then GetImaginator():OnFrontOpen() end
@@ -283,7 +290,12 @@ local powerpoints = {}
          self:AddTimedCallback( SandCastle.ResetLight, math.random(8, 16) )
     
 end
+function SandCastle:MarinesStillHaveProperDefense()
 
+end
+function SandCastle:AliensAreVeryOffensive()
+
+end
 function SandCastle:OnUpdate(deltatime)
 
        if self:GetIsDisco() then
@@ -293,13 +305,38 @@ function SandCastle:OnUpdate(deltatime)
              self.timelastDisco = Shared.GetTime()
          end
         end
+        
+        
          
          
   if Server then
     local gamestarted = GetGamerules():GetGameStarted()
   if gamestarted then 
-
-         
+  
+       local ppcount = 0
+       if not self.timelastPPCount or self.timelastPPCount + 60 <= Shared.GetTime() and self:GetFrontOpenBoolean() and not self:GetSiegeOpenBoolean() then
+        for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+             if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then ppcount = ppcount + 1 end
+        end 
+        
+        if ppcount >= self.MSCPPC then
+           self:MarinesStillHaveProperDefense( )
+        end
+        
+        if  ppcount <=2 then
+           local gamestarttime = GetGameInfoEntity():GetStartTime()
+           local gameLength = Shared.GetTime() - gamestarttime
+           local timeleft = self.SiegeTimer - gameLength
+            if timeleft >= 300 then
+            self:AliensAreVeryOffensive()
+           end
+        end
+        
+        
+        
+        self.timelastPPCount = Shared.GetTime()
+     end
+     
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
        
        

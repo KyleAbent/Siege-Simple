@@ -236,24 +236,23 @@ if Server then
   end
   function GetCheckWallLimit(techId, origin, normal, commander)
     local location = GetLocationForPoint(origin)
-    local locationName = location and location:GetName() or nil
+   -- local locationName = location and location:GetName() or nil
     local numInRoom = 0
     local validRoom = false
     
-    if locationName then
+    if location then
     
         validRoom = true
         
         for index, wall in ientitylist(Shared.GetEntitiesWithClassname("Wall")) do
         
-            if GetLocationForPoint(wall:GetOrigin()) == locationName then
+            if GetLocationForPoint(wall:GetOrigin()) == location then
                 numInRoom = numInRoom + 1
             end
             
         end
         
     end
-    
     return validRoom and numInRoom < kWallCommLimitPerRoom
 end
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
@@ -303,6 +302,8 @@ SetCachedTechData(kTechId.Hive, kTechDataBuildMethodFailedMessage, "Techpoint is
 SetCachedTechData(kTechId.CommandStation, kTechDataAttachOptional, true)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheckCommandStationLimit)
+
+SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
 
@@ -359,7 +360,7 @@ SetCachedTechData(kTechId.SentryBattery,kTechDataDisplayName, "Backup Battery")
 SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures without power!")
 
 
-SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "4 per room")
+SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "limt per room reached")
 
 
 

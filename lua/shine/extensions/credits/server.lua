@@ -437,7 +437,7 @@ function Plugin:DestroyAllSaltStructFor(Client)
 //Intention: Kill Salt Structures if client f4s, otherwise 'limit' becomes nil and infinite 
 local Player = Client:GetControllingPlayer()
         for index, entity in ipairs(GetEntitiesWithMixinForTeam("Salt", Player:GetTeamNumber())) do
-        if entity:GetIsACreditStructure() and not entity:isa("Commander") and not entity:isa("AdvancedArmory") and entity:GetOwner() == Player then entity:Kill() end 
+        if entity:GetIsACreditStructure() and not entity:isa("Commander") and not entity:isa("AdvancedArmory") and not (entity.GetIsResearching and entity:GetIsResearching() ) and entity:GetOwner() == Player then entity:Kill() end 
       end
     
 end
@@ -652,7 +652,7 @@ local function PerformBuy(self, who, String, whoagain, cost, reqlimit, reqground
    local success = false
    --Print(" PerformBuy isSalt is %s", isSalt)
 if whoagain:GetHasLayStructure() then 
-self:NotifySalt(who, "Empty laystructure before buying structure, newb. You're such a newb.", true)
+self:NotifySalt(who, "Empty hudslot 5 please.", true)
 return
 end
 
@@ -1036,7 +1036,7 @@ BuyWPCommand:AddParam{ Type = "string", Optional = true }
 
 local function BuyCustom(Client, String, StringTwo)
 local Player = Client:GetControllingPlayer()
-local cost = 40
+local cost = gCreditStructureCostTunnelToHive
 local delayafter = 8
 local isSalt = StringTwo == "salt"
       if isSalt then cost = cost * kPresToStructureMult end

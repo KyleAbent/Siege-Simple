@@ -69,7 +69,7 @@ function Marine:GetCanWallJump()
 
     local wallWalkNormal = self:GetAverageWallWalkingNormal(kJumpWallRange, kJumpWallFeelerSize)
     if wallWalkNormal then -- and GetHasTech(self, kTechId.BileBomb) then
-        return wallWalkNormal.y < 0.5
+        return wallWalkNormal.y < 0.5 and self.wallboots
     end
     
     return false

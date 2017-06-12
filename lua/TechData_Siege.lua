@@ -318,7 +318,6 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] =  "Build Them!", 
 [kTechDataModel] = Wall.kModelName, 
             [kTechDataBuildTime] = 14,
-          [kTechDataBuildRequiresMethod] = GetCheckWallLimit,
            [kTechDataMaxHealth] = 2000,
              [kTechDataMaxArmor] = 0,
              [kTechDataBuildMethodFailedMessage] = "limit per room reached", 

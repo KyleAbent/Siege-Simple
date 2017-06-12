@@ -169,7 +169,7 @@ function LayStructures:NoMoreDelay()
         end
 end
 function LayStructures:OnPrimaryAttackEnd(player)
-    self.droppingStructure = false
+  --  self.droppingStructure = false
 end
 
 function LayStructures:GetIsDroppable()
@@ -415,7 +415,7 @@ function LayStructures:GetPositionForStructure(player)
         displayOrigin = trace.endPoint 
            
            if self:GetDropStructureId() == kTechId.Sentry then
-                  isPositionValid = GetCheckSentryLimit(techId, player:GetOrigin(), normal, commander)  
+                  isPositionValid = isPositionValid and GetCheckSentryLimit(techId, player:GetOrigin(), normal, commander)  
            end
           
         if GetPointBlocksAttachEntities(displayOrigin) then
