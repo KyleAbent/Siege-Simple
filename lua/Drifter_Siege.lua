@@ -266,7 +266,7 @@ function Drifter:ProcessGrowOrder(moveSpeed, deltaTime)
                     if  GetImaginator():GetAlienEnabled()  then 
                        speed = speed / 4 
                     else
-                        speed = spee / 1.3 
+                        speed = speed / 1.3 
                     end
                end
                 if BeingGrown(self, target) then target:Construct(speed) end
