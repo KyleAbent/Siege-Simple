@@ -65,66 +65,32 @@ function Onos:PreUpdateMove(input, runningPrediction)
 end
 */
 
---local origspeed = Onos.GetMaxSpeed
---Onos.kMaxSpeed = 8
---Onos.kChargeSpeed = 13.7
+local origspeed = Onos.GetMaxSpeed
 
 function Onos:GetMaxSpeed(possible)
-     local speed = 7.5
-  
-    if possible then
-        return speed
-    end
-   if not self:GetIsOnFire() then speed = 9.375 end
-    if self:GetIsPoopGrowing() then speed = 0 end
-    local boneShieldSlowdown = self:GetIsBoneShieldActive() and kBoneShieldMoveFraction or 1
-    local chargeExtra = self:GetChargeFraction() * (12 - speed)
-    
-    return ( speed + chargeExtra ) * boneShieldSlowdown
+
+local speed = origspeed(self, possible)
+
+      if GetSiegeDoorOpen() then 
+       speed = speed * kDuringSiegeOnosSpdBuff 
+       
+     end
+     
+     return speed
     
     
 end
---ugh
-local kBlockDoers =
-{
-    "Minigun",
-    "Pistol",
-    "Rifle",
-    "HeavyRifle",
-    "HeavyMachineGun",
-    "Shotgun",
-    "Axe",
-    "Welder",
-    "Sentry",
-    "Claw"
-}
-local function GetHitsBoneShield(self, doer, hitPoint)
 
-    if table.contains(kBlockDoers, doer:GetClassName()) then
-    
-        local viewDirection = GetNormalizedVectorXZ(self:GetViewCoords().zAxis)
-        local zPosition = viewDirection:DotProduct(GetNormalizedVector(hitPoint - self:GetOrigin()))
-
-        return zPosition > -0.1
-    
-    end
-    
-    return false
-
-end
+local origmodify = Onos.ModifyDamageTaken
 function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
+--while siege open and charging then buff GetSiegeDoorOpen
+
+    origmodify(self, damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil  then
-     -- Print("Derp 2")
-       local damageReduct = 1
-       
-        if self:GetIsBoneShieldActive() then
-          if GetHitsBoneShield(self, doer, hitPoint) then
-           damageReduct = kBoneShieldDamageReduction
-           self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
-           end
-        elseif self:GetIsCharging()  then  
-        damageReduct =  0.7
+    
+        if GetSiegeDoorOpen() and self:GetIsCharging() then  
+        damageReduct =  0.85
         end
 --        if GetHasDamageResistanceUpgrade(self) then damageReduct = damageReduct * 0.95 end
         if damageReduct ~= 1 then

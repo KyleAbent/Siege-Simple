@@ -96,7 +96,7 @@ kDualExosuitCost = 35 -- default 45
 kFlameThrowerEnergyDamage = 2 --default 3
 kBlinkEnergyCost = 24 -- default 32
 kStartBlinkEnergyCost = 10 --default 14
-kBoneShieldArmorPerSecond = 95 --default 112
+--kBoneShieldArmorPerSecond = 95 --default 112
 kMucousShieldPercent = 0.25 --default 0.15
 
 
