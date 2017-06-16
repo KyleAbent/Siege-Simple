@@ -1,3 +1,8 @@
+kOnoGrowEnergyCost = 20
+kOnocideEnergyCost = 20
+kOnocideMaxDuration = 4
+kOnocideOnoGrowCoolDown = 12.5
+
 kDuringSiegeOnosSpdBuff = 1.25
 kPrimalDMGBuff = 1.05
 WhipStealFT = 10

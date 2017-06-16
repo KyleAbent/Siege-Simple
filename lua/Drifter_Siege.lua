@@ -80,13 +80,16 @@ local function IsBeingGrown(self, target)
     return false
 
 end
-
+local function GetSiegeRules(structure)
+   if GetSiegeDoorOpen() and structure:isa("Hive") and structure.hasDrifterEnzyme then return false end
+   return true
+end
 local function FindTask(self)
 
     -- find ungrown structures
     for _, structure in ipairs(GetEntitiesWithMixinForTeamWithinRange("Construct", self:GetTeamNumber(), self:GetOrigin(), kDrifterSelfOrderRange)) do
     
-        if not structure:GetIsBuilt() and (not structure.GetCanAutoBuild or structure:GetCanAutoBuild()) then      
+        if GetSiegeRules(structure) and not structure:GetIsBuilt() and (not structure.GetCanAutoBuild or structure:GetCanAutoBuild()) then      
   
             self:GiveOrder(kTechId.Grow, structure:GetId(), structure:GetOrigin(), nil, false, false)
            
@@ -258,8 +261,15 @@ function Drifter:ProcessGrowOrder(moveSpeed, deltaTime)
                 if toTarget then
                     self:SmoothTurn(deltaTime, GetNormalizedVector(toTarget), 0)
                 end
-                
-                if IsBeingGrown(self, target) then target:Construct(0.025) end
+                local speed = 0.025
+                if GetSiegeDoorOpen() and target:isa("Hive") then
+                    if  GetImaginator():GetAlienEnabled()  then 
+                       speed = speed / 4 
+                    else
+                        speed = spee / 1.3 
+                    end
+               end
+                if BeingGrown(self, target) then target:Construct(speed) end
                 target:RefreshDrifterConstruct()
                 self.constructing = true
             end

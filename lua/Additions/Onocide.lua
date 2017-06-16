@@ -36,17 +36,19 @@ function Onocide:SetFuel(fuel)
    self.timeFuelChanged = Shared.GetTime()
    self.fuelAtChange = fuel
 end
-
+function Onocide:GetCooldownFraction()
+    return 1 - self:GetFuel()
+end
 function Onocide:GetFuel()
     if self.primaryAttacking then
-        return Clamp(self.fuelAtChange - (Shared.GetTime() - self.timeFuelChanged) / kBoneShieldMaxDuration, 0, 1)
+        return Clamp(self.fuelAtChange - (Shared.GetTime() - self.timeFuelChanged) / kOnocideMaxDuration, 0, 1)
     else
-        return Clamp(self.fuelAtChange + (Shared.GetTime() - self.timeFuelChanged) / kBoneShieldCooldown, 0, 1)
+        return Clamp(self.fuelAtChange + (Shared.GetTime() - self.timeFuelChanged) / kOnocideOnoGrowCoolDown, 0, 1)
     end
 end
 
 function Onocide:GetEnergyCost()
-    return kBoneShieldInitialEnergyCost
+    return kOnocideEnergyCost
 end
 local function CheckForDestroyedEffects(self)
     if self.XenocideSoundName and not IsValid(self.XenocideSoundName) then
@@ -107,13 +109,17 @@ function Onocide:GetDeathIconIndex()
     return kDeathMessageIcon.Xenocide
 end
 function Onocide:IsOnCooldown()
-    return self:GetFuel() < kBoneShieldMinimumFuel
+     local boolean = self:GetFuel() < 0.9
+    -- Print("IsOnCooldown is %s", boolean)
+     return boolean
 end
 function Onocide:GetCanUseOnocide(player)
-    return not self:IsOnCooldown() and not self.secondaryAttacking and not player.charging
+    local boolean = not self:IsOnCooldown() and not self.secondaryAttacking and not player.charging 
+   -- Print("Canuse is %s", boolean)
+    return boolean 
 end
 function Onocide:GetEnergyCost()
-    return kBoneShieldInitialEnergyCost
+    return kOnocideEnergyCost
 end
 
 function Onocide:GetHUDSlot()
@@ -126,10 +132,10 @@ end
 
 function Onocide:OnPrimaryAttack(player)
     
-    
+     --Print("Umm123")
     if not self.primaryAttacking then
         if player:GetIsOnGround() and self:GetCanUseOnocide(player) and self:GetEnergyCost() < player:GetEnergy() then
-                
+                 --Print("Umm")
             player:DeductAbilityEnergy(self:GetEnergyCost())
             
             self:SetFuel( self:GetFuel() ) -- set it now, because it will go down from this point

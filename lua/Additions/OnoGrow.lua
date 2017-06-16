@@ -36,14 +36,14 @@ end
 
 function OnoGrow:GetFuel()
     if self.primaryAttacking then
-        return Clamp(self.fuelAtChange - (Shared.GetTime() - self.timeFuelChanged) / kBoneShieldMaxDuration, 0, 1)
+        return Clamp(self.fuelAtChange - (Shared.GetTime() - self.timeFuelChanged) / kOnocideMaxDuration, 0, 1)
     else
-        return Clamp(self.fuelAtChange + (Shared.GetTime() - self.timeFuelChanged) / kBoneShieldCooldown, 0, 1)
+        return Clamp(self.fuelAtChange + (Shared.GetTime() - self.timeFuelChanged) / kOnocideOnoGrowCoolDown, 0, 1)
     end
 end
 
 function OnoGrow:GetEnergyCost()
-    return kBoneShieldInitialEnergyCost
+    return kOnoGrowEnergyCost
 end
 
 function OnoGrow:GetAnimationGraphName()
@@ -59,18 +59,23 @@ function OnoGrow:GetCooldownFraction()
 end
     
 function OnoGrow:IsOnCooldown()
-    return self:GetFuel() < kBoneShieldMinimumFuel
+     local boolean = self:GetFuel() < 0.9
+     --Print("IsOnCooldown is %s", boolean)
+     return boolean
 end
 
-function OnoGrow:GetCanUseOnoGrow(player)
-    return not self:IsOnCooldown() and not self.secondaryAttacking and not player.charging
+function OnoGrow:GetOnoGrow(player)
+    local boolean = not self:IsOnCooldown() and not self.secondaryAttacking and not player.charging 
+   -- Print("Canuse is %s", boolean)
+    return boolean
 end
 
 function OnoGrow:OnPrimaryAttack(player)
-
+  --Print("Umm123")
     if not self.primaryAttacking then
-        if player:GetIsOnGround() and self:GetCanUseOnoGrow(player) and self:GetEnergyCost() < player:GetEnergy() then
-                
+          -- Print("Energy cost is %s, player energy is %s, player has more energy is %s", self:GetEnergyCost(),  player:GetEnergy(), self:GetEnergyCost() < player:GetEnergy())
+        if player:GetIsOnGround() and self:GetOnoGrow(player) and self:GetEnergyCost() < player:GetEnergy() then
+           --     Print("Umm")
             player:DeductAbilityEnergy(self:GetEnergyCost())
             
             self:SetFuel( self:GetFuel() ) -- set it now, because it will go down from this point

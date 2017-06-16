@@ -73,7 +73,10 @@ local speed = origspeed(self, possible)
 
       if GetSiegeDoorOpen() then 
        speed = speed * kDuringSiegeOnosSpdBuff 
-       
+     end
+     
+     if self:GetIsPoopGrowing() then
+     speed = 0.1
      end
      
      return speed
@@ -83,16 +86,17 @@ end
 
 local origmodify = Onos.ModifyDamageTaken
 function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
---while siege open and charging then buff GetSiegeDoorOpen
 
-    origmodify(self, damageTable, attacker, doer, damageType, hitPoint)
+  origmodify(self, damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil  then
-    
-        if GetSiegeDoorOpen() and self:GetIsCharging() then  
-        damageReduct =  0.85
+     -- Print("Derp 2")
+       local damageReduct = 1
+       
+        if GetSiegeDoorOpen() and self:GetIsCharging()  then  
+        damageReduct =  0.9
         end
---        if GetHasDamageResistanceUpgrade(self) then damageReduct = damageReduct * 0.95 end
+        
         if damageReduct ~= 1 then
         damageTable.damage = damageTable.damage * damageReduct
         end
