@@ -111,7 +111,8 @@ if not GetGamerules():GetGameStarted() then return end
 
 end
  function Plugin:SpawnIt(player, entity)
- if not player or not player:GetIsAlive() then return end
+  if not player then return end
+ if not player:GetIsAlive() then return end
  local CreditCost = 2
  local client = player:GetClient()
 local controlling = client:GetControllingPlayer()
@@ -881,11 +882,11 @@ CreditCost = gCreditAbilityCostNutrientMist
 mapnameof = NutrientMist.kMapName
 reqground = true
 delay = gCreditAbilityDelayNutrientMist
-elseif String == "Contamination"  then
-CreditCost = gCreditAbilityCostContamination
-delay = gCreditAbilityDelayContamination
-mapnameof = Contamination.kMapName    
-techid = kTechId.Contamination
+--elseif String == "Contamination"  then
+--CreditCost = gCreditAbilityCostContamination
+--delay = gCreditAbilityDelayContamination
+--mapnameof = Contamination.kMapName    
+--techid = kTechId.Contamination
 elseif String == "Mucous" then
 CreditCost = gCreditAbilityCostMucous
 mapnameof = MucousMembrane.kMapName

@@ -132,7 +132,7 @@ if player:GetTeamNumber() == 1 then
 		self:AddSideButton("EnzymeCloud: "..gCreditAbilityCostEnzymeCloud* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy EnzymeCloud salt")  end)
 		self:AddSideButton("Ink: "..gCreditAbilityCostInk* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_tbuy Ink")  end)
 		self:AddSideButton("Hallucination: "..gCreditAbilityCostHallucination* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy Hallucination salt")  end)
-		self:AddSideButton("Contamination: "..gCreditAbilityCostContamination* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy Contamination salt")  end)
+		--self:AddSideButton("Contamination: "..gCreditAbilityCostContamination* kPrestoSaltMul, function() Shared.ConsoleCommand ("sh_buy Contamination salt")  end)
 end
      self:AddBottomButton( "Back", function()self:SetPage("SpendSalt")end) 
 end)

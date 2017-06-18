@@ -16,6 +16,8 @@ local originit = PowerPoint.OnCreate
 function PowerPoint:OnCreate()
         originit(self)
          InitMixin(self, ResearchMixin)
+         --Starts off as  self.lightMode = kLightMode.Normal , I want power lights off.. so..
+        self:SetLightMode(kLightMode.NoPower)
 end  
 
    
@@ -24,6 +26,9 @@ function PowerPoint:OnInitialized()
         originit(self)
         --InitMixin(self, LevelsMixin)
 end  
+ function PowerPoint:GetCanResearchOverride(techId)
+        return not ( GetImaginator():GetMarineEnabled() and not GetFrontDoorOpen() )
+  end
 function PowerPoint:GetHasTier(number)
 
 return self:GetMaxHealth() >= kPowerPointHealth * number
@@ -32,7 +37,7 @@ end
 function PowerPoint:GetTechAllowed(techId, techNode, player)
 
     local allowed, canAfford = ScriptActor.GetTechAllowed(self, techId, techNode, player)
-    
+
     if techId == kTechId.PowerPointHPUPG2 then allowed = self:GetHasTier(1.10) end
     if techId == kTechId.PowerPointHPUPG3 then allowed = self:GetHasTier(1.20) end
     

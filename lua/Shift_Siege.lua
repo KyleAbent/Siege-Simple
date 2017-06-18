@@ -52,8 +52,33 @@ table = origbuttons(self, techId)
  return table
 
 end
+function Shift:AutoCommCall()
+   local random = math.random(1,2)
+  if random == 1 then 
+   self.calling = true 
+   self.receiving = false
+  else
+    self.calling = false
+    self.receiving = true
+   end
+   if not self.calling then return end
+   --Maybe require 0 struct to to receive and x+ to call? or as is :p
+  if GetIsOriginInHiveRoom(self:GetOrigin()) then return end --Maybe disable later? hm.
+   local location = GetLocationForPoint(self:GetOrigin())
+   local conslocation = nil
+       local constructs = GetEntitiesWithMixinForTeamWithinRange("Construct", 2, self:GetOrigin(), 72)
+       if not constructs then return end
+         for _, construct in ipairs(constructs) do
+             if construct.GetCanShiftCallRec and construct:GetCanShiftCallRec() then
+                conslocation = GetLocationForPoint(construct:GetOrigin())
+                if self:GetDistance(construct) > kEchoRange and conslocation == location then
+                construct:GiveOrder(kTechId.Move, self:GetId(), FindFreeSpace(self:GetOrigin(), .5, 7), nil, true, true) 
+                end
+             end
+         end
+end
 function Shift:GetCanShiftCallRec()
- return self:GetIsBuilt() --and not self.calling
+ return false --self:GetIsBuilt() and not self.calling
 end
   function Shift:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
@@ -93,8 +118,12 @@ local receivingOrigin = nil
       end
       if not receivingOrigin then
       
+      local imaginator = GetImaginator():GetAlienEnabled()
      for _, entity in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
+          local ARC = #GetEntitiesWithinRange( "ARC", entity:GetOrigin(), 18 )
+          if imaginator and #ARC == 0 or not imaginator then
            receivingOrigin = entity:GetOrigin() break --Print("Calling 4") break  end
+           end
       end
 
       end

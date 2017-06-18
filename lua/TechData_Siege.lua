@@ -112,7 +112,7 @@ local kSiege_TechData =
             [kTechDataDisplayName] = " default hp Tier 1 HP UPG",
  [kTechDataCostKey] = 10,   
  [kTechIDShowEnables] = false,     
-  [kTechDataResearchTimeKey] = 20,
+  [kTechDataResearchTimeKey] = 30,
  [kTechDataHotkey] = Move.R, 
 [kTechDataTooltipInfo] =  "+10% hp"},
 
@@ -120,7 +120,7 @@ local kSiege_TechData =
             [kTechDataDisplayName] = "Tier 2 HP UPG",
  [kTechDataCostKey] = 20,   
  [kTechIDShowEnables] = false,     
-  [kTechDataResearchTimeKey] = 40,
+  [kTechDataResearchTimeKey] = 60,
  [kTechDataHotkey] = Move.R, 
 [kTechDataTooltipInfo] =  "default hp +20% hp"},
 
@@ -129,7 +129,7 @@ local kSiege_TechData =
             [kTechDataDisplayName] = "Tier 3 HP UPG",
  [kTechDataCostKey] = 30,   
  [kTechIDShowEnables] = false,     
-  [kTechDataResearchTimeKey] = 40,
+  [kTechDataResearchTimeKey] = 90,
  [kTechDataHotkey] = Move.R, 
 [kTechDataTooltipInfo] =   "default hp +30% hp"},
 

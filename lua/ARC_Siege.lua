@@ -79,7 +79,7 @@ if Server then
         end
  end
  function ARC:Instruct()
-     self:SpecificRules()
+     if not self:GetIsACreditStructure() then self:SpecificRules() end
    return true
 end
 

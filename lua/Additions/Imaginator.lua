@@ -16,6 +16,7 @@ local networkVars =
   lastink = "private time",
   lasthealwave = "private time",
   lastScan = "private time",
+  lastMarineBeacon =  "private time",
   --lastmarineBeacon = "private time",
   --lastWand = "private time",
   --setupExtTresScale = "private integer (0 to 20)"
@@ -958,7 +959,41 @@ local boolean_three = ( ent:GetTechId() == kTechId.ARCRoboticsFactory and tospaw
 return boolean_one or (boolean_two or boolean_three) --or boolean_four  --and not boolean_five
 end
 */
+function Imaginator:TellEveryoneAbtBeacon()
 
+end
+function Imaginator:ManageMarineBeacons()
+   if GetSiegeDoorOpen() then
+     if not GetSandCastle():GetHasSiegeBeaconed() then
+        local obs = GetNearest(self:GetOrigin(), "Observatory", 1,  function(ent) return   ent:GetIsBuilt() and ent:GetIsPowered()  end )
+          if obs then
+          obs:TriggerSiegeBeacon()
+          end
+          self.lastMarineBeacon = Shared.GetTime()
+          return
+      end
+   end
+            local chair = nil
+          --  Print(" umm 1 ")
+                for _, entity in ientitylist(Shared.GetEntitiesWithClassname("CommandStation")) do
+               if entity:GetIsBuilt() and entity:GetHealthScalar() <= 0.3 then chair = entity   Print(" umm 2 ") break end
+               end
+                -- Print(" umm 3 ")
+               if not chair then return end
+                -- Print(" umm 4 ")
+               local obs = GetNearest(chair:GetOrigin(), "Observatory", 1,  function(ent) return GetLocationForPoint(ent:GetOrigin()) == GetLocationForPoint(chair:GetOrigin()) and ent:GetIsBuilt() and ent:GetIsPowered()  end )
+             
+          if obs then 
+           -- Print(" umm 5 ")
+                self:TellEveryoneAbtBeacon()
+                obs:TriggerDistressBeacon() 
+               for _, mac in ientitylist(Shared.GetEntitiesWithClassname("MAC")) do
+                   mac:GiveOrder(kTechId.Weld, chair:GetId(), chair:GetOrigin(), nil, false, false)   
+               end
+                self.lastMarineBeacon = Shared.GetTime()
+         end
+   
+end
 
 function Imaginator:ActualFormulaMarine()
 
@@ -969,6 +1004,7 @@ local randomspawn = nil
 local tospawn, cost, gamestarted = GetMarineSpawnList(self)
  ManageMacs() 
 if gamestarted and not string.find(Shared.GetMapName(), "pl_") then ManageRoboticFactories(self)  ManageArcs(self) end
+if  GetIsTimeUp(self.lastMarineBeacon, 30) then self:ManageMarineBeacons() end
 local powerpoint = GetRandomActivePower()
 local success = false
 local entity = nil
@@ -1189,19 +1225,37 @@ local function ChanceRandomContamination(who) --messy
                local contamination = CreateEntityForTeam(kTechId.Contamination, FindFreeSpace(where, 4, 8), 2)
                    
                       ThreatNearestNode(contamination:GetOrigin())
-                    contamination:StartBeaconTimer()
+                   -- self:AddTimedCallback(function() self:HandleIntrepid() end, math.random(1,8))
+                     contamination:StartBeaconTimer()
             if gamestarted then contamination:GetTeam():SetTeamResources(contamination:GetTeam():GetTeamResources() - 5) end
                         --     Print("nearestbuiltnode is %s", contamination)
            end--
          end--
 end--
+
+local function HandleShiftCallReceive()
+    --For now call with all and then receive @ contamination
+    
+    --Maybe have structures walk closer to the shift.
+      for index, shift in ipairs(GetEntitiesForTeam("Shift", 2)) do
+         shift:AutoCommCall()
+      end
+end
+
 function Imaginator:AlienConstructs(cystonly)
 
 
        if not cystonly then
        
-       if GetFrontDoorOpen() and GetBioMassLevel() >= 9 then
+       if GetFrontDoorOpen() then 
+       
+          if GetHasShiftHive() then
+            HandleShiftCallReceive()
+          end
+          
+          if GetBioMassLevel() >= 9 then
          ChanceRandomContamination(self)
+         end
        
        end
        
@@ -1550,7 +1604,7 @@ local tospawn = {}
 
 if Whip <=3  then table.insert(tospawn, kTechId.Whip) end
    
-if StructureBeacon < 1 and GetHasShiftHive() then table.insert(tospawn, kTechId.StructureBeacon) end
+if GetSiegeDoorOpen() and StructureBeacon < 1 and GetHasShiftHive() then table.insert(tospawn, kTechId.StructureBeacon) end
 
 if EggBeacon < 1 and  GetHasCragHive() then table.insert(tospawn, kTechId.EggBeacon) end
 

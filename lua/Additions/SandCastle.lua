@@ -288,6 +288,7 @@ local powerpoints = {}
         self.powerlighth:DiscoLights()
        -- Print("DiscoLights 2")
          self:AddTimedCallback( SandCastle.ResetLight, math.random(8, 16) )
+         --Reset lights isn't set correctly... why call it every time colors change? /shrug
     
 end
 function SandCastle:MarinesStillHaveProperDefense()

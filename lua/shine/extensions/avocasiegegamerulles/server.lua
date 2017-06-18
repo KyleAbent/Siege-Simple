@@ -412,6 +412,12 @@ end
  self:NotifySandCastle( nil, "Marines have <=2 built powerpoints with 5 or more min left until siege.", true, ppcount, initial)
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
+ 
+    function Plugin:RemoveConfusion()
+ self:NotifyImaginator( nil, "CommandStation HP <=0.30 percent, Marine AutoBeacon triggered.", true)
+ -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
+ end
+  Shine.Hook.SetupClassHook( "Imaginator", "TellEveryoneAbtBeacon", "RemoveConfusion", "PassivePre" )
   
 Shine.Hook.SetupClassHook( "SandCastle", "MarinesStillHaveProperDefense", "MarineProperDefense", "PassivePre" )
 
@@ -683,6 +689,9 @@ Shine:NotifyDualColour( Player, 255, 165, 0,  "[SuddenDeath]",  255, 0, 0, Strin
 end
 function Plugin:NotifySandCastle( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[SandCastle]",  255, 0, 0, String, Format, ... )
+end
+function Plugin:NotifyImaginator( Player, String, Format, ... )
+Shine:NotifyDualColour( Player, 255, 165, 0,  "[Imaginator]",  255, 0, 0, String, Format, ... )
 end
 function Plugin:NotifyGiveRes( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[GiveRes]",  255, 0, 0, String, Format, ... )

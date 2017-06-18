@@ -35,6 +35,7 @@ function Cyst:GetInfestationGrowthRate()
           --Note also adjust max mature hp throughout siege?
     return rate
 end
+/*
 function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
     if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
@@ -45,7 +46,7 @@ function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
     end
 
 end
-
+*/
 local origone = Cyst.GetCystParentRange
 function Cyst:GetCystParentRange()
 return self.noComm and 999 or origone(self)

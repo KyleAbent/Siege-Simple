@@ -49,7 +49,8 @@ function PowerPointLightHandler:DiscoLights()
      if self.timeofdisco == nil or (self.timeofdisco + 4) < Shared.GetTime() then
              for renderLight,_ in pairs(self.lightTable) do
            if purerandom == 2 then color = Color(math.random(0,255)/255, math.random(0,255)/255, math.random(0,255)/255, 1) end
-             SetLight(renderLight, math.random(8,25), color)
+           local intensity = nil -- math.random(8,25)
+             SetLight(renderLight, intensity, color)
               end
     self.timeofdisco = Shared.GetTime()
     end

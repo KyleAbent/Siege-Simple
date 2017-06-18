@@ -269,7 +269,7 @@ function Drifter:ProcessGrowOrder(moveSpeed, deltaTime)
                         speed = speed / 1.3 
                     end
                end
-                if BeingGrown(self, target) then target:Construct(speed) end
+                if IsBeingGrown(self, target) then target:Construct(speed) end
                 target:RefreshDrifterConstruct()
                 self.constructing = true
             end

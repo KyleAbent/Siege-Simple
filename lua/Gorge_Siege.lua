@@ -334,7 +334,8 @@ if Client then
     local origShowG = Gorge.GetShowGhostModel
     function Gorge:GetShowGhostModel()
       if self:GetTeamNumber() == 0 then return false end -- really?
-        local weapon = self.GetActiveWeapon and  self:GetActiveWeapon()
+        local weapon = self.GetActiveWeapon and self:GetActiveWeapon() or nil
+        if not weapon then return end -- really?
         if weapon and weapon:isa("LayStructures") or weapon:isa("DropStructureAbility")  then
             return weapon:GetShowGhostModel()
         end
