@@ -589,10 +589,10 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
       end
    
 else
-                   --      self:CreateTimer( 27, 1,  self.autoCommTime, function() 
-                   --      if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
-                   --       Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
-                   --     end)
+                         self:CreateTimer( 27, 1,  self.autoCommTime, function() 
+                         if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
+                          Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                        end)
 
 end
 
