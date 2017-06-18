@@ -1234,11 +1234,14 @@ local function ChanceRandomContamination(who) --messy
 end--
 
 local function HandleShiftCallReceive()
-    --For now call with all and then receive @ contamination
-    
-    --Maybe have structures walk closer to the shift.
+    local boolean = GetSiegeDoorOpen()
       for index, shift in ipairs(GetEntitiesForTeam("Shift", 2)) do
-         shift:AutoCommCall()
+          if not boolean then 
+            shift:AutoCommCall()
+           else
+            shift.calling = false
+            shift.receiving = false
+           end
       end
 end
 
@@ -1249,8 +1252,8 @@ function Imaginator:AlienConstructs(cystonly)
        
        if GetFrontDoorOpen() then 
        
-          if GetHasShiftHive() then
-            HandleShiftCallReceive()
+          if  GetHasShiftHive() then
+            HandleShiftCallReceive() 
           end
           
           if GetBioMassLevel() >= 9 then

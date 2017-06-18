@@ -443,7 +443,7 @@ return true
 end
 
 function Plugin:MapPostLoad()
-      --self:StartAutoCommTimer()
+      self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
 end
@@ -631,7 +631,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
        elseif State == kGameState.NotStarted then
                 --GetImaginator():OnPreGame()
              GetSandCastle():OnPreGame()
-           -- self:StartAutoCommTimer()
+             self:StartAutoCommTimer()
              self.autoCommTime = kAutoCommTimer
              self.AutoCCtimer = false
           end
@@ -646,7 +646,7 @@ function Plugin:StartAutoCommTimer()
                     local  numplayers = #Shine.GetAllPlayers()
                     local gameRules = GetGamerules()
                     if self.stopped or gameRules:GetGameStarted() or numplayers > 10 then return end
-                     /*
+                     
                     if numplayers <= 10 then
                         for i = 1, 10 - numplayers do
                         Shared.ConsoleCommand("addbot")
@@ -657,7 +657,7 @@ function Plugin:StartAutoCommTimer()
            Shared.ConsoleCommand("sh_forceroundstart")
            Shared.ConsoleCommand("sh_imaginator 1 true")
            Shared.ConsoleCommand("sh_imaginator 2 true")
-           */
+           
            self:NotifyAutoComm( nil, "Usually the AutoComm timer would start here however I think it's best to leave auto enable disabled until after 5.30.17. Type sh_autocomm if you want to play. (Mod command)", true)
                  end)
     
