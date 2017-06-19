@@ -139,6 +139,7 @@ local function MoveToHives(self)
 local siegelocation = GetSiegeLocation()
 if not siegelocation then return true end
 local siegepower = GetPowerPointForLocation(siegelocation.name)
+if not siegepower then return true end
 local hasSiegeTP, tpLocation = FindSiegeTP(self)
 local where = FindArcHiveSpawn( FindFreeSpace(siegepower:GetOrigin()) ) 
                        --Some maps have a TP rather than path, so go to tp then teleport to siege :P.

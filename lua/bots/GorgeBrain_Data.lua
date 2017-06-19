@@ -14,6 +14,14 @@ local kUpgrades = {
     kTechId.Adrenaline,
 }
 
+    local function CertainRules(who)
+      if HasMixin(who, "PowerConsumer") then
+         return who:GetIsPowered()
+      else
+       return true
+      end  
+    end
+
 ------------------------------------------
 --  More urgent == should really attack it ASAP
 ------------------------------------------
@@ -290,7 +298,8 @@ kGorgeBrainActions =
                     return GetAttackUrgency( bot, mem )
                 end)
           */
-       local nearest = GetNearestMixin(skulk:GetOrigin(), "Live", 1,  function(ent) return  not ent:isa("Extractor") and not ent:isa("Marine") and ent:GetCanTakeDamage() and GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )
+          
+       local nearest = GetNearestMixin(skulk:GetOrigin(), "Live", 1,  function(ent) return  CertainRules(ent) and not ent:isa("Extractor") and not ent:isa("Marine") and ent:GetCanTakeDamage() and GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )
         
         local bestMem =  nearest      
         local weapon = skulk:GetActiveWeapon()

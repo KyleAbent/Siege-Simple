@@ -2,6 +2,15 @@
 Script.Load("lua/bots/CommonActions.lua")
 Script.Load("lua/bots/BrainSenses.lua")
 
+
+    local function CertainRules(who)
+      if HasMixin(who, "PowerConsumer") then
+         return who:GetIsPowered()
+      else
+       return true
+      end  
+    end
+    
 local kUpgrades = {
     kTechId.Crush,
     kTechId.Carapace,
@@ -273,7 +282,7 @@ kLerkBrainActions =
         local skulk = bot:GetPlayer()
         local eyePos = skulk:GetEyePos()
         
-       local nearestnonMarine = GetNearestMixin(skulk:GetOrigin(), "Live", 1,  function(ent) return not ent:isa("Weapon") and not ent:isa("Player") and ent:GetCanTakeDamage() and GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )
+       local nearestnonMarine = GetNearestMixin(skulk:GetOrigin(), "Live", 1,  function(ent) return CertainRules(ent) and not ent:isa("Weapon") and not ent:isa("Player") and ent:GetCanTakeDamage() and GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )
        local nearestMarine = GetNearest(skulk:GetOrigin(), "Player", 1,  function(ent) return GetLocationForPoint(skulk:GetOrigin()) ==  GetLocationForPoint(ent:GetOrigin())  end )        
        local bestMem =  nil
               

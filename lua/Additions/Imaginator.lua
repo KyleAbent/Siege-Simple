@@ -145,11 +145,13 @@ function Imaginator:UpdateHivesManually()
                      end
                end
           
-          
-      if not GetSandCastle():GetSDBoolean() and hasOneBuilt and hivecount < 3 and TresCheck(2,40) then
+          --hivecount < 3
+      if not GetSandCastle():GetSDBoolean() and hasOneBuilt and TresCheck(2,40) then
           for _, techpoint in ientitylist(Shared.GetEntitiesWithClassname("TechPoint")) do
-             if techpoint:GetAttached() == nil then 
-               local hive =  techpoint:SpawnCommandStructure(2) 
+                   local location = GetLocationForPoint(techpoint:GetOrigin())
+                    local powerpoint =  location and GetPowerPointForLocation(location.name)
+             if techpoint:GetAttached() == nil and powerpoint and powerpoint:GetIsDisabled()  then 
+               local hive = techpoint:SpawnCommandStructure(2) 
                   if hive then hive:GetTeam():SetTeamResources(hive:GetTeam():GetTeamResources() - 40) break end
              end
           end
@@ -643,8 +645,9 @@ if GetGamerules():GetGameState() == kGameState.Started then gamestarted = true H
       --if InfantryPortal < 4 then
       --table.insert(tospawn, kTechId.InfantryPortal)
       --end
-      
-      if not GetSandCastle():GetSDBoolean() and CommandStation < 3 then
+      local timecheck = ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) >= 180
+               --gamelength around 3 mins to drop this way more power are built
+      if timecheck and not GetSandCastle():GetSDBoolean() and CommandStation < 3 then
       table.insert(tospawn, kTechId.CommandStation)
       end
       
@@ -1234,14 +1237,26 @@ local function ChanceRandomContamination(who) --messy
 end--
 
 local function HandleShiftCallReceive()
+   local shifts = {}
+   
     local boolean = GetSiegeDoorOpen()
+    if boolena then return end
       for index, shift in ipairs(GetEntitiesForTeam("Shift", 2)) do
-          if not boolean then 
-            shift:AutoCommCall()
-           else
-            shift.calling = false
-            shift.receiving = false
-           end
+          table.insert(shifts, shift)
+          shift.calling = false
+          shift.receiving = true
+      end
+      local random = table.random(shifts)
+      if not random then return end
+      
+      if not  GetSiegeDoorOpen()  then
+      random.receiving = false
+      random.calling = true
+      end
+      
+      for i = 1, #shifts do
+          local shift = shifts[i]
+          shift:AutoCommCall()
       end
 end
 
@@ -1453,7 +1468,7 @@ function Imaginator:ActualAlienFormula(cystonly)
 --Print("AutoBuildConstructs")
  ManageDrifters() 
 local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
-if hivecount < 3 and not GetSandCastle():GetSDBoolean() then return end -- build hives first ya newb
+if hivecount < 3 and not GetSandCastle():GetSDBoolean() then return end -- build hives first, 6.18.17 maybe if Sg open and tres>=80 then build other..
 local randomspawn = nil
 local spawnArea = GetAlienSpawnLocation() 
 local tospawn, cost, gamestarted = GetAlienSpawnList(self, cystonly)
@@ -1598,6 +1613,14 @@ local tospawn = {}
      --local ShadeInk =  #GetEntitiesWithinRange( "ShadeInk", who:GetOrigin(), 18 )
      -- local ARC = #GetEntitiesWithinRange( "ARC", who:GetOrigin(), 18 )
       local Whip = #GetEntitiesWithinRange( "Whip", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
+       local WhipTotal = #GetEntitiesWithinRange( "Whip", who:GetOrigin(),  99999 )
+       
+      local Shift = #GetEntitiesWithinRange( "Shift", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
+       local ShiftTotal = #GetEntitiesWithinRange( "Shift", who:GetOrigin(),  99999 )
+       
+      local Crag = #GetEntitiesWithinRange( "Crag", who:GetOrigin(),  who:GetCurrentInfestationRadius() )
+       local CragTotal = #GetEntitiesWithinRange( "Crag", who:GetOrigin(),  99999 )
+       
       --Rupture
       --Mist
       --DrifterAvoca
@@ -1605,7 +1628,11 @@ local tospawn = {}
    
 --if ARC >= 1 and ShadeInk <1  then table.insert(tospawn, kTechId.ShadeInk) end
 
-if Whip <=3  then table.insert(tospawn, kTechId.Whip) end
+if Whip <=3  and WhipTotal<= 24 then table.insert(tospawn, kTechId.Whip) end
+
+if Shift <=2  and ShiftTotal<= 12 then table.insert(tospawn, kTechId.Shift) end
+
+if Crag <=3  and CragTotal<= 12 then table.insert(tospawn, kTechId.Crag) end
    
 if GetSiegeDoorOpen() and StructureBeacon < 1 and GetHasShiftHive() then table.insert(tospawn, kTechId.StructureBeacon) end
 

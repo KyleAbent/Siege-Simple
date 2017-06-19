@@ -53,15 +53,8 @@ table = origbuttons(self, techId)
 
 end
 function Shift:AutoCommCall()
-   local random = math.random(1,2)
-  if random == 1 then 
-   self.calling = true 
-   self.receiving = false
-  else
-    self.calling = false
-    self.receiving = true
-   end
-   if not self.calling then return end
+   if GetSiegeDoorOpen() then self.calling = false end
+   if not self.calling then return end 
    --Maybe require 0 struct to to receive and x+ to call? or as is :p
   if GetIsOriginInHiveRoom(self:GetOrigin()) then return end --Maybe disable later? hm.
    local location = GetLocationForPoint(self:GetOrigin())
@@ -71,14 +64,14 @@ function Shift:AutoCommCall()
          for _, construct in ipairs(constructs) do
              if construct.GetCanShiftCallRec and construct:GetCanShiftCallRec() then
                 conslocation = GetLocationForPoint(construct:GetOrigin())
-                if self:GetDistance(construct) > kEchoRange and conslocation == location then
+                if construct ~= self and self:GetDistance(construct) > kEchoRange and conslocation == location then
                 construct:GiveOrder(kTechId.Move, self:GetId(), FindFreeSpace(self:GetOrigin(), .5, 7), nil, true, true) 
                 end
              end
          end
 end
 function Shift:GetCanShiftCallRec()
- return false --self:GetIsBuilt() and not self.calling
+ return self:GetIsBuilt() and not self.receiving
 end
   function Shift:GetUnitNameOverride(viewer)
     local unitName = GetDisplayName(self)   
@@ -112,21 +105,23 @@ end
 function Shift:CheckForAndActOn() -- Insta Teleport with 0 tres cost OP? Add limit? Time Delay? if 12 then take 3 at a time?
  --Print("Calling 3")
 local receivingOrigin = nil
+local origins = {}
 
       for _, entity in ientitylist(Shared.GetEntitiesWithClassname("Shift")) do
-            if entity.receiving then receivingOrigin = entity:GetOrigin() break end --Print("Calling 4") break  end
+            if entity.receiving then table.insert(origins, entity:GetOrigin()) end --Print("Calling 4") break  end
       end
-      if not receivingOrigin then
+      
       
       local imaginator = GetImaginator():GetAlienEnabled()
      for _, entity in ientitylist(Shared.GetEntitiesWithClassname("Contamination")) do
           local ARC = #GetEntitiesWithinRange( "ARC", entity:GetOrigin(), 18 )
-          if imaginator and #ARC == 0 or not imaginator then
-           receivingOrigin = entity:GetOrigin() break --Print("Calling 4") break  end
+          if imaginator and not ARC or not imaginator then
+           table.insert(origins, entity:GetOrigin())
            end
       end
+      
+      receivingOrigin = table.random(origins)
 
-      end
  if not receivingOrigin then return end
     --Print("Calling 5")
     local eligable = {}
@@ -152,11 +147,10 @@ local receivingOrigin = nil
                         teleportable:ClearCurrentOrder()
                     end
                    --  Print("Calling 9")
-                    self:TriggerEffects("shift_echo")
                     success = true
                     self.echoActive = true
     end
-    
+    if success then  self:TriggerEffects("shift_echo") end
     self.echoActive = false -- ?
  
 end

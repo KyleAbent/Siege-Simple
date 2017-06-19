@@ -62,10 +62,10 @@ local function IfImagination(self, entity)
                local powerPoint = GetPowerPointForLocation(self.name)
             if powerPoint ~= nil then
                          if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() then 
-                         -- if not string.find(self.name, "siege") and not string.find(self.name, "Siege") or GetSiegeDoorOpen() then
+                         if not string.find(self.name, "siege") and not string.find(self.name, "Siege") or GetSiegeDoorOpen() then
                          powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
                          end
-                         --end
+                         end
                         if not GetSetupConcluded() and entity:isa("Alien") and not entity:isa("Commander") then
                          local frontdoor = GetEntitiesWithinRange("FrontDoor", entity:GetOrigin(), 7)
                          if #frontdoor >=1 then return end --sometimes hugging door tricks the location :x
