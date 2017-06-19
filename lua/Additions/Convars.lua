@@ -56,7 +56,7 @@ gCreditStructureMacLimit = 3
 gCreditStructureArcCost = 10
 gCreditStructureArcLimit = 2
 
-gCreditStructureExtractorCost = 200
+gCreditStructureExtractorCost = 2000
 gCreditStructureExtractorLimit = 1
 
 

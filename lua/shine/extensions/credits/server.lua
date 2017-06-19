@@ -5,6 +5,8 @@ Script.Load("lua/Additions/SaltMixin.lua")
 local Shine = Shine
 local Plugin = Plugin
 local HTTPRequest = Shared.SendHTTPRequest
+local TableInsertUnique = table.InsertUnique
+
 
 
 Plugin.HasConfig = true
@@ -13,14 +15,15 @@ Plugin.ConfigName = "CreditsConfig.json"
 Plugin.DefaultConfig  = { kCreditMultiplier = 1, kCreditsCapPerRound = 200 }
 
 Shine.CreditData = {}
+Shine.BadgeData = {}
 Shine.LinkFile = {}
 Shine.BadgeFile = {}
-Plugin.Version = "11.16"
+Plugin.Version = "911"
 
 local CreditsPath = "config://shine/plugins/credits.json"
 local URLPath = "config://shine/CreditsLink.json"
 --local BadgeURLPath = "config://shine/BadgesLink.json"
---local BadgesPath = "config://shine/UserConfig.json"
+local BadgesPath = "config://shine/UserConfig.json"
 
 
 Shine.Hook.SetupClassHook( "ScoringMixin", "AddScore", "OnScore", "PassivePost" )
@@ -344,6 +347,9 @@ function Plugin:OnFirstThink()
 local CreditsFile = Shine.LoadJSONFile( CreditsPath )
 self.CreditData = CreditsFile
 
+local BadgeFile = Shine.LoadJSONFile( BadgesPath )
+self.BadgeData = BadgeFile
+
 // for double credit weekend change 1 to 2 :P
 
      //   local date = os.date("*t", Shared.GetSystemTime())
@@ -461,6 +467,27 @@ end
 local function GetIDFromClient( Client )
 	return Shine.IsType( Client, "number" ) and Client or ( Client.GetUserId and Client:GetUserId() ) // or nil //or nil was blocked but im testin
  end
+  function Plugin:GetBadgeData(Client)
+  if not self.BadgeData then return nil end
+  if not self.BadgeData.Users then return nil end
+  local ID = GetIDFromClient( Client )
+  if not ID then return nil end
+  local User = self.BadgeData.Users[ tostring( ID ) ] 
+  if not User then 
+     local SteamID = Shine.NS2ToSteamID( ID )
+     User = self.BadgeData.Users[ SteamID ]
+     if User then
+     return User, SteamID
+     end
+     local Steam3ID = Shine.NS2ToSteam3ID( ID )
+     User = self.BadgeData.Users[ ID ]
+     if User then
+     return User, Steam3ID
+     end
+     return nil, ID
+   end
+return User, ID
+end
 function Plugin:GetCreditData(Client)
   if not self.CreditData then return nil end
   if not self.CreditData.Users then return nil end
@@ -993,6 +1020,220 @@ local TBuyCommand = self:BindCommand("sh_tbuy", "tbuy", TBuy, true)
 TBuyCommand:Help("sh_tbuy <team buy string>")
 TBuyCommand:AddParam{ Type = "string" }
 TBuyCommand:AddParam{ Type = "string", Optional = true }
+
+------------badges.lua
+function Plugin:GetMasterBadgeLookup( MasterBadgeTable )
+	if not Shine.IsType( MasterBadgeTable, "table" ) then return nil end
+
+	local Lookup = Shine.Multimap()
+	-- Use a numeric loop to keep order consistent.
+	for i = 1, 10 do
+		local Badges = MasterBadgeTable[ tostring( i ) ]
+		if Badges then
+			for j = 1, #Badges do
+				Lookup:Add( Badges[ j ], i )
+			end
+		end
+	end
+
+	return Lookup
+end
+
+/*
+function Plugin:MapBadgesToRows( BadgeList, MasterBadgeTable )
+	local BadgeRows = Shine.Multimap()
+
+	for i = 1, #BadgeList do
+		local Badge = BadgeList[ i ]
+		local Rows = MasterBadgeTable:Get( Badge ) or { DefaultRow }
+
+		for j = 1, #Rows do
+			BadgeRows:Add( Rows[ j ], Badge )
+		end
+	end
+
+	return BadgeRows:AsTable()
+end
+*/
+/*
+function Plugin:NewBadgeEntry(String, Data, Client)
+			self:NotifySalt( Client, "Badge %s bought, Will apply on mapchange, enjoy! (Remember:10 badges max! )", true, String)
+			self.BadgeData.Users[Client:GetUserId() ] = {Badges = tostring(String) }
+			Shine.SaveJSONFile( self.BadgeData, BadgesPath  )
+			 Shared.ConsoleCommand("sh_reloadusers" ) 
+			 return true
+end
+*/
+function Plugin:RemoveBadge(BadgeList, Number, Data, Client)
+local amt = 0 
+local readd = {}
+local alreadyHas = false
+local string = nil
+--Data.Badges[Number] = {}
+local tempData = {}
+
+ if BadgeList then
+	for i = 1, 10 do
+			local Badges = BadgeList[ i ] or BadgeList[ tostring( i ) ]
+			if Badges then
+				for j = 1, #Badges do
+					local BadgeName = Badges[ j ]
+					   amt = amt + 1
+					   if Number == i then
+					      string = BadgeName
+					--      Print("Number is %s, string is %s", Number, string)
+					   else
+					   local setNumber =  Number < i and i -1 or i
+					         setNumber = Clamp(setNumber, 1,  10)
+					    --     Print("i is %s, setNumber is %s, BadgeName is %s", i, setNumber, BadgeName)
+					       tempData[setNumber] = {BadgeName}
+						end
+				end
+		   end
+     end 
+  end
+   if Number > amt then
+   	 self:NotifySalt( Client, "You asked to remove badge # %s but you only have %s badges. Try again.", true, Number, amt )
+   	 return false
+   end
+   /*
+   if Number == 1 and amt== 1 then
+   	 self:NotifySalt( Client, "Sorry you can't remove badge #1 as your last badge else it breaks. Gotta fix this..", true, Number, amt )
+   	 return false
+   end  
+   */
+Data.Badges = {}
+        Data.Badges = tempData
+
+
+			  self:NotifySalt( Client, "Badge # %s (%s) removed, now buy more!! (Wait until mapchange for badge to remove)", true, Number, string )
+			  Shine.SaveJSONFile( self.BadgeData, BadgesPath  )
+			  Shared.ConsoleCommand("sh_reloadusers" ) 
+			  return true
+
+
+end
+
+local function RemoveBadge(Client, Number, String)
+local Player = Client:GetControllingPlayer()
+local cost = 500
+local delayafter = 8
+local isSalt = String == "salt"
+if not isSalt then return end
+
+local hasBought = false
+    if FirstCheckRulesHere(self, Client, Player, String, cost, false, isSalt ) == true then 
+       return 
+     end
+    
+    if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown() )  then
+           local Data = self:GetBadgeData( Client )
+            if Data and Data.Badges then 
+            local MasterBadgeTable = self:GetMasterBadgeLookup( Data.Badges )
+            local BadgeList = Data.Badges
+                  self.Temp = BadgeList
+            	  hasBought = self:RemoveBadge(self.Temp, Number, Data, Client)
+          --  else
+          --    self:NewBadgeEntry(String, Data, Client)
+           end
+           if hasBought then DeductBuy(self, Player, cost, 0, isSalt) end
+    else
+          self:NotifySalt( Client, "Gamestart required else free :P", true)
+    end
+end
+
+local BuyRemoveBadgeCommand = self:BindCommand("sh_buyremovebadge", "removebadge", RemoveBadge, true)
+BuyRemoveBadgeCommand:Help("sh_buyremovebadge <#1-10>")
+BuyRemoveBadgeCommand:AddParam{ Type = "number" }  
+BuyRemoveBadgeCommand:AddParam{ Type = "string", Optional = true }
+
+
+function Plugin:ListAddBadges(BadgeList, String, Data, Client)
+local amt = 0 
+local readd = {}
+local alreadyHas = false
+ if BadgeList then
+	for i = 1, 10 do
+			local Badges = BadgeList[ i ] or BadgeList[ tostring( i ) ]
+			if Badges then
+				for j = 1, #Badges do
+					local BadgeName = Badges[ j ]
+						Print( "row %s badge: %s",i, BadgeName )
+			          if BadgeName  then
+						amt = amt + 1
+				      end
+						if String== BadgeName then alreadyHas = true end
+				end
+		   end
+     end 
+  end
+     if alreadyHas then
+     self:NotifySalt( Client, "You already have the %s badge and I don't think having two of the same works.", true, String)
+     return false
+     end
+     
+    if amt > 10 then
+   	 self:NotifySalt( Client, "10 Badges max, try removing one first.", true, Number, amt )
+   	 return false
+   end
+		--	Print("total of %s badges", amt)
+	  if amt <= 9 then
+			--Print("adding +1 badge with string")
+			if not Data.Badges then
+			--self.BadgeData.Users[Client:GetUserId() ] = {credits = self:GetPlayerSaltInfo(Client), name = Client:GetControllingPlayer():GetName() }
+			--self.BadgeData.Badges[Client:GetUserId() ] = {}--{tostring(String)}
+		--	local toinsert = {Badges = tostring(String)}
+		--	TableInsertUnique(Data, toinsert )
+		Data.Badges = {}
+	  -- self:NotifySalt( Client, "You're not in the list and I haven't figured out how to write this part automatically yet", true)
+	   return false
+			else
+			Data.Badges[amt+1] = { tostring(String) }
+			end
+			self:NotifySalt( Client, "Badge %s bought, enjoy! (Worst case scenario w8 until mapchange for it to load)", true, String)
+			  Shine.SaveJSONFile( self.BadgeData, BadgesPath  )
+			  Shared.ConsoleCommand("sh_reloadusers" ) 
+			  return true
+	 end
+	 self:NotifySalt( Client, "10 Badges = max. Note: Add in RemoveBadges .... Buy failed", true)
+	 return false
+
+
+end
+local function BuyBadge(Client, String, StringTwo)
+local Player = Client:GetControllingPlayer()
+local cost = 5000
+local delayafter = 8
+local isSalt = StringTwo == "salt"
+if not isSalt then return end
+
+if String== "weed" then cost = 5000 end
+
+local hasBought = false
+    if FirstCheckRulesHere(self, Client, Player, String, cost, false, isSalt ) == true then 
+       return 
+     end
+    
+    if ( GetGamerules():GetGameStarted() and not GetGamerules():GetCountingDown() )  then
+           local Data = self:GetBadgeData( Client )
+            if Data then --and Data.Badges then 
+            local MasterBadgeTable = self:GetMasterBadgeLookup( Data.Badges )
+            local BadgeList = Data.Badges
+            	  hasBought = self:ListAddBadges(BadgeList, String, Data, Client)
+          --  else
+          --    self:NewBadgeEntry(String, Data, Client)
+           end
+           if hasBought then DeductBuy(self, Player, cost, 0, isSalt) end
+    else
+          self:NotifySalt( Client, "Gamestart required else free :P", true)
+    end
+end
+
+local BuyBadgeCommand = self:BindCommand("sh_buybadge", "buybadge", BuyBadge, true)
+BuyBadgeCommand:Help("sh_buybadge <badgename>")
+BuyBadgeCommand:AddParam{ Type = "string" }    
+BuyBadgeCommand:AddParam{ Type = "string", Optional = true }
+
 
 local function BuyWP(Client, String, StringTwo)
 local Player = Client:GetControllingPlayer()

@@ -21,6 +21,11 @@ function Armory:GetItemList(forPlayer)
     return list
     
 end
+function AdvancedArmory:GetItemList(forPlayer)
+
+return Armory.GetItemList(self, forPlayer)
+
+end
 local origbuttons = Armory.GetTechButtons
 function Armory:GetTechButtons(techId)
 

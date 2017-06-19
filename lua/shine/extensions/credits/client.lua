@@ -161,7 +161,7 @@ Shine.VoteMenu:AddPage ("SpendPres", function( self )
 
      self:AddSideButton( "Structures", function() self:SetPage( "SpendStructures" ) end)
              --  self:AddSideButton( "Fun", function() self:SetPage( "SpendFun" ) end)
-               self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
+            --   self:AddSideButton( "Expensive", function() self:SetPage( "SpendExpenive" ) end)
                
        if player:GetTeamNumber() == 1 then 
             self:AddSideButton( "Classes", function() self:SetPage( "SpendClasses" ) end) 
@@ -196,6 +196,7 @@ Shine.VoteMenu:AddPage ("SpendSalt", function( self )
       end  
       
         self:AddSideButton( "Glow", function() self:SetPage( "SpendGlowSalt" ) end)
+        self:AddSideButton( "Badges", function() self:SetPage( "SpendBadges" ) end)
 
         self:AddBottomButton( "Back", function()self:SetPage("Main")end)  
 end)
