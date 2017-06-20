@@ -5,6 +5,9 @@
  Needs Dynamic Siege Timer based on powerpoint count? Scenario for if marines lose all but last room. I would rather
  have Siege open in this instance than camp for 5 minutes knowing the eventual outcome.
   
+  This would require GUI rather than Shine for on screen countdown display. To be able to change
+  the timer dynamically.
+  
 */
 class 'SandCastle' (ScriptActor)
 SandCastle.kMapName = "sandcastle"

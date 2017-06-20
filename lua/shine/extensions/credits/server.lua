@@ -1106,7 +1106,7 @@ Data.Badges = {}
         Data.Badges = tempData
 
 
-			  self:NotifySalt( Client, "Badge # %s (%s) removed, now buy more!! (Wait until mapchange for badge to remove)", true, Number, string )
+			  self:NotifySalt( Client, "Badge # %s (%s) removed, now buy more!! (Wait until mapchange for badge to remove) ((Options>Customize Player>Manage Badges)) ", true, Number, string )
 			  Shine.SaveJSONFile( self.BadgeData, BadgesPath  )
 			  Shared.ConsoleCommand("sh_reloadusers" ) 
 			  return true
@@ -1185,12 +1185,13 @@ local alreadyHas = false
 		--	local toinsert = {Badges = tostring(String)}
 		--	TableInsertUnique(Data, toinsert )
 		Data.Badges = {}
+		end
 	  -- self:NotifySalt( Client, "You're not in the list and I haven't figured out how to write this part automatically yet", true)
-	   return false
-			else
+	  -- return false
+			--else
 			Data.Badges[amt+1] = { tostring(String) }
-			end
-			self:NotifySalt( Client, "Badge %s bought, enjoy! (Worst case scenario w8 until mapchange for it to load)", true, String)
+			--end
+			self:NotifySalt( Client, "Badge %s bought, enjoy! (Options>Customize Player>Manage Badges) ", true, String)
 			  Shine.SaveJSONFile( self.BadgeData, BadgesPath  )
 			  Shared.ConsoleCommand("sh_reloadusers" ) 
 			  return true
@@ -1207,7 +1208,6 @@ local delayafter = 8
 local isSalt = StringTwo == "salt"
 if not isSalt then return end
 
-if String== "weed" then cost = 5000 end
 
 local hasBought = false
     if FirstCheckRulesHere(self, Client, Player, String, cost, false, isSalt ) == true then 

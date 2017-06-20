@@ -74,9 +74,13 @@ function Observatory:OnVortex()
     
 end
 function Observatory:GetSiegePowerOrigin()
+local siegepower = nil
+for i = 1, 24 do
 local siegelocation = GetSiegeLocation()
-local siegepower = GetPowerPointForLocation(siegelocation.name)
- return siegepower:GetOrigin()
+      siegepower = GetPowerPointForLocation(siegelocation.name)
+  if siegepower then return siegepower:GetOrigin() end 
+ end
+ return nil
 end
 function Observatory:TriggerSiegeBeacon()
 

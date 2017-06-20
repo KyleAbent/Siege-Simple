@@ -35,11 +35,12 @@ function isPathable(position)
     local walk = Pathing.GetIsFlagSet(position, kExtents, Pathing.PolyFlag_Walk)
     return not noBuild and walk
 end
-function GetSiegePowerOrig()
+function GetSiegePowerFunc()
   local powers = {}
   for _, loc in ientitylist(Shared.GetEntitiesWithClassname("Location")) do
       if ( string.find(loc.name, "siege") or string.find(loc.name, "Siege") )  and not
        ( string.find(loc.name, "hall") and not  string.find(loc.name, "Hall") ) then 
+        Print("Found Siege Power")
         return GetPowerPointForLocation(loc.name)
       end
     end

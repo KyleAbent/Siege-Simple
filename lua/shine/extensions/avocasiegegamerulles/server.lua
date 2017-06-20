@@ -516,13 +516,13 @@ end
 function Plugin:ClientDisconnect(Client)
  if Client:GetIsVirtual() then return end
  
-        if GetGamerules():GetGameStarted() and GetSandCastle():GetSDAllowed() then
+        if GetGamerules():GetGameStarted() and GetImaginator():GetAlienEnabled() and  GetImaginator():GetMarineEnabled() then
  
-        local playercount = #Shine.GetAllPlayers()
+      --  local playercount = #Shine.GetAllPlayers()
         local  humancount = #Shine.GetHumanPlayerCount()
         local bots = math.abs(humancount - playercount)
 
-         if (NumPlayers<10 and bots <10) then 
+         if (humancount<10 and bots <10) then 
                         Shared.ConsoleCommand("addbot")      
          end
       end
@@ -576,7 +576,7 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
    Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
    end
    
-          if GetSandCastle():GetSDAllowed()  then
+          if GetImaginator():GetAlienEnabled() and  GetImaginator():GetMarineEnabled()  then
         local players, numplayers = Shine.GetAllPlayers()
         local humans, numhumans = Shine.GetHumanPlayerCount()
         local bots = math.abs(humans - players)

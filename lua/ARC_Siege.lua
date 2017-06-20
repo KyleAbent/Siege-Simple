@@ -135,13 +135,21 @@ local function FindSiegeTP(self)
 
 
 end
-local function MoveToHives(self) 
+local function SiegeStuff()
+local siegepower = nil
+for i = 1, 24 do
 local siegelocation = GetSiegeLocation()
-if not siegelocation then return true end
-local siegepower = GetPowerPointForLocation(siegelocation.name)
-if not siegepower then return true end
+      siegepower = GetPowerPointForLocation(siegelocation.name)
+  if siegepower then return siegepower:GetOrigin() end 
+ end
+ return nil
+ 
+end
+local function MoveToHives(self) 
+local siegeporigin = SiegeStuff()
+if not siegeporigin then return true end
 local hasSiegeTP, tpLocation = FindSiegeTP(self)
-local where = FindArcHiveSpawn( FindFreeSpace(siegepower:GetOrigin()) ) 
+local where = FindArcHiveSpawn( FindFreeSpace( siegeporigin ) ) 
                        --Some maps have a TP rather than path, so go to tp then teleport to siege :P.
                        if hasSiegeTP and tpLocation then
                            if self:GetDistance(tpLocation) <= 4 then

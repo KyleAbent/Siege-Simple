@@ -1204,10 +1204,10 @@ local function ChanceRandomContamination(who) --messy
      local randomchance = math.random(1, 100)
      if (not gamestarted or TresCheck( 2, 5 ) ) and randomchance <= chance then
      
-     local inSiege = GetSiegeDoorOpen() and math.random(1,2) == 1 
+   --  local inSiege = GetSiegeDoorOpen() and math.random(1,2) == 1 
      
            local where = nil
-           if not inSiege  then
+          -- if not inSiege  then
            
                local stirItUp = math.random(1,2)
                if stirItUp == 1 then
@@ -1217,13 +1217,12 @@ local function ChanceRandomContamination(who) --messy
                where = GetRandomActivePower()
                 end
                 
-           else
-           where = GetSiegePowerOrig()
-           end
+          -- else
+          -- where = GetSiegePower()
+         --  end
            
              
            if where then 
-           where = where:GetOrigin() 
            where = FindFreeSpace(where, 2, 24)
                local contamination = CreateEntityForTeam(kTechId.Contamination, FindFreeSpace(where, 4, 8), 2)
                    
