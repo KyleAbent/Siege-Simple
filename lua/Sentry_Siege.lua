@@ -1,9 +1,9 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
-Sentry.kFov = 360
-Sentry.kMaxPitch = 180 
-Sentry.kMaxYaw = Sentry.kFov /2
-Sentry.kTargetAcquireTime = 0.45
+Script.Load("lua/Additions/SandMixin.lua")
+--Sentry.kFov = 360
+--Sentry.kMaxPitch = 180 
+--Sentry.kMaxYaw = Sentry.kFov /2
+--Sentry.kTargetAcquireTime = 0.45
 /*
 local kPilotCinematicName = PrecacheAsset("cinematics/marine/flamethrower/pilot.cinematic")
 
@@ -39,7 +39,7 @@ local networkVars = {}
 
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 
 
 
@@ -51,15 +51,17 @@ end
     function Sentry:OnInitialized()
         originit(self)
         InitMixin(self, LevelsMixin)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
     end
     
     function Sentry:GetMaxLevel()
-    return 15
+    return 0
     end
     function Sentry:GetAddXPAmount()
-    return 0.30
+    return 0
     end
+
+/*
 
 function Sentry:OnAdjustModelCoords(modelCoords)
     local coords = modelCoords
@@ -72,6 +74,7 @@ function Sentry:OnAdjustModelCoords(modelCoords)
     return coords
 end
 
+*/
 
 Shared.LinkClassToMap("Sentry", Sentry.kMapName, networkVars)
 

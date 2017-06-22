@@ -1,5 +1,7 @@
 --Bleh.
 
+/*
+
 local gMarineMenuButtons =
 {
 
@@ -37,3 +39,5 @@ function MarineCommander:GetQuickMenuTechButtons(techId)
     return marineTechButtons
     
 end
+
+*/

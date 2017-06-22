@@ -1,16 +1,16 @@
 Script.Load("lua/Additions/DigestCommMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 local networkVars = {}
 AddMixinNetworkVars(DigestCommMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
 
 local origcreate = Crag.OnCreate
 function Crag:OnCreate()
    origcreate(self)
     InitMixin(self, DigestCommMixin)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
  end
  local originit = Crag.OnInitialized
 function Crag:OnInitialized()
@@ -114,17 +114,6 @@ function Crag:TryHeal(target)
         return 0
     end
    
-end
--------- Hmmm?? does this even do anything? a 10% dmg discount from minigun? I have no idea.
-function Crag:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
-
-    if hitPoint ~= nil and doer ~= nil and doer:isa("Minigun") then
-    
-        damageTable.damage = damageTable.damage * 0.9
-        --self:TriggerEffects("boneshield_blocked", {effecthostcoords = Coords.GetTranslation(hitPoint)} )
-        
-    end
-
 end
 
 

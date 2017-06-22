@@ -1,7 +1,7 @@
 function Armory:GetMinRangeAC()
 return ArmoryAutoCCMR 
 end
-
+/*
 local origlist = Armory.GetItemList
 function Armory:GetItemList(forPlayer)
     
@@ -26,6 +26,10 @@ function AdvancedArmory:GetItemList(forPlayer)
 return Armory.GetItemList(self, forPlayer)
 
 end
+
+*/
+
+
 local origbuttons = Armory.GetTechButtons
 function Armory:GetTechButtons(techId)
 
@@ -88,6 +92,8 @@ function Armory:GetShouldResupplyPlayer(player)
     
 end
 
+/*
+
 function Armory:ResupplyPlayer(player)
     
     local resuppliedPlayer = false
@@ -104,13 +110,7 @@ function Armory:ResupplyPlayer(player)
            
         self:TriggerEffects("armory_health", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
         resuppliedPlayer = true
-        /*
-        if HasMixin(player, "ParasiteAble") and player:GetIsParasited() then
-        
-            player:RemoveParasite()
-            
-        end
-        */
+
         
         if player:isa("Marine") and player.poisoned then
         
@@ -151,18 +151,19 @@ function Armory:ResupplyPlayer(player)
     end
 end
 
+*/
 
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 
 local networkVars = {}
 
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars)
     local origcreate = Armory.OnCreate
     function Armory:OnCreate()
         origcreate(self)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
     end
     
     local originit = Armory.OnInitialized

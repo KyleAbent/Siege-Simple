@@ -1,11 +1,11 @@
 Script.Load("lua/Additions/Convars.lua")
-Script.Load("lua/Additions/EggBeacon.lua")
-Script.Load("lua/Additions/StructureBeacon.lua")
+--Script.Load("lua/Additions/EggBeacon.lua")
+--Script.Load("lua/Additions/StructureBeacon.lua")
 Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
-Script.Load("lua/Additions/OnoGrow.lua")
-Script.Load("lua/Additions/Onocide.lua")
+--Script.Load("lua/Additions/OnoGrow.lua")
+--Script.Load("lua/Additions/Onocide.lua")
 Script.Load("lua/Additions/CragUmbra.lua")
 Script.Load("lua/Additions/CommVortex.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
@@ -15,7 +15,7 @@ Script.Load("lua/Additions/LayStructures.lua")
 Script.Load("lua/Additions/ExoWelder.lua")
 Script.Load("lua/Additions/ExoFlamer.lua")
 --Script.Load("lua/Additions/ConcGrenade.lua")
-Script.Load("lua/Additions/Wall.lua")
+--Script.Load("lua/Additions/Wall.lua")
 Script.Load("lua/Additions/DigestCommMixin.lua")
 
 
@@ -44,6 +44,7 @@ end
 
 end
 
+/*
 function GetCheckEggBeacon(techId, origin, normal, commander)
     local num = 0
 
@@ -75,9 +76,21 @@ function GetCheckStructureBeacon(techId, origin, normal, commander)
     return num < 1 and not GetWhereIsInSiege(origin)
     
 end
+*/
 
 local kSiege_TechData =
 {   
+
+
+
+
+   { [kTechDataId] = kTechId.ContamEggBeacon, 
+[kTechDataBioMass] = 9, 
+[kTechDataCostKey] = 30, 
+[kTechDataResearchTimeKey] = 60, 
+[kTechDataDisplayName] = "Contamination Egg Beacon", 
+[kTechDataTooltipInfo] = "Contamnination will move or creates eggs nearby, acting as egg beacon."},
+
 
    { [kTechDataId] = kTechId.WhipStealFT, 
 [kTechDataBioMass] = 9, 
@@ -159,6 +172,9 @@ local kSiege_TechData =
        [kTechDataCooldown] = 1,
         [kTechDataTooltipInfo] =  "Change Frequencies"},
 
+
+
+        /*
              { [kTechDataId] = kTechId.RegenArmor,
         [kTechDataCostKey] = kNanoArmorCost,
         [kTechDataDisplayName] = "Nano (Regen) Armor", 
@@ -206,20 +222,21 @@ local kSiege_TechData =
 [kTechDataDisplayName] = "ElectrifyStructure", 
 [kTechDataTooltipInfo] =  "ElectrifyStructure 2"},
 
-/*
+
              { [kTechDataId] = kTechId.ConcGrenade,
         [kTechDataCostKey] = 5,
         [kTechDataDisplayName] = "Conc Grenade", 
         [kTechDataMapName] = "ConcGrenadeThrower",         
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Team Fortress Classics"},
-      */
+
              { [kTechDataId] = kTechId.JumpPack,
         [kTechDataCostKey] = kJumpPackCost,
         [kTechDataDisplayName] = "Jump Pack: Press DUCK + Jump at the same time.. Does not work with jetpack.", 
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Press DUCK + Jump at the same time.. Does not work with jetpack. "},
-
+         */
+         
      
          { [kTechDataId] = kTechId.DualWelderExosuit,    
  [kTechIDShowEnables] = false,     
@@ -240,7 +257,8 @@ local kSiege_TechData =
  [kTechDataTooltipInfo] = "Dual Welders yo", 
 [kTechDataSpawnHeightOffset] = kCommanderEquipmentDropSpawnHeight},
 
-
+ /*
+  
   { [kTechDataId] = kTechId.LayStructures,   
   [kTechDataMaxHealth] = kMarineWeaponHealth,  
 [kTechDataMapName] = LayStructures.kMapName,         
@@ -248,6 +266,8 @@ local kSiege_TechData =
     [kTechDataModel] = LayStructures.kModelName,
  --[kTechDataDamageType] = kWelderDamageType,
  [kTechDataCostKey] = kWelderCost  },
+  
+  */
         /*
                 { [kTechDataId] = kTechId.DamageResistance, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
@@ -257,6 +277,8 @@ local kSiege_TechData =
      [kTechDataTooltipInfo] = "5% damage resistance", },
      */
 
+
+/*
                 { [kTechDataId] = kTechId.ThickenedSkin, 
        [kTechDataCategory] = kTechId.ShiftHiveTwo,  
         [kTechDataDisplayName] = "Thickened Skin", 
@@ -271,6 +293,7 @@ local kSiege_TechData =
       [kTechDataCostKey] = kHungerCost, 
      [kTechDataTooltipInfo] = "10% health / energy gain, and effects of Enzyme on player kill (if gorge then structures not players) ", },
    
+   */
 
 
 
@@ -281,7 +304,8 @@ local kSiege_TechData =
         [kTechDataHotkey] = Move.Z, 
       [kTechDataTooltipInfo] = "Mimics the NS1/HL1 JumpPack (With Attempted Balance Modifications WIP) - Press DUCK + Jump @ the same time to mindfuck the alien team."},
 */
-
+          
+          /*
             { [kTechDataId] = kTechId.Rebirth, 
        [kTechDataCategory] = kTechId.CragHiveTwo,  
         [kTechDataDisplayName] = "Rebirth", 
@@ -296,6 +320,8 @@ local kSiege_TechData =
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
      [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value less than or equal to 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
+         */
+
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 
@@ -310,7 +336,7 @@ local kSiege_TechData =
 [kStructureAttachId] = { kTechId.RoboticsFactory, kTechId.ARCRoboticsFactory },
 [kStructureAttachRequiresPower] = true },
 
-
+ /*
  { [kTechDataId] = kTechId.Wall,  
  [kTechDataMapName] = Wall.kMapName, 
 [kTechDataDisplayName] = "Wall", 
@@ -325,6 +351,9 @@ local kSiege_TechData =
  [kTechDataSpecifyOrientation] = true,
   [kTechDataPointValue] = 3,
 [kTechDataSupply] = 0},
+*/
+
+
 
  { [kTechDataId] = kTechId.AcidRocket,        
   [kTechDataCategory] = kTechId.Fade,   
@@ -344,6 +373,8 @@ local kSiege_TechData =
      [kTechDataDisplayName] = "LerkBileBomb",
  [kTechDataTooltipInfo] = "Derp"},
 
+
+          /*
                  { [kTechDataId] = kTechId.CommVortex, 
         [kTechDataMapName] = CommVortex.kMapName, 
        [kTechDataAllowStacking] = true,
@@ -354,7 +385,9 @@ local kSiege_TechData =
         [kTechDataCostKey] = kCommVortexCost, 
      [kTechDataCooldown] = kCommVortexCoolDown, 
       [kTechDataTooltipInfo] =  "Temporarily places marine structures/macs/arcs in another dimension rendering them unable to function correctly. "},
-
+        */
+        
+        
             { [kTechDataId] = kTechId.CragUmbra,
          [kTechDataDisplayName] = "UMBRA",
       --[kVisualRange] = Crag.kHealRadius, 
@@ -362,14 +395,14 @@ local kSiege_TechData =
      [kTechDataCostKey] = kCragUmbraCost,  
 [kTechDataTooltipInfo] = "CRAG_UMBRA_TOOLTIP"},
 
-
+       /*
             { [kTechDataId] = kTechId.WhipExplode,
          [kTechDataDisplayName] = "WhipExplode",
       --[kVisualRange] = Crag.kHealRadius, 
      [kTechDataCooldown] = 16, 
      [kTechDataCostKey] = 7,  
 [kTechDataTooltipInfo] = "WhipExplode"},
-
+     */
 
 
             { [kTechDataId] = kTechId.TunnelTeleport,
@@ -413,6 +446,9 @@ local kSiege_TechData =
 [kTechDataRequiresInfestation] = false,
 [kTechDataTooltipInfo] =  "GORGE_TUNNEL_TOOLTIP"}, 
 
+/*
+
+
    { [kTechDataId] = kTechId.OnoGrow,        
   [kTechDataCategory] = kTechId.Onos,   
      [kTechDataMapName] = OnoGrow.kMapName,  
@@ -431,6 +467,8 @@ local kSiege_TechData =
      [kTechDataDisplayName] = "Onicide",
 [kTechDataTooltipInfo] = "wip"},
 
+
+*/
 
 --AdvBeacTech
 /*
@@ -451,7 +489,7 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] = "Revives Dead Players as well. Powers off Observatory for a short duration after beaconing."},
 								
 								
-								
+							/*	
 				        { [kTechDataId] = kTechId.EggBeacon, 
         [kTechDataCooldown] = kEggBeaconCoolDown, 
          [kTechDataTooltipInfo] = "Eggs Spawn approximately at the placed Egg Beacon. Be careful as infestation is required.", 
@@ -481,7 +519,7 @@ local kSiege_TechData =
             [kTechDataBuildMethodFailedMessage] = "1 at a time not in siege",
          [kVisualRange] = 8,
 [kTechDataMaxHealth] = kStructureBeaconHealth, [kTechDataMaxArmor] = kStructureBeaconArmor},
-
+               
 
 				
 
@@ -508,7 +546,7 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] = "This bad boy right here has the potential to blind anyone standing in its way.. or just.. you know.. help brighten the mood wherever it's placed.",
  [kTechDataObstacleRadius] = 0.25},
  
-  
+  */
                   --Thanks dragon ns2c
        { [kTechDataId] = kTechId.PrimalScream,  
          [kTechDataCategory] = kTechId.Lerk,

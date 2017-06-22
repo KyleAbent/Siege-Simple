@@ -28,7 +28,7 @@ Script.Load("lua/GhostStructureMixin.lua")
 --Script.Load("lua/SupplyUserMixin.lua")
 Script.Load("lua/ParasiteMixin.lua")
 Script.Load("lua/HiveVisionMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 
 class 'BackupLight' (ScriptActor)
 
@@ -64,7 +64,7 @@ AddMixinNetworkVars(GhostStructureMixin, networkVars)
 AddMixinNetworkVars(SelectableMixin, networkVars)
 AddMixinNetworkVars(ParasiteMixin, networkVars)
 AddMixinNetworkVars(HiveVisionMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 
 
 function BackupLight:OnCreate()
@@ -112,7 +112,7 @@ function BackupLight:OnInitialized()
     InitMixin(self, WeldableMixin)
     InitMixin(self, NanoShieldMixin)
     InitMixin(self, HiveVisionMixin)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
     
     self:SetModel(BackupLight.kModelName, BackupLight.kAnimationGraph)
     

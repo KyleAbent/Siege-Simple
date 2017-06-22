@@ -14,6 +14,8 @@ local function HasUpgrade(callingEntity, techId)
 
 end
 
+/*
+
 function GetHasRedemptionUpgrade(callingEntity)
     return HasUpgrade(callingEntity, kTechId.Redemption) //or callingEntity.RTDRedemption
 end
@@ -32,3 +34,5 @@ end
 function GetHasHungerUpgrade(callingEntity)
     return HasUpgrade(callingEntity, kTechId.Hunger) //or callingEntity.RTDRedemption
 end
+
+*/

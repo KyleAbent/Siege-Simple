@@ -125,6 +125,8 @@ end
 
 OldBurnSporesAndUmbra = Shine.Hook.ReplaceLocalFunction( Flamethrower.FirePrimary, "BurnSporesAndUmbra", NewBurnSporesAndUmbra )
 
+/*
+
 local OldUpdGestation
 
 local function NewHpdateGestation(self)
@@ -258,6 +260,10 @@ end
 
 OldUpdGestation = Shine.Hook.ReplaceLocalFunction( Embryo.OnInitialized, "UpdateGestation", NewHpdateGestation )
 
+
+*/
+
+
 local OldConfused
 
 local function NewConfused(self)
@@ -336,6 +342,8 @@ local function NotGetIsWeldedByOtherMAC(self)
  return false
 end
 
+/*
+
 local OldUpdateHealing 
 
 OldUpdateHealing = Shine.Hook.ReplaceLocalFunction( AlienSpectator.OnInitialized, "UpdateHealing", UpdateCertainHealing )
@@ -364,6 +372,10 @@ local function UpdateCertainHealing(self)
     end
     
 end
+
+*/
+
+
 local function AddSuddenDeathTimer(who)
       local NowToSuddendeath = (kTimeAfterSiegeOpeningToEnableSuddenDeath) - (Shared.GetTime() - GetSandCastle():GetSDTimer() )
       local SuddenDeathLength =  math.ceil( Shared.GetTime() +  NowToSuddendeath - Shared.GetTime() )

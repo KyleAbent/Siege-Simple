@@ -16,8 +16,8 @@ function MarineTeam:InitTechTree()
     orig_MarineTeam_InitTechTree(self)
     self.techTree.SetComplete = orig_TechTree_SetComplete
     
-    self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
-     self.techTree:AddBuildNode(kTechId.Wall,     kTechId.None, kTechId.None)
+   -- self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
+   --  self.techTree:AddBuildNode(kTechId.Wall,     kTechId.None, kTechId.None)
     self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
     -- self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
       self.techTree:AddResearchNode(kTechId.FlamethrowerRangeTech,          kTechId.None) 
@@ -32,24 +32,24 @@ function MarineTeam:InitTechTree()
     self.techTree:AddActivation(kTechId.MacSpawnOff,                kTechId.RoboticsFactory,          kTechId.None)
     self.techTree:AddActivation(kTechId.ArcSpawnOn,                kTechId.ARCRoboticsFactory,          kTechId.None)
     self.techTree:AddActivation(kTechId.ArcSpawnOff, kTechId.ARCRoboticsFactory, kTechId.None)
-    self.techTree:AddBuildNode(kTechId.BackupLight,            kTechId.None,                kTechId.None)
+   -- self.techTree:AddBuildNode(kTechId.BackupLight,            kTechId.None,                kTechId.None)
     self.techTree:AddBuyNode(kTechId.DualWelderExosuit, kTechId.ExosuitTech, kTechId.None)
     self.techTree:AddBuyNode(kTechId.DualFlamerExosuit, kTechId.ExosuitTech, kTechId.None)
-    self.techTree:AddBuyNode(kTechId.HeavyRifle, kTechId.HeavyRifleTech, kTechId.None)
-   self.techTree:AddTargetedBuyNode(kTechId.JumpPack, kTechId.JetpackTech, kTechId.None)
+   -- self.techTree:AddBuyNode(kTechId.HeavyRifle, kTechId.HeavyRifleTech, kTechId.None)
+   --self.techTree:AddTargetedBuyNode(kTechId.JumpPack, kTechId.JetpackTech, kTechId.None)
  -- self.techTree:AddTargetedBuyNode(kTechId.ConcGrenade, kTechId.GrenadeTech, kTechId.None)
-      self.techTree:AddUpgradeNode(kTechId.ElectrifyStructure,  kTechId.None)
+   --   self.techTree:AddUpgradeNode(kTechId.ElectrifyStructure,  kTechId.None)
       
        self.techTree:AddActivation(kTechId.SiegeBeacon,           kTechId.Observatory)  
        
 
     
-       self.techTree:AddTargetedBuyNode(kTechId.Resupply,            kTechId.None,         kTechId.None) 
-       self.techTree:AddTargetedBuyNode(kTechId.LightArmor,            kTechId.None,         kTechId.None) 
-       self.techTree:AddTargetedBuyNode(kTechId.HeavyArmor,            kTechId.None,         kTechId.None) 
-       self.techTree:AddTargetedBuyNode(kTechId.FireBullets,            kTechId.None,         kTechId.None) 
-       self.techTree:AddTargetedBuyNode(kTechId.RegenArmor,            kTechId.None,         kTechId.None) 
-       self.techTree:AddTargetedBuyNode(kTechId.WallWalk,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.Resupply,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.LightArmor,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.HeavyArmor,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.FireBullets,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.RegenArmor,            kTechId.None,         kTechId.None) 
+     --  self.techTree:AddTargetedBuyNode(kTechId.WallWalk,            kTechId.None,         kTechId.None) 
        
        
        

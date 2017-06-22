@@ -1,17 +1,17 @@
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 Script.Load("lua/Additions/LevelsMixin.lua")
 
 Hydra.kSpikeSpeed = 80
 Hydra.kSpread = Math.Radians(11)
 local networkVars = {}
 
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars) --would explain it
 
 local originit = Hydra.OnInitialized
 function Hydra:OnInitialized()
 originit(self)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
         InitMixin(self, LevelsMixin)
 if Server then
 

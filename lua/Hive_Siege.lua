@@ -26,7 +26,11 @@ local buttons = origbuttons(self, techId)
         buttons[2] = kTechId.ResearchBioMassThree
     end
     
+     if GetHasTech(self, kTechId.CragHive) then
+        buttons[5] = kTechId.ContamEggBeacon
+     end 
      buttons[3] = kTechId.WhipStealFT
+     buttons[8] = kTechId.CommTunnel
     return buttons
 end
 
@@ -37,12 +41,14 @@ local orig_Hive_OnConstructionComplete = Hive.OnConstructionComplete
 function Hive:OnConstructionComplete()
 
 
+ --  if GetImaginator():GetAlienEnabled() then --Alien Researcher
+   self.bioMassLevel = 4
    if GetImaginator():GetAlienEnabled() then
-   self.bioMassLevel = 3
-   UpdateTypeOfHive(self)
-   else
-   self.bioMassLevel = 1
+    UpdateTypeOfHive(self)
     end
+ --  else
+ --  self.bioMassLevel = 1
+  --  end
    
 end
 
@@ -68,6 +74,8 @@ function Hive:OnKill(attacker, doer, point, direction)
 UpdateAliensWeaponsManually()
 end
 */
+
+/*
 local function IfBioMassThenAdjustHp(self)
 
 
@@ -79,6 +87,8 @@ local function IfBioMassThenAdjustHp(self)
 
 end
 
+*/
+
 local orig_Hive_OnResearchComplete = Hive.OnResearchComplete
 function Hive:OnResearchComplete(researchId)
 --Print("HiveOnResearchComplete")
@@ -88,7 +98,7 @@ function Hive:OnResearchComplete(researchId)
       --  Print("Started Callback Hive CheckForDoubleUpG")
      end   
    --for now just updtate alien hp on all research completes b/c i dont feel like filtering the biomass -.-
-       IfBioMassThenAdjustHp(self)
+      -- IfBioMassThenAdjustHp(self)
   return orig_Hive_OnResearchComplete(self, researchId) 
 end
 

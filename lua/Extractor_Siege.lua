@@ -1,10 +1,10 @@
-Script.Load("lua/ElectrifyMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+--Script.Load("lua/ElectrifyMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 
 local networkVars = {}
 
-AddMixinNetworkVars(ElectrifyMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+--AddMixinNetworkVars(ElectrifyMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 
 local orig = Extractor.OnInitialized
 function Extractor:OnInitialized()
@@ -20,9 +20,9 @@ local table = {}
 
 table = origbuttons(self, techId)
 
-   if not self:GetIsElectrified() then
-  table[2] = kTechId.ElectrifyStructure
-  end
+  -- if not self:GetIsElectrified() then
+  --table[2] = kTechId.ElectrifyStructure
+  --end
  
  return table
 

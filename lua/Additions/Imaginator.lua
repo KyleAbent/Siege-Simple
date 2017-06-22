@@ -91,9 +91,27 @@ local function NotBeingResearched(techId, who)
 end
 local function ResearchEachTechButton(who)
 local techIds = who:GetTechButtons() or {}
+      if who:isa("EvolutionChamber") then
+      
+               techIds = {}
+               table.insert(techIds, kTechId.Charge )
+               table.insert(techIds, kTechId.BileBomb )
+               table.insert(techIds, kTechId.MetabolizeEnergy )
+               table.insert(techIds, kTechId.Leap )
+               table.insert(techIds, kTechId.Spores )
+               table.insert(techIds, kTechId.Umbra )
+               table.insert(techIds, kTechId.MetabolizeHealth )
+               table.insert(techIds, kTechId.BoneShield )
+               table.insert(techIds, kTechId.Stab )
+               table.insert(techIds, kTechId.Stomp )
+               table.insert(techIds, kTechId.Contamination )
+               table.insert(techIds, kTechId.Xenocide )
+               table.insert(techIds, kTechId.SkulkXenoRupture )
+          
+      end
                        for _, techId in ipairs(techIds) do
                      if techId ~= kTechId.None then
-                        if who:GetCanResearch(techId) then
+                        if not GetHasTech(who, techId) and who:GetCanResearch(techId) then
                           local tree = GetTechTree(who:GetTeamNumber())
                          local techNode = tree:GetTechNode(techId)
                           assert(techNode ~= nil)
@@ -192,10 +210,21 @@ function Imaginator:OnUpdate(deltatime)
 
    
          if not self.timeLastResearch or self.timeLastResearch + math.random(4,8) <= Shared.GetTime() then
-         
+               
          local gamestarted = GetGamerules():GetGameState() == kGameState.Started 
-               if gamestarted and self:GetMarineEnabled() then
-                   for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
+               if gamestarted then --and self:GetMarineEnabled() then dsd
+                        local researchables = {}
+         
+                       for _, ent in ientitylist(Shared.GetEntitiesWithClassname("EvolutionChamber")) do
+                       table.insert(researchables, ent)
+                       end
+               
+                     for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
+                      if not researchable:isa("RoboticsFactory") then  table.insert(researchables, researchable) end
+                   end
+                   
+                   for i = 1, #researchables do
+                       local researchable = researchables[i]
                       if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable)  end
                    end
                 end
@@ -1607,7 +1636,7 @@ function Imaginator:HandleIntrepid(who)
 local tospawn = {}
       local  StructureBeacon = #GetEntitiesForTeam( "StructureBeacon", 2 )
       local  EggBeacon = #GetEntitiesForTeam( "EggBeacon", 2 )
-      local CommVortex = #GetEntitiesForTeam( "CommVortex", 2 )
+     -- local CommVortex = #GetEntitiesForTeam( "CommVortex", 2 )
       local BoneWall = #GetEntitiesForTeam( "BoneWall", 2 )
      --local ShadeInk =  #GetEntitiesWithinRange( "ShadeInk", who:GetOrigin(), 18 )
      -- local ARC = #GetEntitiesWithinRange( "ARC", who:GetOrigin(), 18 )
@@ -1638,7 +1667,7 @@ if GetSiegeDoorOpen() and StructureBeacon < 1 and GetHasShiftHive() then table.i
 if EggBeacon < 1 and  GetHasCragHive() then table.insert(tospawn, kTechId.EggBeacon) end
 
 
-if CommVortex < 1 and  GetHasShadeHive() then table.insert(tospawn, kTechId.CommVortex) end
+--if CommVortex < 1 and  GetHasShadeHive() then table.insert(tospawn, kTechId.CommVortex) end
 
 if BoneWall < 1 then table.insert(tospawn, kTechId.BoneWall) end
 

@@ -15,12 +15,12 @@ local kUpgrades = {
     kTechId.Crush,
     kTechId.Carapace,
     kTechId.Regeneration,
-    kTechId.Redemption,
+  --  kTechId.Redemption,
     
-    kTechId.Rebirth,
+  --  kTechId.Rebirth,
         
-    kTechId.Hunger,
-    kTechId.ThickenedSkin,
+  --  kTechId.Hunger,
+  --  kTechId.ThickenedSkin,
     
     kTechId.Vampirism,
     kTechId.Aura,

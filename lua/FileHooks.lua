@@ -24,7 +24,7 @@ ModLoader.SetupFileHook( "lua/EvolutionChamber.lua", "lua/EvolutionChamber_Siege
 
 ModLoader.SetupFileHook( "lua/BuildUtility.lua", "lua/BuildUtility_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Alien/Shockwave.lua", "lua/Weapons/Alien/Shockwave_Siege.lua", "post" )
-ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
+--ModLoader.SetupFileHook( "lua/Weapons/Marine/Shotgun.lua", "lua/Weapons/Marine/Shotgun_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/Rifle.lua", "lua/Weapons/Marine/Rifle_Siege.lua", "post" )
 ModLoader.SetupFileHook( "lua/Weapons/Marine/LayMines.lua", "lua/Weapons/Marine/LayMines_Siege.lua", "post" )
 
@@ -98,7 +98,7 @@ ModLoader.SetupFileHook( "lua/Alien_Upgrade.lua", "lua/Alien_Upgrade_Siege.lua",
 ModLoader.SetupFileHook( "lua/Observatory.lua", "lua/Observatory_Siege.lua", "post" )
 
 
-ModLoader.SetupFileHook( "lua/Weapons/Marine/Flamethrower.lua", "lua/Weapons/Marine/Flamethrower_Siege.lua", "post" )
+--ModLoader.SetupFileHook( "lua/Weapons/Marine/Flamethrower.lua", "lua/Weapons/Marine/Flamethrower_Siege.lua", "post" )
 
 
 ModLoader.SetupFileHook( "lua/Player.lua", "lua/Player_Siege.lua", "post" )

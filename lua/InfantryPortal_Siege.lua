@@ -1,11 +1,11 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 local kHoloMarineMaterialname = PrecacheAsset("cinematics/vfx_materials/marine_ip_spawn.material")
 
 local networkVars = {}
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 
 
 
@@ -13,7 +13,7 @@ AddMixinNetworkVars(SaltMixin, networkVars)
     function InfantryPortal:OnInitialized()
         originit(self)
         InitMixin(self, LevelsMixin)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
     end
         function InfantryPortal:GetMaxLevel()
     return 15

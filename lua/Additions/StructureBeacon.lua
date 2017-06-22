@@ -82,7 +82,7 @@ if Server then
                                 if structure.obstacleId == -1 then structure:AddToMesh() end
                              end
                              structure:Check()
-                             if structure:isa("Whip") then  structure. rooted = true structure:Root() if structure.salty then structure:SetInfestationRadius(1) end end
+                             if structure:isa("Whip") then  structure. rooted = true structure:Root() if structure.sandy then structure:SetInfestationRadius(1) end end
                             if success then return self:GetIsAlive() end
                        end 
                        

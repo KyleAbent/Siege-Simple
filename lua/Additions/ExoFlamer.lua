@@ -316,9 +316,10 @@ local function ApplyConeDamage(self, player)
             --end
             
             if ent.GetEnergy and ent.SetEnergy then
-               Print("Ent energy is %s", ent:GetEnergy())
+             --  Print("Ent energy is %s", ent:GetEnergy())
                 ent:SetEnergy(ent:GetEnergy() - kFlameThrowerEnergyDamage)
-                Print("Ent energy is %s", ent:GetEnergy())
+              --  Print("Ent energy is %s", ent:GetEnergy())
+              --Not working.
             end
             
             if Server and ent:isa("Alien") then

@@ -1,6 +1,8 @@
 --Currently overwritten obv
 
-Script.Load("lua/Additions/CommVortex.lua")
+--Script.Load("lua/Additions/CommVortex.lua")
+
+/*
 
 local gAlienMenuButtons =
 {

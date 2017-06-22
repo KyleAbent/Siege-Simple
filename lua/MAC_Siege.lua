@@ -2,7 +2,7 @@ Script.Load("lua/MAC.lua")
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/ResearchMixin.lua")
 Script.Load("lua/RecycleMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 
 local networkVars = 
 
@@ -15,13 +15,13 @@ MAC.kWeldRate = 1
 
 AddMixinNetworkVars(ResearchMixin, networkVars)
 AddMixinNetworkVars(RecycleMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 local origcreate = MAC.OnCreate
 function MAC:OnCreate()
 origcreate(self)
     InitMixin(self, ResearchMixin)
     InitMixin(self, RecycleMixin)
-        InitMixin(self, SaltMixin)
+        InitMixin(self, SandMixin)
 end
 function MAC:GetIsBuilt()
  return self:GetIsAlive()

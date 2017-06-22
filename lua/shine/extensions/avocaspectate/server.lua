@@ -14,7 +14,7 @@ end
 function Plugin:NotifyGeneric( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Director]",  255, 0, 0, String, Format, ... )
 end
-function Plugin:NotifySalt( Player, String, Format, ... )
+function Plugin:NotifySand( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[Director]",  255, 0, 0, String, Format, ... )
 end
 local function GetPregameView()
@@ -215,29 +215,29 @@ local function FindEntNear(where)
 end
 
 
-local function SaltNearby(self, client)
+local function SandNearby(self, client)
 
 if not GetGamerules():GetGameStarted()  then return end
 
    for _, player in ipairs(GetEntitiesWithinRange("Player", client:GetOrigin(), 4)) do
     local  userid = player:GetClient():GetUserId()
         if player ~= client and userid ~= nil then
-         Shared.ConsoleCommand(string.format("sh_addsalt %s 0.1 false true", userid ) )
-         self:NotifySalt( player, "You have been visited!!!!", true ) 
+         Shared.ConsoleCommand(string.format("sh_addSand %s 0.1 false true", userid ) )
+         self:NotifySand( player, "You have been visited!!!!", true ) 
          end
   
    end
   
 end
-local function SaltChosen(self, client, rank)
+local function SandChosen(self, client, rank)
 
 if not GetGamerules():GetGameStarted()  then return end
 
     local userid = client.GetUserId and client:GetUserId()
         if userid ~= nil then
          local addamt = rank / 10
-         Shared.ConsoleCommand(string.format("sh_addsalt %s %s false true", userid, addamt ) )
-         self:NotifySalt( client:GetControllingPlayer(), "Your rank of score is currently # %s (+ %s Salt)", rank, addamt, true )  
+         Shared.ConsoleCommand(string.format("sh_addSand %s %s false true", userid, addamt ) )
+         self:NotifySand( client:GetControllingPlayer(), "Your rank of score is currently # %s (+ %s Sand)", rank, addamt, true )  
          end
   
   
@@ -286,7 +286,7 @@ local function firstPersonScoreBased(self, client)
     if not topscorer then return end
     if client:GetSpectatorMode() ~= kSpectatorMode.FirstPerson then client:SetSpectatorMode(kSpectatorMode.FirstPerson)  end
     Server.GetOwner(client):SetSpectatingPlayer(topscorer)
-    SaltChosen(self, topscorer, entrant)
+    SandChosen(self, topscorer, entrant)
     self:NotifyGeneric( client, "(First person) VIP is %s, # rank in score is %s", true, topscorer:GetName(), entrant )
 end
  function Plugin:OnChangeView(client, untilNext, betweenLast)

@@ -8,22 +8,25 @@ kPrimalDMGBuff = 1.05
 WhipStealFT = 10
 kWhipStealFTTime = 20
 
-kPrestoSaltMul = 10
-kPresToSaltMultWeapons = 7
-kPresToStructureMult = 8
-kPresToClassesMult = 9
+--kPrestoSandMul = 10
+--kPresToSandMultWeapons = 7
+--kPresToStructureMult = 8
+--kPresToClassesMult = 9
 
 kPresArmoryProtoEquivMult = 1.5
 
 
 kBonewallLifeSpan = 5
 
-gCreditStructureCostPetDrifter = 5
-gCreditStructureCostPerDrifter = 5
+--gCreditStructureCostPetDrifter = 5
+--gCreditStructureCostPerDrifter = 5
 kFadeBlinkSpeedBuff = 1.15
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3
-kSentrysPerRoomSaltComm = 6
+
+kSentrysPerRoom = 6
+
+/*
 kWallWalkMarineCost = 10
 kWallCommLimitPerRoom = 5
 --Credits Start
@@ -121,8 +124,8 @@ gCreditAbilityDelayContamination = 10
 
 --Alien Structures Credits Cost
 gCreditStructureCostHydra = 6
-gCreditStructureCostSaltyEgg = 5
-gCreditStructureLimitSaltyEgg = 4
+gCreditStructureCostSandyEgg = 5
+gCreditStructureLimitSandyEgg = 4
 gCreditStructureCostShade = 13
 gCreditStructureCostCrag = 13
 gCreditStructureCostWhip = 13
@@ -134,7 +137,7 @@ gCreditStructureLimitHarvesterExtractor = 1
 
 --Alien Structures Credits Delay After Purchasing
 gCreditStructureDelayHydra = 1
-gCreditStructureDelaySaltyEgg = 10
+gCreditStructureDelaySandyEgg = 10
 gCreditStructureDelayShade = 5
 gCreditStructureDelayCrag = 5
 gCreditStructureDelayWhip = 5
@@ -153,9 +156,12 @@ gCreditAbilityDelayScan = 4
 gCreditAbilityCostMedpack = 2
 gCreditAbilityDelayMedpack = 4
 -----------------------------------
-
+*/
 
 kTimeAfterSiegeOpeningToEnableSuddenDeath = 900 --900
+
+/*
+
 kResupplyCost = 5
 kHeavyArmorCost = 5
 kFireBulletsCost = 5
@@ -164,6 +170,10 @@ kNanoArmorCost = 4
 
 kJumpPackCost = 10
 ArmoryAutoCCMR =  16
+
+*/
+
+
 PGAutoCCMRMax = 54
 PGAutoCCMRMin = 32
 ObsAutoCCMR = kScanRadius
@@ -217,6 +227,9 @@ kDoorMoveUpVect = 40
 kAdvancedBeaconCost = 13
 kEggBeaconCost = 10
 kEggBeaconCoolDown = 12
+
+/*
+
 kStructureBeaconCoolDown = 12
 kStructureBeaconCost = 10
 
@@ -224,6 +237,8 @@ kEggBeaconHealth = 472
 kEggBeaconArmor = 122
 kStructureBeaconHealth = 675
 kStructureBeaconArmor = 175 
+*/
+
 
 kPrimaryTimer = 0
 kSideTimer = 0 -- b/c maps still use this
@@ -234,14 +249,14 @@ kPrimalScreamROF = 1.25
 
 kBatteryPowerRange = 4
 
-kInfantryPortalMaxLevel = 75
-kDefaultLvl = 50
-kDefaultAddXp = 1
-kArmoryAddXp = 0.5
-kArmoryLvl = 30
-kInfantryPortalXPGain = 1
-kCommSentryPerRoom = 6
-kMacMaxLevel = 50
+kInfantryPortalMaxLevel = 0
+kDefaultLvl = 0
+kDefaultAddXp = 0
+kArmoryAddXp = 0
+kArmoryLvl = 0
+kInfantryPortalXPGain = 0
+kCommSentryPerRoom = 0
+kMacMaxLevel = 0
 
 
 

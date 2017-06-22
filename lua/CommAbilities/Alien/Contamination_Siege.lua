@@ -94,6 +94,8 @@ function Contamination:OnInitialized()
         self:SetCoords( coords )
         
         self:AddTimedCallback( TimeUp, GetLifeSpan(self) )
+         self:DoYourBusiness()
+       self:AddTimedCallback(Contamination.DoYourBusiness, GetLifeSpan(self) / 4 )
         if not GetWhereIsInSiege(self:GetOrigin()) then self:AddTimedCallback( SpewBile, 1 ) end
         
     elseif Client then
@@ -103,6 +105,43 @@ function Contamination:OnInitialized()
         self.infestationDecal = CreateSimpleInfestationDecal(1, coords)
     
     end
+
+end
+
+if Server then
+
+function Contamination:DoYourBusiness()
+
+   -- Print("DoYourBusiness")
+      if not self:GetIsAlive() or not GetHasTech(self, kTechId.ContamEggBeacon ) then return false end
+         local egg = GetEntitiesForTeam( "Egg", 2 )
+         local count = table.count(egg) or 0
+      for i = 1, #egg do
+       local actualegg = egg[i]
+       local distance = self:GetDistance(actualegg)
+       if distance >=8 then
+           if HasMixin(actualegg, "Obstacle") then  actualegg:RemoveFromMesh()end
+           actualegg:SetOrigin(FindFreeSpace(self:GetOrigin(), 1, 8))
+           actualegg:SetHive(self)
+              if HasMixin(actualegg, "Obstacle") then
+                 if actualegg.obstacleId == -1 then actualegg:AddToMesh() end
+              end
+                             
+           return self:GetIsAlive()
+       end
+      
+      end
+    local spawnpoint = FindFreeSpace(self:GetOrigin(), .5, 7, true)
+    if spawnpoint and count < 16 then
+     local eggy = CreateEntity(Egg.kMapName, spawnpoint, 2)
+    --        egg:AddTimedCallback(function()  DestroyEntity(egg) end, 30)
+            eggy:SetHive(self)
+    end
+   
+    return self:GetIsAlive()
+end
+
+
 
 end
 

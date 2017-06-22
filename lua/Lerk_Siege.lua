@@ -26,6 +26,7 @@ end
 
 end
 
+/*
 function Lerk:OnAdjustModelCoords(modelCoords)
     local scale = .75
     local coords = modelCoords
@@ -36,9 +37,12 @@ function Lerk:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-function Lerk:GetBallFlagAttatchPoint(player)
-       return kBallFlagAttachPoint
-end
+*/
+
+
+
+/*
+
 function Lerk:GetRebirthLength()
 return 4
 end
@@ -52,3 +56,4 @@ function Lerk:GetMaxSpeed(possible)
   --return speed * 1.10
   return not self:GetIsOnFire() and speed * 1.10 or speed
 end
+*/

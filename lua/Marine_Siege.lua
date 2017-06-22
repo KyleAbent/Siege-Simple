@@ -1,4 +1,4 @@
-
+/*
 local networkVars =
 {
    hasjumppack = "private boolean",
@@ -37,6 +37,9 @@ function Marine:OnInitialized()
 
 end
 
+*/
+
+
 local origcreate = Marine.OnCreate
 function Marine:OnCreate()
   origcreate(self)
@@ -47,6 +50,9 @@ function Marine:OnCreate()
            then self:Kill()  
             end
         end
+        
+        /*
+        
         self.hasjumppack  = false
          self.lastjump = 0
          
@@ -56,7 +62,11 @@ function Marine:OnCreate()
     self.timeLastWallJump = 0
        InitMixin(self, WallMovementMixin)
      self.lightarmor = false
+     
+     */
 end
+
+/*
 
 function Marine:GetCanJump()
     local canWallJump = self:GetCanWallJump()
@@ -212,6 +222,9 @@ function Marine:GetCanStep()
     return not self:GetIsWallWalking()
 end
 
+
+*/
+
 function Marine:OnLocationChange(locationName)
  local open = GetSiegeDoorOpen()
  //Print("siege door is open %s", open)
@@ -221,6 +234,8 @@ function Marine:OnLocationChange(locationName)
             end
         end
 end
+
+/*
 
 
 function Marine:GetHasLayStructure()
@@ -421,6 +436,9 @@ function Marine:TriggerDropPack(position, techId)
 
 end
 
+*/
+
+/*
 
 local origdata = Marine.CopyPlayerDataFrom
 
@@ -436,19 +454,17 @@ self.nanoarmor = player.nanoarmor
 self.lightarmor = player.lightarmor
 --moonboots
 end
-    /*
-     if player.Glowing then
-        local Glowing = player.Glowing
-        local Color = Clamp(player.Color, 1, kNumberofGlows)
-        local duration =  player.timeofStartGlow - Shared.GetTime()
 
-        if Glowing then
-        self:AddTimedCallback(function() self:GlowColor(Color, duration )  return false end, 2)      
-        end
-      end
-     */   
+
 end
 
+*/
+
+ 
+
+
+
+/*
 
 
 local origcweapons = Marine.InitWeapons
@@ -477,6 +493,10 @@ function Marine:GiveLayStructure(techid, mapname)
    --  self:TellMarine(self)
   -- end
 end
+
+
+*/
+
 
 function Marine:GetWeaponsToStore()
 local toReturn = {}
@@ -624,6 +644,7 @@ function Marine:AttemptToBuy(techIds)
 
   local techId = techIds[1]
   
+           /*
                if techId == kTechId.JumpPack then
               --  StartSoundEffectForPlayer(Marine.activatedsound, self)
             //    self:AddResources(-GetCostForTech(techId))
@@ -653,7 +674,7 @@ function Marine:AttemptToBuy(techIds)
                  self.heavyarmor = false
                  return true
                 end
-                
+            */    
     local hostStructure = GetHostStructureFor(self, techId)
 
     if hostStructure then
@@ -672,7 +693,7 @@ function Marine:AttemptToBuy(techIds)
               if kIsExoTechId[techId] then
                 BuyExo(self, techId)    
                else
-                if hostStructure:isa("Armory") then self:AddResources(-GetCostForTech(techId)) end
+             --   if hostStructure:isa("Armory") then self:AddResources(-GetCostForTech(techId)) end
                 origattemptbuy(self, techIds)
             end
        end
@@ -680,6 +701,8 @@ function Marine:AttemptToBuy(techIds)
     
 
 end
+
+/*
     function Marine:OnDamageDone(doer, target)
          -- Print(" Marine OnDamageDone 1")
         if self:GetHasFireBullets() and doer:GetParent() == self then
@@ -692,7 +715,10 @@ end
         end
         
     end
-    
+  */
+  
+  /*
+  
 elseif Client then
 
 
@@ -736,6 +762,9 @@ return
 
 end
 
-end -- client
+*/
+
+
+--end -- client
 
 Shared.LinkClassToMap("Marine", Marine.kMapName, networkVars)

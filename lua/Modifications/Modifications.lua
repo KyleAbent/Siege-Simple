@@ -1,5 +1,5 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
-
+/*
 local origdamgebytype = GetDamageByType
 function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, weapon)
     
@@ -16,7 +16,7 @@ function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, w
     end 
         return origdamgebytype(target, attacker, doer, damage, damageType, hitPoint, weapon)
 end
-
+*/
 function ConstructMixin:OnProcessMove(input)
     Log("%s: Called OnProcessMove???", self:GetClassName())
 end
@@ -241,6 +241,9 @@ if Server then
     function GetCheckNotSiege(techId, origin, normal, commander)
          return not GetWhereIsInSiege(origin)
   end
+  
+  /*
+  
   function GetCheckWallLimit(techId, origin, normal, commander)
     local location = GetLocationForPoint(origin)
    -- local locationName = location and location:GetName() or nil
@@ -262,6 +265,9 @@ if Server then
     end
     return validRoom and numInRoom < kWallCommLimitPerRoom
 end
+*/
+
+
 function GetCheckCommandStationLimit(techId, origin, normal, commander)
   if GetSandCastle():GetSDBoolean() then return false end
     local num = 0
@@ -310,7 +316,7 @@ SetCachedTechData(kTechId.CommandStation, kTechDataAttachOptional, true)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataBuildRequiresMethod, GetCheckCommandStationLimit)
 
-SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
+--SetCachedTechData(kTechId.Wall, kTechDataBuildRequiresMethod, GetCheckWallLimit)
 
 SetCachedTechData(kTechId.CommandStation, kTechDataIgnorePathingMesh, false)
 
@@ -350,7 +356,7 @@ function GetCheckSentryLimit(techId, origin, normal, commander)
         
     end
     
-    return validRoom and numInRoom < kSentrysPerRoomSaltComm
+    return validRoom and numInRoom < kSentrysPerRoom
     
 end
 function DeniedBitch()

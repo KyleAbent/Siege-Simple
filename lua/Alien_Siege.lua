@@ -25,11 +25,11 @@ end
 local orig_Alien_OnInitialized = Alien.OnInitialized
 function Alien:OnInitialized()
     orig_Alien_OnInitialized(self)
-     if not self:isa("Embryo") then
-      self:AddTimedCallback(Alien.UpdateHealthAmountManual, .5) 
-      self:AddTimedCallback(Alien.UpdateArmorAmountManual, .5) 
-   end
-     self:AddTimedCallback(Alien.CheckRedemptionTimer, .5) 
+  --   if not self:isa("Embryo") then
+  --    self:AddTimedCallback(Alien.UpdateHealthAmountManual, .5) 
+  --    self:AddTimedCallback(Alien.UpdateArmorAmountManual, .5) 
+  -- end
+    -- self:AddTimedCallback(Alien.CheckRedemptionTimer, .5) 
 
 end
 local function CheckPrimalScream(self)
@@ -93,6 +93,7 @@ function Alien:CheckRedemptionTimer()
        end
        return false
 end
+/*
 function Alien:GetRebirthLength()
 return 0
 end
@@ -158,6 +159,8 @@ return
 --why onupdate?
 
 end
+
+
 if Server then
 
 function Alien:CreditBuy(techId)
@@ -174,15 +177,21 @@ function Alien:CreditBuy(techId)
         self:AddResources(cost)
 end
 
+end
+
+*/
+
+
+
+if Server then
+
+
 function Alien:RefreshTechsManually()
         UpdateAvailability(self, self:GetTierOneTechId(), self:GetTierTwoTechId(), self:GetTierThreeTechId(), self:GetTierFourTechId(), self:GetTierFiveTechId() )
 end
  
-
-end
-
-if Server then
-
+  
+  /*
 function Alien:RedemptionTimer()
            local threshold =   math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax)  / 100
               --Print("threshold is %s", threshold)
@@ -215,8 +224,13 @@ function Alien:TeleportToHive(usedhive)
 //               Shared.Message("LOG - %s SuccessFully Redeemed", self:GetClient():GetControllingPlayer():GetUserId() )
                 success = true
     end
-
+   
 end
+
+ */
+ 
+/*
+
 function Alien:TriggerRebirth()
 
 
@@ -361,6 +375,9 @@ function Alien:RedemAlienToHive()
      end
         return false
 end
+
+
+
 function Alien:CheckGlow(Glowing, color, duration)
      
 
@@ -377,20 +394,17 @@ function Alien:CopyPlayerDataFrom(player)
       self:TriggerRebirthCountDown(self:GetClient():GetControllingPlayer())
      end
      self.primaled = player.primaled
-     /*
-     if player.Glowing then
-        local Glowing = player.Glowing
-        local Color = Clamp(player.Color, 1, kNumberofGlows)
-        local duration =  player.timeofStartGlow - Shared.GetTime()
-       self:CheckGlow(Glowing, Color, duration)
-     end
-     */
+
 
 
 end
 
 
+
+
 end //server
+
+
 
 function Alien:GetHasLayStructure()
         local weapon = self:GetWeaponInHUDSlot(5)
@@ -411,18 +425,10 @@ function Alien:GiveLayStructure(techid, mapname)
    --  self:TellMarine(self)
   -- end
 end
+
 /*
-    function Alien:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 
-    if hitPoint ~= nil and GetHasDamageResistanceUpgrade(self) then
-      --  Print("Derp 1")
-       local damageReduct = 0.95
-        damageTable.damage = damageTable.damage * damageReduct
-        
-    end
 
-end
-*/
 if Client then
 
 local orig_Alien_UpdateClientEffects = Alien.UpdateClientEffects
@@ -562,6 +568,8 @@ function Alien:UpdateOnocideEffect(isLocal)
     end 
 
 end
+*/
+
 
 function Alien:UpdatePrimalEffect(isLocal)
     if self.primaledClient ~= self.primaled then

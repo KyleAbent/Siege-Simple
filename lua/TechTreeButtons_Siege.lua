@@ -1,7 +1,5 @@
 local kTechIdToMaterialOffset = {}
 kTechIdToMaterialOffset[kTechId.MacSpawnOn] = 1
-kTechIdToMaterialOffset[kTechId.Rebirth] = 1
-kTechIdToMaterialOffset[kTechId.Redemption] = 1
 
 function GetMaterialXYOffsetderp(techId)
   --Print("GetMaterialXYOffset")

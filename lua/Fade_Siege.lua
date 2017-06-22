@@ -22,15 +22,17 @@ InitMixin(self, PredictedProjectileShooterMixin)
 InitMixin(self, PhaseGateUserMixin)
 
 end
+
+/*
+
+
 function Fade:GetRebirthLength()
 return 4
 end
 function Fade:GetRedemptionCoolDown()
 return 20
 end
-function Fade:GetBallFlagAttatchPoint(player)
-       return kBallFlagAttachPoint
-end
+
 
 function Fade:GetMaxSpeed(possible)
      local speed = origspeed(self)
@@ -72,6 +74,7 @@ function Fade:ModifyVelocity(input, velocity, deltaTime)
 
 end
 
+*/
 
 if Server then
 

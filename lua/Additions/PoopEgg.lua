@@ -1,27 +1,27 @@
 Script.Load("lua/Egg.lua")
 Script.Load("lua/InfestationMixin.lua")
-Script.Load("lua/Additions/SaltMixin.lua")
+Script.Load("lua/Additions/SandMixin.lua")
 
 class 'PoopEgg' (Egg)
 
 PoopEgg.kMapName = "poopegg"
 
-local networkVars = { salty = "private boolean" }
+local networkVars = { sandy = "private boolean" }
 AddMixinNetworkVars(InfestationMixin, networkVars)
-AddMixinNetworkVars(SaltMixin, networkVars)
+AddMixinNetworkVars(SandMixin, networkVars)
 
     function PoopEgg:OnInitialized()
          Egg.OnInitialized(self)
           InitMixin(self, InfestationMixin)
         self:SetTechId(kTechId.Egg)
-        self.salty = false
-        InitMixin(self, SaltMixin)
+        self.sandy = false
+        InitMixin(self, SandMixin)
     end
             function PoopEgg:GetTechId()
          return kTechId.Egg
     end
-     function PoopEgg:SetSalty()
-         self.salty = true
+     function PoopEgg:SetSandy()
+         self.sandy = true
     end
 
     function PoopEgg:OnGetMapBlipInfo()

@@ -1,3 +1,4 @@
+/*
 function HeavyMachineGun:GetCatalystSpeedBase()
 local base = 1
  --   local scal = GetRoundLengthToSiege()
@@ -8,4 +9,4 @@ local base = 1
 	return base
 end
 
-    
+ */
