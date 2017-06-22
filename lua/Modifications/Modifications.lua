@@ -85,7 +85,7 @@ if Server then
 end
 
 Script.Load("lua/Modifications/ReallyNow.lua")
-
+/*
 local kUmbraModifier = {}
 kUmbraModifier["Shotgun"] = kUmbraShotgunModifier
 kUmbraModifier["Rifle"] = kUmbraBulletModifier
@@ -111,7 +111,7 @@ function UmbraMixin:ModifyDamageTaken(damageTable, attacker, doer, damageType)
     
 
 end
-
+*/
 if Client then 
 
 local originalGUISetColorOf = GUIItem.SetColor
@@ -133,7 +133,10 @@ local origkill = LiveMixin.Kill
 function LiveMixin:Kill(attacker, doer, point, direction)
   if self:GetIsAlive() and self:GetCanDie() then
           ---Rebirth
+          
          if self:isa("Alien") then
+         
+         /*
           if GetHasRebirthUpgrade(self) and self:GetEligableForRebirth() then
                 if Server then 
                     if attacker and attacker:isa("Player")  then 
@@ -144,14 +147,16 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                 self:TriggerRebirth()
                 return
                 end
-                
+             */   
+             
              if doer and doer:isa("XenocideLeap") and Server and GetHasTech(doer, kTechId.SkulkXenoRupture) and Server then
               CreateEntity(Rupture.kMapName, point, 2)
              end
              
-            end
+         end
             
             --Hunger
+            /*
       if self:GetTeamNumber() == 1 then 
          if self:isa("Player")  then
               if attacker and attacker:isa("Alien") and attacker:isa("Player") and GetHasHungerUpgrade(attacker) then
@@ -171,6 +176,7 @@ function LiveMixin:Kill(attacker, doer, point, direction)
                end
           end
      end 
+     */
             
             
    end     
@@ -364,7 +370,7 @@ return false
 end
 SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
 SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
-SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
+--SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
 
 
 
