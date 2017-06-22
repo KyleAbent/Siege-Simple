@@ -1,6 +1,6 @@
 Script.Load("lua/Weapons/PredictedProjectile.lua")
 Script.Load("lua/Weapons/Alien/AcidRocket.lua")
-Script.Load("lua/PhaseGateUserMixin.lua")
+--Script.Load("lua/PhaseGateUserMixin.lua")
 
 
 Fade.XZExtents = 0.4
@@ -11,7 +11,7 @@ local networkVars = {}
 local kBallFlagAttachPoint = "babbler_attach4"
 
 
-AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
+--AddMixinNetworkVars(PhaseGateUserMixin, networkVars)
 
 local origspeed = Fade.GetMaxSpeed
 local origcreate = Fade.OnCreate
@@ -19,7 +19,7 @@ function Fade:OnCreate()
 origcreate(self)
 
 InitMixin(self, PredictedProjectileShooterMixin)
-InitMixin(self, PhaseGateUserMixin)
+--InitMixin(self, PhaseGateUserMixin)
 
 end
 
