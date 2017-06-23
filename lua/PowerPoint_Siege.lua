@@ -27,7 +27,7 @@ function PowerPoint:OnInitialized()
         --InitMixin(self, LevelsMixin)
 end  
  function PowerPoint:GetCanResearchOverride(techId)
-        return not ( GetImaginator():GetMarineEnabled() and not GetFrontDoorOpen() )
+        return  GetFrontDoorOpen()
   end
 function PowerPoint:GetHasTier(number)
 
