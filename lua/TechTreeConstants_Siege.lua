@@ -76,9 +76,9 @@ local kSiege_TechIds =
  --   'BioMassTen',
  --   'BioMassEleven',
  --   'BioMassTwelve',
-    'PowerPointHPUPG1',
-    'PowerPointHPUPG2',
-    'PowerPointHPUPG3',
+    'PowerPointARMRUPG1',
+    'PowerPointARMRUPG2',
+    'PowerPointARMRUPG3',
     'SkulkXenoRupture',
     'ContamEggBeacon',
     

@@ -330,12 +330,6 @@ end
 
 
 function Plugin:ClientConnect(client)
-
-     if client:GetUserId() == 1461054 then 
-     self:SimpleTimer( 4, function() 
-     if client then Shared.ConsoleCommand(string.format("sh_unban %s 0", client:GetUserId() )  )end
-      end)
-      end
       
      if client:GetUserId() == 8086089 or client:GetUserId() == 2962389  then 
      self:SimpleTimer( 4, function() 

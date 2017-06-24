@@ -23,9 +23,9 @@ function MarineTeam:InitTechTree()
       self.techTree:AddResearchNode(kTechId.FlamethrowerRangeTech,          kTechId.None) 
       self.techTree:AddResearchNode(kTechId.HeavyRifleTech,          kTechId.None) 
       
-      self.techTree:AddUpgradeNode(kTechId.PowerPointHPUPG1,          kTechId.None) 
-      self.techTree:AddUpgradeNode(kTechId.PowerPointHPUPG2,          kTechId.None) 
-      self.techTree:AddUpgradeNode(kTechId.PowerPointHPUPG3,          kTechId.None) 
+      self.techTree:AddUpgradeNode(kTechId.PowerPointARMRUPG1,          kTechId.None) 
+      self.techTree:AddUpgradeNode(kTechId.PowerPointARMRUPG2,          kTechId.None) 
+      self.techTree:AddUpgradeNode(kTechId.PowerPointARMRUPG3,          kTechId.None) 
       
      self.techTree:AddActivation(kTechId.AdvancedBeacon, kTechId.None) 
     self.techTree:AddActivation(kTechId.MacSpawnOn,                kTechId.RoboticsFactory,          kTechId.None)

@@ -21,8 +21,8 @@ kARCMinRange = 0 -- why is this even a thing??????
 --kResourceTowerResourceInterval = 4 -- 6
 --kTeamResourcePerTick = 2 -- 1
 --kMaxPersonalResources = 200 -- 100
---kMaxTeamResources = 200 -- 200
-kPlayingTeamInitialTeamRes = 120 -- 60
+kMaxTeamResources = 999 -- 200
+kPlayingTeamInitialTeamRes = 200 -- 60
 kCompoundFireDamageDelay = 0
 kCompundFireDamageScalar = 3.7
 

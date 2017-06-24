@@ -1,3 +1,6 @@
+/*
+
+
 kSentryHealth = 650    kSentryArmor = 125    kSentryPointValue = 3
 
 kExosuitArmorPerUpgradeLevel = 20
@@ -16,7 +19,7 @@ kFadeArmor = 104 --30% increase from 80
 kSentryBatteryHealth = 780 --30% increase from 600
 kSentryBatteryArmor = 230 --30% increase from 200
 
-kMinMatureCystHealth = 250 --default 200
+kMinMatureCystHealth = 250 --default 200\
 kCystHealth = 250 --default 30
 kMatureCystArmor = 30 --default 0
 --kMatureCystHealth = 500 --default 450
@@ -35,5 +38,7 @@ kMatureEggHealth = 650    kMatureEggArmor = 0
 
 kArmoryHealth = 2000    kArmoryArmor = 500    kArmoryPointValue = 6
 kAdvancedArmoryHealth = 3500    kAdvancedArmoryArmor = 750    kAdvancedArmoryPointValue = 11
+
+*/
 
 

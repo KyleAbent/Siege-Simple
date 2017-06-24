@@ -104,7 +104,7 @@ local techIds = who:GetTechButtons() or {}
                table.insert(techIds, kTechId.BoneShield )
                table.insert(techIds, kTechId.Stab )
                table.insert(techIds, kTechId.Stomp )
-               table.insert(techIds, kTechId.Contamination )
+               --table.insert(techIds, kTechId.Contamination )
                table.insert(techIds, kTechId.Xenocide )
                table.insert(techIds, kTechId.SkulkXenoRupture )
           
