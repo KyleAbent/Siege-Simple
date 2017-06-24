@@ -169,11 +169,11 @@ kNanoArmorCost = 4
 
 
 kJumpPackCost = 10
-ArmoryAutoCCMR =  16
 
 */
 
 
+ArmoryAutoCCMR =  16
 PGAutoCCMRMax = 54
 PGAutoCCMRMin = 32
 ObsAutoCCMR = kScanRadius

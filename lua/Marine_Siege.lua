@@ -464,7 +464,7 @@ end
 
 
 
-/*
+
 
 
 local origcweapons = Marine.InitWeapons
@@ -476,12 +476,14 @@ function Marine:InitWeapons()
 
 origcweapons(self)
 
-   if GetSiegeDoorOpen() then
+   --if GetSiegeDoorOpen() then
     self:GiveItem(Welder.kMapName)
     self:SetActiveWeapon(Rifle.kMapName)
     self:SetQuickSwitchTarget(Pistol.kMapName)
-    end
+   -- end
 end
+
+/*
 
 function Marine:GiveLayStructure(techid, mapname)
   --  if not self:GetHasLayStructure() then

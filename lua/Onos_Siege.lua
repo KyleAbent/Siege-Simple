@@ -44,6 +44,7 @@ function Onos:GetRedemptionCoolDown()
 return 25
 end
 
+/*
 function Onos:PreUpdateMove(input, runningPrediction)
 
     if self.charging then
@@ -59,11 +60,15 @@ function Onos:PreUpdateMove(input, runningPrediction)
         
     end
 end
+*/
 
 /*
 function Onos:PreUpdateMove(input, runningPrediction)
 end
 */
+
+
+
 
 local origspeed = Onos.GetMaxSpeed
 
@@ -75,14 +80,16 @@ local speed = origspeed(self, possible)
        speed = speed * kDuringSiegeOnosSpdBuff 
      end
      
-     if self:GetIsPoopGrowing() then
-     speed = 0.1
-     end
+    -- if self:GetIsPoopGrowing() then
+    -- speed = 0.1
+   --  end
      
      return speed
     
     
 end
+
+
 
 local origmodify = Onos.ModifyDamageTaken
 function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
@@ -93,7 +100,7 @@ function Onos:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoin
      -- Print("Derp 2")
        local damageReduct = 1
        
-        if GetSiegeDoorOpen() and self:GetIsCharging()  then  
+        if  self:GetIsCharging()  and GetSiegeDoorOpen() and not GetIsInSiege(self) then  
         damageReduct =  0.9
         end
         
@@ -108,6 +115,9 @@ end
 function Onos:GetHasMovementSpecial()
     return GetHasTech(self, kTechId.Charge)
 end
+
+/*
+
 function Onos:GetIsPoopGrowing()
 
     local activeWeapon = self:GetActiveWeapon()
@@ -117,6 +127,8 @@ function Onos:GetIsPoopGrowing()
     return false
     
 end
+
+
 
 --local orig_Onos_OnAdjustModelCoords = Onos.OnAdjustModelCoords
 function Onos:OnAdjustModelCoords(modelCoords) 
@@ -133,6 +145,12 @@ function Onos:OnAdjustModelCoords(modelCoords)
     return coords
 end
 
+
+*/
+
+
+/*
+
 if Server then
 
 function Onos:GetTierFourTechId()
@@ -144,3 +162,5 @@ function Onos:GetTierFiveTechId()
 end
 
 end
+
+*/

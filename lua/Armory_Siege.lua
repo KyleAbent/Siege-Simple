@@ -92,7 +92,7 @@ function Armory:GetShouldResupplyPlayer(player)
     
 end
 
-/*
+
 
 function Armory:ResupplyPlayer(player)
     
@@ -151,7 +151,7 @@ function Armory:ResupplyPlayer(player)
     end
 end
 
-*/
+
 
 Script.Load("lua/Additions/LevelsMixin.lua")
 Script.Load("lua/Additions/SandMixin.lua")

@@ -298,36 +298,8 @@ self.CreditData = CreditsFile
 local BadgeFile = Shine.LoadJSONFile( BadgesPath )
 self.BadgeData = BadgeFile
 
-        if not Shine.Timer.Exists("CommTimer") then
-        	Shine.Timer.Create( "CommTimer", 300, -1, function() self:CommCredits() end )
-      end
-
 end
- function Plugin:CommCredits()
-             
- self:GiveCommCredits() 
- 
- end
- function Plugin:GiveCommCredits()
-   self:GenereateTotalCreditAmount()
- local sand = 100 * self.Config.kCreditMultiplier
-   if self.Config.kCreditMultiplier == 1 then
- self:NotifySand( nil, "%s Sand for each commander", true, Sand)
- elseif self.Config.kCreditMultiplier == 2 then
-  self:NotifySandDC( nil, "%s Sand for each commander", true, Sand)
- end
- 
-  local Players = Shine.GetAllPlayers()
-   for i = 1, #Players do
-    local player = Players[ i ]
-     if player and player:isa("Commander") then
-      self.CreditUsers[ player:GetClient() ] = self:GetPlayerSandInfo(player:GetClient()) + Sand
-          if self.GameStarted then
-          Shine.ScreenText.SetText("Sand", string.format( "%s Sand", self:GetPlayerSandInfo(player:GetClient()) ), player:GetClient()) 
-          end
-      end
-   end
- end
+
  local function GetCreditsToSave(self, Client, savedamount)
             local cap = self.Config.kCreditsCapPerRound 
           local creditstosave = self:GetPlayerSandInfo(Client)
