@@ -80,7 +80,7 @@ local kSiege_TechIds =
     'PowerPointARMRUPG2',
     'PowerPointARMRUPG3',
     'SkulkXenoRupture',
-    'ContamEggBeacon',
+--    'ContamEggBeacon',
     
 }
 

@@ -137,7 +137,7 @@ kTechIdToMaterialOffset[kTechId.ArcSpawnOff] = 32
 kTechIdToMaterialOffset[kTechId.ARCUndeploy] = 32
 kTechIdToMaterialOffset[kTechId.ARCDeploy] = 33
 kTechIdToMaterialOffset[kTechId.Egg] = 34
-kTechIdToMaterialOffset[kTechId.ContamEggBeacon] = 34
+--kTechIdToMaterialOffset[kTechId.ContamEggBeacon] = 34
 kTechIdToMaterialOffset[kTechId.Embryo] = 34
 kTechIdToMaterialOffset[kTechId.Cyst] = 35
 

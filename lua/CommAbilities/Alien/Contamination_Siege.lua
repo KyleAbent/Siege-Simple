@@ -113,7 +113,7 @@ if Server then
 function Contamination:DoYourBusiness()
 
    -- Print("DoYourBusiness")
-      if not self:GetIsAlive() or not GetHasTech(self, kTechId.ContamEggBeacon ) then return false end
+      if not self:GetIsAlive() or not GetHasTech(self, kTechId.CragHive ) then return false end
          local egg = GetEntitiesForTeam( "Egg", 2 )
          local count = table.count(egg) or 0
       for i = 1, #egg do

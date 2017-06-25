@@ -26,9 +26,9 @@ local buttons = origbuttons(self, techId)
         buttons[2] = kTechId.ResearchBioMassThree
     end
     
-     if GetHasTech(self, kTechId.CragHive) then
-        buttons[5] = kTechId.ContamEggBeacon
-     end 
+ --    if GetHasTech(self, kTechId.CragHive) then
+--        buttons[5] = kTechId.ContamEggBeacon
+ --    end 
      buttons[3] = kTechId.WhipStealFT
      buttons[8] = kTechId.CommTunnel
     return buttons
