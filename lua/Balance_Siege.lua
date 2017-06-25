@@ -24,8 +24,10 @@ kARCMinRange = 0 -- why is this even a thing??????
 --kMaxPersonalResources = 200 -- 100
 kMaxTeamResources = 999 -- 200
 kPlayingTeamInitialTeamRes = 200 -- 60
-kCompoundFireDamageDelay = 0
-kCompundFireDamageScalar = 3.7
+
+
+--kCompoundFireDamageDelay = 0
+--kCompundFireDamageScalar = 3.7
 
 --kHeavyMachineGunCost = 20
 --kXenocideDamageType = kDamageType.Structural

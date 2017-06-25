@@ -82,7 +82,7 @@ local kSiege_TechData =
 {   
 
 
-
+/*
 
    { [kTechDataId] = kTechId.ContamEggBeacon, 
 [kTechDataBioMass] = 9, 
@@ -90,6 +90,8 @@ local kSiege_TechData =
 [kTechDataResearchTimeKey] = 60, 
 [kTechDataDisplayName] = "Contamination Egg Beacon", 
 [kTechDataTooltipInfo] = "Contamnination will move or creates eggs nearby, acting as egg beacon."},
+
+*/
 
 
    { [kTechDataId] = kTechId.WhipStealFT, 
