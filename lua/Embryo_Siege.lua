@@ -12,3 +12,9 @@ function Embryo:OnAdjustModelCoords(coords)
     
 end
 
+
+function Embryo:GetGestationTime(gestationTypeTechId)
+    local default = LookupTechData(gestationTypeTechId, kTechDataGestateTime)
+    if GetSiegeDoorOpen() then return default / 2 end
+    return default
+end

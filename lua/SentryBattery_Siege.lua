@@ -25,7 +25,7 @@ end
 
 function SentryBattery:GetTechButtons(techId)
 
-    local techButtons = {  kTechId.BackupLight, kTechId.None, kTechId.None, kTechId.None, 
+    local techButtons = {  kTechId.None, kTechId.None, kTechId.None, kTechId.None, 
                kTechId.None, kTechId.None, kTechId.None, kTechId.None }
                
     return techButtons
@@ -36,13 +36,6 @@ local orig = SentryBattery.OnInitialized
 function SentryBattery:OnInitialized()
 orig(self)
 if Client then self:AddPowerVisual() end
-end
-
-function SentryBattery:PreOnKill(attacker, doer, point, direction)
-       for _, backuplight in ipairs(GetEntitiesWithinRange("BackupLight", self:GetOrigin(), 8)) do
-                backuplight:Kill()
-    end
-    
 end
 
 

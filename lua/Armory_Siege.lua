@@ -39,6 +39,10 @@ local buttons = origbuttons(self, techId)
      buttons[7] = kTechId.HeavyRifleTech
     return buttons
 end
+
+
+
+
 function Armory:GetShouldResupplyPlayer(player)
     if not player:GetIsAlive() then
         return false
@@ -102,7 +106,7 @@ function Armory:ResupplyPlayer(player)
                if not fullhealth or not fullarmor then
                
                if fullhealth then
-                if not fullarmor then local addarmoramount = player:GetMaxArmor() * .20 player:AddArmor(addarmoramount) end 
+                if not fullarmor and GetSiegeDoorOpen() then local addarmoramount = player:GetMaxArmor() * .20 player:AddArmor(addarmoramount) end 
                else 
                player:AddHealth(Armory.kHealAmount, false, true, nil, nil, true) 
                end

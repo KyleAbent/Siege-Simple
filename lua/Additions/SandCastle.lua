@@ -56,6 +56,7 @@ function SandCastle:TimerValues()
    self.isDisco = false
    self.doSD = false
    self.MSCPPC = 0
+   
 end
 
 function SandCastle:OnReset() 
@@ -136,7 +137,8 @@ function SandCastle:OpenSiegeDoors()
      self.SiegeTimer = 0
      self.sdTimer = Shared.GetTime() -- count when siege opens b/c admin sh_open
      if GetGameStarted() then GetImaginator():OnSiegeOpen() end
-     -- Print("OpenSiegeDoors SandCastle")
+     -- Print("OpenSiegeDoors SandCastle") 
+
                for index, siegedoor in ientitylist(Shared.GetEntitiesWithClassname("SiegeDoor")) do
                  if not siegedoor:isa("FrontDoor") then OpenEightTimes(siegedoor) end
               end 
