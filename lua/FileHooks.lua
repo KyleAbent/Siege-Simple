@@ -1,6 +1,6 @@
 ModLoader.SetupFileHook( "lua/TargetCache.lua", "lua/TargetCache_Siege.lua", "post" )
 
-ModLoader.SetupFileHook( "lua/Weapons/Marine/Minigun.lua", "lua/Weapons/Marine/Minigun_Siege.lua", "post" )
+--ModLoader.SetupFileHook( "lua/Weapons/Marine/Minigun.lua", "lua/Weapons/Marine/Minigun_Siege.lua", "post" )
 
 
 
@@ -13,6 +13,8 @@ ModLoader.SetupFileHook( "lua/BalanceMisc.lua", "lua/BalanceMisc_Siege.lua", "po
 ModLoader.SetupFileHook( "lua/Globals.lua", "lua/Globals_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Drifter.lua", "lua/Drifter_Siege.lua", "post" )
+
+ModLoader.SetupFileHook( "lua/Egg.lua", "lua/Egg_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/Harvester.lua", "lua/Harvester_Siege.lua", "post" )
 

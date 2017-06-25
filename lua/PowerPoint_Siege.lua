@@ -60,13 +60,13 @@ function PowerPoint:GetTechButtons(techId)
 local buttons = origbuttons(self, techId)
     if self:GetIsBuilt() then
        if not self:GetHasTier(1.10) then
-     buttons[1] = kTechId.PowerPointARMRUPG1
+     buttons[2] = kTechId.PowerPointARMRUPG1
      end
      if not self:GetHasTier(1.20) then
-     buttons[2] = kTechId.PowerPointARMRUPG2
+     buttons[3] = kTechId.PowerPointARMRUPG2
      end
     if not self:GetHasTier(1.30) then
-     buttons[3] = kTechId.PowerPointARMRUPG3
+     buttons[4] = kTechId.PowerPointARMRUPG3
      end
        end
     return buttons

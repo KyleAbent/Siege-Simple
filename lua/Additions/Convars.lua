@@ -24,7 +24,7 @@ kFadeBlinkSpeedBuff = 1.15
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3
 
-kSentrysPerRoom = 6
+kSentrysPerRoom = 3 --6
 
 /*
 kWallWalkMarineCost = 10

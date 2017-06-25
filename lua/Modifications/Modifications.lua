@@ -1,4 +1,13 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
+
+function GetAlienCatalystTimeAmount(baseTime, entity)
+
+        local catalystTime = 1 * baseTime * (1 + kNutrientMistPercentageIncrease/100)
+        return catalystTime
+    
+end
+
+
 /*
 local origdamgebytype = GetDamageByType
 function GetDamageByType(target, attacker, doer, damage, damageType, hitPoint, weapon)

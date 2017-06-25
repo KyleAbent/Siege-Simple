@@ -499,10 +499,10 @@ Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal_view.surface_shade
 Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
 
 
-Alien.kOnocideViewMaterialName = "cinematics/vfx_materials/Onocide_view.material"
-Alien.kOnocideThirdpersonMaterialName = "cinematics/vfx_materials/Onocide.material"
-Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide_view.surface_shader")
-Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide.surface_shader")
+--Alien.kOnocideViewMaterialName = "cinematics/vfx_materials/Onocide_view.material"
+--Alien.kOnocideThirdpersonMaterialName = "cinematics/vfx_materials/Onocide.material"
+--Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide_view.surface_shader")
+--Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide.surface_shader")
 
 local kEnzymeEffectInterval = 0.2
 
