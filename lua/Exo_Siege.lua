@@ -164,6 +164,17 @@ local function HealSelf(self)
     return true
 end
 
+local kPhaseDelay = 2
+
+function Exo:GetCanPhase()
+
+    if Server then
+        return self:GetIsAlive() and Shared.GetTime() > self.timeOfLastPhase + kPhaseDelay and not GetConcedeSequenceActive() and GetSiegeDoorOpen()
+    else
+        return self:GetIsAlive() and Shared.GetTime() > self.timeOfLastPhase + kPhaseDelay and GetSiegeDoorOpen()
+    end
+end
+
 local oninit = Exo.OnInitialized
 function Exo:OnInitialized()
 

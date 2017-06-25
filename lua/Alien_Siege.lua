@@ -229,7 +229,7 @@ end
 
  */
  
-/*
+ /*
 
 function Alien:TriggerRebirth()
 
@@ -426,11 +426,13 @@ function Alien:GiveLayStructure(techid, mapname)
   -- end
 end
 
-/*
+
 
 
 if Client then
 
+
+/*
 local orig_Alien_UpdateClientEffects = Alien.UpdateClientEffects
 function Alien:UpdateClientEffects(deltaTime, isLocal)
 orig_Alien_UpdateClientEffects(self, deltaTime, isLocal)
@@ -489,6 +491,7 @@ function Alien:AddGhostGuide(origin, radius)
 return
 
 end
+*/
 
 Alien.kPrimaledViewMaterialName = "cinematics/vfx_materials/primal_view.material"
 Alien.kPrimaledThirdpersonMaterialName = "cinematics/vfx_materials/primal.material"
@@ -503,6 +506,7 @@ Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide.surface_shader")
 
 local kEnzymeEffectInterval = 0.2
 
+/*
 
 function Alien:UpdateOnocideEffect(isLocal)
     local weapon = self:GetWeaponInHUDSlot(4)
@@ -633,7 +637,7 @@ end
 local origcupdate = Alien.UpdateClientEffects
 function Alien:UpdateClientEffects(deltaTime, isLocal)
      self:UpdatePrimalEffect(isLocal)
-     if self:isa("Onos") then self:UpdateOnocideEffect(isLocal) end
+   --  if self:isa("Onos") then self:UpdateOnocideEffect(isLocal) end
      origcupdate(self, deltaTime,isLocal)
 end
 
