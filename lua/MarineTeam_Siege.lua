@@ -18,7 +18,7 @@ function MarineTeam:InitTechTree()
     
    -- self.techTree:AddBuildNode(kTechId.DropMAC,     kTechId.None, kTechId.None)
    --  self.techTree:AddBuildNode(kTechId.Wall,     kTechId.None, kTechId.None)
---    self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
+    self.techTree:AddTargetedActivation(kTechId.DropExosuit,     kTechId.ExosuitTech, kTechId.None)
     -- self.techTree:AddResearchNode(kTechId.AdvBeacTech,          kTechId.PhaseTech) 
       self.techTree:AddResearchNode(kTechId.FlamethrowerRangeTech,          kTechId.None) 
       self.techTree:AddResearchNode(kTechId.HeavyRifleTech,          kTechId.None) 
