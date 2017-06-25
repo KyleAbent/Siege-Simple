@@ -6,6 +6,8 @@ local orig_Alien_OnCreate = Alien.OnCreate
     function Alien:SlapPlayer()
      self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
     end
+    
+
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
      self:UpdateWeapons()
@@ -32,6 +34,16 @@ function Alien:OnInitialized()
     -- self:AddTimedCallback(Alien.CheckRedemptionTimer, .5) 
 
 end
+
+    function Alien:TunnelGood(who)
+    
+    end
+    
+    function Alien:TunnelFailed(who)
+    
+    end
+    
+    
 local function CheckPrimalScream(self)
 	self.primaled = self.primalGiveTime - Shared.GetTime() > 0
 	return self.primaled

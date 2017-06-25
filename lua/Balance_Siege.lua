@@ -3,7 +3,8 @@
 --kRailgunChargeDamage = 145 --140
 
 kClogsPerHive = 15
-kMarineRespawnTime = 5
+--kMarineRespawnTime = 5
+kAlienRespawnTime = 5
 
 
 --kHeavyRifleCost = 30

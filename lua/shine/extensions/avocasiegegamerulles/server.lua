@@ -445,6 +445,11 @@ Shine.Hook.SetupClassHook( "Alien", "TriggerRedeemCountDown", "OnRedemedHook", "
 Shine.Hook.SetupClassHook( "Alien", "TriggerRebirthCountDown", "TriggerRebirthCountDown", "PassivePre" )
 
 
+Shine.Hook.SetupClassHook( "Alien", "TunnelFailed", "FailMessage", "Replace" )
+Shine.Hook.SetupClassHook( "Alien", "TunnelGood", "GoodMessage", "Replace" )
+
+
+
 Plugin.Version = "1.0"
 
 function Plugin:Initialise()
@@ -453,6 +458,24 @@ self:CreateCommands()
 self.AutoCCtimer = false
 return true
 end
+
+
+function Plugin:GoodMessage(player)
+ local client = player:GetClient()
+local controlling = client:GetControllingPlayer()
+local Client = controlling:GetClient()
+self:NotifySandCastle( Client, "Tunnel Entrance placed at Hive.", true)
+end
+
+function Plugin:FailMessage(player)
+ local client = player:GetClient()
+local controlling = client:GetControllingPlayer()
+local Client = controlling:GetClient()
+self:NotifySandCastle( Client, "Tunnel Entrance placed at Hive FAILED. Try again", true)
+end
+
+
+
 
 function Plugin:MapPostLoad()
       --self:StartAutoCommTimer()
