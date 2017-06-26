@@ -347,10 +347,11 @@ local function GetCheckExoDropLimit(techId, origin, normal, commander)
 end
 
 
+--SetCachedTechData(kTechId.FadeEgg, kTechDataResearchTimeKey, kEggGestateTime * 1.5 )
 
-SetCachedTechData(kTechId.FadeEgg, kTechDataResearchTimeKey, kEggGestateTime * 2 )
+--SetCachedTechData(kTechId.FadeEgg, kTechDataResearchTimeKey, kEggGestateTime * 2 )
 
-SetCachedTechData(kTechId.OnosEgg, kTechDataResearchTimeKey, kEggGestateTime * 3 )
+--SetCachedTechData(kTechId.OnosEgg, kTechDataResearchTimeKey, kEggGestateTime * 3 )
 
 
 SetCachedTechData(kTechId.AlienAlertNeedMist, kTechDataBuildRequiresMethod, kAlertType.Info)

@@ -430,23 +430,33 @@ end
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
   
-  function Plugin:NotifySupplyReduct(amt)
- self:NotifySandCastle( nil, "Marines&Aliens Teams Supply lowered by %s", true, kRemoveXSupplyEveryMin)
+      function Plugin:CystPlacedPoweredRoomSetup(who)
+ self:NotifySandCastle( nil, "Cyst placed in powered room during setup. Alien side shouldn't be powered. Counting this as Exploit and killing cyst located in %s", true, who:GetLocationName())
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
   
-    function Plugin:NotifySupplyReduct(amt)
- self:NotifySandCastle( nil, "Marines supply increased by %s, proper defense and aliens not very offensive.", true, kRemoveXSupplyEveryMin)
+  
+  function Plugin:NotifyLowerMarinesHook()
+ 
+  self:NotifySandCastle( nil, "Marines Team Supply lowered by %s", true, kRemoveXSupplyEveryMin)
+ -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
+ end
+    function Plugin:NotifyLowerAliensHook()
+ 
+  self:NotifySandCastle( nil, "Aliens Team Supply lowered by %s", true, kRemoveXSupplyEveryMin)
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
   
 
-  Shine.Hook.SetupClassHook( "SandCastle", "LowerSupplyForTeamsBy", "NotifySupplyReduct", "PassivePre" )
+  Shine.Hook.SetupClassHook( "Cyst", "WarningMessage", "CystPlacedPoweredRoomSetup", "PassivePre" )
+  
+    Shine.Hook.SetupClassHook( "SandCastle", "NotifyLowerAliens", "NotifyLowerAliensHook", "PassivePost" )
+    
+  Shine.Hook.SetupClassHook( "SandCastle", "NotifyLowerMarines", "NotifyLowerMarinesHook", "PassivePost" )
   
   Shine.Hook.SetupClassHook( "Imaginator", "TellEveryoneAbtBeacon", "RemoveConfusion", "PassivePre" )
 
 
-  Shine.Hook.SetupClassHook( "SandCastle", "LowerSupplyForTeamsBy", "NotifySupplyReduct", "PassivePre" )
 
 
   

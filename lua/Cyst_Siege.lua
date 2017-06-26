@@ -35,6 +35,10 @@ function Cyst:GetInfestationGrowthRate()
           --Note also adjust max mature hp throughout siege?
     return rate
 end
+function Cyst:WarningMessage(self)
+
+end
+
 /*
 function Cyst:ModifyDamageTaken(damageTable, attacker, doer, damageType, hitPoint)
 

@@ -89,35 +89,6 @@ local function NotBeingResearched(techId, who)
      end
     return true
 end
-local function ResearchEggSpecifics(who)
- local success = false
-      if who:GetIsFree() and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
-      local techIds = {}
-         local tree = GetTechTree(2)
-
-               table.insert(techIds, kTechId.GorgeEgg )
-               table.insert(techIds, kTechId.LerkEgg )
-
-            if GetHasTech(who, kTechId.Xenocide) then
-               table.insert(techIds, kTechId.FadeEgg )
-            end
-            
-            if GetHasTech(who, kTechId.Xenocide) then
-               table.insert(techIds, kTechId.OnosEgg )
-             end
-               
-                local random = table.random(techIds)
-                local techNode = tree:GetTechNode(random)
-           
-           if techNode then
-                who:SetResearching(techNode, who)
-                success = true
-          end
-          
-      end
-      
-      return success
-end
 local function ResearchEachTechButton(who)
 local techIds = who:GetTechButtons() or {}
       if who:isa("EvolutionChamber") then
@@ -139,6 +110,11 @@ local techIds = who:GetTechButtons() or {}
           
       end
       
+            if who:isa("Observatory") then
+             techIds = {}
+             table.insert(techIds, kTechId.PhaseTech )
+            
+            end
 
       
                        for _, techId in ipairs(techIds) do
@@ -252,7 +228,9 @@ function Imaginator:OnUpdate(deltatime)
                        end
                        local eggs = {}
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("Egg")) do
-                       table.insert(eggs, ent)
+                        if not ent.Auto and ent:GetIsFree() and not ent:GetIsResearching() then
+                          table.insert(eggs, ent)
+                          end
                        end
                
                      for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
@@ -267,8 +245,8 @@ function Imaginator:OnUpdate(deltatime)
                    
                      for i = 1, #eggs do
                           local egg = eggs[i]
-                         local success = ResearchEggSpecifics(egg)
-                         if success then break end
+                         egg:DelayedActivation()
+                          break
                      end
                 end
                 

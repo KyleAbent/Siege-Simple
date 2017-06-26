@@ -2,12 +2,12 @@
 local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",  primaledID = "entityid",}
 
  
-local orig_Alien_OnCreate = Alien.OnCreate
+
     function Alien:SlapPlayer()
      self:SetVelocity(  self:GetVelocity() + Vector(math.random(100,900),math.random(100,900),math.random(100,900)  ) )
     end
     
-
+local orig_Alien_OnCreate = Alien.OnCreate
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
      self:UpdateWeapons()
@@ -16,6 +16,7 @@ function Alien:OnCreate()
       self.primaled = false
       self.primaledID = Entity.invalidI 
       self.primalGiveTime = 0
+      
 
 end
 function Alien:UpdateWeapons()

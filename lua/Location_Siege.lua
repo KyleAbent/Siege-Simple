@@ -46,33 +46,25 @@ local lottery = {}
      
      return nil
 end
-local function RealWorld(self, entity)
+local function PowerPointToggles(self, entity)
+       --  local imagination = GetImaginator()
+         --  if imagination:GetMarineEnabled() then
                local powerPoint = GetPowerPointForLocation(self.name)
             if powerPoint ~= nil then
-                    if entity:isa("Marine") and not entity:isa("Commander") then
-                         if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() then 
-                         powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
-                         end
-                    end 
-            end 
-end
-local function IfImagination(self, entity)
-         local imagination = GetImaginator()
-           if imagination:GetMarineEnabled() then
-               local powerPoint = GetPowerPointForLocation(self.name)
-            if powerPoint ~= nil then
-                         if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() then 
+                         if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() and entity:isa("Marine") then 
                          if not string.find(self.name, "siege") and not string.find(self.name, "Siege") or GetSiegeDoorOpen() then
                          powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
                          end
                          end
-                        if not GetSetupConcluded() and entity:isa("Alien") and not entity:isa("Commander") then
+                        
+                        if  powerPoint:GetIsBuilt() and entity:isa("Alien") and not entity:isa("Commander") then
                          local frontdoor = GetEntitiesWithinRange("FrontDoor", entity:GetOrigin(), 7)
                          if #frontdoor >=1 then return end --sometimes hugging door tricks the location :x
-                         powerPoint:SetConstructionComplete()
+                        -- powerPoint:SetConstructionComplete()
                          powerPoint:Kill()
                         end
-            end 
+                        
+         --   end 
           end
 end
 local locorig = Location.OnTriggerEntered
@@ -85,10 +77,10 @@ local locorig = Location.OnTriggerEntered
          ExploitCheck(entity)
          end
          
-         if GetGameStarted() then 
-             IfImagination(self, entity)
+         if not GetFrontDoorOpen()  and GetGameStarted() then 
+             PowerPointToggles(self, entity)
         -- else
-             if not GetFrontDoorOpen() then  RealWorld(self, entity) end
+        --     if not GetFrontDoorOpen() then  RealWorld(self, entity) end
          end
   
                 

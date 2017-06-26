@@ -299,25 +299,34 @@ local powerpoints = {}
     
 end
 function SandCastle:MarinesStillHaveProperDefense()
-            local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
-            marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
 end
 function SandCastle:AliensAreVeryOffensive()
 
 end
-function SandCastle:LowerSupplyForTeamsBy()
+function SandCastle:NotifyLowerMarines()
+
+end
+function SandCastle:NotifyLowerAliens()
+
+end
+function SandCastle:LowerSupplyForTeamsBy(aliens, marines)
             local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
             local alienTeam = GetGamerules():GetTeam(kAlienTeamType)
             
+            
+      --  Print("aliens is %s", aliens)
+      --  Print("marines is %s", marines)
+        
+            if marines == true then
             marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
-            alienTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)         
+            self:NotifyLowerMarines()
+            end
+            if aliens == true then
+            alienTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)  
+            self:NotifyLowerAliens()
+           end       
         
 
-end
-function SandCastle:IncreaseMarineSupply()
-            local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
-            
-            marineTeam:AddSupplyUsed(kRemoveXSupplyEveryMin)
 end
 function SandCastle:OnUpdate(deltatime)
 
@@ -342,13 +351,14 @@ function SandCastle:OnUpdate(deltatime)
              if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then ppcount = ppcount + 1 end
         end 
         
-        self:LowerSupplyForTeamsBy()
+       
      
-     local shouldAddBack = false
+     local shouldDeductMarines = true
+     local shouldDeductAliens = true
         
         if ppcount >= self.MSCPPC then
            self:MarinesStillHaveProperDefense( )
-           shouldAddBack = true
+           shouldDeductMarines = false
         end
         
         if  ppcount <=2 then
@@ -357,13 +367,12 @@ function SandCastle:OnUpdate(deltatime)
            local timeleft = self.SiegeTimer - gameLength
             if timeleft >= 300 then
             self:AliensAreVeryOffensive()
-            shouldAddBack = false
+            shouldDeductAliens = false
            end
         end
-        
-        if shouldAddBack then
-          self:IncreaseMarineSupply()
-        end
+      --  Print("shouldDeductMarines is %s", shouldDeductMarines)
+     --   Print("shouldDeductAliens is %s", shouldDeductAliens)
+     self:LowerSupplyForTeamsBy(shouldDeductAliens, shouldDeductMarines)
         
         
         self.timelastPPCount = Shared.GetTime()

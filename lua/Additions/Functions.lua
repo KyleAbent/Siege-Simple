@@ -348,6 +348,8 @@ if GetSiegeDoorOpen() then return end
       
       if who:isa("Cyst") or who:isa("Clog") and not GetImaginator():GetAlienEnabled() then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 12   end)
+            frontdoor = frontdoor or GetIsRoomPowerUp(who) -- if it doesnt cause problems with maps. Power shouldn't be up alien side.
+            if who:isa("Cyst") and GetIsRoomPowerUp(who) then who:WarningMessage(who) end
      elseif who:isa("TunnelEntrance") then --Better than getentwithinrange because that returns a table regardless of these specifics of range and origin
             frontdoor = GetNearest(who:GetOrigin(), "FrontDoor", 0, function(ent) return who:GetDistance(ent) <= 4   end)
       end
