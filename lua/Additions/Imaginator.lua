@@ -109,6 +109,32 @@ local techIds = who:GetTechButtons() or {}
                table.insert(techIds, kTechId.SkulkXenoRupture )
           
       end
+      
+      if who:isa("Egg") and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
+      
+         local tree = GetTechTree(2)
+
+               table.insert(techIds, kTechId.GorgeEgg )
+               table.insert(techIds, kTechId.LerkEgg )
+
+            if tree:GetTechAvailable( kTechId.FadeEgg) then
+               table.insert(techIds, kTechId.FadeEgg )
+            end
+            
+            if tree:GetTechAvailable( kTechId.OnosEgg) then
+               table.insert(techIds, kTechId.OnosEgg )
+             end
+               
+                local random = table.random(techIds)
+                local techNode = tree:GetTechNode(random)
+           
+           if techNode then
+                who:SetResearching(techNode, who)
+                return
+          end
+          
+      end
+      
                        for _, techId in ipairs(techIds) do
                      if techId ~= kTechId.None then
                         if not GetHasTech(who, techId) and who:GetCanResearch(techId) then
@@ -216,6 +242,10 @@ function Imaginator:OnUpdate(deltatime)
                         local researchables = {}
          
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("EvolutionChamber")) do
+                       table.insert(researchables, ent)
+                       end
+                       
+                       for _, ent in ientitylist(Shared.GetEntitiesWithClassname("Egg")) do
                        table.insert(researchables, ent)
                        end
                

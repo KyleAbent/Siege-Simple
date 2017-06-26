@@ -2,7 +2,7 @@
 kElectrifiedAttackSpeed = 0.70 --0.8
 kEnzymeAttackSpeed = 1.3 --1.25
 
-kARCSupply = 10
+kARCSupply = 12
 kNumWebsPerGorge = 6
 --kChargeEnergyCost = 20 --def 20
 
@@ -17,12 +17,12 @@ kHeavyMachineGunWeight = 0.20 -- default 0.26
 --kEggsPerHatch = 4 -- default 2
 
 
-kDrifterSupply = 5 --default 10
+--kDrifterSupply = 5 --default 10
 
 
 kHiveInfestationRadius = 8
 
-kMACSupply = 5
+kMACSupply = 8
 kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
 kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
 kSentrySupply = 2

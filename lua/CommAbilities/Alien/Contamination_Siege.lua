@@ -1,3 +1,5 @@
+/*
+
 Script.Load("lua/PointGiverMixin.lua")
 local networkVars = {}
 local function TimeUp(self)
@@ -144,6 +146,8 @@ end
 
 
 end
+*/
+
 
 function Contamination:StartBeaconTimer()
 

@@ -22,8 +22,8 @@ kARCMinRange = 0 -- why is this even a thing??????
 --kResourceTowerResourceInterval = 4 -- 6
 --kTeamResourcePerTick = 2 -- 1
 --kMaxPersonalResources = 200 -- 100
-kMaxTeamResources = 999 -- 200
-kPlayingTeamInitialTeamRes = 200 -- 60
+--kMaxTeamResources = 999 -- 200
+kPlayingTeamInitialTeamRes = 100 -- 60
 
 
 --kCompoundFireDamageDelay = 0
@@ -79,10 +79,10 @@ kPrimalScreamROF = 3
 --kRedemptionEHPThresholdMax = 30
 
 --kOnosEggCost = 90 --default 100
-kBabblerDamage = 9 --default 8 
-kExosuitDropCost = 35 -- default 50
-kHeavyMachineGunDropCost = 25 --default = 40
-kSentryBuildTime = 4 --default 3
+--kBabblerDamage = 9 --default 8 
+--kExosuitDropCost = 35 -- default 50
+--kHeavyMachineGunDropCost = 25 --default = 40
+--kSentryBuildTime = 4 --default 3
 --kPlayerHallucinationNumFraction = 0.38 --default 0.34
 
 --kShotgunFireRate = 0.75 --default 0.88

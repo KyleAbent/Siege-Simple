@@ -1,5 +1,22 @@
 Script.Load("lua/DefaultOverwrites/CloakableMixin.lua")
 
+
+local origLegal = GetIsBuildLegal
+function GetIsBuildLegal(techId, position, angle, snapRadius, player, ignoreEntity, ignoreChecks)
+
+local legalBuild, legalPosition, attachEntity, errorString = origLegal(techId, position, angle, snapRadius, player, ignoreEntity, ignoreChecks)
+
+if legalBuild == false and techId == kTechId.Cyst and errorString == "COMMANDERERROR_TOO_MANY_ENTITIES" then
+
+legalBuild = true
+
+end
+
+return legalBuild, legalPosition, attachEntity, errorString
+
+
+end
+
 function GetAlienCatalystTimeAmount(baseTime, entity)
 
         local catalystTime = 1 * baseTime * (1 + kNutrientMistPercentageIncrease/100)

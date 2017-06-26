@@ -23,35 +23,6 @@ function Egg:GetMapNameOf()
         return Skulk.kMapName
 end
 
-local origcreate = Egg.OnCreate
-function Egg:OnCreate()
-origcreate(self)
-
-if Server then
-
-local techIds = {}
-local tree = GetTechTree(2)
-
-               table.insert(techIds, kTechId.GorgeEgg )
-               table.insert(techIds, kTechId.LerkEgg )
-
-            if tree:GetTechAvailable( kTechId.FadeEgg) then
-               table.insert(techIds, kTechId.FadeEgg )
-            end
-            
-            if tree:GetTechAvailable( kTechId.OnosEgg) then
-               table.insert(techIds, kTechId.OnosEgg )
-             end
-               
-                local random = table.random(techIds)
-                local techNode = tree:GetTechNode(random)
-           
-           if techNode and tree:GetTechAvailable(random) then
-                self:SetTechId(random)
-                return
-          end
-end
-end
 
 
 function Egg:SetQueuedPlayerId(playerId)
