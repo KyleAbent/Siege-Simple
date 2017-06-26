@@ -35,6 +35,7 @@ function Egg:SetQueuedPlayerId(playerId)
     
     playerToSpawn:SetEggId(self:GetId())
 
+ -----------------This removed
     --Refund costs for a non skulk egg
   --  local techId = self:GetIsResearching() and self:GetResearchingId() or self:GetTechId()
   --  if techId ~= kTechId.Egg then
@@ -104,7 +105,7 @@ function Egg:SpawnPlayer(player)
             self:TriggerEffects("egg_death")
             DestroyEntity(self) 
             
-            
+        -------------------This added        
             if player.lastUpgradeList then            
                     player.upgrade1 = player.lastUpgradeList[1] or 1
                     player.upgrade2 = player.lastUpgradeList[2] or 1

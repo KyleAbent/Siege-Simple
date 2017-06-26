@@ -1,7 +1,12 @@
+kRemoveXSupplyEveryMin = 8
+
+/*
 kOnoGrowEnergyCost = 20
 kOnocideEnergyCost = 20
 kOnocideMaxDuration = 4
 kOnocideOnoGrowCoolDown = 12.5
+*/
+
 
 kDuringSiegeOnosSpdBuff = 1.25
 kPrimalDMGBuff = 1.05
@@ -13,14 +18,14 @@ kWhipStealFTTime = 20
 --kPresToStructureMult = 8
 --kPresToClassesMult = 9
 
-kPresArmoryProtoEquivMult = 1.5
+--kPresArmoryProtoEquivMult = 1.5
 
 
 kBonewallLifeSpan = 5
 
 --gCreditStructureCostPetDrifter = 5
 --gCreditStructureCostPerDrifter = 5
-kFadeBlinkSpeedBuff = 1.15
+kFadeBlinkSpeedBuff = 1.10
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3
 

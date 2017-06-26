@@ -26,8 +26,9 @@ function PowerPoint:OnInitialized()
         originit(self)
         --InitMixin(self, LevelsMixin)
 end  
+
  function PowerPoint:GetCanResearchOverride(techId)
-        return  GetFrontDoorOpen()
+        return techId == kTechId.SocketPowerNode or GetFrontDoorOpen()
   end
 function PowerPoint:GetHasTier(number)
 
@@ -54,6 +55,8 @@ function PowerPoint:CanBeCompletedByScriptActor( player )
            end
     return orig(self, player)
 end
+/*
+
 local origbuttons = PowerPoint.GetTechButtons
 function PowerPoint:GetTechButtons(techId)
 
@@ -71,7 +74,22 @@ local buttons = origbuttons(self, techId)
        end
     return buttons
 end
+
+*/
+
 if Server then
+
+function PowerPoint:ModifyHeal(healTable)
+ 
+    if not self:GetIsBuilt() and not GetFrontDoorOpen()   then
+    
+          self:SetConstructionComplete()
+          return
+    
+    end
+       ConstructMixin.ModifyHeal(self, healTable)
+end
+
 
 function PowerPoint:OnResearchComplete(researchId)
 local adj = 1

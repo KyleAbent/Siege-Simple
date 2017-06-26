@@ -40,7 +40,7 @@ end
 function Fade:GetMaxSpeed(possible)
      local speed = origspeed(self)
   --return speed * 1.10
-  return not self:GetIsOnFire() and speed * 1.25 or speed
+  return not self:GetIsOnFire() and speed * kFadeBlinkSpeedBuff or speed
 end
 function Fade:GetCanMetabolizeHealth()
     return GetHasTech(self, kTechId.MetabolizeHealth)

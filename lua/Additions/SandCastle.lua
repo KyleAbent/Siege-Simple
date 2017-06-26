@@ -136,6 +136,8 @@ end
 function SandCastle:OpenSiegeDoors()
      self.SiegeTimer = 0
      self.sdTimer = Shared.GetTime() -- count when siege opens b/c admin sh_open
+     
+     
      if GetGameStarted() then GetImaginator():OnSiegeOpen() end
      -- Print("OpenSiegeDoors SandCastle") 
 
@@ -297,10 +299,25 @@ local powerpoints = {}
     
 end
 function SandCastle:MarinesStillHaveProperDefense()
-
+            local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
+            marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
 end
 function SandCastle:AliensAreVeryOffensive()
 
+end
+function SandCastle:LowerSupplyForTeamsBy()
+            local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
+            local alienTeam = GetGamerules():GetTeam(kAlienTeamType)
+            
+            marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
+            alienTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)         
+        
+
+end
+function SandCastle:IncreaseMarineSupply()
+            local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
+            
+            marineTeam:AddSupplyUsed(kRemoveXSupplyEveryMin)
 end
 function SandCastle:OnUpdate(deltatime)
 
@@ -325,8 +342,13 @@ function SandCastle:OnUpdate(deltatime)
              if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then ppcount = ppcount + 1 end
         end 
         
+        self:LowerSupplyForTeamsBy()
+     
+     local shouldAddBack = false
+        
         if ppcount >= self.MSCPPC then
            self:MarinesStillHaveProperDefense( )
+           shouldAddBack = true
         end
         
         if  ppcount <=2 then
@@ -335,9 +357,13 @@ function SandCastle:OnUpdate(deltatime)
            local timeleft = self.SiegeTimer - gameLength
             if timeleft >= 300 then
             self:AliensAreVeryOffensive()
+            shouldAddBack = false
            end
         end
         
+        if shouldAddBack then
+          self:IncreaseMarineSupply()
+        end
         
         
         self.timelastPPCount = Shared.GetTime()

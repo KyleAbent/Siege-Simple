@@ -1,3 +1,5 @@
+
+/*
     function TunnelEntrance:DestroyOther()
     for _, tunnelent in ipairs( GetEntitiesForTeam("TunnelEntrance", 2)) do
         if tunnelent:GetOwner() == self:GetOwner() and tunnelent ~= self then
@@ -27,6 +29,8 @@ end
         
     
 end
+
+*/
 
 
 function TunnelEntrance:GetMax()

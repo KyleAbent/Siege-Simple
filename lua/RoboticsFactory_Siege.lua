@@ -32,7 +32,7 @@ end
 
 function RoboticsFactory:GetTechButtons(techId)
 
-    local techButtons = {  kTechId.None, kTechId.None, kTechId.DropMAC, kTechId.None, 
+    local techButtons = {  kTechId.None, kTechId.None, kTechId.None, kTechId.None, 
                kTechId.None, kTechId.None, kTechId.None, kTechId.None }
          
        if self:GetMacsAmount() <=12 then

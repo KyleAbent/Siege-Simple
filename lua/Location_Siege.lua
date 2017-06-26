@@ -87,8 +87,8 @@ local locorig = Location.OnTriggerEntered
          
          if GetGameStarted() then 
              IfImagination(self, entity)
-         else
-             RealWorld(self, entity)
+        -- else
+             if not GetFrontDoorOpen() then  RealWorld(self, entity) end
          end
   
                 

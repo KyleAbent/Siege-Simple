@@ -324,6 +324,7 @@ local kSiege_TechData =
      [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value less than or equal to 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
          */
 
+/*
 
  { [kTechDataId] = kTechId.DropMAC,  
  [kTechDataMapName] = DropMAC.kMapName, 
@@ -337,6 +338,8 @@ local kSiege_TechData =
 [kTechDataSupply] = kMACSupply,
 [kStructureAttachId] = { kTechId.RoboticsFactory, kTechId.ARCRoboticsFactory },
 [kStructureAttachRequiresPower] = true },
+
+*/
 
  /*
  { [kTechDataId] = kTechId.Wall,  

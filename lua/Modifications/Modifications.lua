@@ -17,6 +17,7 @@ return legalBuild, legalPosition, attachEntity, errorString
 
 end
 
+
 function GetAlienCatalystTimeAmount(baseTime, entity)
 
         local catalystTime = 1 * baseTime * (1 + kNutrientMistPercentageIncrease/100)
@@ -60,6 +61,9 @@ function ConstructMixin:GetTotalConstructionTime()
     return time
 end
 */
+
+/*
+
 function GetIsCloseToMenuStructure(player)
     
     local ptlabs = GetEntitiesForTeamWithinRange("PrototypeLab", player:GetTeamNumber(), player:GetOrigin(), PrototypeLab.kResupplyUseRange)
@@ -68,6 +72,8 @@ function GetIsCloseToMenuStructure(player)
     return (ptlabs and #ptlabs > 0) or (armories and #armories > 0) or (armslabs and #armslabs >0)
 
 end
+
+*/
 
 function Shell:GetMinRangeAC()
 return  9999   
@@ -247,6 +253,8 @@ function StompMixin:GetHasSecondary(player)
     return  GetHasTech(player, kTechId.Stomp)
 end
 
+/*
+
 
 local function GetHasSentryBatteryInRadius(self)
       local backupbattery = GetEntitiesWithinRange("SentryBattery", self:GetOrigin(), kBatteryPowerRange)
@@ -260,6 +268,9 @@ end
 function PowerConsumerMixin:GetIsPowered() 
     return self.powered or self.powerSurge or GetHasSentryBatteryInRadius(self)
 end
+
+*/
+
 
 if Server then
 
@@ -328,12 +339,22 @@ local function GetHiveReq(techId, origin, normal, commander)
 end
 local function GetCheckExoDropLimit(techId, origin, normal, commander)
     local num = 0
-                 for index, exosuit in ientitylist(Shared.GetEntitiesWithClassname("ExoSuit")) do
+          for index, exo in ientitylist(Shared.GetEntitiesWithClassname("ExoSuit")) do
                 num = num + 1
     end
     
     return num < 10
 end
+
+
+
+SetCachedTechData(kTechId.FadeEgg, kTechDataResearchTimeKey, kEggGestateTime * 2 )
+
+SetCachedTechData(kTechId.OnosEgg, kTechDataResearchTimeKey, kEggGestateTime * 3 )
+
+
+SetCachedTechData(kTechId.AlienAlertNeedMist, kTechDataBuildRequiresMethod, kAlertType.Info)
+
 
 SetCachedTechData(kTechId.Contamination, kTechDataBuildRequiresMethod, GetCheckNotSiege)
 
@@ -394,15 +415,15 @@ end
 function DeniedBitch()
 return false
 end
-SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
-SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
+--SetCachedTechData(kTechId.Sentry, kStructureBuildNearClass, false)
+--SetCachedTechData(kTechId.Sentry, kStructureAttachRange, 999)
 --SetCachedTechData(kTechId.Sentry, kTechDataSpecifyOrientation, false)
 
 
 
 SetCachedTechData(kTechId.SentryBattery,kVisualRange, kBatteryPowerRange)
-SetCachedTechData(kTechId.SentryBattery,kTechDataDisplayName, "Backup Battery")
-SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures without power!")
+--SetCachedTechData(kTechId.SentryBattery,kTechDataDisplayName, "Backup Battery")
+--SetCachedTechData(kTechId.SentryBattery, kTechDataHint, "Powers structures without power!")
 
 
 SetCachedTechData(kTechId.Sentry, kTechDataBuildMethodFailedMessage, "limt per room reached")

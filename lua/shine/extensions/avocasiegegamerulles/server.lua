@@ -429,7 +429,26 @@ end
  self:NotifyImaginator( nil, "CommandStation HP <=0.30 percent, Marine AutoBeacon triggered.", true)
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
+  
+  function Plugin:NotifySupplyReduct(amt)
+ self:NotifySandCastle( nil, "Marines&Aliens Teams Supply lowered by %s", true, kRemoveXSupplyEveryMin)
+ -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
+ end
+  
+    function Plugin:NotifySupplyReduct(amt)
+ self:NotifySandCastle( nil, "Marines supply increased by %s, proper defense and aliens not very offensive.", true, kRemoveXSupplyEveryMin)
+ -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
+ end
+  
+
+  Shine.Hook.SetupClassHook( "SandCastle", "LowerSupplyForTeamsBy", "NotifySupplyReduct", "PassivePre" )
+  
   Shine.Hook.SetupClassHook( "Imaginator", "TellEveryoneAbtBeacon", "RemoveConfusion", "PassivePre" )
+
+
+  Shine.Hook.SetupClassHook( "SandCastle", "LowerSupplyForTeamsBy", "NotifySupplyReduct", "PassivePre" )
+
+
   
 Shine.Hook.SetupClassHook( "SandCastle", "MarinesStillHaveProperDefense", "MarineProperDefense", "PassivePre" )
 

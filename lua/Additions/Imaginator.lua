@@ -89,6 +89,35 @@ local function NotBeingResearched(techId, who)
      end
     return true
 end
+local function ResearchEggSpecifics(who)
+ local success = false
+      if who:GetIsFree() and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
+      local techIds = {}
+         local tree = GetTechTree(2)
+
+               table.insert(techIds, kTechId.GorgeEgg )
+               table.insert(techIds, kTechId.LerkEgg )
+
+            if GetHasTech(who, kTechId.Xenocide) then
+               table.insert(techIds, kTechId.FadeEgg )
+            end
+            
+            if GetHasTech(who, kTechId.Xenocide) then
+               table.insert(techIds, kTechId.OnosEgg )
+             end
+               
+                local random = table.random(techIds)
+                local techNode = tree:GetTechNode(random)
+           
+           if techNode then
+                who:SetResearching(techNode, who)
+                success = true
+          end
+          
+      end
+      
+      return success
+end
 local function ResearchEachTechButton(who)
 local techIds = who:GetTechButtons() or {}
       if who:isa("EvolutionChamber") then
@@ -110,30 +139,7 @@ local techIds = who:GetTechButtons() or {}
           
       end
       
-      if who:isa("Egg") and who:GetIsFree() and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
-      
-         local tree = GetTechTree(2)
 
-               table.insert(techIds, kTechId.GorgeEgg )
-               table.insert(techIds, kTechId.LerkEgg )
-
-            if tree:GetTechAvailable( kTechId.FadeEgg) then
-               table.insert(techIds, kTechId.FadeEgg )
-            end
-            
-            if tree:GetTechAvailable( kTechId.OnosEgg) then
-               table.insert(techIds, kTechId.OnosEgg )
-             end
-               
-                local random = table.random(techIds)
-                local techNode = tree:GetTechNode(random)
-           
-           if techNode then
-                who:SetResearching(techNode, who)
-                return
-          end
-          
-      end
       
                        for _, techId in ipairs(techIds) do
                      if techId ~= kTechId.None then
@@ -244,19 +250,26 @@ function Imaginator:OnUpdate(deltatime)
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("EvolutionChamber")) do
                        table.insert(researchables, ent)
                        end
-                       
+                       local eggs = {}
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("Egg")) do
-                       table.insert(researchables, ent)
+                       table.insert(eggs, ent)
                        end
                
                      for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
                       if not researchable:isa("RoboticsFactory") then  table.insert(researchables, researchable) end
+                      if researchable:isa("Observatory") then table.insert(researchables, researchable) end 
                    end
                    
                    for i = 1, #researchables do
                        local researchable = researchables[i]
-                      if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable)  end
+                      if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable) end 
                    end
+                   
+                     for i = 1, #eggs do
+                          local egg = eggs[i]
+                         local success = ResearchEggSpecifics(egg)
+                         if success then break end
+                     end
                 end
                 
               if gamestarted and self:GetAlienEnabled() then  self:UpdateHivesManually()  end 

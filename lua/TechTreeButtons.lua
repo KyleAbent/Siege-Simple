@@ -142,7 +142,9 @@ kTechIdToMaterialOffset[kTechId.Embryo] = 34
 kTechIdToMaterialOffset[kTechId.Cyst] = 35
 
 kTechIdToMaterialOffset[kTechId.MAC] = 36
-kTechIdToMaterialOffset[kTechId.DropMAC] = 36
+kTechIdToMaterialOffset[kTechId.MacSpawnOn] = 36
+kTechIdToMaterialOffset[kTechId.MacSpawnOff] = 36
+--kTechIdToMaterialOffset[kTechId.DropMAC] = 36
 kTechIdToMaterialOffset[kTechId.Drifter] = 37
 kTechIdToMaterialOffset[kTechId.DrifterEgg] = 37
 kTechIdToMaterialOffset[kTechId.SelectDrifter] = 98

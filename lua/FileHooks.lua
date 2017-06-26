@@ -87,7 +87,7 @@ ModLoader.SetupFileHook( "lua/CommandStation.lua", "lua/CommandStation_Siege.lua
 ModLoader.SetupFileHook( "lua/ArmsLab.lua", "lua/ArmsLab_Siege.lua", "post" )
 
 
-ModLoader.SetupFileHook( "lua/SentryBattery.lua", "lua/SentryBattery_Siege.lua", "post" )
+--ModLoader.SetupFileHook( "lua/SentryBattery.lua", "lua/SentryBattery_Siege.lua", "post" )
 
 ModLoader.SetupFileHook( "lua/TunnelEntrance.lua", "lua/TunnelEntrance_Siege.lua", "post" )
 
