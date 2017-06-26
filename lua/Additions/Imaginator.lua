@@ -110,7 +110,7 @@ local techIds = who:GetTechButtons() or {}
           
       end
       
-      if who:isa("Egg") and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
+      if who:isa("Egg") and who:GetIsFree() and not who:GetIsResearching() and who:GetTechId() == kTechId.Egg then
       
          local tree = GetTechTree(2)
 
