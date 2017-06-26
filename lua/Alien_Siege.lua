@@ -413,10 +413,12 @@ function Alien:CopyPlayerDataFrom(player)
 end
 
 
-
+*/
 
 end //server
 
+
+/*
 
 
 function Alien:GetHasLayStructure()
@@ -445,7 +447,8 @@ end
 if Client then
 
 
-/*
+
+
 local orig_Alien_UpdateClientEffects = Alien.UpdateClientEffects
 function Alien:UpdateClientEffects(deltaTime, isLocal)
 orig_Alien_UpdateClientEffects(self, deltaTime, isLocal)
@@ -506,10 +509,6 @@ return
 end
 */
 
-Alien.kPrimaledViewMaterialName = "cinematics/vfx_materials/primal_view.material"
-Alien.kPrimaledThirdpersonMaterialName = "cinematics/vfx_materials/primal.material"
-Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal_view.surface_shader")
-Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
 
 
 --Alien.kOnocideViewMaterialName = "cinematics/vfx_materials/Onocide_view.material"
@@ -517,7 +516,8 @@ Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
 --Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide_view.surface_shader")
 --Shared.PrecacheSurfaceShader("cinematics/vfx_materials/Onocide.surface_shader")
 
-local kEnzymeEffectInterval = 0.2
+
+
 
 /*
 
@@ -585,8 +585,22 @@ function Alien:UpdateOnocideEffect(isLocal)
     end 
 
 end
+
+end //client 
 */
 
+
+
+if Client then
+
+Alien.kPrimaledViewMaterialName = "cinematics/vfx_materials/primal_view.material"
+Alien.kPrimaledThirdpersonMaterialName = "cinematics/vfx_materials/primal.material"
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal_view.surface_shader")
+Shared.PrecacheSurfaceShader("cinematics/vfx_materials/primal.surface_shader")
+
+
+
+local kEnzymeEffectInterval = 0.2
 
 function Alien:UpdatePrimalEffect(isLocal)
     if self.primaledClient ~= self.primaled then
@@ -655,6 +669,9 @@ function Alien:UpdateClientEffects(deltaTime, isLocal)
 end
 
 end//client
+
+
+
 
 Shared.LinkClassToMap("Alien", Alien.kMapName, networkVars)
 

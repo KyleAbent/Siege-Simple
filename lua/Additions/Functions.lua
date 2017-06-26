@@ -320,7 +320,9 @@ local function GetLocationName(who)
         return locationName
 end
 function GetIsInSiege(who)
-if string.find(GetLocationName(who), "siege") or string.find(GetLocationName(who), "Siege") then return true end
+local locationName = GetLocationName(who)
+
+if locationName and string.find(locationName, "siege") or string.find(locationName, "Siege") then return true end
 return false
 end
 function GetWhereIsSiege(where)

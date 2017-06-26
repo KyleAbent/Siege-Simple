@@ -1,4 +1,7 @@
-
+    function TunnelEntrance:GetMaxLevel()
+    return 100
+    end
+    
 /*
     function TunnelEntrance:DestroyOther()
     for _, tunnelent in ipairs( GetEntitiesForTeam("TunnelEntrance", 2)) do
@@ -8,9 +11,7 @@
     end
 end
 
-    function TunnelEntrance:GetMaxLevel()
-    return 100
-    end
+
     
     function TunnelEntrance:OnCreatedByGorge(gorge)
      
