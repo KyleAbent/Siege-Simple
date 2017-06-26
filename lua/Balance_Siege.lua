@@ -22,8 +22,8 @@ kARCMinRange = 0 -- why is this even a thing??????
 --kResourceTowerResourceInterval = 4 -- 6
 --kTeamResourcePerTick = 2 -- 1
 --kMaxPersonalResources = 200 -- 100
---kMaxTeamResources = 999 -- 200
-kPlayingTeamInitialTeamRes = 100 -- 60
+kMaxTeamResources = 999 -- 200
+kPlayingTeamInitialTeamRes = 200 -- 60
 
 
 --kCompoundFireDamageDelay = 0
@@ -97,8 +97,8 @@ kPrimalScreamROF = 3
 --kMarineRespawnTime = 8 --default 9
 
 --kFlameThrowerEnergyDamage = 2 --default 3
---kBlinkEnergyCost = 24 -- default 32
---kStartBlinkEnergyCost = 10 --default 14
+kBlinkEnergyCost = 24 -- default 32
+kStartBlinkEnergyCost = 10 --default 14
 --kBoneShieldArmorPerSecond = 95 --default 112
 kMucousShieldPercent = 0.25 --default 0.15
 

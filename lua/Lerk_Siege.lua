@@ -26,7 +26,7 @@ end
 
 end
 
-/*
+
 function Lerk:OnAdjustModelCoords(modelCoords)
     local scale = .75
     local coords = modelCoords
@@ -37,7 +37,7 @@ function Lerk:OnAdjustModelCoords(modelCoords)
     return coords
     
 end
-*/
+
 
 
 
@@ -49,6 +49,10 @@ end
 function Lerk:GetRedemptionCoolDown()
 return 15
 end
+
+*/
+
+
 local origspeed = Lerk.GetMaxSpeed
 
 function Lerk:GetMaxSpeed(possible)
@@ -56,4 +60,3 @@ function Lerk:GetMaxSpeed(possible)
   --return speed * 1.10
   return not self:GetIsOnFire() and speed * 1.10 or speed
 end
-*/

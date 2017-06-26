@@ -25,13 +25,16 @@ end
 
 /*
 
-
 function Fade:GetRebirthLength()
 return 4
 end
 function Fade:GetRedemptionCoolDown()
 return 20
 end
+
+*/
+
+
 
 
 function Fade:GetMaxSpeed(possible)
@@ -74,7 +77,8 @@ function Fade:ModifyVelocity(input, velocity, deltaTime)
 
 end
 
-*/
+
+
 
 if Server then
 
