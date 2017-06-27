@@ -77,6 +77,7 @@ function Observatory:GetSiegePowerOrigin()
 local siegepower = nil
 for i = 1, 24 do
 local siegelocation = GetSiegeLocation()
+  if not siegelocation then return nil end
       siegepower = GetPowerPointForLocation(siegelocation.name)
   if siegepower then return siegepower:GetOrigin() end 
  end
@@ -93,8 +94,8 @@ function Observatory:TriggerSiegeBeacon()
         local origin = self:GetSiegePowerOrigin()
         
         if origin then
-        
-            self.distressBeaconSound:SetOrigin(origin)
+            local soundOrigin = GetImaginator():GetMarineEnabled() and self:GetOrigin() or origin
+            self.distressBeaconSound:SetOrigin(soundOrigin)
 
             // Beam all faraway players back in a few seconds!
            // self.distressBeaconTime = Shared.GetTime() + Observatory.kDistressBeaconTime
