@@ -1,3 +1,4 @@
+kEggGestateTime = 30 -- 2 min onos rather than 3
 --kMinigunDamage = 11 --10
 --kRailgunDamage = 36 --33
 --kRailgunChargeDamage = 145 --140

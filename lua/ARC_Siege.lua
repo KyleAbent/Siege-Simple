@@ -116,7 +116,7 @@ local function MoveToPowers(self)
      self:GiveOrder(kTechId.Move, nil, where, nil, true, true)
      end
      
-     self.lastWand = Shared.GetTime()
+     self.lastWand = Shared.GetTime() + 4
      
      end
      

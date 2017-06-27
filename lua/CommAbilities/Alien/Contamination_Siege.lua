@@ -160,4 +160,4 @@ return GetImaginator():HandleIntrepid(self)
 end
 
 
-Shared.LinkClassToMap("Contamination", Contamination.kMapName, networkVars)
+--Shared.LinkClassToMap("Contamination", Contamination.kMapName, networkVars)

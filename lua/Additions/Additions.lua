@@ -19,8 +19,8 @@ Script.Load("lua/Additions/CystSiege.lua")
 
 Script.Load("lua/Additions/LayStructures.lua")
 
---Script.Load("lua/Additions/EggBeacon.lua")
---Script.Load("lua/Additions/StructureBeacon.lua")
+Script.Load("lua/Additions/EggBeacon.lua")
+Script.Load("lua/Additions/StructureBeacon.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
 --Script.Load("lua/Additions/Wall.lua")
 --Script.Load("lua/Additions/PoopEgg.lua")

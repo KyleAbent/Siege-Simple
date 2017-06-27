@@ -109,6 +109,14 @@ local origkill = PowerPoint.OnKill
     function PowerPoint:OnKill(attacker, doer, point, direction)
         origkill(self, attacker, doer, point, direction)
          self:AdjustMaxArmor(kPowerPointArmor)
+
+           if GetImaginator():GetMarineEnabled() then
+              for index, ent in ipairs(GetEntitiesForTeam("Extractor", 1)) do
+                  if GetLocationForPoint(ent:GetOrigin()) == GetLocationForPoint(self:GetOrigin()) then
+                   ent:Kill()
+                  end
+              end
+           end
     end
 
 end

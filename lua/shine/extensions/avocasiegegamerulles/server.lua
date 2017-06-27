@@ -290,7 +290,7 @@ local function NewUpdateBatteryState( self )
            local powerpoint = location ~= nil and GetPowerPointForLocation(location:GetName())   
             self.attachedToBattery = false
            if powerpoint then 
-            self.attachedToBattery = (powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled()) or GetHasSentryBatteryInRadius(self)
+            self.attachedToBattery = ( GetImaginator():GetMarineEnabled() and powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled()) or GetHasSentryBatteryInRadius(self)
             end
             self.lastBatteryCheckTime = time
         end
@@ -446,8 +446,20 @@ end
   self:NotifySandCastle( nil, "Aliens Team Supply lowered by %s", true, kRemoveXSupplyEveryMin)
  -- self:NotifySandCastle( nil, "Something is wrong here. OR right? I can't tell. *Insert dynamic formula balance adjustment here*", true)
  end
-  
+      function Plugin:SandCastleConclude()
+               local players, numplayers = Shine.GetAllPlayers()
+               if GetSandCastle():GetSDBoolean() and #numplayers == 0 then 
+               
+               local Gamerules = GetGamerules()
+               if not Gamerules then return end
+               Gamerules:DrawGame()
 
+              end
+      end
+
+  Shine.Hook.SetupClassHook( "SandCastle", "Conclude", "SandCastleConclude", "PassivePre" )
+  
+  
   Shine.Hook.SetupClassHook( "Cyst", "WarningMessage", "CystPlacedPoweredRoomSetup", "PassivePre" )
   
     Shine.Hook.SetupClassHook( "SandCastle", "NotifyLowerAliens", "NotifyLowerAliensHook", "PassivePost" )
@@ -505,9 +517,14 @@ end
 
 
 
+function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force )  
+        local players, numplayers = Shine.GetAllPlayers()
+ if self.Started or self.stopped or Gamerules:GetGameStarted() or numplayers > 10 then return end
+  self:StartAutoCommTimer()
+  self.Started = true
+end
 
 function Plugin:MapPostLoad()
-      --self:StartAutoCommTimer()
       Server.CreateEntity(SandCastle.kMapName)
       Server.CreateEntity(Imaginator.kMapName)
 end
@@ -653,10 +670,12 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
       end
    
 else
-                     --    self:CreateTimer( 27, 1,  self.autoCommTime, function() 
-                     --    if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
-                     --     Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
-                     --   end)
+                    if self.Started then
+                         self:CreateTimer( 27, 1,  self.autoCommTime, function() 
+                       if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 27 ) end
+                          Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                        end)
+                    end
 
 end
 
@@ -683,7 +702,7 @@ function Plugin:SetGameState( Gamerules, State, OldState )
                        
   end 
     if State ==  kGameState.Team1Won  or State ==  kGameState.Team2Won   then
-    
+    self.Started = false
                        for i = 1, 10 do
                         Shared.ConsoleCommand("removebot")
                        end
@@ -705,6 +724,7 @@ end
 function Plugin:StartAutoCommTimer()
  self.autoCommTime = kAutoCommTimer
 
+       self:NotifyAutoComm( nil, "AutoComm timer started - 300 seconds and less than 10 players will start.", true)
                     self:SimpleTimer( self.autoCommTime, function() 
               
                     local  numplayers = #Shine.GetAllPlayers()
@@ -722,7 +742,7 @@ function Plugin:StartAutoCommTimer()
            Shared.ConsoleCommand("sh_imaginator 1 true")
            Shared.ConsoleCommand("sh_imaginator 2 true")
            
-           self:NotifyAutoComm( nil, "Usually the AutoComm timer would start here however I think it's best to leave auto enable disabled until after 5.30.17. Type sh_autocomm if you want to play. (Mod command)", true)
+           self:NotifyAutoComm( nil, "Derp", true)
                  end)
     
 
@@ -733,6 +753,11 @@ function Plugin:StartAutoCommTimer()
   self.autoCommTime = Clamp(self.autoCommTime - 1, 0, kAutoCommTimer)
  end)
 
+                         self:CreateTimer( 29, 1,  self.autoCommTime, function() 
+                       if GetGamerules():GetGameStarted() then Plugin:DestroyTimer( 29 ) end
+                          Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                        end)
+                        
 
                          self:CreateTimer( 84, 1,  -1, function() 
                          local  numplayers = #Shine.GetAllPlayers()
@@ -741,7 +766,7 @@ function Plugin:StartAutoCommTimer()
                             if  self.autoCommTime <=10 and self.autoCommTime >= 1 or  self.autoCommTime == 30 or  self.autoCommTime == 60 or  self.autoCommTime == 90
                             or  self.autoCommTime == 120 or  self.autoCommTime == 150 then --ugh
                             self:NotifyAutoComm( nil, "AutoComm will start in %s seconds if playercount<10. say /extend to extend the timer or /stop to stop it.", true, self.autoCommTime)
-                         -- Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
+                         --   Shine.ScreenText.Add( 33, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                          end
                          
                         end)

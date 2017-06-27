@@ -1,6 +1,6 @@
 Script.Load("lua/Additions/Convars.lua")
---Script.Load("lua/Additions/EggBeacon.lua")
---Script.Load("lua/Additions/StructureBeacon.lua")
+Script.Load("lua/Additions/EggBeacon.lua")
+Script.Load("lua/Additions/StructureBeacon.lua")
 Script.Load("lua/Weapons/Alien/PrimalScream.lua")
 Script.Load("lua/Additions/BackupLight.lua")
 Script.Load("lua/Additions/CommTunnel.lua")
@@ -494,7 +494,7 @@ local kSiege_TechData =
 [kTechDataTooltipInfo] = "Revives Dead Players as well. Powers off Observatory for a short duration after beaconing."},
 								
 								
-							/*	
+							
 				        { [kTechDataId] = kTechId.EggBeacon, 
         [kTechDataCooldown] = kEggBeaconCoolDown, 
          [kTechDataTooltipInfo] = "Eggs Spawn approximately at the placed Egg Beacon. Be careful as infestation is required.", 
@@ -526,7 +526,7 @@ local kSiege_TechData =
 [kTechDataMaxHealth] = kStructureBeaconHealth, [kTechDataMaxArmor] = kStructureBeaconArmor},
                
 
-				
+				/*	
 
            { [kTechDataId] = kTechId.BackupLight, 
            [kTechDataHint] = "Powered by thought!", 

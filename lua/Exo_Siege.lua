@@ -44,8 +44,8 @@ function Exo:OnCreate()
     --self.isLockedEjecting = false
   --  self.wallboots = true
    -- self.wallWalking = false
-    self.wallWalkingNormalGoal = Vector.yAxis
-    self.timeLastWallJump = 0
+ --   self.wallWalkingNormalGoal = Vector.yAxis
+--    self.timeLastWallJump = 0
 
 end
 /*
@@ -181,9 +181,9 @@ function Exo:OnInitialized()
 oninit(self)
     InitMixin(self, StunMixin)
    self:SetTechId(kTechId.Exo)
-   self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
-    self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
-    self.timeLastWallJump = 0
+  -- self:AddTimedCallback(function() HealSelf(self) return true end, 1) 
+  --  self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
+ --   self.timeLastWallJump = 0
 end
 local origmodel = Exo.InitExoModel
 

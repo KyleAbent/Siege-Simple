@@ -1,3 +1,43 @@
+    function Egg:GetMaxLevel()
+    return 100
+    end
+
+
+function Egg:GetMax()
+
+    local orig = kMatureEggHealth
+    local bySiege = orig * 2
+    local val = Clamp(orig * (GetRoundLengthToSiege()/1) + orig, orig, bySiege)
+    self.level = self:GetMaxLevel() * GetRoundLengthToSiege()
+ --  self.level = self.level * 
+ 
+  --  local byFive = val * 2
+    --local builttime = Clamp(Shared.GetTime() -  self.builtTime, 0, 300)
+ --   val = Clamp(val * (builttime/300) + val, val, byFive)
+    --self.level = (self.level * 2) * builttime
+     --Print("builttime is %s, val is %s", builttime, val)
+    return val
+
+end 
+
+/*
+function Egg:GetMaxA()
+    local orig = kMatureEggArmor
+    local bySiege = orig * 2
+    return Clamp(bySiege * GetRoundLengthToSiege(), orig, bySiege)
+end 
+*/
+
+function Egg:ArtificialLeveling()
+  if Server and GetIsTimeUp(self.timeMaturityLastUpdate, 8 )  then
+   self:AdjustMaxHealth(self:GetMax())
+  -- self:AdjustMaxArmor(self:GetMaxA())
+   end
+end
+
+
+
+
 function Egg:GetClassToGestate()
     return self:GetMapNameOf()
 end
@@ -156,5 +196,21 @@ function Egg:SpawnPlayer(player)
     return false, nil
 
 end
+
+/*
+if Server then
+local orig = Egg.OnResearchComplete
+function Egg:OnResearchComplete(researchId)
+
+
+   self:AdjustMaxHealth(self:GetMaxHealth() * 1.10)
+   
+   orig(self, researchId)
+
+end 
+
+end
+
+*/
 
 

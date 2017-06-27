@@ -30,7 +30,7 @@ local kFadeOutCinematicNames =
 }
 */
 function Sentry:GetFov()
-    return 360
+     if  GetImaginator():GetMarineEnabled() then return 360 else return Sentry.kFov end
 end
 
 local networkVars = {}

@@ -232,8 +232,18 @@ function SandCastle:CountSTimer()
        end
        
 end
+function SandCastle:Conclude()
+
+
+return false
+
+end
 function SandCastle:EnableSD()
 self.isSuddenDeath = true
+
+        local players, numplayers = Shine.GetAllPlayers()
+            self:Conclude()
+            self:AddTimedCallback( SandCastle.Conclude, 300 )
 end
 function SandCastle:CountSDTimer()
   if not self:GetSDAllowed() then return end
@@ -316,7 +326,7 @@ function SandCastle:LowerSupplyForTeamsBy(aliens, marines)
             
       --  Print("aliens is %s", aliens)
       --  Print("marines is %s", marines)
-        
+         if GetImaginator():GetMarineEnabled() then return end
             if marines == true then
             marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
             self:NotifyLowerMarines()

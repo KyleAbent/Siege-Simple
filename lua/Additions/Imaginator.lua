@@ -176,7 +176,7 @@ function Imaginator:UpdateHivesManually()
           for _, techpoint in ientitylist(Shared.GetEntitiesWithClassname("TechPoint")) do
                    local location = GetLocationForPoint(techpoint:GetOrigin())
                     local powerpoint =  location and GetPowerPointForLocation(location.name)
-             if techpoint:GetAttached() == nil and powerpoint and powerpoint:GetIsDisabled()  then 
+             if techpoint:GetAttached() == nil and powerpoint and powerpoint:GetIsDisabled()  or not powerpoint:GetIsBuilt() then 
                local hive = techpoint:SpawnCommandStructure(2) 
                   if hive then hive:GetTeam():SetTeamResources(hive:GetTeam():GetTeamResources() - 40) break end
              end
@@ -888,6 +888,36 @@ local random = {}
                    return who:GiveOrder(orderType, target:GetId(), where, nil, false, false)   
                 end
 end
+
+local function ManageDropExos(self)
+ local cost = GetMarineCostScalar(self, kExosuitDropCost)
+   if not TresCheck(1, kExosuitDropCost) then return end
+local proto = {}
+
+    local num = 0
+          for index, exo in ientitylist(Shared.GetEntitiesWithClassname("Exosuit")) do
+                num = num + 1
+    end
+    
+    if num >= 4 then return end
+
+   for index, ent in ipairs(GetEntitiesForTeam("PrototypeLab", 1)) do
+      if ent:GetIsBuilt() and ent:GetIsPowered() then table.insert(proto, ent) end
+   end
+   
+     if #proto >= 1 then
+     
+       local random = table.random(proto)
+       
+         if random then
+                 if not GetHasTech(random, kTechId.Exosuit) then return end
+                 random:GetTeam():SetTeamResources(single:GetTeam():GetTeamResources() - kExosuitDropCost)
+                CreateEntity(Exosuit.kMapName, FindFreeSpace(random:GetOrigin()), 1)
+         end
+     
+     end
+   
+end
 local function ManageMacs()
 local cc = nil
 
@@ -928,6 +958,20 @@ local function ManageArcs(self)
     --  end
  
 end
+local function GetMaxMacs()
+--Because supply is not counted right now.
+
+if GetSiegeDoorOpen() then return 8 else return 12 end
+
+
+end
+local function GetMaxArcs()
+--Because supply is not counted right now.
+
+if GetSiegeDoorOpen() then return 8 else return 12 end
+
+
+end
 local function ManageRoboticFactories(self)
       local  ARCS = {}
       local ARCRobo = {} --ugh
@@ -939,7 +983,7 @@ local function ManageRoboticFactories(self)
                if not mac:isa("MACCredit") then MACS = MACS + 1 end
      end
      if #robos >= 1 then 
-     if chanceSpawn == 1 and MACS <= 11 and TresCheck(1, kMACCost ) then
+     if chanceSpawn == 1 and MACS < GetMaxMacs() and TresCheck(1, kMACCost ) then
       local single = table.random(robos)
       local maccost = GetMarineCostScalar(self, kMACCost)
        if GetIsTimeUp(self.lastrobo, math.random(4, 12)) and GetIsUnitActive(single) and not single:GetIsResearching() then
@@ -975,7 +1019,7 @@ local function ManageRoboticFactories(self)
      local ArcCount = table.count(ARCS) 
      
      
-      if ArcCount < 12 and TresCheck(1, kARCCost) then
+      if ArcCount < GetMaxArcs() and TresCheck(1, kARCCost) then
          local arccost = GetMarineCostScalar(self, kARCCost)
          if ( GetIsTimeUp(self.lastrobo, math.random(4, 12)) or GetSiegeDoorOpen() )   and GetIsUnitActive(ARCRobo) and not ARCRobo.open then
          ARCRobo:GetTeam():SetTeamResources(ARCRobo:GetTeam():GetTeamResources() - arccost)
@@ -1056,6 +1100,7 @@ function Imaginator:ActualFormulaMarine()
 local randomspawn = nil
 local tospawn, cost, gamestarted = GetMarineSpawnList(self)
  ManageMacs() 
+  --ManageDropExos(self) not working debug
 if gamestarted and not string.find(Shared.GetMapName(), "pl_") then ManageRoboticFactories(self)  ManageArcs(self) end
 if  GetIsTimeUp(self.lastMarineBeacon, 30) then self:ManageMarineBeacons() end
 local powerpoint = GetRandomActivePower()
@@ -1273,6 +1318,7 @@ local function ChanceRandomContamination(who) --messy
            
              
            if where then 
+           where = where:GetOrigin()
            where = FindFreeSpace(where, 2, 24)
                local contamination = CreateEntityForTeam(kTechId.Contamination, FindFreeSpace(where, 4, 8), 2)
                    
@@ -1508,7 +1554,7 @@ local function FakeCyst(where)
          local cyst = GetEntitiesWithinRange("Cyst",where, kCystRedeployRange)
          local cost = not GetSetupConcluded() and 1 or 0
         if not (#cyst >=1) and TresCheck(2, cost) then
-        where = FindFreeSpace(where, 1, 8, false)
+        where = FindFreeSpace(where, 1, kCystRedeployRange-1, false)
         entity = CreateEntityForTeam(kTechId.Cyst, where, 2)
         entity:GetTeam():SetTeamResources(entity:GetTeam():GetTeamResources() - cost)
         end

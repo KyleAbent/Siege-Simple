@@ -54,14 +54,19 @@ local function PowerPointToggles(self, entity)
                          if not powerPoint:GetIsDisabled() and not powerPoint:GetIsSocketed() and entity:isa("Marine") then 
                          if not string.find(self.name, "siege") and not string.find(self.name, "Siege") or GetSiegeDoorOpen() then
                          powerPoint:SetInternalPowerState(PowerPoint.kPowerState.socketed)  
+                           if GetImaginator():GetMarineEnabled() then powerPoint:SetConstructionComplete() end 
                          end
                          end
                         
-                        if  powerPoint:GetIsBuilt() and entity:isa("Alien") and not entity:isa("Commander") then
+                        if  not GetFrontDoorOpen() and entity:isa("Alien") and not entity:isa("Commander") then
                          local frontdoor = GetEntitiesWithinRange("FrontDoor", entity:GetOrigin(), 7)
                          if #frontdoor >=1 then return end --sometimes hugging door tricks the location :x
-                        -- powerPoint:SetConstructionComplete()
+                        if not powerPoint:GetIsBuilt() then 
+                         powerPoint:SetConstructionComplete() 
                          powerPoint:Kill()
+                         else
+                         powerPoint:Kill()
+                         end
                         end
                         
          --   end 
@@ -77,7 +82,7 @@ local locorig = Location.OnTriggerEntered
          ExploitCheck(entity)
          end
          
-         if not GetFrontDoorOpen()  and GetGameStarted() then 
+         if not GetFrontDoorOpen()   or  GetImaginator():GetMarineEnabled() and GetGameStarted() then 
              PowerPointToggles(self, entity)
         -- else
         --     if not GetFrontDoorOpen() then  RealWorld(self, entity) end

@@ -339,7 +339,7 @@ local function GetHiveReq(techId, origin, normal, commander)
 end
 local function GetCheckExoDropLimit(techId, origin, normal, commander)
     local num = 0
-          for index, exo in ientitylist(Shared.GetEntitiesWithClassname("ExoSuit")) do
+          for index, exo in ientitylist(Shared.GetEntitiesWithClassname("Exosuit")) do
                 num = num + 1
     end
     
@@ -603,7 +603,7 @@ local function CorrodeOnInfestation(self)
         end
         
         if not self:isa("CommandStation") and not self:isa("PowerPoint") and self:GetArmor() == 0 and not self:isa("ARC")  and GetIsRoomPowerDown(self) then
-           local damage = kInfestationCorrodeDamagePerSecond * 4
+           local damage = kInfestationCorrodeDamagePerSecond * 16
                     self:DeductHealth(damage, nil, nil, true, false, true)
         end
         
@@ -704,7 +704,7 @@ if Server then
         end
         
         -- to prevent too much network spam from happening we update only every second the max health
-        if self:isa("Cyst") or self:isa("TunnelEntrance") and GetIsTimeUp(self.timeMaturityLastUpdate, 8 ) then
+        if self:isa("Cyst") or self:isa("TunnelEntrance") or self:isa("Egg") and GetIsTimeUp(self.timeMaturityLastUpdate, 8 ) then
         
             self:ArtificialLeveling()
             self.timeMaturityLastUpdate = Shared.GetTime()
