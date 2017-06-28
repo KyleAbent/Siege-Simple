@@ -329,6 +329,75 @@ kGorgeBrainActions =
     ------------------------------------------
     --
     ------------------------------------------
+    
+      function(bot, brain)
+        local name = "tunnel"
+        
+        local skulk = bot:GetPlayer()
+        local eyePos = skulk:GetEyePos()
+
+        local tunnels = EntityListToTable(Shared.GetEntitiesWithClassname("TunnelEntrance"))            
+        local bestPheromoneLocation = nil
+        local bestValue = 0
+        
+        for p = 1, #tunnels do
+        
+            local currentTunnel = tunnels[p]
+            if currentTunnel then
+                            
+                if currentTunnel.connected and GetIsOriginInHiveRoom(currentTunnel:GetOrigin()) then
+                
+                    local location = currentTunnel:GetOrigin()
+                    local locationOnMesh = Pathing.GetClosestPoint(location)
+                    local distanceFromMesh = location:GetDistance(locationOnMesh)
+                    
+                    if distanceFromMesh > 0.001 and distanceFromMesh < 2 then
+                    
+                        local distance = eyePos:GetDistance(location)
+                        
+                        if currentTunnel.visitedBy == nil then
+                            currentTunnel.visitedBy = {}
+                        end
+                                        
+                        if not currentTunnel.visitedBy[bot] then
+                            if distance < 2  then 
+                                currentTunnel.visitedBy[bot] = true
+                                if Server then currentTunnel:SuckinEntity(skulk)  end
+                            else   
+            
+                                -- Value goes from 5 to 10
+                                local value = 25 / math.max(distance, 1.0) - #(currentTunnel.visitedBy)
+                        
+                                if value > bestValue then
+                                    bestPheromoneLocation = locationOnMesh
+                                    bestValue = value
+                                end
+                                
+                            end    
+                            
+                        end    
+                            
+                    end
+                    
+                end
+                        
+            end
+            
+        end
+        
+        local weight = EvalLPF( bestValue, {
+            { 0.0, 0.0 },
+            { 10.0, 1.0 }
+            })
+
+        return { name = name, weight = weight,
+            perform = function(move)
+                bot:GetMotion():SetDesiredMoveTarget(bestPheromoneLocation)
+                bot:GetMotion():SetDesiredViewTarget(nil)
+            end }
+    end,
+    
+    
     function(bot, brain)
         local name = "pheromone"
         

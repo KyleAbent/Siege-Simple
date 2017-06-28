@@ -821,13 +821,30 @@ local player =  GetNearest(who:GetOrigin(), "Alien", 2, function(ent) return ent
         end
         
 end
-local function ManageDrifters()
-local hive = nil
+local function ManageCommTunnels()
+        local hive = GetRandomHive()
+        
+         if hive then       
+         local where = hive:GetOrigin()
+             local commTunnels = GetEntitiesForTeamWithinRange("CommTunnel", 2, where, 9999)
+     
+               if #commTunnels <= 1 then
+                    local tunnel = CreateEntity(CommTunnel.kMapName, FindFreeSpace(where), 2)
+                    local where = tunnel:GetOrigin()
+                    local player =  GetNearest(where, "Player", 2)
+                    if player then
+                    tunnel:SetOwner(player)
+                    end
+                else
+               return 
+                end
+         end
+end
 
-   for index, hivey in ipairs(GetEntitiesForTeam("Hive", 2)) do
-       hive = hivey
-       break
-   end
+local function ManageDrifters()
+local hive = GetRandomHive()
+
+
    
    if hive then
      local where = hive:GetOrigin()
@@ -1562,6 +1579,7 @@ end
 function Imaginator:ActualAlienFormula(cystonly)
 --Print("AutoBuildConstructs")
  ManageDrifters() 
+ ManageCommTunnels()
 local  hivecount = #GetEntitiesForTeam( "Hive", 2 )
 if hivecount < 3 and not GetSandCastle():GetSDBoolean() then return end -- build hives first, 6.18.17 maybe if Sg open and tres>=80 then build other..
 local randomspawn = nil
@@ -1722,6 +1740,11 @@ local tospawn = {}
       --10% xhance of contam
    
 --if ARC >= 1 and ShadeInk <1  then table.insert(tospawn, kTechId.ShadeInk) end
+
+   for index, ent in ipairs(GetEntitiesForTeam("CommTunnel", 2)) do
+       if not GetIsOriginInHiveRoom( ent:GetOrigin() ) and who:GetDistance(ent) >= 16  then ent:SetOrigin( FindFreeSpace( who:GetOrigin() ) )  break end
+      if who:GetDistance(ent) >= 16 then  ent:SetOrigin( FindFreeSpace( who:GetOrigin() ) )  end break
+   end
 
 if Whip <=3  and WhipTotal<= 24 then table.insert(tospawn, kTechId.Whip) end
 

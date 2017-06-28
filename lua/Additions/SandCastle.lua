@@ -232,18 +232,8 @@ function SandCastle:CountSTimer()
        end
        
 end
-function SandCastle:Conclude()
-
-
-return false
-
-end
 function SandCastle:EnableSD()
 self.isSuddenDeath = true
-
-        local players, numplayers = Shine.GetAllPlayers()
-            self:Conclude()
-            self:AddTimedCallback( SandCastle.Conclude, 300 )
 end
 function SandCastle:CountSDTimer()
   if not self:GetSDAllowed() then return end
@@ -326,7 +316,7 @@ function SandCastle:LowerSupplyForTeamsBy(aliens, marines)
             
       --  Print("aliens is %s", aliens)
       --  Print("marines is %s", marines)
-         if GetImaginator():GetMarineEnabled() then return end
+        
             if marines == true then
             marineTeam:RemoveSupplyUsed(kRemoveXSupplyEveryMin)
             self:NotifyLowerMarines()
@@ -356,22 +346,28 @@ function SandCastle:OnUpdate(deltatime)
   if gamestarted then 
   
        local ppcount = 0
-       if not self.timelastPPCount or self.timelastPPCount + 60 <= Shared.GetTime() and self:GetFrontOpenBoolean() and not self:GetSiegeOpenBoolean() then
-        for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
-             if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then ppcount = ppcount + 1 end
-        end 
+
+       if not self.timelastPPCount or self.timelastPPCount + 60 <= Shared.GetTime() then
+        
+        
+        if self:GetFrontOpenBoolean() and not self:GetSiegeOpenBoolean()  then 
+           for index, powerpoint in ientitylist(Shared.GetEntitiesWithClassname("PowerPoint")) do
+               if powerpoint:GetIsBuilt() and not powerpoint:GetIsDisabled() then ppcount = ppcount + 1 end
+          end 
+       end
+       
         
        
      
-     local shouldDeductMarines = true
-     local shouldDeductAliens = true
+     local shouldDeductMarines = not self:GetSiegeOpenBoolean()
+     local shouldDeductAliens = not self:GetSiegeOpenBoolean()
         
-        if ppcount >= self.MSCPPC then
+        if ppcount ~= 0 and ppcount >= self.MSCPPC then
            self:MarinesStillHaveProperDefense( )
            shouldDeductMarines = false
         end
         
-        if  ppcount <=2 then
+        if ppcount ~= 0 and ppcount <=2 then
            local gamestarttime = GetGameInfoEntity():GetStartTime()
            local gameLength = Shared.GetTime() - gamestarttime
            local timeleft = self.SiegeTimer - gameLength
