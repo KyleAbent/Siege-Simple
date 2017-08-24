@@ -125,6 +125,28 @@ end
 
 OldBurnSporesAndUmbra = Shine.Hook.ReplaceLocalFunction( Flamethrower.FirePrimary, "BurnSporesAndUmbra", NewBurnSporesAndUmbra )
 
+
+Shine.Hook.SetupClassHook( "Player", "HookWithShineToBuyMist", "BecauseFuckSpammingCommanders", "Replace" )
+
+function Plugin:BecauseFuckSpammingCommanders(player)
+if not GetGamerules():GetGameStarted() then return end
+local CreditCost = 1
+ local client = player:GetClient()
+local controlling = client:GetControllingPlayer()
+local Client = controlling:GetClient()
+if self:GetPlayerCreditsInfo(Client) < CreditCost then
+self:NotifyCredits( Client, "%s costs %s credit, you have %s credit. Purchase invalid.", true, String, CreditCost, self:GetPlayerCreditsInfo(Client))
+return
+end
+self.CreditUsers[ Client ] = self:GetPlayerCreditsInfo(Client) - CreditCost
+//self:NotifyCredits( nil, "%s purchased a %s with %s credit(s)", true, Player:GetName(), String, CreditCost)
+player:GiveItem(NutrientMist.kMapName)
+   Shine.ScreenText.SetText("Salt", string.format( "%s Salt", self:GetPlayerCreditsInfo(Client) ), Client) 
+   self.BuyUsersTimer[Client] = Shared.GetTime() + 3 
+     self.PlayerSpentAmount[Client] = self.PlayerSpentAmount[Client]  + CreditCost
+return
+end
+
 /*
 
 local OldUpdGestation
@@ -516,13 +538,14 @@ self:NotifySandCastle( Client, "Tunnel Entrance placed at Hive FAILED. Try again
 end
 
 
-
+/*
 function Plugin:JoinTeam( Gamerules, Player, NewTeam, Force )  
         local players, numplayers = Shine.GetAllPlayers()
  if self.Started or self.stopped or Gamerules:GetGameStarted() or numplayers > 10 then return end
-  self:StartAutoCommTimer()
+--  self:StartAutoCommTimer()
   self.Started = true
 end
+*/
 
 function Plugin:MapPostLoad()
       Server.CreateEntity(SandCastle.kMapName)
@@ -646,6 +669,7 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
     if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kPrimaryTimer then
          AddPrimaryTimer(Client)
    end
+   /*
    
     if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) >  kSiegeTimer  then
        if GetSandCastle():GetSDAllowed()  then
@@ -653,9 +677,11 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
        end 
    end
    
-   if GetSandCastle():GetSDBoolean() then
-   Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
-   end
+   */
+   
+   --if GetSandCastle():GetSDBoolean() then
+  -- Shine.ScreenText.Add( 82, {X = 0.40, Y = 0.95,Text = "Sudden Death is ACTIVE! (No Respawning, No CC/Hive Healing)",Duration = 300,R = 255, G = 255, B = 0,Alignment = 0,Size = 4,FadeIn = 0,}, Client )
+  -- end
    
           if GetImaginator():GetAlienEnabled() and  GetImaginator():GetMarineEnabled()  then
         local players, numplayers = Shine.GetAllPlayers()
@@ -668,7 +694,8 @@ if ( Shared.GetTime() - GetGamerules():GetGameStartTime() ) < kFrontTimer then
                        
          end
       end
-   
+
+/*   
 else
                     if self.Started then
                          self:CreateTimer( 27, 1,  self.autoCommTime, function() 
@@ -676,7 +703,7 @@ else
                           Shine.ScreenText.Add( 14, {X = 0.40, Y = 0.90,Text = string.format( "AutoComm will start in %s", self.autoCommTime ),Duration = 1,R = 255, G = 0, B = 0,Alignment = 0,Size = 3,FadeIn = 0,}, Client )
                         end)
                     end
-
+*/
 end
 
 end
@@ -721,6 +748,9 @@ function Plugin:SetGameState( Gamerules, State, OldState )
           
     
 end
+
+/*
+
 function Plugin:StartAutoCommTimer()
  self.autoCommTime = kAutoCommTimer
 
@@ -773,6 +803,8 @@ function Plugin:StartAutoCommTimer()
              
 
 end
+
+*/
 function Plugin:NotifySuddenDeath( Player, String, Format, ... )
 Shine:NotifyDualColour( Player, 255, 165, 0,  "[SuddenDeath]",  255, 0, 0, String, Format, ... )
 end
@@ -1241,6 +1273,13 @@ local CystCommand = self:BindCommand( "sh_cyst", "cyst", Cyst )
 CystCommand:AddParam{ Type = "clients" }
 CystCommand:Help( "<player> Give cyst to player(s)" )
 
+local function TellHives()
+           for index, hive in ientitylist(Shared.GetEntitiesWithClassname("Hive")) do
+                hive:OnAutoCommTriggerOn() 
+                end
+                
+                
+end
 
 local function Imaginator( Client, Number, Boolean )
 GetImaginator():SetImagination(Boolean, Number)
@@ -1248,6 +1287,7 @@ if Number == 1 then
 GetImaginator().marineenabled = Boolean
 elseif Number == 2 then
 GetImaginator().alienenabled = Boolean
+TellHives()
 end
  self:NotifyGeneric( nil, "%s Imaginator set to %s (No Comm Required)", true, Number, Boolean)
   

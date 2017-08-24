@@ -60,14 +60,14 @@ self.techTree:AddPassive(kTechId.AcidRocket, kTechId.Stab, kTechId.None, kTechId
 self.techTree:AddPassive(kTechId.LerkBileBomb, kTechId.Spores, kTechId.None, kTechId.AllAliens)
 
    
-  --  self.techTree:AddPassive(kTechId.CragHiveTwo, kTechId.CragHive)
+    self.techTree:AddPassive(kTechId.CragHiveTwo, kTechId.CragHive)
   --  self.techTree:AddPassive(kTechId.ShiftHiveTwo, kTechId.ShiftHive)
- --self.techTree:AddBuyNode(kTechId.Rebirth, kTechId.Shell, kTechId.None, kTechId.AllAliens)
-   --self.techTree:AddBuyNode(kTechId.Redemption, kTechId.Shell, kTechId.None, kTechId.AllAliens)
+ self.techTree:AddBuyNode(kTechId.Rebirth, kTechId.Shell, kTechId.None, kTechId.AllAliens)
+   self.techTree:AddBuyNode(kTechId.Redemption, kTechId.Shell, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.Hunger, kTechId.Shell, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.ThickenedSkin, kTechId.Spur, kTechId.None, kTechId.AllAliens)
     --self.techTree:AddBuyNode(kTechId.DamageResistance, kTechId.Spur, kTechId.None, kTechId.AllAliens)
-        self.techTree:AddResearchNode(kTechId.WhipStealFT,  kTechId.BioMassNine) 
+        --self.techTree:AddResearchNode(kTechId.WhipStealFT,  kTechId.BioMassNine) 
 --        self.techTree:AddResearchNode(kTechId.ContamEggBeacon,  kTechId.BioMassNine) 
         
         

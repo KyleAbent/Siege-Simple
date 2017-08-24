@@ -43,8 +43,8 @@ function Egg:GetClassToGestate()
 end
 
 function Egg:DelayedActivation()
-   self.Auto = true
-      self:AddTimedCallback(Egg.ResearchSpecifics, 8 )
+   self.Auto = false --true
+    --  self:AddTimedCallback(Egg.ResearchSpecifics, 8 )
 end
 
 function Egg:ResearchSpecifics()

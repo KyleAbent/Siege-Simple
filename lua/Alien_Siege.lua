@@ -1,5 +1,14 @@
 
-local networkVars = {lastredeemorrebirthtime = "time", canredeemorrebirth = "boolean",  primaled = "boolean",  primaledID = "entityid",}
+local networkVars = 
+
+{
+lastredeemtime = "time", 
+lastrebirthtime = "time", 
+canredeem = "boolean", 
+canbirth = "boolean", 
+ primaled = "boolean",  
+primaledID = "entityid",
+ }
 
  
 
@@ -11,8 +20,10 @@ local orig_Alien_OnCreate = Alien.OnCreate
 function Alien:OnCreate()
     orig_Alien_OnCreate(self)
      self:UpdateWeapons()
-     self.lastredeemorrebirthtime = 0 --i would like to make a new alien class with custom networkvars like this some day :/
-     self.canredeemorrebirth = true
+     self.lastredeemtime = 0 
+     self.lastrebirthtime = 0 
+     self.canredeem = true
+     self.canbirth = true
       self.primaled = false
       self.primaledID = Entity.invalidI 
       self.primalGiveTime = 0
@@ -106,13 +117,17 @@ function Alien:CheckRedemptionTimer()
        end
        return false
 end
-/*
+
 function Alien:GetRebirthLength()
 return 0
 end
 function Alien:GetRedemptionCoolDown()
 return 0
 end
+
+/*
+
+
 function Alien:UpdateArmorAmountManual()
     local teamInfo = GetTeamInfoEntity(2)
           if teamInfo then
@@ -173,6 +188,7 @@ return
 
 end
 
+*/
 
 if Server then
 
@@ -192,7 +208,7 @@ end
 
 end
 
-*/
+
 
 
 
@@ -204,16 +220,16 @@ function Alien:RefreshTechsManually()
 end
  
   
-  /*
+  
 function Alien:RedemptionTimer()
            local threshold =   math.random(kRedemptionEHPThresholdMin,kRedemptionEHPThresholdMax)  / 100
               --Print("threshold is %s", threshold)
               local scalar = self:GetHealthScalar()
                if GetHasRedemptionUpgrade(self) and scalar <= threshold  then
-                 self.canredeemorrebirth = Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown()
+                 self.canredeem = Shared.GetTime() > self.lastredeemtime  + self:GetRedemptionCoolDown()
                  --Print("scalar is %s threshold is %s", scalar, threshold)
-                 if self.canredeemorrebirth then
-                 self.canredeemorrebirth = false
+                 if self.canredeem then
+                 self.canredeem = false
                  self:AddTimedCallback(Alien.RedemAlienToHive, math.random(1,4) ) 
                  end      
         end
@@ -240,9 +256,9 @@ function Alien:TeleportToHive(usedhive)
    
 end
 
- */
  
- /*
+ 
+ 
 
 function Alien:TriggerRebirth()
 
@@ -321,7 +337,7 @@ function Alien:TriggerRebirth()
                newPlayer:TriggerRebirthCountDown(newPlayer:GetClient():GetControllingPlayer())
                newPlayer:SetGestationData(upgradeManager:GetUpgrades(), newLifeFormTechId, 10, 10) //Skulk to X 
                newPlayer.gestationTime = self:GetRebirthLength()
-               newPlayer.lastredeemorrebirthtime = Shared.GetTime()
+               newPlayer.lastrebirthtime = Shared.GetTime()
                newPlayer.triggeredrebirth = true
                
                //Spawn protective boneshield    
@@ -339,7 +355,7 @@ function Alien:TriggerRebirth()
     
 end
 function Alien:GetEligableForRebirth()
-return Shared.GetTime() > self.lastredeemorrebirthtime  + self:GetRedemptionCoolDown() 
+return Shared.GetTime() > self.lastrebirthtime  + self:GetRedemptionCoolDown() 
 end
 local function SingleHallucination(self, player)
   --Why a cloud ?
@@ -384,12 +400,12 @@ function Alien:RedemAlienToHive()
           if client.GetIsVirtual and client:GetIsVirtual() then return end
           client = client:GetControllingPlayer()
          if client and self.OnRedeem then self:OnRedeem(client) end
-        self.lastredeemorrebirthtime = Shared:GetTime()
+        self.lastredeemtime = Shared:GetTime()
      end
         return false
 end
 
-
+/*
 
 function Alien:CheckGlow(Glowing, color, duration)
      
@@ -399,11 +415,15 @@ function Alien:CheckGlow(Glowing, color, duration)
       self:AddTimedCallback(function() self:GlowColor(color, duration)  return false end, 0.5)      
       end
 end
+
+
+*/
+
 local origderp = Alien.CopyPlayerDataFrom
 
 function Alien:CopyPlayerDataFrom(player)
  origderp(self, player)
-    if GetHasRebirthUpgrade(self) and self.canredeemorrebirth then
+    if GetHasRebirthUpgrade(self) and self.canbirth then
       self:TriggerRebirthCountDown(self:GetClient():GetControllingPlayer())
      end
      self.primaled = player.primaled
@@ -413,12 +433,11 @@ function Alien:CopyPlayerDataFrom(player)
 end
 
 
-*/
 
 end //server
 
 
-/*
+
 
 
 function Alien:GetHasLayStructure()
@@ -507,7 +526,7 @@ function Alien:AddGhostGuide(origin, radius)
 return
 
 end
-*/
+
 
 
 
@@ -586,9 +605,9 @@ function Alien:UpdateOnocideEffect(isLocal)
 
 end
 
-end //client 
-*/
 
+*/
+end //client 
 
 
 if Client then

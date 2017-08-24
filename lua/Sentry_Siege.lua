@@ -1,5 +1,5 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 --Sentry.kFov = 360
 --Sentry.kMaxPitch = 180 
 --Sentry.kMaxYaw = Sentry.kFov /2
@@ -39,7 +39,7 @@ local networkVars = {}
 
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 
 
@@ -51,7 +51,7 @@ end
     function Sentry:OnInitialized()
         originit(self)
         InitMixin(self, LevelsMixin)
-        InitMixin(self, SandMixin)
+        InitMixin(self, SaltMixin)
     end
     
     function Sentry:GetMaxLevel()

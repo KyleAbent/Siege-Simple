@@ -1,10 +1,10 @@
 --Script.Load("lua/ElectrifyMixin.lua")
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = {}
 
 --AddMixinNetworkVars(ElectrifyMixin, networkVars)
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 local orig = Extractor.OnInitialized
 function Extractor:OnInitialized()

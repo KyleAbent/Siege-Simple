@@ -221,23 +221,29 @@ function Imaginator:OnUpdate(deltatime)
                
          local gamestarted = GetGamerules():GetGameState() == kGameState.Started 
                if gamestarted then --and self:GetMarineEnabled() then dsd
+               local doDO = false
+                local eggs = {}
                         local researchables = {}
-         
+              if self:GetAlienEnabled() then
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("EvolutionChamber")) do
                        table.insert(researchables, ent)
                        end
-                       local eggs = {}
                        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("Egg")) do
                         if not ent.Auto and ent:GetIsFree() and not ent:GetIsResearching() then
                           table.insert(eggs, ent)
                           end
                        end
-               
+                       doDO = true
+               end        
+             if self:GetMarineEnabled() then
                      for _, researchable in ipairs(GetEntitiesWithMixinForTeam("Research", 1)) do
                       if not researchable:isa("RoboticsFactory") then  table.insert(researchables, researchable) end
                       if researchable:isa("Observatory") then table.insert(researchables, researchable) end 
                    end
-                   
+                   doDO = true
+              end
+               
+               if doDO then 
                    for i = 1, #researchables do
                        local researchable = researchables[i]
                       if not researchable:isa("RoboticsFactory") then ResearchEachTechButton(researchable) end 
@@ -249,6 +255,7 @@ function Imaginator:OnUpdate(deltatime)
                           break
                      end
                 end
+               end
                 
               if gamestarted and self:GetAlienEnabled() then  self:UpdateHivesManually()  end 
              self.timeLastResearch = Shared.GetTime()

@@ -37,12 +37,18 @@ end
 if Server then
 
 
+
+function Hive:OnAutoCommTriggerOn()
+  self.bioMassLevel = 4
+end
+
+
 local orig_Hive_OnConstructionComplete = Hive.OnConstructionComplete
 function Hive:OnConstructionComplete()
 
 
  --  if GetImaginator():GetAlienEnabled() then --Alien Researcher
-   self.bioMassLevel = 4
+  -- self.bioMassLevel = 4 <- Need to have biomass set if autocomm is triggered
    if GetImaginator():GetAlienEnabled() then
     UpdateTypeOfHive(self)
     end

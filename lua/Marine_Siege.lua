@@ -235,7 +235,7 @@ function Marine:OnLocationChange(locationName)
         end
 end
 
-/*
+
 
 
 function Marine:GetHasLayStructure()
@@ -247,6 +247,10 @@ function Marine:GetHasLayStructure()
     
     return builder
 end
+
+/*
+
+
 function Marine:GetCanBeVortexed()
     return false
 end
@@ -406,6 +410,7 @@ function Marine:OnProcessMove(input)
   
   
 end
+
 if Server then
 
 local function GetDroppackSoundName(techId)
@@ -483,7 +488,7 @@ origcweapons(self)
    -- end
 end
 
-/*
+
 
 function Marine:GiveLayStructure(techid, mapname)
   --  if not self:GetHasLayStructure() then
@@ -497,7 +502,7 @@ function Marine:GiveLayStructure(techid, mapname)
 end
 
 
-*/
+
 
 
 function Marine:GetWeaponsToStore()
@@ -717,11 +722,12 @@ end
         end
         
     end
-  */
+*/
   
-  /*
+
   
-elseif Client then
+--else
+if Client then
 
 
 
@@ -764,9 +770,9 @@ return
 
 end
 
-*/
 
 
---end -- client
+
+end -- client
 
 Shared.LinkClassToMap("Marine", Marine.kMapName, networkVars)

@@ -288,6 +288,10 @@ local kSiege_TechData =
       [kTechDataCostKey] = kThickenedSkinCost,
      [kTechDataTooltipInfo] = "Another layer of +hp for each biomass level", },
 
+
+ 
+   
+   
                      { [kTechDataId] = kTechId.Hunger, 
        [kTechDataCategory] = kTechId.CragHiveTwo,   
         [kTechDataDisplayName] = "Hunger", 
@@ -295,7 +299,7 @@ local kSiege_TechData =
       [kTechDataCostKey] = kHungerCost, 
      [kTechDataTooltipInfo] = "10% health / energy gain, and effects of Enzyme on player kill (if gorge then structures not players) ", },
    
-   */
+  */
 
 
 
@@ -307,7 +311,7 @@ local kSiege_TechData =
       [kTechDataTooltipInfo] = "Mimics the NS1/HL1 JumpPack (With Attempted Balance Modifications WIP) - Press DUCK + Jump @ the same time to mindfuck the alien team."},
 */
           
-          /*
+     
             { [kTechDataId] = kTechId.Rebirth, 
        [kTechDataCategory] = kTechId.CragHiveTwo,  
         [kTechDataDisplayName] = "Rebirth", 
@@ -322,7 +326,7 @@ local kSiege_TechData =
       [kTechDataSponitorCode] = "B",  
       [kTechDataCostKey] = kRedemptionCost, 
      [kTechDataTooltipInfo] = "a 3 second timer checks if your health is a random value less than or equal to 15-30% of your max hp. If so, then randomly tp to a egg spawn 1-4 seconds after.", },
-         */
+   
 
 /*
 

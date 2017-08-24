@@ -309,6 +309,10 @@ end
 function SandCastle:NotifyLowerAliens()
 
 end
+
+/*
+
+
 function SandCastle:LowerSupplyForTeamsBy(aliens, marines)
             local marineTeam = GetGamerules():GetTeam(kMarineTeamType)
             local alienTeam = GetGamerules():GetTeam(kAlienTeamType)
@@ -328,6 +332,9 @@ function SandCastle:LowerSupplyForTeamsBy(aliens, marines)
         
 
 end
+
+*/
+
 function SandCastle:OnUpdate(deltatime)
 
        if self:GetIsDisco() then
@@ -340,11 +347,13 @@ function SandCastle:OnUpdate(deltatime)
         
         
          
-         
+       
   if Server then
+  
+ 
     local gamestarted = GetGamerules():GetGameStarted()
   if gamestarted then 
-  
+    /* 
        local ppcount = 0
 
        if not self.timelastPPCount or self.timelastPPCount + 60 <= Shared.GetTime() then
@@ -383,7 +392,7 @@ function SandCastle:OnUpdate(deltatime)
         
         self.timelastPPCount = Shared.GetTime()
      end
-     
+      */
        if not self.timelasttimerup or self.timelasttimerup + 1 <= Shared.GetTime() then
        
        
@@ -395,12 +404,13 @@ function SandCastle:OnUpdate(deltatime)
            self:CountSDTimer() 
            end
            
-           /*
-           if not self.timelastSiegeAlienS or self.timelastSiegeAlienS + math.random(8,12) <= Shared.GetTime() then
-               self:ForAllAlienStructInSiege()
-               self.timelastSiegeAlienS = Shared.GetTime()
-            end
-           */
+
+         --  if not self.timelastSiegeAlienS or self.timelastSiegeAlienS + math.random(8,12) <= Shared.GetTime() then
+          --     self:ForAllAlienStructInSiege()
+          --     self.timelastSiegeAlienS = Shared.GetTime()
+          --  end
+            
+  
           
           
       if self.PrimaryTimer ~= 0 then self:CountPrimaryTimer() end
@@ -408,7 +418,13 @@ function SandCastle:OnUpdate(deltatime)
          end
   
   end
+  
+  
   end
+  
+  
+  
+  
 end
 function SandCastle:AutoConstructEligable()
     if not self.primaryOpened then 

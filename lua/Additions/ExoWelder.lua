@@ -249,7 +249,16 @@ function ExoWelder:PerformWeld(player)
 
 
                 success = prevHealthScalar ~= target:GetHealthScalar()
+                     if success then
                 
+                    local addAmount = (target:GetHealth() - prevHealth) + (target:GetArmor() - prevArmor)
+                    player:AddContinuousScore("WeldHealth", addAmount, kAmountHealedForPoints, kHealScoreAdded)
+                    
+                    -- weld owner as well
+                    player:SetArmor(player:GetArmor() + kWelderFireDelay * kSelfWeldAmount)
+                    
+                   end
+                /*
                 if success then
                     local pointsHealth = kAmountHealedForPoints
                     local scoreToAdd = kHealScoreAdded
@@ -261,7 +270,7 @@ function ExoWelder:PerformWeld(player)
                     player:SetArmor(player:GetArmor() + kWelderFireDelay * kSelfWeldAmount)
                     
                 end
-                
+                */
             end
             
             if HasMixin(target, "Construct")  then

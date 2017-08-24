@@ -1,12 +1,12 @@
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = {}
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 
 local origcreate = Harvester.OnCreate
 function Harvester:OnCreate()
    origcreate(self)
-        InitMixin(self, SandMixin)
+        InitMixin(self, SaltMixin)
  end
 
 

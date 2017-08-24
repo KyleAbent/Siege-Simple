@@ -2,7 +2,7 @@
 kElectrifiedAttackSpeed = 0.70 --0.8
 kEnzymeAttackSpeed = 1.3 --1.25
 
---kARCSupply = 11 -- 15
+kARCSupply = 11 -- 15
 kNumWebsPerGorge = 6
 --kChargeEnergyCost = 20 --def 20
 
@@ -17,12 +17,12 @@ kHallucinationMaxHealth = 725 -- default 700
 --kEggsPerHatch = 4 -- default 2
 
 
---kDrifterSupply = 5 --default 10
+kDrifterSupply = 5 --default 10
 
 
 kHiveInfestationRadius = 8
 
---kMACSupply = 7 -- 10
+kMACSupply = 7 -- 10
 kJetpackReplenishFuelRate = .14 -- .11 to .14 %30 increase
 kJetpackUseFuelRate = 0.147 -- 30% decrease from .21
---kSentrySupply = 3 -- 10
+kSentrySupply = 3 -- 10

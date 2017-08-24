@@ -1,12 +1,12 @@
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 Script.Load("lua/Additions/DigestCommMixin.lua")
 
 local networkVars = { }
 
 AddMixinNetworkVars(LevelsMixin, networkVars)
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
 AddMixinNetworkVars(DigestCommMixin, networkVars)
 
@@ -19,7 +19,7 @@ function Whip:OnCreate()
 function Whip:OnInitialized()
 originit(self)
          InitMixin(self, LevelsMixin)
-                 InitMixin(self, SandMixin)
+                 InitMixin(self, SaltMixin)
            InitMixin(self, InfestationMixin)
 
 if Server then

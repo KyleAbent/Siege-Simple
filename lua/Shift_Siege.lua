@@ -1,16 +1,16 @@
 --Kyle Abent
 Script.Load("lua/Additions/DigestCommMixin.lua")
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 Script.Load("lua/InfestationMixin.lua")
 local networkVars = {calling = "boolean", receiving = "boolean"} 
 AddMixinNetworkVars(DigestCommMixin, networkVars)
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 AddMixinNetworkVars(InfestationMixin, networkVars)
 local origcreate = Shift.OnCreate
 function Shift:OnCreate()
    origcreate(self)
     InitMixin(self, DigestCommMixin)
-        InitMixin(self, SandMixin)
+        InitMixin(self, SaltMixin)
  end
 function Shift:GetMinRangeAC()
 return ShiftAutoCCMR    

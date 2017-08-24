@@ -35,7 +35,7 @@ function Armory:GetTechButtons(techId)
 
 local buttons = origbuttons(self, techId)
     
-     buttons[6] = kTechId.FlamethrowerRangeTech
+    -- buttons[6] = kTechId.FlamethrowerRangeTech
      buttons[7] = kTechId.HeavyRifleTech
     return buttons
 end
@@ -158,16 +158,16 @@ end
 
 
 Script.Load("lua/Additions/LevelsMixin.lua")
-Script.Load("lua/Additions/SandMixin.lua")
+Script.Load("lua/Additions/SaltMixin.lua")
 
 local networkVars = {}
 
-AddMixinNetworkVars(SandMixin, networkVars)
+AddMixinNetworkVars(SaltMixin, networkVars)
 AddMixinNetworkVars(LevelsMixin, networkVars)
     local origcreate = Armory.OnCreate
     function Armory:OnCreate()
         origcreate(self)
-        InitMixin(self, SandMixin)
+        InitMixin(self, SaltMixin)
     end
     
     local originit = Armory.OnInitialized

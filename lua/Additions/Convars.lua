@@ -13,27 +13,29 @@ kPrimalDMGBuff = 1.05
 WhipStealFT = 10
 kWhipStealFTTime = 20
 
---kPrestoSandMul = 10
---kPresToSandMultWeapons = 7
---kPresToStructureMult = 8
---kPresToClassesMult = 9
+kPrestoSaltMul = 10
+kPresToSaltMultWeapons = 7
+kPresToStructureMult = 8
+kPresToClassesMult = 9
 
---kPresArmoryProtoEquivMult = 1.5
+kPresArmoryProtoEquivMult = 1.5
 
 
 kBonewallLifeSpan = 5
 
 --gCreditStructureCostPetDrifter = 5
---gCreditStructureCostPerDrifter = 5
+gCreditStructureCostPerDrifter = 5
 kFadeBlinkSpeedBuff = 1.10
 --kALienCragWhipShadeShiftDynamicSpeedBpdB = 1.75 -- Nerf if in siege room??
 kNumberofGlows = 3
 
 kSentrysPerRoom = 6 --6
 
-/*
-kWallWalkMarineCost = 10
 kWallCommLimitPerRoom = 5
+
+
+kWallWalkMarineCost = 10
+
 --Credits Start
 
 --Credits Structures Marine
@@ -129,8 +131,8 @@ gCreditAbilityDelayContamination = 10
 
 --Alien Structures Credits Cost
 gCreditStructureCostHydra = 6
-gCreditStructureCostSandyEgg = 5
-gCreditStructureLimitSandyEgg = 4
+gCreditStructureCostSaltyEgg = 5
+gCreditStructureLimitSaltyEgg = 4
 gCreditStructureCostShade = 13
 gCreditStructureCostCrag = 13
 gCreditStructureCostWhip = 13
@@ -142,7 +144,7 @@ gCreditStructureLimitHarvesterExtractor = 1
 
 --Alien Structures Credits Delay After Purchasing
 gCreditStructureDelayHydra = 1
-gCreditStructureDelaySandyEgg = 10
+gCreditStructureDelaySaltyEgg = 10
 gCreditStructureDelayShade = 5
 gCreditStructureDelayCrag = 5
 gCreditStructureDelayWhip = 5
@@ -161,7 +163,7 @@ gCreditAbilityDelayScan = 4
 gCreditAbilityCostMedpack = 2
 gCreditAbilityDelayMedpack = 4
 -----------------------------------
-*/
+
 
 kTimeAfterSiegeOpeningToEnableSuddenDeath = 900 --900
 
